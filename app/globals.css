@@ -1,0 +1,338 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  scroll-behavior: smooth;
+ 
+}
+.bg-black-gradient {
+  background: linear-gradient(
+    144.39deg,
+    #ffffff -278.56%,
+    #6d6d6d -78.47%,
+    #11101d 91.61%
+  );
+}
+
+.qpay-gradient {
+  background: linear-gradient(
+    35deg,
+    rgba(253, 29, 29, 1) 40%,
+    rgba(252, 176, 69, 1) 70%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  fill: transparent;
+}
+
+.sidebar {
+  -webkit-animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@-webkit-keyframes slide-top {
+  0% {
+    -webkit-transform: translateX(100px);
+    transform: translateX(100px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(100px);
+    transform: translateY(100px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+
+
+.download {
+  background-image: linear-gradient(
+    to right top,
+    #ec1b24,
+    #f24a1b,
+    #f66a14,
+    #f88512,
+    #f99e1b
+  );
+  color: whitesmoke;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+
+  transition: 0.3s ease-in-out;
+  transform-origin: left;
+  border: 1px solid transparent;
+}
+
+.download:hover {
+  background: transparent;
+  color: #ec1b24;
+
+  border: 1px solid #ec1b24;
+}
+/* Mega Menu */
+
+.features-mega-menu {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  width: 70%;
+  transform: translate(0%, -70%);
+  left: 20%;
+  top: 65px;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: all 1s ease-in-out;
+  z-index: 100;
+
+  @media only screen and (min-width: 1700px) {
+    width: 58%;
+    transform: translate(0%, -75%);
+    left: 25%;
+  }
+}
+
+/* #hoverable Class Styles */
+.feature-hoverable {
+  position: static;
+}
+
+.feature-hoverable > a:after {
+  content: "\25BC";
+  font-size: 10px;
+  padding-left: 6px;
+  position: relative;
+  top: -1px;
+}
+
+.feature-hoverable:hover .features-mega-menu {
+  visibility: visible;
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* Help Mega Menu */
+.help-mega-menu {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  width: 40%;
+  transform: translate(0%, -50%);
+  left: 50%;
+  top: 65px;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: all 1s ease-in-out;
+  z-index: 100;
+
+  @media only screen and (min-width: 1700px) {
+    width: 40%;
+    transform: translate(0%, -60%);
+    left: 40%;
+  }
+}
+
+/* #hoverable Class Styles */
+.help-hoverable {
+  position: static;
+}
+
+.help-hoverable > a:after {
+  content: "\25BC";
+  font-size: 10px;
+  padding-left: 6px;
+  position: relative;
+  top: -1px;
+}
+
+.help-hoverable:hover .help-mega-menu {
+  visibility: visible;
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* Help Mega menu */
+
+.icon-box {
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 1);
+
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(11.1px);
+  -webkit-backdrop-filter: blur(11.1px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.feature-box {
+  background: linear-gradient(
+      90deg,
+      hsla(0, 0%, 100%, 0.35),
+      hsla(0, 0%, 100%, 0)
+    ),
+    #0054a6;
+
+  backdrop-filter: blur(16.3px);
+}
+
+/* Fetaure hover  */
+.clickevent {
+  @media only screen and (max-width: 764px) {
+    display: none !important;
+    transition: all 1s ease-in-out !important;
+
+    opacity: 0 !important;
+  }
+}
+
+.hovercontent {
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+  left: 0;
+
+  /* background-image: linear-gradient(
+    to right bottom,
+    #ec1b24,
+    #f24a1b,
+    #f66a14,
+    #f88512,
+    #f99e1b
+  ); */
+  background: linear-gradient(
+      270deg,
+      hsla(0, 0%, 100%, 0.35),
+      hsla(0, 0%, 100%, 0)
+    ),
+    #f66a14;
+  backdrop-filter: blur(16.3px);
+  transform-origin: left;
+  transform: scaleX(1);
+  transition: all 0.5s ease-in-out;
+}
+.main-item {
+  transition: all 1s ease-in-out;
+}
+
+.sectionhover:hover .hovercontent {
+  @media only screen and (min-width: 765px) {
+    transform: scaleX(0);
+    opacity: 0;
+    visibility: visible;
+  }
+}
+
+/* Sticky Nav */
+
+.sticky {
+  position: fixed;
+  width: 100%;
+
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  
+}
+
+.qx-section-29 {
+  background-color: rgba(255, 255, 255, 1);
+  background-image: url("../public/images/Cloudy.svg");
+   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+}
+.bank-bg {
+  background-color: rgba(255, 255, 255, 1);
+  background-image: url("../public/images/World\ Map.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+}
+
+.feature-bg {
+  background-color: rgba(255, 255, 255, 1);
+  background-image: url("../public/images/Sound\ Wave.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+
+    animation: AnimateBG 20s ease infinite;
+}
+.atm-bg {
+  background-color: rgba(255, 255, 255, 1);
+  background-image: url("../public/images/Moon.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+
+    /* animation: AnimateBG 40s ease infinite; */
+}
+@keyframes AnimateBG {
+  0% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
+}
+
+
+.download-bg {
+  background-color: rgba(255, 255, 255, 1);
+  background-image: url("../public/images/Simple\ Shiny.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+}
+
+
+.fee-bg {
+
+  background-image: url("../public/images/feebg.svg"),;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+  transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
+    opacity 0.3s ease-in;
+
+}

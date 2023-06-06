@@ -11,5 +11,7 @@ import TogglerMenu from "./TogglerMenu";
 
 import MobileSubMenu from "./MobileSubMenu";
 
+import Carousel from "./Carousel";
 
-export {Navbar,Footer,About,MegaMenu,TogglerMenu,MobileSubMenu}
+
+export {Navbar,Footer,About,MegaMenu,TogglerMenu,MobileSubMenu,Carousel}

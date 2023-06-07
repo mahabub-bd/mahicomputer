@@ -11,14 +11,14 @@ export const navLinks = [
     class: "feature-hoverable",
   },
   {
-    id: "#banks",
-    title: "Bank & FI",
+    id: "#categories",
+    title: "Categories",
     class: "nothoverable",
   },
 
   {
-    id: "#boothlist",
-    title: "ATM Booth",
+    id: "#blog",
+    title: "Blog",
     class: "nothoverable",
   },
 
@@ -27,11 +27,7 @@ export const navLinks = [
     title: "Help",
     class: "help-hoverable",
   },
-  {
-    id: "#download",
-    title: "Qpay App",
-    class: "down ",
-  },
+ 
   {
     id: "#about",
     title: "About",

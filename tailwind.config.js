@@ -13,7 +13,7 @@ module.exports = {
         bgqpay: "#FFFFFF",
         dimWhite: "rgba(255, 255, 255, 0.7)",
         qpayone: "#07294D",
-        qpaytwo: "#F99E1B",
+        mahitwo: "#070052",
         qpaygradient:
           "linear-gradient(90deg, rgba(236,27,36,1) 0%, rgba(249,159,31,1) 35%)",
       },

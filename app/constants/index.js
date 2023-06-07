@@ -6,6 +6,8 @@ import { navLinks } from "./navLinks";
 import { slides } from "./slides";
 import { socialMedia } from "./socialMedia";
 
+import { stats } from "./stats";
+
 export {
-banks,featuresList,footerLinks,helpMenuLink,navLinks,slides,socialMedia
+banks,featuresList,footerLinks,helpMenuLink,navLinks,slides,socialMedia,stats
 };

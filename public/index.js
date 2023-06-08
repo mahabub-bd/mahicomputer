@@ -8,16 +8,6 @@ import logodark from "./images/logo_white.webp";
 
 import paymentapp from "./images/payment.webp";
 
-import appstoreicon from "./images/appstoreicon.svg";
-
-import qrappstore from "./images/ios.webp";
-
-import qrplaystore from "./images/android.webp";
-
-import appstore from "./images/appstore.svg";
-
-import playstore from "./images/playstore.svg";
-
 import banglaqr from "./images/qr.svg";
 
 import mobilerecharge from "./images/mobile recharge.webp";
@@ -35,16 +25,6 @@ import multiplecard from "./images/multiplecard.webp";
 import cvv from "./images/cvv.webp";
 
 import mfs from "./images/wallet transfer.webp";
-
-import carousel1 from "./images/carousel1.webp";
-import carousel2 from "./images/carousel2.webp";
-import carousel3 from "./images/carousel3.webp";
-import carousel4 from "./images/carousel4.webp";
-
-import carouselmobile1 from "./images/carousel1mobile.webp";
-import carouselmobile2 from "./images/carousel2mobile.webp";
-import carouselmobile3 from "./images/carousel3mobile.webp";
-import carouselmobile4 from "./images/carousel4mobile.webp";
 
 import facebook from "./images/facebook.svg";
 
@@ -74,6 +54,26 @@ import phone from "./images/phone.svg";
 
 import email from "./images/email.svg";
 
+import ui from "./images/ui.png";
+
+import webdesign from "./images/webdesign.png";
+
+import graphics from "./images/graphics.png";
+
+import cad from "./images/auto-cad.png";
+
+import office from "./images/office.png";
+
+import app from "./images/development.png";
+
+import hardware from "./images/computer.png";
+
+import digital from "./images/seo.png";
+
+import english from "./images/teacher.png";
+
+import ict from "./images/textbook.png";
+
 export {
   chargecalculator,
   email,
@@ -89,11 +89,6 @@ export {
   logo,
   logodark,
   paymentapp,
-  appstoreicon,
-  qrappstore,
-  qrplaystore,
-  appstore,
-  playstore,
   banglaqr,
   mobilerecharge,
   atmfrom,
@@ -103,17 +98,19 @@ export {
   multiplecard,
   cvv,
   mfs,
-  carousel1,
-  carousel2,
-  carousel3,
-  carousel4,
-  carouselmobile1,
-  carouselmobile2,
-  carouselmobile3,
-  carouselmobile4,
   facebook,
   twitter,
   instagram,
   linkedin,
   faq,
+  ui,
+  webdesign,
+  graphics,
+  cad,
+  office,
+  app,
+  hardware,
+  english,
+  digital,
+  ict,
 };

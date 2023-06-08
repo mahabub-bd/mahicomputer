@@ -88,10 +88,8 @@ const Navbar = () => {
                 key={nav.id}
                 className={` ${
                   nav.class
-                } font-poppins font-semibold cursor-pointer text-[16px] relative ${
-                  active === nav.title
-                    ? "text-qpayone border-b-2 border-qpayone"
-                    : "text-black"
+                } font-poppins font-semibold cursor-pointer text-[16px] relative hover:border-b-2  hover:border-qpayone ${
+                  active === nav.title ? "text-qpayone " : "text-black"
                 } [&:not(:last-child)]:mr-10`}
                 onClick={() => setActive(nav.title)}
               >

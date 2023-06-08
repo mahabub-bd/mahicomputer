@@ -9,9 +9,9 @@ import { paymentapp } from "@/public";
 const Hero = () => {
   return (
     <div className="bg-mahitwo">
-      <div className={`${styles.boxWidth}`}>
-        <section className={`${layout.section}`}>
-          <div className={`${layout.sectionInfo}  md:items-start`}>
+      <div className={`${styles.boxWidth}  `}>
+        <section className={`${layout.section}xl:px-0 md:px-4  `}>
+          <div className={`${layout.sectionInfo}  md:items-start md:px-2 xl:px-0`}>
             <h2 className={`${styles.heading2} text-white`}>
               Boost up your <span className="text-[#FFB802]">skills</span> .{" "}
               <br className="sm:block hidden" /> Grab your course, <br /> Right
@@ -24,7 +24,11 @@ const Hero = () => {
             <Button styles="mt-10 " />
           </div>
           <div className={`${layout.sectionImg} text-white flex-col`}>
-            <Image src={paymentapp} alt="card" className="w-[100%] h-[100%] rounded-[20px]" />
+            <Image
+              src={paymentapp}
+              alt="card"
+              className="w-[100%] h-[100%] rounded-[20px]"
+            />
           </div>
         </section>
       </div>
@@ -33,3 +37,6 @@ const Hero = () => {
 };
 
 export default Hero;
+
+
+

@@ -10,7 +10,7 @@ import TogglerMenu from "./TogglerMenu";
 
 import MobileSubMenu from "./MobileSubMenu";
 
-import Carousel from "./Carousel";
+import Courses from "./Courses";
 
 import Marquee from "./Marquee";
 
@@ -29,10 +29,10 @@ export {
   MegaMenu,
   TogglerMenu,
   MobileSubMenu,
-  Carousel,
   Marquee,
   Hero,
   Button,
   Stats,
-  Categories
+  Categories,
+  Courses,
 };

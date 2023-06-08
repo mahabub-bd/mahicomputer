@@ -12,14 +12,14 @@ module.exports = {
       colors: {
         bgqpay: "#FFFFFF",
         dimWhite: "rgba(255, 255, 255, 0.7)",
-        qpayone: "#07294D",
+        qpayone: "#FF1949",
         mahitwo: "#070052",
-        mahithree:"EC1B24",
+        mahithree: "#EC1B24",
         qpaygradient:
           "linear-gradient(90deg, rgba(236,27,36,1) 0%, rgba(249,159,31,1) 35%)",
       },
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"],
+        plusjakarta: ["Plus Jakarta Sans", "sans-serif"],
       },
     },
     screens: {

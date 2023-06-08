@@ -20,6 +20,8 @@ import Button from "./Button";
 
 import Stats from "./Stats";
 
+import Categories from "./Categories";
+
 export {
   Navbar,
   Footer,
@@ -32,4 +34,5 @@ export {
   Hero,
   Button,
   Stats,
+  Categories
 };

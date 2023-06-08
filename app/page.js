@@ -5,7 +5,7 @@ import "aos/dist/aos.css";
 
 
 import { useEffect } from "react";
-import { Carousel, Hero, Marquee, Stats } from "./components";
+import { Categories, Hero, Marquee, Stats } from "./components";
 
 const HomePage = () => {
   useEffect(() => {
@@ -18,6 +18,7 @@ const HomePage = () => {
      
       <Hero/>
       <Stats/>
+      <Categories/>
     </div>
   );
 };

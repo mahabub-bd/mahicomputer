@@ -30,7 +30,7 @@ const Navbar = () => {
             <span className="ml-2">
               <a
                 className="font-light  text-slate-100 text-[18px]"
-                href="tel:0966727279"
+                href="tel:8801711102944"
               >
                 +8801711102944
               </a>
@@ -39,7 +39,7 @@ const Navbar = () => {
             <span className="ml-2">
               <a
                 className=" text-[18px] text-slate-100 font-light"
-                href="mailto: support@qpaybd.com.bd"
+                href="mailto: info@mahicomputerbd.com"
               >
                 info@mahicomputerbd.com
               </a>
@@ -70,7 +70,7 @@ const Navbar = () => {
         id="home"
       >
         <nav
-          className={`${styles.boxWidth}  mx-auto flex px-3 py-3   sm:px-0 justify-between items-center`}
+          className={`${styles.boxWidth}  mx-auto flex px-3 py-2   sm:px-0 justify-between items-center`}
         >
           <Link href="/">
             <Image

@@ -19,7 +19,7 @@ const Categories = () => {
         {categories.map((item) => (
           <div
             key={item.alt}
-            className="w-[230px] shadow-2xl m-1 rounded-sm hover:translate-y-1 "
+            className="xs:w-[220px] xl:w-[230px] shadow-2xl m-1 rounded-sm hover:translate-y-1 "
           >
             <Link
               href={item.link}

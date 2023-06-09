@@ -2,7 +2,7 @@ import React from 'react'
 
 const Marquee = () => {
   return (
-    <div className="bg-[#FFB802] text-white py-2">
+    <div className="bg-[#FFB802] text-black py-2">
       <marquee behavior="" direction="">
         <strong>
           “বাংলাদেশ কারিগরি শিক্ষাবোর্ড কর্তৃক অনুমোদিত প্রতিষ্ঠান। কোড: 50969 ।

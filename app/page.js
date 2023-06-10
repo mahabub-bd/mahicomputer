@@ -5,7 +5,8 @@ import "aos/dist/aos.css";
 
 
 import { useEffect } from "react";
-import { Categories, Courses, Hero, Marquee, Stats } from "./components";
+import { Categories, Courses, Hero, Instractor, Marquee, Review, Stats } from "./components";
+import { Rating } from "flowbite-react";
 
 const HomePage = () => {
   useEffect(() => {
@@ -20,6 +21,8 @@ const HomePage = () => {
       <Stats/>
       <Categories/>
       <Courses/>
+      <Instractor/>
+     <Review/>
     </div>
   );
 };

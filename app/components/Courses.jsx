@@ -3,7 +3,9 @@ import styles from "../styles/style";
 import Image from "next/image";
 
 import Link from "next/link";
-import { categories } from "../constants";
+
+import { CourseCard } from "../components";
+import { courses } from "../constants";
 
 const Courses = () => {
   return (
@@ -15,8 +17,10 @@ const Courses = () => {
       <p className={`${styles.paragraph} text-center`}>
         popularity andratings by students
       </p>
-      <div className="flex flex-wrap my-10 justify-around">
-      
+      <div className="flex flex-wrap my-10 gap-8 justify-around">
+        {courses.map((card, index) => (
+          <CourseCard key={card.title} index={index} {...card} />
+        ))}
       </div>
     </div>
   );

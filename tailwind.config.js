@@ -20,6 +20,8 @@ module.exports = {
       },
       fontFamily: {
         plusjakarta: ["Plus Jakarta Sans", "sans-serif"],
+      
+      
       },
     },
     screens: {

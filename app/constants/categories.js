@@ -15,7 +15,7 @@ export const categories = [
   },
   {
     img: ui,
-    title: "UI/UX Development",
+    title: "UI/UX Design",
     alt: "ui",
     link: "/ui",
   },

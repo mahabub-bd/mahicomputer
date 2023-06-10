@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,200;0,300;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,200;0,300;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Tiro+Bangla:ital@0;1&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,20 @@
 
 * {
   scroll-behavior: smooth;
- font-family: 'Plus Jakarta Sans', sans-serif;
+
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
+}
+
+.hero-bg{
+   
+    background-image: url("../public/images/banner.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding-top: 200px;
+    padding-bottom: 150px;
+
 }
 .bg-black-gradient {
   background: linear-gradient(
@@ -15,6 +28,114 @@
     #6d6d6d -78.47%,
     #11101d 91.61%
   );
+}
+.bg-stat-1 {
+  background-color: rgba(236, 248, 236, 1);
+}
+
+.bg-stat-2 {
+  background-color: rgba(238, 246, 250, 1);
+}
+
+.bg-stat-3 {
+     background-color: rgba(255,243,237,1);
+}
+
+.bg-stat-4 {
+    background-color: rgba(254,236,244,1);
+}
+
+.animate-charcter{
+
+   text-transform: uppercase;
+  background-image: linear-gradient(
+    -225deg,
+    #FFB802 0%,
+    #efefef 29%,
+    #ff1361 67%,
+    #ffff00 100%
+  );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+
+  
+  
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 2s linear infinite;
+  display: inline-block;
+   
+}
+
+@keyframes textclip {
+  to {
+    background-position: 100% center;
+  }
+}
+
+
+.glow-on-hover {
+    width: 220px;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: #000;
+    background: #FFB802;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.glow-on-hover:active {
+    color: #FFB802
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #FFB802;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
 }
 
 .qpay-gradient {
@@ -56,8 +177,6 @@
     transform: translateY(0);
   }
 }
-
-
 
 .download {
   background-image: linear-gradient(
@@ -247,13 +366,12 @@
   right: 0;
   z-index: 99;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
-  
 }
 
 .qx-section-29 {
   background-color: rgba(255, 255, 255, 1);
   background-image: url("../public/images/Cloudy.svg");
-   background-size: cover;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
@@ -284,7 +402,7 @@
   transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
     opacity 0.3s ease-in;
 
-    animation: AnimateBG 20s ease infinite;
+  animation: AnimateBG 20s ease infinite;
 }
 .atm-bg {
   background-color: rgba(255, 255, 255, 1);
@@ -297,7 +415,7 @@
   transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
     opacity 0.3s ease-in;
 
-    /* animation: AnimateBG 40s ease infinite; */
+  /* animation: AnimateBG 40s ease infinite; */
 }
 @keyframes AnimateBG {
   0% {
@@ -311,7 +429,6 @@
   }
 }
 
-
 .download-bg {
   background-color: rgba(255, 255, 255, 1);
   background-image: url("../public/images/Simple\ Shiny.svg");
@@ -324,10 +441,8 @@
     opacity 0.3s ease-in;
 }
 
-
 .fee-bg {
-
-  background-image: url("../public/images/feebg.svg"),;
+  background-image: url("../public/images/feebg.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -336,5 +451,4 @@
     opacity 0.3s ease-in;
   transition: border 0.3s ease-in, box-shadow 0.3s ease-in, background 0.3s,
     opacity 0.3s ease-in;
-
 }

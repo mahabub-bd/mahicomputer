@@ -74,8 +74,33 @@ import english from "./images/teacher.png";
 
 import ict from "./images/textbook.png";
 
+import instractor1 from "./images/instractor1.jpg";
+
+import instractor2 from "./images/instractor2.jpg";
+
+import instractor3 from "./images/instractor3.jpg";
+
+import instractor4 from "./images/instractor4.jpg";
+
+import instractor5 from "./images/instractor5.jpg";
+
+import rating from "./images/rating.png";
+
+import student1 from "./images/people02.png";
+import student2 from "./images/people02.png";
+import student3 from "./images/people03.png";
+
+import courseweb from "./images/courseweb.webp";
+
+import lessonimg from "./images/chapter.png";
+
+import day from "./images/clock.png";
+
+import signal from "./images/signal.png";
+
 export {
   chargecalculator,
+  paymentapp,
   email,
   phone,
   uparrow,
@@ -88,7 +113,6 @@ export {
   close,
   logo,
   logodark,
-  paymentapp,
   banglaqr,
   mobilerecharge,
   atmfrom,
@@ -113,4 +137,17 @@ export {
   english,
   digital,
   ict,
+  instractor1,
+  instractor2,
+  instractor3,
+  instractor4,
+  instractor5,
+  rating,
+  student1,
+  student2,
+  student3,
+  courseweb,
+  lessonimg,
+  day,
+  signal,
 };

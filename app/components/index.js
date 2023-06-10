@@ -22,6 +22,14 @@ import Stats from "./Stats";
 
 import Categories from "./Categories";
 
+import Instractor from "./Instractor";
+
+import Review from "./Review";
+
+import ReviewCard from "./ReviewCard";
+
+import CourseCard from "./CourseCard";
+
 export {
   Navbar,
   Footer,
@@ -35,4 +43,8 @@ export {
   Stats,
   Categories,
   Courses,
+  Instractor,
+  Review,
+  ReviewCard,
+  CourseCard,
 };

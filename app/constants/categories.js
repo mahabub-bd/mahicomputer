@@ -27,7 +27,7 @@ export const categories = [
   },
   {
     img: cad,
-    title: "Auto CAD",
+    title: "Auto CAD 2D/3D",
     alt: "cad",
     link: "/cad",
   },
@@ -51,7 +51,7 @@ export const categories = [
   },
   {
     img: english,
-    title: "English Language",
+    title: "Language Course",
     alt: "office",
     link: "/english",
   },

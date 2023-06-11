@@ -19,14 +19,14 @@ const Categories = () => {
         {categories.map((item) => (
           <div
             key={item.alt}
-            className="xs:w-[190px] xl:w-[230px] shadow-2xl m-2 rounded-lg hover:translate-y-1"
+            className="vxs:min-w-[170px] lg:min-w-[230px]  shadow-2xl m-2 rounded-lg hover:translate-y-1"
           >
             <Link
               href={item.link}
               className="flex flex-col  items-center justify-around flex-wrap p-2 "
             >
               <Image className="w-[80px]" src={item.img} alt={item.alt} />
-              <h3 className="text-mahitwo mt-3 font-semibold text-[16px]">
+              <h3 className="text-mahitwo mt-3 font-semibold xl:text-[16px] xs:text-[12px]">
                 {item.title}
               </h3>
             </Link>

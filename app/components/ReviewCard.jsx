@@ -11,7 +11,7 @@ const ReviewCard = ({ name, title, content, img }) => {
         <Image src={rating} alt="quote" className=" w-[20px] object-contain" />
         <p> <span className="font-semibold mr-2">4.8</span>Rating For Auto Cad</p>
       </div>
-      <p className={`  font-normal text-[18px] leading-[32px]  my-4`}>
+      <p className={`  font-light text-[18px] leading-[32px]  my-4`}>
         {content}
       </p>
       <div className="flex flex-row justify-between items-center mt-5">

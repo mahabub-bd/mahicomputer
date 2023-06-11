@@ -7,7 +7,7 @@ import { categories } from '../constants';
 
 const Categories = () => {
   return (
-    <div className={`${styles.boxWidth} my-5`}>
+    <div id='categories' className={`${styles.boxWidth} my-5`}>
       <h2 className={`${styles.heading2} text-center my-4`}>Categories</h2>
       <p className={`${styles.paragraph} text-center`}>
         Pick your favorite course from our hand Picked categories.
@@ -19,7 +19,7 @@ const Categories = () => {
         {categories.map((item) => (
           <div
             key={item.alt}
-            className="vxs:min-w-[170px] lg:min-w-[230px]  shadow-2xl m-2 rounded-lg hover:translate-y-1"
+            className="vxs:min-w-[170px] lg:min-w-[230px]  shadow-xl m-2 rounded-lg hover:translate-y-1"
           >
             <Link
               href={item.link}

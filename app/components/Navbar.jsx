@@ -81,21 +81,21 @@ const Navbar = () => {
             />
           </Link>
           <ul
-            className={`"list-none sm:flex hidden items-center justify-center flex-1"`}
+            className={`list-none sm:flex hidden items-center justify-center flex-1`}
           >
             {navLinks.map((nav) => (
               <li
                 key={nav.id}
                 className={` ${
                   nav.class
-                } font-poppins font-semibold cursor-pointer text-[16px] relative hover:border-b-2  hover:border-qpayone ${
+                } font-poppins font-semibold cursor-pointer text-[16px] relative   hover:border-qpayone ${
                   active === nav.title ? "text-qpayone " : "text-black"
                 } [&:not(:last-child)]:mr-10`}
                 onClick={() => setActive(nav.title)}
               >
                 <Link href={`/${nav.id}`}>{nav.title}</Link>
 
-                <MegaMenu
+                {/* <MegaMenu
                   menuLink={featuresList}
                   menu="features"
                   menuName="features-mega-menu"
@@ -104,7 +104,7 @@ const Navbar = () => {
                   menuLink={helpMenuLink}
                   menu="help"
                   menuName="help-mega-menu"
-                />
+                /> */}
               </li>
             ))}
           </ul>

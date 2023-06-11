@@ -12,7 +12,7 @@ const Stats = () => (
       {stats.map((stat) => (
         <div
           key={stat.id}
-          className={`${stat.class} backdrop-blur-sm flex items-center flex-col xl:px-5 md:px-4  xl:min-w-[240px] vxs:min-w-[175px] py-5  shadow-2xl rounded-lg`}
+          className={`${stat.class} backdrop-blur-sm flex items-center flex-col xl:px-8 lg:px-6 md:px-4  xl:min-w-[260px] vxs:min-w-[175px] py-5  shadow-2xl rounded-lg`}
         >
           <h4 className="text-[#EC1B24]  font-plusjakarta font-semibold xs:text-[40px] text-[30px] xs:leading-[53px] leading-[43px]">
             {stat.value}

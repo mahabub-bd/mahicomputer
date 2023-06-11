@@ -3,8 +3,8 @@ import styles from "../styles/style";
 
 const Stats = () => (
   <div className=" h-full py-4 ">
-    <h4 className={`${styles.heading3} vxs:text-[20px]  mb-5 text-blue-950`}>
-      সাফল্য মাহি কম্পিউটার এক নজরে
+    <h4 className={`${styles.heading2} text-center  `}>
+     Sucess At A Glance 
     </h4>
     <section
       className={` ${styles.boxWidth} flex flex-wrap gap-5 justify-around mt-10 sm:mb-20 mb-6`}

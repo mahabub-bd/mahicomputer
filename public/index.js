@@ -60,7 +60,7 @@ import webdesign from "./images/webdesign.png";
 
 import graphics from "./images/graphics.png";
 
-import cad from "./images/auto-cad.png";
+import cad from "./images/auto-cad.webp";
 
 import office from "./images/office.png";
 
@@ -97,6 +97,10 @@ import lessonimg from "./images/chapter.png";
 import day from "./images/clock.png";
 
 import signal from "./images/signal.png";
+
+import autocad from "./images/autocad.jpg"
+
+import computer from "./images/hardware.jpg"
 
 export {
   chargecalculator,
@@ -150,4 +154,7 @@ export {
   lessonimg,
   day,
   signal,
+  autocad,
+  computer
+  
 };

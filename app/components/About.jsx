@@ -5,42 +5,40 @@ import styles from "../styles/style";
 const About = () => {
   return (
     <div className="qx-section-29 " id="about">
-      <section className={`${styles.boxWidth} mx-auto`}>
-        <h2 className={`text-center ${styles.heading2} qpay-gradient`}>
-          About Qpay
+      <section className={`${styles.boxWidth} ${styles.paddingY} mx-auto`}>
+        <h2 className={`text-center ${styles.heading2} `}>
+          About Mahi Computer
         </h2>
 
-        <div className={`flex md:flex-row flex-col`}>
+        <div className={`flex md:flex-row flex-col ${styles.paddingY}`}>
           <div
             className="flex flex-col flex-1 xl:px-0 sm:px-16 px-6"
             data-aos="fade-right"
           >
-            <p className={`${styles.paragraph} mt-5  `}>
-              Q-Cash has introduced QPay, a new financial technology application
-              that offers both basic and advanced FinTech and electronic payment
-              services to the clients of Q-Cash member banks. Its also
-              impressive that QPay includes more robust features compared to
-              other FinTech apps.
+            <p className={`${styles.paragraph} mt-5 text-justify  `}>
+              কোন দেশের সম্পদ হল দক্ষ জনশক্তি , তাই দক্ষ জনশক্তি গড়ার লক্ষ্য
+              ২০২১ সালে মাহি কম্পিউটার গঠন করা হয় । এখানে বিভিন্ন বিষয়ে
+              ব্যবহারিক প্রশিক্ষন দেওয়া হয় । মাহি কম্পিউটার কারিগরি শিক্ষাবোর্ড
+              কর্তৃক অনুমোদিত প্রতিষ্ঠান । প্রশিক্ষন শেষে কারিগরি শিক্ষাবোর্ডের
+              অধীনে পরীক্ষার মাধ্যমে সরকারী সার্টিফিকেট প্রদান করা হয়
             </p>
 
-            <p className={`${styles.paragraph} mt-5`}>
-              Its always beneficial for individuals, business owners, and
-              consumers to have access to specialized features and an easy
-              operational process to manage their financial operations and
-              processes effectively. With Qpay introduction, its expected that
-              it will provide a whole new experience to the citizens of
-              Bangladesh, and it will make managing their financial operations
-              much more comfortable and convenient.
+            <p className={`${styles.paragraph} mt-5 text-justify`}>
+              ইঞ্জিনিয়ার মনিরুজ্জামান ২০২১ সালে দক্ষ জনশক্তি করার লক্ষ্য মাহি
+              কম্পিউটার গঠন করেন . মাহি কম্পিউটার ওয়েভ ডেভেলপমেন্ট, অফিস
+              প্রোগ্রাম , অটো ক্যাড , ভিডিও এডিটিং , থ্রী-ডি স্টুডিও ম্যাক্স,
+              ইংলিশ ল্যাংগুয়েজ কোর্স , জাপানি ল্যাংগুয়েজ কোর্স ,কম্পিউটার
+              হার্ডওয়্যার কোর্স ইত্যাদি বিষয়ে প্রশিক্ষণ প্রদান করে থাকে । 
             </p>
           </div>
           <div
-            className={`flex flex-1 items-center xl:justify-end md:justify-center `}
+            className={`flex flex-1 items-center xl:justify-end vxs:justify-center `}
             data-aos="fade-left"
           >
             <Image
               src={paymentapp}
               alt="paymentapp "
-              className="w-[90%]"
+              className="w-[80%] rounded-md shadow-md"
               priority
             />
           </div>

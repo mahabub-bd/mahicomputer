@@ -11,16 +11,15 @@
   font-family: "Poppins", sans-serif;
 }
 
-.hero-bg{
-   
-    background-image: url("../public/images/banner.png");
-    background-repeat: no-repeat;
-    background-position: center;
+.hero{
+    position: relative;
+    height: 65vh;
+    background-image: linear-gradient(to right bottom, rgba(0,71,171,1), rgba(77,77,255,1));
     background-size: cover;
-    padding-top: 200px;
-    padding-bottom: 150px;
-
-}
+    background-position: top;
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 55vh, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 55vh, 0 100%);
+} 
 .bg-black-gradient {
   background: linear-gradient(
     144.39deg,
@@ -38,22 +37,21 @@
 }
 
 .bg-stat-3 {
-     background-color: rgba(255,243,237,1);
+  background-color: rgba(255, 243, 237, 1);
 }
 
 .bg-stat-4 {
-    background-color: rgba(254,236,244,1);
+  background-color: rgba(254, 236, 244, 1);
 }
 
-.animate-charcter{
-
-   text-transform: uppercase;
+.animate-charcter {
+  text-transform: uppercase;
   background-image: linear-gradient(
     -225deg,
-    #FFB802 0%,
-    #efefef 29%,
+    #efefef 0%,
+    #fff000 29%,
     #ff1361 67%,
-    #ffff00 100%
+    #fff800 100%
   );
   background-size: auto auto;
   background-clip: border-box;
@@ -61,14 +59,10 @@
   color: #fff;
   background-clip: text;
 
-  
-  
-
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: textclip 2s linear infinite;
   display: inline-block;
-   
 }
 
 @keyframes textclip {
@@ -77,65 +71,81 @@
   }
 }
 
-
 .glow-on-hover {
-    width: 220px;
-    height: 50px;
-    border: none;
-    outline: none;
-    color: #000;
-    background: #FFB802;
-    cursor: pointer;
-    position: relative;
-    z-index: 0;
-    border-radius: 10px;
+  width: 220px;
+  height: 50px;
+  border: none;
+  outline: none;
+  color: #000;
+  background: #ffb802;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
 }
 
 .glow-on-hover:before {
-    content: '';
-    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-    position: absolute;
-    top: -2px;
-    left:-2px;
-    background-size: 400%;
-    z-index: -1;
-    filter: blur(5px);
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    animation: glowing 20s linear infinite;
-    opacity: 0;
-    transition: opacity .3s ease-in-out;
-    border-radius: 10px;
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
 }
 
 .glow-on-hover:active {
-    color: #FFB802
+  color: #ffb802;
 }
 
 .glow-on-hover:active:after {
-    background: transparent;
+  background: transparent;
 }
 
 .glow-on-hover:hover:before {
-    opacity: 1;
+  opacity: 1;
 }
 
 .glow-on-hover:after {
-    z-index: -1;
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #FFB802;
-    left: 0;
-    top: 0;
-    border-radius: 10px;
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ffb802;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
 }
 
 @keyframes glowing {
-    0% { background-position: 0 0; }
-    50% { background-position: 400% 0; }
-    100% { background-position: 0 0; }
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
 
 .qpay-gradient {

@@ -52,7 +52,7 @@ export const categories = [
   {
     img: english,
     title: "Language Course",
-    alt: "office",
+    alt: "english",
     link: "/english",
   },
   {

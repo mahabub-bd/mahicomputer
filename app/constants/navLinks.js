@@ -6,13 +6,20 @@ export const navLinks = [
   },
 
   {
-    id: "#courses",
-    title: "Courses",
-    class: "feature-hoverable",
+    id: "#about",
+    title: "About",
+    class: "nothoverable",
   },
+
   {
     id: "#categories",
     title: "Categories",
+    class: "nothoverable",
+  },
+
+  {
+    id: "#courses",
+    title: "Courses",
     class: "nothoverable",
   },
 
@@ -22,20 +29,9 @@ export const navLinks = [
     class: "nothoverable",
   },
 
-  {
-    id: "#help",
-    title: "Help",
-    class: "help-hoverable",
-  },
- 
-  {
-    id: "#about",
-    title: "About",
-    class: "nothoverable",
-  },
 
   {
-    id: "contact",
+    id: "#contact",
     title: "Contact",
     class: "nothoverable",
   },

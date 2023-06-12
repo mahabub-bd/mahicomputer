@@ -30,6 +30,8 @@ import ReviewCard from "./ReviewCard";
 
 import CourseCard from "./CourseCard";
 
+import Map from "./Map"
+
 export {
   Navbar,
   Footer,
@@ -47,4 +49,5 @@ export {
   Review,
   ReviewCard,
   CourseCard,
+  Map,
 };

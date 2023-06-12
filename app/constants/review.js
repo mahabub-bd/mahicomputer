@@ -4,15 +4,15 @@ export const review = [
   {
     id: "feedback-1",
     content:
-      "Money is only a tool. It will take you wherever you wish, but it will not replace you as the driver.",
-    name: "Herman Jensen",
-    title: "Founder & Leader",
+      "Mahi computer best and professional training center in the Dhaka city. I like so much.  All the teacher are good.  environment also  good for studies. Teaching capable nice.   that is very essential.",
+    name: "Saddam Hossain",
+    title: "Student",
     img: student1,
   },
   {
     id: "feedback-2",
     content:
-      "Money makes your life easier. If you're lucky to have it, you're lucky.",
+      "This training is professional. I have completed this course and it's was very helpful for me. This is one of the best training center that I have ever seen. The mentors are really skilled and professional.",
     name: "Steve Mark",
     title: "Founder & Leader",
     img: student2,
@@ -20,8 +20,8 @@ export const review = [
   {
     id: "feedback-3",
     content:
-      "It is usually people in the money business, finance, and international trade that are really rich.",
-    name: "Kenn Gallagher",
+      "This training really best  training center in this area of gulshan, Badda, Vatara thana. among over the dhaka city. But their videos quality  not good but training all courses  advanced level . I like ",
+    name: "Azeen Nohor",
     title: "Student",
     img: student3,
   },

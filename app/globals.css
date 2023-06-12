@@ -11,15 +11,19 @@
   font-family: "Poppins", sans-serif;
 }
 
-.hero{
-    position: relative;
-    height: 65vh;
-    background-image: linear-gradient(to right bottom, rgba(0,71,171,1), rgba(77,77,255,1));
-    background-size: cover;
-    background-position: top;
-    -webkit-clip-path: polygon(0 0, 100% 0, 100% 55vh, 0 100%);
-    clip-path: polygon(0 0, 100% 0, 100% 55vh, 0 100%);
-} 
+.hero {
+  position: relative;
+  height: 65vh;
+  background-image: linear-gradient(
+    to right bottom,
+    rgba(0, 71, 171, 1),
+    rgba(0, 77, 255, 1)
+  );
+  background-size: cover;
+  background-position: top;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 55vh, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 55vh, 0 100%);
+}
 .bg-black-gradient {
   background: linear-gradient(
     144.39deg,
@@ -28,6 +32,92 @@
     #11101d 91.61%
   );
 }
+
+.shape-1 {
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+
+  top: 65px;
+  left: 5%;
+  -webkit-animation: animation1 2s linear infinite;
+  -moz-animation: animation1 2s linear infinite;
+  -o-animation: animation1 2s linear infinite;
+  animation: animation1 2s linear infinite;
+}
+
+.shape-2 {
+  width: 49px;
+  height: 49px;
+
+  left: 20%;
+  bottom: 40px;
+  border-radius: 50%;
+  -webkit-animation: animation1 2s linear infinite;
+  -moz-animation: animation1 2s linear infinite;
+  -o-animation: animation1 2s linear infinite;
+  animation: animation1 2s linear infinite;
+}
+.shape-3 {
+  width: 40px;
+  height: 40px;
+
+  bottom: 15%;
+  left: 3%;
+  border-radius: 50%;
+  -webkit-animation: animation1 2s linear infinite;
+  -moz-animation: animation1 2s linear infinite;
+  -o-animation: animation1 2s linear infinite;
+  animation: animation1 2s linear infinite;
+}
+@keyframes animation1 {
+  0% {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@-webkit-keyframes animation1 {
+  0% {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
 .bg-stat-1 {
   background-color: rgba(236, 248, 236, 1);
 }

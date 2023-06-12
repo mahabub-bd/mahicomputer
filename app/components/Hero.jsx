@@ -35,15 +35,9 @@ const Hero = () => {
           <Button styles="my-5 ">Get Started</Button>
         </div>
       </div>
-      <div className=" absolute  shape-1 ">
-        <Image src={webdesign} alt="rating" />
-      </div>
-      <div className=" absolute  shape-2">
-        <Image src={office} alt="rating" />
-      </div>
-      <div className=" absolute  shape-3">
-        <Image src={cad} alt="rating" />
-      </div>
+      <div className=" absolute  shape-1  "></div>
+      <div className=" absolute  shape-2"></div>
+      <div className=" absolute  shape-3"></div>
     </div>
   );
 };

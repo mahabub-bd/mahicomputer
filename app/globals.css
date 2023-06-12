@@ -34,10 +34,10 @@
 }
 
 .shape-1 {
-  width: 39px;
-  height: 39px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
-
+background-color: rgba(254, 236, 244, 1);
   top: 65px;
   left: 5%;
   -webkit-animation: animation1 2s linear infinite;
@@ -47,9 +47,9 @@
 }
 
 .shape-2 {
-  width: 49px;
-  height: 49px;
-
+  width: 29px;
+  height: 29px;
+ background-color: rgba(255, 243, 237, 1);
   left: 20%;
   bottom: 40px;
   border-radius: 50%;
@@ -61,7 +61,7 @@
 .shape-3 {
   width: 40px;
   height: 40px;
-
+  background-color: rgba(238, 246, 250, 1);
   bottom: 15%;
   left: 3%;
   border-radius: 50%;

@@ -7,11 +7,15 @@ const ReviewCard = ({ name, title, content, img }) => {
   return (
     <div className="flex  justify-around flex-col px-5 py-5 rounded-[20px] max-w-[380px] md:mr-10 sm:mr-5  mr-0 my-5 shadow-2xl ">
       <div className="flex justify-between items-center">
-        
-        <Image src={rating} alt="quote" className=" w-[40px] object-contain" />
-        <p> <span className="font-semibold mr-2">4.8</span>Rating For Auto Cad</p>
+        <Image src={rating} alt="quote" className=" w-[24px] object-contain" />
+        <p>
+         
+          <span className="font-semibold mr-2">4.8</span>Rating For Auto Cad
+        </p>
       </div>
-      <p className={`  font-light text-justify text-[14px] leading-[21px]  my-4`}>
+      <p
+        className={`  font-light text-justify text-[14px] leading-[21px]  my-4`}
+      >
         {content}
       </p>
       <div className="flex flex-row justify-between items-center mt-5">

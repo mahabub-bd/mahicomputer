@@ -4,11 +4,7 @@ import Footer from "./Footer";
 
 import About from "./About";
 
-import MegaMenu from "./MegaMenu";
-
 import TogglerMenu from "./TogglerMenu";
-
-import MobileSubMenu from "./MobileSubMenu";
 
 import Courses from "./Courses";
 
@@ -30,15 +26,21 @@ import ReviewCard from "./ReviewCard";
 
 import CourseCard from "./CourseCard";
 
-import Map from "./Map"
+import Map from "./Map";
+import Gallery from "./Gallery";
+
+import Blog from "./Blog";
+
+import Contact from "./Contact";
 
 export {
   Navbar,
+  Gallery,
+  Blog,
+  Contact,
   Footer,
   About,
-  MegaMenu,
   TogglerMenu,
-  MobileSubMenu,
   Marquee,
   Hero,
   Button,

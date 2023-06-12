@@ -1,4 +1,4 @@
-import { lessonimg, rating, signal,day } from "@/public";
+import { lessonimg, rating, signal, day } from "@/public";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -15,7 +15,6 @@ const CourseCard = ({
   instractorName,
   instractorphoto,
   price,
-
 }) => {
   return (
     /* courseImage, alt,link, tag,title,lesson,duration,instractorname,photo,price*/
@@ -30,7 +29,7 @@ const CourseCard = ({
               src={rating}
               className="w-[14px] inline mr-2"
               alt="rating_image"
-            />{" "}
+            />
             4.9/31
           </p>
           <Link
@@ -51,11 +50,11 @@ const CourseCard = ({
             <p className="text-[14px] ml-2">{lesson} Lessons</p>
           </div>
           <div className="flex items-center justify-between">
-            <Image src={day} className="w-[16px] h-[16px]" alt="lesson" />
+            <Image src={day} className="w-[16px] h-[16px]" alt="day" />
             <p className="text-[14px] ml-2">{duration} Month</p>
           </div>
           <div className="flex items-center justify-between">
-            <Image src={signal} className="w-[16px] h-[16px]" alt="lesson" />
+            <Image src={signal} className="w-[16px] h-[16px]" alt="signal" />
             <p className="text-[14px] ml-2">Begineer</p>
           </div>
         </div>
@@ -64,7 +63,7 @@ const CourseCard = ({
             <Image
               src={instractorphoto}
               className="w-[40px] h-[40px] rounded-full"
-              alt="lesson"
+              alt="instractor_photo"
             />
             <p className="text-[14px] font-normal ml-3">{instractorName}</p>
           </div>

@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./node_modules/flowbite-react/**/*.js",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -22,6 +21,7 @@ module.exports = {
           "linear-gradient(90deg, rgba(236,27,36,1) 0%, rgba(249,159,31,1) 35%)",
       },
       fontFamily: {
+        bangla: ["Hind Siliguri", "sans-serif"],
         plusjakarta: ["Plus Jakarta Sans", "sans-serif"],
       },
     },
@@ -35,5 +35,4 @@ module.exports = {
       xl: "1700px",
     },
   },
-  plugins: [require("flowbite/plugin")],
 };

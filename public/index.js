@@ -101,6 +101,9 @@ import signal from "./images/signal.png";
 import autocad from "./images/autocad.jpg"
 
 import computer from "./images/hardware.jpg"
+import shape from './images/shape.svg'
+
+import shape2 from "./images/shape-2.svg";
 
 export {
   chargecalculator,
@@ -155,6 +158,8 @@ export {
   day,
   signal,
   autocad,
-  computer
+  computer,
+  shape,
+  shape2
   
 };

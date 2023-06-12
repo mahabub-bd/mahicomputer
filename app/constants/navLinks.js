@@ -1,38 +1,40 @@
 export const navLinks = [
   {
     id: "/",
-    title: "Home",
-    class: "nothoverable",
+    title: "হোম",
   },
 
   {
     id: "#about",
-    title: "About",
-    class: "nothoverable",
+    title: "আমাদের সম্পর্কে",
   },
 
   {
     id: "#categories",
-    title: "Categories",
-    class: "nothoverable",
+    title: "সেবা সমূহ",
   },
 
   {
     id: "#courses",
-    title: "Courses",
-    class: "nothoverable",
+    title: "কোর্স সমূহ",
+  },
+
+  {
+    id: "#reviw",
+    title: "স্টুডেন্ট ফিডব্যাক",
   },
 
   {
     id: "#blog",
-    title: "Blog",
-    class: "nothoverable",
+    title: "ব্লগ",
   },
-
+  {
+    id: "#gallery",
+    title: "ছবি গ্যালারী",
+  },
 
   {
     id: "#contact",
-    title: "Contact",
-    class: "nothoverable",
+    title: "যোগাযোগ",
   },
 ];

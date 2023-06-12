@@ -4,13 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { logo, phone, email } from "../../public";
-import { MegaMenu, TogglerMenu } from "../components";
-import {
-  featuresList,
-  navLinks,
-  helpMenuLink,
-  socialMedia,
-} from "../constants";
+import { TogglerMenu } from "../components";
+import { navLinks, socialMedia } from "../constants";
 import useScroll from "../hooks/useScroll";
 import styles from "../styles/style";
 
@@ -20,9 +15,9 @@ const Navbar = () => {
   const { scrolled } = useScroll();
 
   return (
-    <>
+    <div className="scroll-mt-[200px] font-bangla">
       <div
-        className={` border-b-[1px] border-b-[#feeacd] sm:flex hidden bg-[#07294D]`}
+        className={` border-b-[1px] border-b-[#feeacd] sm:flex hidden bg-[#07294D] `}
       >
         <div className={`${styles.boxWidth} flex justify-between py-2 `}>
           <div className="flex ">
@@ -63,6 +58,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
       <div
         className={`relative mx-auto  bg-white ${
           scrolled && "sticky drop-shadow-lg"
@@ -76,7 +72,7 @@ const Navbar = () => {
             <Image
               src={logo}
               alt="qpay__headerlogo"
-              className="w-[150px] h-[62px] object-contain"
+              className="w-[130px] h-[62px] object-contain"
               priority
             />
           </Link>
@@ -86,25 +82,12 @@ const Navbar = () => {
             {navLinks.map((nav) => (
               <li
                 key={nav.id}
-                className={` ${
-                  nav.class
-                } font-poppins font-semibold cursor-pointer text-[16px] relative   hover:border-qpayone ${
+                className={` font-normal nav-font cursor-pointer text-[16px]  hover:border-qpayone ${
                   active === nav.title ? "text-qpayone " : "text-black"
                 } [&:not(:last-child)]:mr-10`}
                 onClick={() => setActive(nav.title)}
               >
                 <Link href={`/${nav.id}`}>{nav.title}</Link>
-
-                {/* <MegaMenu
-                  menuLink={featuresList}
-                  menu="features"
-                  menuName="features-mega-menu"
-                />
-                <MegaMenu
-                  menuLink={helpMenuLink}
-                  menu="help"
-                  menuName="help-mega-menu"
-                /> */}
               </li>
             ))}
           </ul>
@@ -112,7 +95,7 @@ const Navbar = () => {
           <TogglerMenu />
         </nav>
       </div>
-    </>
+    </div>
   );
 };
 

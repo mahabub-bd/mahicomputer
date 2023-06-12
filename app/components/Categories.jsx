@@ -8,13 +8,8 @@ import { categories } from '../constants';
 const Categories = () => {
   return (
     <div id="categories" className={`${styles.boxWidth} my-5`}>
-      <h2 className={`${styles.heading2} text-center my-4`}>Categories</h2>
-      <p className={`${styles.paragraph} text-center`}>
-        Pick your favorite course from our hand Picked categories.
-      </p>
-      <p className={`${styles.paragraph} text-center`}>
-        A Well organized collection of excellence
-      </p>
+      <h2 className={`${styles.heading2} text-center my-4 font-bangla`}>আমাদের সার্ভিস সমূহ</h2>
+    
       <div className="flex flex-wrap my-10 justify-around" data-aos="fade-left">
         {categories.map((item) => (
           <div

@@ -6,9 +6,7 @@ import Link from "next/link";
 import React from "react";
 import { useState } from "react";
 
-import { MobileSubMenu } from "../components";
 import styles from "../styles/style";
-import { helpMenuLink, featuresList } from "../constants";
 
 const TogglerMenu = () => {
   const [toggle, setToggle] = useState(false);
@@ -28,58 +26,52 @@ const TogglerMenu = () => {
         } p-6 bg-black-gradient absolute top-20 right-0 mx-6 my-2 min-w-[200px] rounded-xl sidebar z-50 `}
       >
         <ul className=" list-none flex  flex-col  flex-1">
-          <Link
-            className={`${styles.mobileMenu} `}
-            href={`/`}
-            scroll={false}
-          >
-            Home
+          <Link className={`${styles.mobileMenu} `} href={`/`} scroll={false}>
+            হোম
           </Link>
 
           <Link
             className={`${styles.mobileMenu} relative `}
-            href={`/`}
+            href={`#about`}
             scroll={false}
           >
-            Features
-            <MobileSubMenu menuLink={featuresList} menu="features" />
+            আমাদের সম্পর্কে
           </Link>
 
           <Link
             className={`${styles.mobileMenu}`}
-            href={`/#banks`}
+            href={`/#categories`}
             scroll={false}
           >
-            Bank & FI
+            সেবা সমূহ
           </Link>
 
           <Link
             className={`${styles.mobileMenu}`}
-            href={`/#boothlist`}
+            href={`/#courses`}
             scroll={false}
           >
-            ATM Booth
+            কোর্স সমূহ
           </Link>
 
-          <Link className={`${styles.mobileMenu} relative`} href={`/`}>
-            Help
-            <MobileSubMenu menuLink={helpMenuLink} menu="help" />
-          </Link>
-
-          <Link
-            className={`${styles.mobileMenu}`}
-            href={`/#download`}
-            scroll={false}
-          >
-            Qpay App
+          <Link className={`${styles.mobileMenu} `} href={`/#reviw`}>
+            স্টুডেন্ট ফিডব্যাক
           </Link>
 
           <Link
             className={`${styles.mobileMenu}`}
-            href={`/#about`}
+            href={`/#blog`}
             scroll={false}
           >
-            About
+            ব্লগ
+          </Link>
+
+          <Link
+            className={`${styles.mobileMenu}`}
+            href={`/#gallary`}
+            scroll={false}
+          >
+            ছবি গ্যালারী
           </Link>
 
           <Link
@@ -87,7 +79,7 @@ const TogglerMenu = () => {
             href={`/#contact`}
             scroll={false}
           >
-            Contact
+            যোগাযোগ
           </Link>
         </ul>
       </div>

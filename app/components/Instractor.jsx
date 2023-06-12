@@ -8,17 +8,11 @@ import { instractor} from "../constants";
 const Instractor = () => {
   return (
     <div className={`${styles.boxWidth} my-5`}>
-      <h2 className={`${styles.heading2} text-center my-4`}>Our Instractor</h2>
-      <p className={`${styles.paragraph} text-center`}>
-        Pick your favorite course from our hand Picked categories.
-      </p>
-      <p className={`${styles.paragraph} text-center`}>
-        A Well organized collection of excellence
-      </p>
-      <div
-        className="flex flex-wrap my-10 justify-around "
-        data-aos="fade-up"
-      >
+      <h2 className={`${styles.heading2} text-center my-4 font-bangla`}>
+        কোর্স ইন্সট্রাক্টর
+      </h2>
+    
+      <div className="flex flex-wrap my-10 justify-around " data-aos="fade-up">
         {instractor.map((item) => (
           <div
             key={item.des}

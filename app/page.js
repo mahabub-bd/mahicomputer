@@ -8,6 +8,7 @@ import {
   About,
   Categories,
   Courses,
+  Contact,
   Hero,
   Instractor,
   Map,
@@ -32,6 +33,7 @@ const HomePage = () => {
       <Courses />
       <Instractor />
       <Review />
+      <Contact/>
       <Map />
     </div>
   );

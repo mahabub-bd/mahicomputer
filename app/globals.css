@@ -37,7 +37,7 @@
   width: 25px;
   height: 25px;
   border-radius: 50%;
-background-color: rgba(254, 236, 244, 1);
+background-color: rgba(254, 236, 244, 0.3);
   top: 65px;
   left: 5%;
   -webkit-animation: animation1 2s linear infinite;
@@ -49,7 +49,7 @@ background-color: rgba(254, 236, 244, 1);
 .shape-2 {
   width: 29px;
   height: 29px;
- background-color: rgba(255, 243, 237, 1);
+ background-color: rgba(255, 243, 237, 0.3);
   left: 20%;
   bottom: 40px;
   border-radius: 50%;
@@ -61,7 +61,7 @@ background-color: rgba(254, 236, 244, 1);
 .shape-3 {
   width: 40px;
   height: 40px;
-  background-color: rgba(238, 246, 250, 1);
+  background-color: rgba(238, 246, 250, 0.3);
   bottom: 15%;
   left: 3%;
   border-radius: 50%;

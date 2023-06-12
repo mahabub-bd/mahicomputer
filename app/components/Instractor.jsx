@@ -15,7 +15,10 @@ const Instractor = () => {
       <p className={`${styles.paragraph} text-center`}>
         A Well organized collection of excellence
       </p>
-      <div className="flex flex-wrap my-10 justify-around">
+      <div
+        className="flex flex-wrap my-10 justify-around "
+        data-aos="fade-up"
+      >
         {instractor.map((item) => (
           <div
             key={item.des}

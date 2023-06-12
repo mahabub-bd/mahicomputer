@@ -15,7 +15,7 @@ const Categories = () => {
       <p className={`${styles.paragraph} text-center`}>
         A Well organized collection of excellence
       </p>
-      <div className="flex flex-wrap my-10 justify-around" data-aos="flip-left">
+      <div className="flex flex-wrap my-10 justify-around" data-aos="fade-left">
         {categories.map((item) => (
           <div
             key={item.alt}

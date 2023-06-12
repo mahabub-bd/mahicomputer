@@ -25,4 +25,20 @@ export const review = [
     title: "Student",
     img: student3,
   },
+  {
+    id: "feedback-",
+    content:
+      "This training really best  training center in this area of gulshan, Badda, Vatara thana. among over the dhaka city. But their videos quality  not good but training all courses  advanced level . I like ",
+    name: "Azeen Nohor",
+    title: "Student",
+    img: student3,
+  },
+  {
+    id: "feedback-5",
+    content:
+      "This training really best  training center in this area of gulshan, Badda, Vatara thana. among over the dhaka city. But their videos quality  not good but training all courses  advanced level . I like ",
+    name: "Azeen Nohor",
+    title: "Student",
+    img: student3,
+  },
 ];

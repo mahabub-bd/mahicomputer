@@ -3,6 +3,7 @@ import styles from "../styles/style";
 import { ReviewCard } from "../components";
 import { review } from "../constants";
 
+
 const Review = () => {
   return (
     <div className={`${styles.boxWidth} my-5`}>
@@ -13,6 +14,7 @@ const Review = () => {
       <p className={`${styles.paragraph} text-center`}>
         A Well organized collection of excellence
       </p>
+
       <div
         className="flex flex-wrap  justify-center w-full  "
         data-aos="fade-left"

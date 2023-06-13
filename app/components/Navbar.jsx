@@ -10,7 +10,7 @@ import useScroll from "../hooks/useScroll";
 import styles from "../styles/style";
 
 const Navbar = () => {
-  const [active, setActive] = useState("হোম");
+  const [active, setActive] = useState("Home");
 
   const { scrolled } = useScroll();
 

@@ -8,11 +8,11 @@ import { shape, shape2 } from "@/public";
 
 const Hero = () => {
   return (
-    <div className="hero shadow-md  relative ">
+    <div className="hero  relative ">
       <div className={`${styles.boxWidth} z-100`}>
         <div className={`${styles.flexCenter} flex-col justify-between`}>
           <h2
-            className={`${styles.heading2}  text-white font-bangla animate-charcter xl:text-[46px] xl:py-10 xs:py-4 mt-3 text-center`}
+            className={`${styles.heading2}  text-white font-bangla animate-charcter xl:text-[50px] xl:py-10 xs:py-4 mt-3 text-center`}
           >
             মাহি কম্পিউটার ট্রেনিং ইনস্টিটিউট
           </h2>
@@ -27,7 +27,7 @@ const Hero = () => {
           </p>
 
           <p
-            className={`  text-xl mt-5 leading-8 text-[#6d28d9] font-bangla  text-[36px] text-center  w-full`}
+            className={`  text-xl mt-5 leading-8 text-[#6d28d9] font-bangla  text-[32px] text-center  w-full`}
           >
             কোর্স মেয়াদ: ০৩ মাস, ০৬ মাস, এক বছর
           </p>
@@ -35,9 +35,7 @@ const Hero = () => {
           <Button styles="my-10 font-bangla ">শুরু করুন</Button>
         </div>
       </div>
-      <div className=" absolute shape-1  "></div>
-      <div className=" absolute shape-2"></div>
-      <div className=" absolute shape-3"></div>
+  
       <Image
         src={shape}
         className=" absolute top-0 left-0 shape-image z-[-50] "

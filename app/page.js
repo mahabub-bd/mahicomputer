@@ -25,7 +25,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className=" w-full overflow-hidden ">
+    <div className=" w-full overflow-hidden scroll-smooth ">
       <Marquee />
 
       <Hero />
@@ -35,9 +35,9 @@ const HomePage = () => {
       <Courses />
       <Instractor />
       <Review />
-      <Gallery/>
-      <Partners/>
-      <Contact/>
+      <Gallery />
+      <Partners />
+      <Contact />
       <Map />
     </div>
   );

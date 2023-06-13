@@ -7,6 +7,7 @@ import React from "react";
 import { useState } from "react";
 
 import styles from "../styles/style";
+import { navLinks } from "../constants";
 
 const TogglerMenu = () => {
   const [toggle, setToggle] = useState(false);
@@ -26,61 +27,13 @@ const TogglerMenu = () => {
         } p-6 bg-black-gradient absolute top-20 right-0 mx-6 my-2 min-w-[200px] rounded-xl sidebar z-50 `}
       >
         <ul className=" list-none flex  flex-col  flex-1">
-          <Link className={`${styles.mobileMenu} `} href={`/`} scroll={false}>
-            হোম
-          </Link>
-
-          <Link
-            className={`${styles.mobileMenu} relative `}
-            href={`#about`}
-            scroll={false}
-          >
-            আমাদের সম্পর্কে
-          </Link>
-
-          <Link
-            className={`${styles.mobileMenu}`}
-            href={`/#categories`}
-            scroll={false}
-          >
-            সেবা সমূহ
-          </Link>
-
-          <Link
-            className={`${styles.mobileMenu}`}
-            href={`/#courses`}
-            scroll={false}
-          >
-            কোর্স সমূহ
-          </Link>
-
-          <Link className={`${styles.mobileMenu} `} href={`/#reviw`}>
-            স্টুডেন্ট ফিডব্যাক
-          </Link>
-
-          <Link
-            className={`${styles.mobileMenu}`}
-            href={`/#blog`}
-            scroll={false}
-          >
-            ব্লগ
-          </Link>
-
-          <Link
-            className={`${styles.mobileMenu}`}
-            href={`/#gallary`}
-            scroll={false}
-          >
-            ছবি গ্যালারী
-          </Link>
-
-          <Link
-            className={`${styles.mobileMenu}`}
-            href={`/#contact`}
-            scroll={false}
-          >
-            যোগাযোগ
-          </Link>
+          {navLinks.map((item) => (
+            <li key={item.id} className={`${styles.mobileMenu} `}>
+              <Link scroll={false} href={`/${item.id}`}>
+                {item.title}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

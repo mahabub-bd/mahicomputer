@@ -1,40 +1,40 @@
 export const navLinks = [
   {
     id: "/",
-    title: "হোম",
+    title: "Home",
   },
 
   {
     id: "#about",
-    title: "আমাদের সম্পর্কে",
+    title: "About",
   },
 
   {
     id: "#categories",
-    title: "সেবা সমূহ",
+    title: "Services",
   },
 
   {
     id: "#courses",
-    title: "কোর্স সমূহ",
+    title: "Courses",
   },
 
   {
-    id: "#reviw",
-    title: "ফিডব্যাক",
+    id: "#review",
+    title: "Feedback",
   },
 
   {
     id: "#blog",
-    title: "ব্লগ",
+    title: "Blog",
   },
   {
     id: "#gallery",
-    title: "গ্যালারী",
+    title: "Gallery",
   },
 
   {
     id: "#contact",
-    title: "যোগাযোগ",
+    title: "Contact",
   },
 ];

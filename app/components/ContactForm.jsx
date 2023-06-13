@@ -12,7 +12,6 @@ const ContactForm = () => {
     formState: { errors },
   } = useForm();
 
-  // Function that displays a success toast on bottom right of the page when form submission is successful
   const toastifySuccess = () => {
     toast("Form sent!", {
       position: "bottom-right",
@@ -26,9 +25,7 @@ const ContactForm = () => {
     });
   };
 
-  // Function called on submit that uses emailjs to send email of valid contact form
   const onSubmit = async (data) => {
-    // Destrcture data object
     const { name, email, message } = data;
     try {
       const templateParams = {
@@ -55,8 +52,6 @@ const ContactForm = () => {
     <div className="w-full mx-auto sm:px-4 ">
       <div className="contactForm">
         <form id="contact-form" onSubmit={handleSubmit(onSubmit)} noValidate>
-          {/* Row 1 of form */}
-
           <div className="flex-1">
             <input
               type="text"
@@ -97,8 +92,6 @@ const ContactForm = () => {
               </span>
             )}
           </div>
-
-          {/* Row 3 of form */}
 
           <div className="mt-3">
             <textarea

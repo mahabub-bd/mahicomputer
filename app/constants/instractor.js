@@ -10,18 +10,18 @@ export const instractor = [
   },
   {
     img: instractor2,
-    name: "Steven M. Horn",
-    des: "Graphics Designer",
+    name: "Mokramin Hossain",
+    des: "ICT Teacher",
   },
   {
     img: instractor3,
-    name: "David M. Dickson",
-    des: "Web Developer",
+    name: "Md Alamin Hossain",
+    des: "Office Application ",
   },
   {
     img: instractor4,
     name: "Jon Doe",
-    des: "Software Engineer",
+    des: "Graphics Designer",
   },
   {
     img: instractor5,

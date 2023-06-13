@@ -15,6 +15,8 @@ import {
   Marquee,
   Review,
   Stats,
+  Gallery,
+  Partners,
 } from "./components";
 
 const HomePage = () => {
@@ -33,6 +35,8 @@ const HomePage = () => {
       <Courses />
       <Instractor />
       <Review />
+      <Gallery/>
+      <Partners/>
       <Contact/>
       <Map />
     </div>

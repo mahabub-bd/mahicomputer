@@ -27,6 +27,7 @@ import ReviewCard from "./ReviewCard";
 import CourseCard from "./CourseCard";
 
 import Map from "./Map";
+
 import Gallery from "./Gallery";
 
 import Blog from "./Blog";
@@ -34,6 +35,10 @@ import Blog from "./Blog";
 import Contact from "./Contact";
 
 import ContactForm from "./ContactForm";
+
+import Partners from "./Partners";
+
+import Photo from "./Photo";
 
 export {
   Navbar,
@@ -55,4 +60,6 @@ export {
   CourseCard,
   ContactForm,
   Map,
+  Partners,
+  Photo,
 };

@@ -10,17 +10,19 @@ const Contact = () => {
           আমাদের সাথে যোগাযোগ করুন
         </h2>
 
-        <div className="flex xs:flex-col xl:flex-row lg:flex-row  py-4   justify-around items-center">
-          <div className="flex-1">
-            <p className="font-bangla text-[18px]">
-              আপনার প্রতিক্রিয়া, অভিযোগ এবং পরামর্শের জন্য আমাদের সাথে যোগাযোগ
-              করুন.
+        <div className="flex vxs:flex-col xl:flex-row lg:flex-row  py-4 px-4 gap-12   justify-around items-center">
+          <div className="w-full">
+            <p className="font-bangla text-[20px] leading-normal">
+              আপনার প্রতিক্রিয়া, অভিযোগ এবং পরামর্শের জন্য আমাদের সাথে যোগাযোগ করুন
             </p>
-            <p className=" text-[18px] font-bangla">
-              মোবাইল নাম্বার -  01711102944 
+            <p className=" text-[18px] font-bangla leading-normal">
+              মোবাইল নাম্বার - 01711102944
+            </p>
+            <p className=" text-[18px] font-bangla leading-normal">
+              ক-৬৫, শাহাজাদপুর, গুলশান ,ঢাকা
             </p>
           </div>
-          <div className="flex-1">
+          <div className="w-full">
             <ContactForm />
           </div>
         </div>

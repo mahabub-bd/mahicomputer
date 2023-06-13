@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "Mahi Computer",
-  description: "App For Qcash Member Banks",
+  description: "Tranning Center",
 };
 
 const RootLayout = ({ children }) => {

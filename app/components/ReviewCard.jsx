@@ -25,7 +25,7 @@ const ReviewCard = ({ name, title, content, img }) => {
           className="w-[58px] h-[58px] object-contain rounded-full"
         />
         <div className="flex flex-col ml-4">
-          <h4 className=" font-bold text-[20px] leading-[32px]">{name}</h4>
+          <h6 className=" font-bold text-[20px] leading-[32px]">{name}</h6>
           <p className="font-normal text-[16px] leading-[24px] text-blue-900 opacity-80 mt-2 ">
             {title}
           </p>

@@ -83,7 +83,7 @@ const Navbar = () => {
               <li
                 key={nav.id}
                 className={` font-bold nav-font cursor-pointer text-[16px]  ${
-                  active === nav.title ? "text-qpayone " : "text-black"
+                  active === nav.title ? "text-blue-700 " : "text-black"
                 } [&:not(:last-child)]:mr-10`}
                 onClick={() => setActive(nav.title)}
               >

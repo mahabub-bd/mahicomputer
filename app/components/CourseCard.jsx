@@ -40,9 +40,9 @@ const CourseCard = ({
           </Link>
         </div>
         <div>
-          <h5 className="text-center font-semibold text-[20px] text-blue-700">
+          <p className="text-center font-semibold text-[20px] text-blue-700">
             {title}
-          </h5>
+          </p>
         </div>
         <div className="flex justify-between items-center my-2  border-b-[1px] px-2 py-2 ">
           <div className="flex items-center justify-between">

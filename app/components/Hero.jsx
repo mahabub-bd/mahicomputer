@@ -35,16 +35,18 @@ const Hero = () => {
           <Button styles="my-10 font-bangla ">শুরু করুন</Button>
         </div>
       </div>
-  
+
       <Image
         src={shape}
         className=" absolute top-0 left-0 shape-image z-[-50] "
         alt="shape"
+        priority
       />
       <Image
         src={shape2}
         className=" absolute top-0 right-0 shape-image z-[-50]"
         alt="shape"
+        priority
       />
     </div>
   );

@@ -1,0 +1,141 @@
+"use client";
+import { useForm } from "react-hook-form";
+import emailjs from "emailjs-com";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
+const ContactForm = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  // Function that displays a success toast on bottom right of the page when form submission is successful
+  const toastifySuccess = () => {
+    toast("Form sent!", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      className: "submit-feedback success",
+      toastId: "notifyToast",
+    });
+  };
+
+  // Function called on submit that uses emailjs to send email of valid contact form
+  const onSubmit = async (data) => {
+    // Destrcture data object
+    const { name, email, message } = data;
+    try {
+      const templateParams = {
+        name,
+        email,
+        message,
+      };
+
+      await emailjs.send(
+        process.env.REACT_APP_SERVICE_ID,
+        process.env.REACT_APP_TEMPLATE_ID,
+        templateParams,
+        process.env.REACT_APP_USER_ID
+      );
+
+      reset();
+      toastifySuccess();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return (
+    <div className="ContactForm">
+      <div className="container mx-auto sm:px-4">
+
+          <div className="w-full ">
+            <div className="contactForm">
+              <form
+                id="contact-form"
+                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+              >
+                {/* Row 1 of form */}
+
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    name="name"
+                    {...register("name", {
+                      required: {
+                        value: true,
+                        message: "Please enter your name",
+                      },
+                      maxLength: {
+                        value: 30,
+                        message: "Please use 30 characters or less",
+                      },
+                    })}
+                    className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white focus:text-blue-600 text-blue-500 border border-gray-200 rounded formInput"
+                    placeholder="Name"
+                  ></input>
+                  {errors.name && (
+                    <span className="errorMessage">{errors.name.message}</span>
+                  )}
+                </div>
+
+                <div className="mt-3">
+                  <input
+                    type="email"
+                    name="email"
+                    {...register("email", {
+                      required: true,
+                      pattern:
+                        /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                    })}
+                    className=" focus:text-blue-600 w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded "
+                    placeholder="Email address"
+                  ></input>
+                  {errors.email && (
+                    <span className="errorMessage">
+                      Please enter a valid email address
+                    </span>
+                  )}
+                </div>
+
+                {/* Row 3 of form */}
+
+                <div className="mt-3">
+                  <textarea
+                    rows={3}
+                    name="message"
+                    {...register("message", {
+                      required: true,
+                    })}
+                    className=" w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded "
+                    placeholder="Message"
+                  ></textarea>
+                  {errors.message && (
+                    <span className="errorMessage">Please enter a message</span>
+                  )}
+                </div>
+
+                <button
+                  className="submit-btn mt-3 ml-auto  bg-blue-600 text-white px-4 rounded-sm py-1"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+            <ToastContainer />
+          </div>
+        
+      </div>
+    </div>
+  );
+};
+
+export default ContactForm;

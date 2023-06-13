@@ -33,6 +33,8 @@ import Blog from "./Blog";
 
 import Contact from "./Contact";
 
+import ContactForm from "./ContactForm";
+
 export {
   Navbar,
   Gallery,
@@ -51,5 +53,6 @@ export {
   Review,
   ReviewCard,
   CourseCard,
+  ContactForm,
   Map,
 };

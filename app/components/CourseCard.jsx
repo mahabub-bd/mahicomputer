@@ -19,7 +19,7 @@ const CourseCard = ({
   return (
     /* courseImage, alt,link, tag,title,lesson,duration,instractorname,photo,price*/
     <div>
-      <div className="shadow-2xl rounded-md  hover:translate-x-1">
+      <div className="shadow-2xl rounded-md  hover:scale-95">
         <div>
           <Image src={courseImg} className="w-[360px]  " alt={courseImgalt} />
         </div>

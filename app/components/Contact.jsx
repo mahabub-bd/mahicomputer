@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../styles/style";
+import { ContactForm } from ".";
 
 const Contact = () => {
   return (
@@ -9,15 +10,18 @@ const Contact = () => {
           আমাদের সাথে যোগাযোগ করুন
         </h2>
 
-        <div className="flex flex-wrap my-10 gap-8 justify-around">
+        <div className="flex xs:flex-col xl:flex-row lg:flex-row  py-4   justify-around items-center">
           <div className="flex-1">
-            <h6 className="font-bangla text-[18px]">
+            <p className="font-bangla text-[18px]">
               আপনার প্রতিক্রিয়া, অভিযোগ এবং পরামর্শের জন্য আমাদের সাথে যোগাযোগ
               করুন.
-            </h6>
+            </p>
+            <p className=" text-[18px] font-bangla">
+              মোবাইল নাম্বার -  01711102944 
+            </p>
           </div>
           <div className="flex-1">
-            Contact
+            <ContactForm />
           </div>
         </div>
       </div>

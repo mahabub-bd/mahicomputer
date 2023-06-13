@@ -25,7 +25,7 @@ const Instractor = () => {
               <Image
                 className="w-[240px] h-[270px] rounded-sm"
                 src={item.img}
-                alt={item.alt}
+                alt={item.des}
               />
               <h3 className="text-mahitwo  mt-5 font-bold text-[20px]">
                 {item.name}

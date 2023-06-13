@@ -6,6 +6,7 @@ export const instractor = [
     img: instractor1,
     name: "Moniruzzaman",
     des: "CEO & Founder",
+    
   },
   {
     img: instractor2,

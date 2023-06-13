@@ -10,7 +10,7 @@ import useScroll from "../hooks/useScroll";
 import styles from "../styles/style";
 
 const Navbar = () => {
-  const [active, setActive] = useState("Home");
+  const [active, setActive] = useState("হোম");
 
   const { scrolled } = useScroll();
 
@@ -82,7 +82,7 @@ const Navbar = () => {
             {navLinks.map((nav) => (
               <li
                 key={nav.id}
-                className={` font-normal nav-font cursor-pointer text-[16px]  hover:border-qpayone ${
+                className={` font-bold nav-font cursor-pointer text-[16px]  ${
                   active === nav.title ? "text-qpayone " : "text-black"
                 } [&:not(:last-child)]:mr-10`}
                 onClick={() => setActive(nav.title)}

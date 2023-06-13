@@ -21,7 +21,7 @@ export const navLinks = [
 
   {
     id: "#reviw",
-    title: "স্টুডেন্ট ফিডব্যাক",
+    title: "ফিডব্যাক",
   },
 
   {
@@ -30,7 +30,7 @@ export const navLinks = [
   },
   {
     id: "#gallery",
-    title: "ছবি গ্যালারী",
+    title: "গ্যালারী",
   },
 
   {

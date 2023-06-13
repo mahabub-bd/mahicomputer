@@ -300,3 +300,24 @@
  font-family: "Hind Siliguri", sans-serif !important;
 }
 
+
+.errorMessage {
+  color: #f45532;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+#notifyToast {
+  color: #fff;
+  border-radius: 6px;
+  width: 200px;
+  margin-left: 75px;
+  background-color: green
+}
+
+
+
+
+

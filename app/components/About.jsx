@@ -1,10 +1,10 @@
-import { paymentapp } from "@/public";
+import { paymentapp, shape3 } from "@/public";
 import Image from "next/image";
 import styles from "../styles/style";
 
 const About = () => {
   return (
-    <div className="qx-section-29 " id="about">
+    <div className="qx-section-29 relative " id="about">
       <section className={`${styles.boxWidth} ${styles.paddingY} mx-auto`}>
         <h2 className={`text-center ${styles.heading2} font-bangla `}>
           মাহি কম্পিউটার এবং ট্রেনিং সেন্টার সম্পর্কে
@@ -46,6 +46,12 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      <Image
+        src={shape3}
+        alt="about"
+        className="absolute z-[-50] bottom-0 left-0"
+      />
     </div>
   );
 };

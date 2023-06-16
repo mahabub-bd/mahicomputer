@@ -16,10 +16,14 @@ const Contact = () => {
               আপনার প্রতিক্রিয়া, অভিযোগ এবং পরামর্শের জন্য আমাদের সাথে যোগাযোগ
               করুন
             </p>
-            <p className=" text-[18px] font-bangla leading-normal">
+            
+            <p className=" text-[24px] font-bangla mt-3 text-blue-500 ">
+              মাহি কম্পিউটার এবং ট্রেনিং সেন্টার
+            </p>
+            <p className=" text-[18px] font-bangla mt-3 ">
               মোবাইল নাম্বার - 01711102944
             </p>
-            <p className=" text-[18px] font-bangla leading-normal">
+            <p className=" text-[18px] font-bangla mt-3 ">
               ক-৬৫, শাহাজাদপুর, গুলশান ,ঢাকা
             </p>
           </div>
@@ -29,7 +33,7 @@ const Contact = () => {
         </div>
       </div>
       <div className=" absolute shape-1"></div>
-      <div className=" absolute shape-2"></div>
+     
       <div className=" absolute shape-3"></div>
     </div>
   );

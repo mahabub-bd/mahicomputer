@@ -8,12 +8,6 @@ import logodark from "./images/logo_white.webp";
 
 import paymentapp from "./images/payment.webp";
 
-
-
-
-
-
-
 import facebook from "./images/facebook.svg";
 
 import twitter from "./images/twitter.svg";
@@ -21,11 +15,6 @@ import twitter from "./images/twitter.svg";
 import linkedin from "./images/linkedin.svg";
 
 import instagram from "./images/instagram.svg";
-
-
-
-
-
 
 import uparrow from "./images/up-arrow.svg";
 
@@ -86,6 +75,8 @@ import shape from "./images/shape.svg";
 
 import shape2 from "./images/shape-2.svg";
 
+import shape3 from "./images/banner-3.png";
+
 import location from "./images/location.svg";
 
 import gallery_1 from "./images/gallary-1 (1).jpg";
@@ -115,7 +106,6 @@ import bteb from "./images/bteb.png";
 import gov from "./images/gov.png";
 
 export {
-
   nrb,
   mtb,
   bteb,
@@ -126,20 +116,15 @@ export {
   location,
   uparrow,
   downarrow,
-  
- 
- 
-
   menu,
   close,
   logo,
   logodark,
-
   facebook,
   twitter,
   instagram,
   linkedin,
-
+  shape3,
   ui,
   webdesign,
   graphics,

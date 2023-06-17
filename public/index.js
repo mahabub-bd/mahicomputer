@@ -71,9 +71,18 @@ import signal from "./images/signal.png";
 import autocad from "./images/autocad.jpg";
 
 import computer from "./images/hardware.jpg";
+
+import bannerhero from "./images/banner-2.jpg"
+
+import ceo from "./images/ceo.jpg"
+
 import shape from "./images/shape.svg";
 
 import shape2 from "./images/shape-2.svg";
+
+import shepedark from "./images/shape-modified.png"
+
+import shepedark2 from "./images/shape-2-modified.png";
 
 import shape3 from "./images/banner-3.png";
 
@@ -109,6 +118,7 @@ export {
   nrb,
   mtb,
   bteb,
+  ceo,
   gov,
   paymentapp,
   email,
@@ -152,6 +162,10 @@ export {
   computer,
   shape,
   shape2,
+  bannerhero,
+  shepedark,
+  shepedark2,
+
   gallery_1,
   gallery_2,
   gallery_3,

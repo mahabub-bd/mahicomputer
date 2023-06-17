@@ -3,7 +3,7 @@ import styles from "../styles/style";
 import Image from "next/image";
 
 import { categories } from "../constants";
-import { shape, shape2 } from "@/public";
+import { shepe2, shepe, shape2, shape } from "@/public";
 
 const Categories = () => {
   return (

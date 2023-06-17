@@ -4,7 +4,7 @@ const Button = ({ styles,children }) => {
   return (
     <a href="#courses">
       <button
-        type="button"
+        type="button" href="../courses"
         className={`py-3 px-6 glow-on-hover bg-slate-800 text-white sm:text-center font-poppins font-medium text-[22px] text-primary outline-none rounded-[10px] hover:opacity-95 ${styles}`}
       >
         {children}

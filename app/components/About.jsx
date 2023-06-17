@@ -4,10 +4,10 @@ import styles from "../styles/style";
 
 const About = () => {
   return (
-    <div className="qx-section-29 relative " id="about">
+    <div className=" relative " id="about">
       <section className={`${styles.boxWidth} ${styles.paddingY} mx-auto`}>
         <h2 className={`text-center ${styles.heading2} font-bangla `}>
-          মাহি কম্পিউটার এবং ট্রেনিং সেন্টার সম্পর্কে
+          About Mahi Computer Institute
         </h2>
 
         <div className={`flex md:flex-row flex-col ${styles.paddingY}`}>

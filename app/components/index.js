@@ -39,11 +39,13 @@ import ContactForm from "./ContactForm";
 import Partners from "./Partners";
 
 import Photo from "./Photo";
+import CEO from "./CEO"
 
 export {
   Navbar,
   Gallery,
   Blog,
+  CEO,
   Contact,
   Footer,
   About,

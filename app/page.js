@@ -17,6 +17,7 @@ import {
   Stats,
   Gallery,
   Partners,
+  CEO,
 } from "./components";
 
 const HomePage = () => {
@@ -30,11 +31,12 @@ const HomePage = () => {
 
       <Hero />
       <About />
-      <Stats />
+      <CEO />
       <Categories />
       <Courses />
       <Instractor />
       <Review />
+      <Stats />
       <Gallery />
       <Partners />
       <Contact />

@@ -6,8 +6,9 @@ import Link from "next/link";
 import React from "react";
 import { useState } from "react";
 
+import { MobileSubMenu } from "../components";
 import styles from "../styles/style";
-import { navLinks } from "../constants";
+import {  courses, featuresList } from "../constants";
 
 const TogglerMenu = () => {
   const [toggle, setToggle] = useState(false);
@@ -27,13 +28,62 @@ const TogglerMenu = () => {
         } p-6 bg-black-gradient absolute top-20 right-0 mx-6 my-2 min-w-[200px] rounded-xl sidebar z-50 `}
       >
         <ul className=" list-none flex  flex-col  flex-1">
-          {navLinks.map((item) => (
-            <li key={item.id} className={`${styles.mobileMenu} `}>
-              <Link scroll={false} href={`/${item.id}`}>
-                {item.title}
-              </Link>
-            </li>
-          ))}
+          <Link className={`${styles.mobileMenu} `} href={`/`} scroll={false}>
+            Home
+          </Link>
+
+          <Link
+            className={`${styles.mobileMenu} `}
+            href={`/#about`}
+            scroll={false}
+          >
+            About
+          </Link>
+
+          <Link
+            className={`${styles.mobileMenu}`}
+            href={`/#categories`}
+            scroll={false}
+          >
+            Services
+          </Link>
+
+          <Link
+            className={`${styles.mobileMenu} relative `}
+            href={`/#courses`}
+            scroll={false}
+          >
+            Courses
+            <MobileSubMenu menuLink={courses} menu="courses" />
+          </Link>
+
+          <Link className={`${styles.mobileMenu}`} href={`#review`}>
+            Feedback
+          </Link>
+
+          <Link
+            className={`${styles.mobileMenu}`}
+            href={`/#blog`}
+            scroll={false}
+          >
+            Blog
+          </Link>
+
+          <Link
+            className={`${styles.mobileMenu}`}
+            href={`/#gallery`}
+            scroll={false}
+          >
+            Gallery
+          </Link>
+
+          <Link
+            className={`${styles.mobileMenu}`}
+            href={`/#contact`}
+            scroll={false}
+          >
+            Contact
+          </Link>
         </ul>
       </div>
     </div>

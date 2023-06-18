@@ -11,7 +11,7 @@ const Hero = () => {
   return (
     <div className="hero bg-[#263b5e] relative ">
       <div className={`${styles.boxWidth} z-100`}>
-        <div className={`${styles.flexCenter} flex-col justify-between`}>
+        <div className={`${styles.flexCenter} flex-col justify-between items-center `}>
           <h2
             className={`${styles.heading2}  font-bangla animate-charcter xl:text-[60px] lg:text-[50px] xl:py-10 xs:py-4 mt-3 text-center`}
           >
@@ -33,7 +33,7 @@ const Hero = () => {
             কোর্স মেয়াদ: 03 মাস, 06 মাস, 12 মাস
           </p>
 
-          <Button styles="my-5 font-bangla" >কোর্স সমূহ</Button>
+          <Button styles="lg:my-5 xl:my-10 font-bangla" >কোর্স সমূহ</Button>
         </div>
         <div className="shape-2"></div>
         

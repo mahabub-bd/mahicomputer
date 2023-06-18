@@ -4,8 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { logo, phone, email } from "../../public";
-import { TogglerMenu } from "../components";
-import { navLinks, socialMedia } from "../constants";
+import { MegaMenu, TogglerMenu } from "../components";
+import {
+  featuresList,
+  navLinks,
+  helpMenuLink,
+  socialMedia,
+  courses,
+} from "../constants";
 import useScroll from "../hooks/useScroll";
 import styles from "../styles/style";
 
@@ -15,7 +21,7 @@ const Navbar = () => {
   const { scrolled } = useScroll();
 
   return (
-    <div className="scroll-mt-[200px] font-bangla">
+    <>
       <div
         className={` border-b-[1px] border-b-[#feeacd] sm:flex hidden bg-[#07294D] `}
       >
@@ -82,12 +88,20 @@ const Navbar = () => {
             {navLinks.map((nav) => (
               <li
                 key={nav.id}
-                className={` font-bold nav-font cursor-pointer text-[16px]  ${
+                className={` ${
+                  nav.class
+                } font-bold nav-font cursor-pointer text-[16px]  relative ${
                   active === nav.title ? "text-blue-700 " : "text-black"
                 } [&:not(:last-child)]:mr-10`}
                 onClick={() => setActive(nav.title)}
               >
                 <Link href={`/${nav.id}`}>{nav.title}</Link>
+
+                <MegaMenu
+                  menuLink={courses}
+                  menu="courses"
+                  menuName="features-mega-menu"
+                />
               </li>
             ))}
           </ul>
@@ -95,7 +109,7 @@ const Navbar = () => {
           <TogglerMenu />
         </nav>
       </div>
-    </div>
+    </>
   );
 };
 

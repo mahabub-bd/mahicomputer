@@ -41,8 +41,13 @@ import Partners from "./Partners";
 import Photo from "./Photo";
 import CEO from "./CEO"
 
+import MobileSubMenu from "./MobileSubMenu";
+
+import MegaMenu from "./MegaMenu";
+
 export {
   Navbar,
+  MegaMenu,MobileSubMenu,
   Gallery,
   Blog,
   CEO,

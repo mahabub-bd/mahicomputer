@@ -13,7 +13,7 @@ const Hero = () => {
       <div className={`${styles.boxWidth} z-100`}>
         <div className={`${styles.flexCenter} flex-col justify-between`}>
           <h2
-            className={`${styles.heading2}  font-bangla animate-charcter xl:text-[60px] xl:py-10 xs:py-4 mt-3 text-center`}
+            className={`${styles.heading2}  font-bangla animate-charcter xl:text-[60px] lg:text-[50px] xl:py-10 xs:py-4 mt-3 text-center`}
           >
             মাহি কম্পিউটার ট্রেনিং ইনস্টিটিউট
           </h2>
@@ -28,12 +28,12 @@ const Hero = () => {
           </p>
 
           <p
-            className={`  text-xl mt-5 leading-8 text-rose-50 font-bangla  text-[32px] text-center  w-full`}
+            className={`mt-5 leading-8 text-rose-50 font-bangla  text-[30px] text-center  w-full`}
           >
             কোর্স মেয়াদ: 03 মাস, 06 মাস, 12 মাস
           </p>
 
-          <Button styles="my-10 font-bangla" >কোর্স সমূহ</Button>
+          <Button styles="my-5 font-bangla" >কোর্স সমূহ</Button>
         </div>
         <div className="shape-2"></div>
         

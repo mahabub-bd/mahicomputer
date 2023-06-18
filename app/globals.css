@@ -13,7 +13,7 @@
 
 .hero {
   position: relative;
-  height: 65vh;
+  height: 70vh;
  
   background-size: cover;
   background-position: top;
@@ -162,7 +162,7 @@
   -webkit-text-fill-color: transparent;
   animation: textclip 2s linear infinite;
   display: inline-block;
-  font-size: 190px;
+
 }
 
 @keyframes textclip {

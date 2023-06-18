@@ -20,7 +20,7 @@ const Categories = () => {
           {categories.map((item) => (
             <div
               key={item.alt}
-              className="vxs:min-w-[170px] lg:min-w-[230px] cursor-pointer  shadow-xl m-2 rounded-lg hover:translate-y-1"
+              className="vxs:min-w-[170px] lg:min-w-[200px] cursor-pointer  shadow-xl m-2 rounded-lg hover:translate-y-1"
             >
               <div className="flex flex-col  items-center justify-around flex-wrap p-2 ">
                 <Image className="w-[80px]" src={item.img} alt={item.alt} />

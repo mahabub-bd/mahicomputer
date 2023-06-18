@@ -5,7 +5,7 @@ import React from "react";
 
 const ReviewCard = ({ name, title, content, img }) => {
   return (
-    <div className="flex  justify-around flex-col px-5 py-5 rounded-[20px] max-w-[380px] md:mr-10 sm:mr-5  mr-0 my-5 shadow-2xl ">
+    <div className="flex  justify-around flex-col px-5 py-5 rounded-[20px] max-w-[350px] md:mr-10 sm:mr-5  mr-0 my-5 shadow-2xl ">
       <div className="flex justify-between items-center">
         <Image src={rating} alt="quote" className=" w-[24px] object-contain" />
         <p>

@@ -1,4 +1,4 @@
-import { instractor } from "@/app/constants";
+import { courses, instractor } from "@/app/constants";
 import styles from "@/app/styles/style";
 import { instractor3, officeapplication } from "@/public";
 import Image from "next/image";
@@ -78,6 +78,15 @@ const office = () => {
                 <tbody>
                   <tr>
                     <td className="border px-3 border-slate-300">
+                      
+                      Course Fee
+                    </td>
+                    <td className="border px-3 border-slate-300">
+                    {courses[5].price}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border px-3 border-slate-300">
                       Course Duration
                     </td>
                     <td className="border px-3 border-slate-300">3 Month</td>
@@ -87,6 +96,20 @@ const office = () => {
                       Number Of Class
                     </td>
                     <td className="border px-3 border-slate-300">36</td>
+                  </tr>
+                  <tr>
+                    <td className="border px-3 border-slate-300">
+                      Pre-requisite
+                    </td>
+                    <td className="border px-3 border-slate-300">
+                      Basic English Knowledge
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border px-3 border-slate-300">Total Seat</td>
+                    <td className="border px-3 border-slate-300">
+                      10 students per batch.
+                    </td>
                   </tr>
                 </tbody>
               </table>

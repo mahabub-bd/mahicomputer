@@ -1,4 +1,4 @@
-import { instractor1, instractor2, instractor3, instractor4, instractor5 } from "@/public";
+import { instractor1, instractor2, instractor3, instractor4, instractor5, instractor6 } from "@/public";
 
 
 export const instractor = [
@@ -6,7 +6,6 @@ export const instractor = [
     img: instractor1,
     name: "Moniruzzaman",
     des: "CEO & Founder",
-    
   },
   {
     img: instractor2,
@@ -27,5 +26,10 @@ export const instractor = [
     img: instractor5,
     name: "Judy J. Shuler",
     des: "Auto Cad Instractor ",
+  },
+  {
+    img: instractor6,
+    name: "Mahabub Hossain",
+    des: "Web Developer",
   },
 ];

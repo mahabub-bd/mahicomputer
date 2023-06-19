@@ -24,7 +24,7 @@ const CourseCard = ({
       className="shadow-2xl rounded-md  hover:scale-95 cursor-pointer"
     >
       <div>
-        <Image src={courseImg} className="w-[320px] h-[180px]  " alt={courseImgalt} />
+        <Image src={courseImg} className="w-[368px] h-[207px]  " alt={courseImgalt} />
       </div>
       <div className="flex justify-between items-center p-2 mt-2 ">
         <p className="text-[14px]">

@@ -54,6 +54,8 @@ import instractor4 from "./images/instractor4.jpg";
 
 import instractor5 from "./images/instractor5.jpg";
 
+import instractor6 from "./images/instractor6.jpg";
+
 import rating from "./images/rating.png";
 
 import student1 from "./images/people02.png";
@@ -62,17 +64,27 @@ import student3 from "./images/people03.png";
 
 import courseweb from "./images/courseweb.webp";
 
-import responsive from "./images/responsive.jpg"
+import responsive from "./images/responsive.jpg";
 
-import advancedweb from "./images/webdevelopment.jpg"
+import advancedweb from "./images/webdevelopment.jpg";
 
-import graphicsdesign from "./images/graphicsdesign.jpg"
+import graphicsdesign from "./images/graphicsdesign.jpg";
 
-import video from "./images/videoediting.jpg"
+import video from "./images/videoediting.jpg";
 
-import spokenenglish from "./images/spokenenglish.jpg"
+import spokenenglish from "./images/spokenenglish.jpg";
 
-import videoediting from "./images/videoediting.jpg"
+import videoediting from "./images/videoediting.jpg";
+
+import officeapplication from "./images/officeapplication.png";
+
+import autocadprogram from "./images/autocadprogram.png";
+
+import computerhardware from "./images/computerhardware.png";
+
+import max from "./images/max.png";
+
+import sketch from "./images/sketchup.png";
 
 import lessonimg from "./images/chapter.png";
 
@@ -84,15 +96,15 @@ import autocad from "./images/autocad.jpg";
 
 import computer from "./images/hardware.jpg";
 
-import bannerhero from "./images/banner-2.jpg"
+import bannerhero from "./images/banner-2.jpg";
 
-import ceo from "./images/ceo.jpg"
+import ceo from "./images/ceo.jpg";
 
 import shape from "./images/shape.svg";
 
 import shape2 from "./images/shape-2.svg";
 
-import shepedark from "./images/shape-modified.png"
+import shepedark from "./images/shape-modified.png";
 
 import shepedark2 from "./images/shape-2-modified.png";
 
@@ -128,11 +140,16 @@ import gov from "./images/gov.png";
 
 export {
   responsive,
+  officeapplication,
   video,
   graphicsdesign,
   spokenenglish,
   advancedweb,
   videoediting,
+  sketch,
+  max,
+  autocadprogram,
+  computerhardware,
   nrb,
   mtb,
   bteb,
@@ -168,6 +185,7 @@ export {
   instractor3,
   instractor4,
   instractor5,
+  instractor6,
   rating,
   student1,
   student2,
@@ -183,7 +201,6 @@ export {
   bannerhero,
   shepedark,
   shepedark2,
-
   gallery_1,
   gallery_2,
   gallery_3,

@@ -11,7 +11,7 @@ const MegaMenu = ({ menuLink, menu, menuName }) => {
           {menuLink.map((item) => (
             <div key={item.title} className="flex pt-2 ">
               <Link
-                href={`/${menu}${item.link}`}
+                href={`/${menu}/${item.link}`}
                 className=" hover: text-black hover:text-blue-800"
               >
                 <h6 className="mt-2 text-[16px]"> {item.title}</h6>

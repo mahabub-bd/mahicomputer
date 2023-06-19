@@ -1,10 +1,10 @@
 /* courseImg, courseImgalt,link, tag,title,lesson,duration,instractorName,instractorphoto,price*/
 
-import { autocad, computer, courseweb, instractor1 } from "@/public";
+import { advancedweb, autocad, computer, courseweb, graphics, graphicsdesign, instractor1, responsive, spokenenglish, videoediting } from "@/public";
 
 export const courses = [
   {
-    courseImg: courseweb,
+    courseImg: responsive,
     courseImgalt: "web",
     link: "/webdesign",
     tag: "Web Development",
@@ -17,7 +17,7 @@ export const courses = [
     price: 12000,
   },
   {
-    courseImg: courseweb,
+    courseImg: advancedweb,
     courseImgalt: "web",
     link: "/webdevlopment",
     tag: "Web Development",
@@ -25,7 +25,7 @@ export const courses = [
     title: "Advanced Web Development",
     lesson: 15,
     duration: "6",
-    instractorName: "Engr Mahabub Hossain",
+    instractorName: "Mahabub Hossain",
     instractorphoto: instractor1,
     price: 25000,
   },
@@ -98,7 +98,7 @@ export const courses = [
     price: 6000,
   },
   {
-    courseImg: courseweb,
+    courseImg: graphicsdesign,
     courseImgalt: "web",
     link: "/office",
     tag: "Graphics Design",
@@ -111,7 +111,7 @@ export const courses = [
     price: 7000,
   },
   {
-    courseImg: courseweb,
+    courseImg: spokenenglish,
     courseImgalt: "web",
     link: "/office",
     tag: "Language",
@@ -137,7 +137,7 @@ export const courses = [
     price: 25000,
   },
   {
-    courseImg: courseweb,
+    courseImg: videoediting,
     courseImgalt: "web",
     link: "/office",
     tag: "Editing",

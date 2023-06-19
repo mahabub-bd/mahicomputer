@@ -62,6 +62,18 @@ import student3 from "./images/people03.png";
 
 import courseweb from "./images/courseweb.webp";
 
+import responsive from "./images/responsive.jpg"
+
+import advancedweb from "./images/webdevelopment.jpg"
+
+import graphicsdesign from "./images/graphicsdesign.jpg"
+
+import video from "./images/videoediting.jpg"
+
+import spokenenglish from "./images/spokenenglish.jpg"
+
+import videoediting from "./images/videoediting.jpg"
+
 import lessonimg from "./images/chapter.png";
 
 import day from "./images/clock.png";
@@ -115,6 +127,12 @@ import bteb from "./images/bteb.png";
 import gov from "./images/gov.png";
 
 export {
+  responsive,
+  video,
+  graphicsdesign,
+  spokenenglish,
+  advancedweb,
+  videoediting,
   nrb,
   mtb,
   bteb,

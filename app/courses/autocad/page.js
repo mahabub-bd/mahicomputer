@@ -1,14 +1,14 @@
 import styles from "@/app/styles/style";
 import React from "react";
 
-const webdesign = () => {
+const autocad = () => {
   return (
     <div>
       <h1 className={`${styles.heading3} text-blue-700`}>
-        Cousrse Name : Responsive Web Design
+        Cousrse Name : Auto Cad 2D/3D
       </h1>
     </div>
   );
 };
 
-export default webdesign;
+export default autocad;

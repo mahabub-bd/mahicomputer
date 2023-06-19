@@ -24,7 +24,7 @@ const CourseCard = ({
       className="shadow-2xl rounded-md  hover:scale-95 cursor-pointer"
     >
       <div>
-        <Image src={courseImg} className="w-[360px]  " alt={courseImgalt} />
+        <Image src={courseImg} className="w-[320px] h-[180px]  " alt={courseImgalt} />
       </div>
       <div className="flex justify-between items-center p-2 mt-2 ">
         <p className="text-[14px]">
@@ -36,7 +36,7 @@ const CourseCard = ({
           4.9/31
         </p>
         <p
-          className={`${tagbg} text-white  font-light rounded-md px-2 py-1  text-[14px]`}
+          className={`${tagbg} text-white  font-light rounded-md px-2 py-1  text-[12px]`}
         >
           {tag}
         </p>
@@ -70,7 +70,7 @@ const CourseCard = ({
           <p className="text-[14px] font-normal ml-3">{instractorName}</p>
         </div>
 
-        <h6 className="text-[24px] font-semibold text-qpayone">BDT {price}</h6>
+        <h6 className="text-[20px] font-semibold text-qpayone">BDT {price}</h6>
       </div>
     </Link>
   );

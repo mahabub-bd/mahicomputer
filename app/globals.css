@@ -5,10 +5,12 @@
 @tailwind utilities;
 
 * {
- 
-
   font-family: "Hind Siliguri", sans-serif;
   font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.btn{
+      background: linear-gradient(102.6deg,#23bfb8 -.49%,#85ea80 104.37%);
 }
 
 .features-mega-menu {
@@ -55,13 +57,17 @@
 .hero {
   position: relative;
   height: 70vh;
- 
+  
+
   background-size: cover;
   background-position: top;
-  -webkit-clip-path: polygon(0 0, 100% 0, 100% 55vh, 0 100%);
-  clip-path: polygon(0 0, 100% 0, 100% 55vh, 0 100%);
-}
 
+
+  
+}
+.hero::before{
+    background: rgba(38, 59, 94, 0.8);
+}
 .shape-image {
   -webkit-animation: animation1 2s linear infinite;
   -moz-animation: animation1 2s linear infinite;
@@ -84,7 +90,7 @@
   border-radius: 50%;
   background-color: rgba(255, 243, 237, 1);
   top: 65px;
- right: 25%;
+  right: 25%;
   -webkit-animation: animation1 2s linear infinite;
   -moz-animation: animation1 2s linear infinite;
   -o-animation: animation1 2s linear infinite;
@@ -107,7 +113,11 @@
 .shape-3 {
   width: 40px;
   height: 40px;
- background: radial-gradient(115.08% 115.75% at -29.83% -32.23%,#ffdedd 0,snow 100%);
+  background: radial-gradient(
+    115.08% 115.75% at -29.83% -32.23%,
+    #ffdedd 0,
+    snow 100%
+  );
   bottom: 15%;
   left: 3%;
   border-radius: 50%;
@@ -122,7 +132,7 @@
     -moz-transform: scale(1);
     -ms-transform: scale(1);
     -o-transform: scale(1);
-    transform: scale(1.);
+    transform: scale(1);
   }
   50% {
     -webkit-transform: scale(1.1);
@@ -166,31 +176,49 @@
 
 .bg-stat-4 {
   /* background-color: rgba(236, 248, 236, 1); */
-  background: radial-gradient(115.08% 115.75% at -29.83% -32.23%,#ffdedd 0,snow 100%);
+  background: radial-gradient(
+    115.08% 115.75% at -29.83% -32.23%,
+    #ffdedd 0,
+    snow 100%
+  );
 }
 
 .bg-stat-3 {
   /* background-color: rgba(238, 246, 250, 1); */
-  background: radial-gradient(118.66% 116.2% at -27.81% -29.39%,#fff7d3 0,#fffdf7 100%);
+  background: radial-gradient(
+    118.66% 116.2% at -27.81% -29.39%,
+    #fff7d3 0,
+    #fffdf7 100%
+  );
 }
 
 .bg-stat-2 {
   /* background-color: rgba(255, 243, 237, 1); */
-  background: radial-gradient(115.44% 115.84% at -27.81% -29.39%,#defffd 0,#cbf0ee .01%,#f5fffe 100%);
+  background: radial-gradient(
+    115.44% 115.84% at -27.81% -29.39%,
+    #defffd 0,
+    #cbf0ee 0.01%,
+    #f5fffe 100%
+  );
 }
 
 .bg-stat-1 {
   /* background-color: rgba(254, 236, 244, 1); */
-      background: radial-gradient(127.81% 126.83% at -27.81% -29.39%,#e1dfff 0,#e0ddff .01%,#fafaff 100%);
+  background: radial-gradient(
+    127.81% 126.83% at -27.81% -29.39%,
+    #e1dfff 0,
+    #e0ddff 0.01%,
+    #fafaff 100%
+  );
 }
 
 .animate-charcter {
   text-transform: uppercase;
   background-image: linear-gradient(
     -225deg,
-    rgba(40,180,133,0.8) 0%,
+    rgba(40, 180, 133, 0.8) 0%,
     #d8bbf6 29%,
-   #d90647 37%, 
+    #d90647 37%,
     #b593ec 100%
   );
   background-size: auto auto;
@@ -203,7 +231,6 @@
   -webkit-text-fill-color: transparent;
   animation: textclip 2s linear infinite;
   display: inline-block;
-
 }
 
 @keyframes textclip {
@@ -289,8 +316,6 @@
   }
 }
 
-
-
 .sidebar {
   -webkit-animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
@@ -318,8 +343,6 @@
   }
 }
 
-
-
 /* Sticky Nav */
 
 .sticky {
@@ -334,10 +357,9 @@
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 
-.nav-font{
- font-family: "Hind Siliguri", sans-serif !important;
+.nav-font {
+  font-family: "Hind Siliguri", sans-serif !important;
 }
-
 
 .errorMessage {
   color: #f45532;
@@ -352,10 +374,5 @@
   border-radius: 6px;
   width: 200px;
   margin-left: 75px;
-  background-color: green
+  background-color: green;
 }
-
-
-
-
-

@@ -18,7 +18,7 @@ const styles = {
   marginX: "sm:mx-16 mx-6",
   marginY: "sm:my-16 my-6",
   mobileMenu:
-    "font-plusjakarta font-normal text-white hover:text-dimWhite cursor-pointer text-[16px] [&:not(:last-child)]:mb-3 font-semibold   ",
+    "font-plusjakarta font-normal text-white hover:text-dimWhite cursor-pointer text-[16px] [&:not(:last-child)]:mb-2 font-semibold   ",
 };
 
 export const layout = {

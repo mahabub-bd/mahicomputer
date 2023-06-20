@@ -25,7 +25,7 @@ const TogglerMenu = () => {
       <div
         className={`${
           toggle ? "flex" : "hidden"
-        } p-6 bg-black-gradient absolute top-20 right-0 mx-6 my-2 min-w-[200px] rounded-xl sidebar z-50 `}
+        } p-6 bg-black-gradient absolute top-20 right-0 mx-6 my-2 min-w-[300px] rounded-xl sidebar z-50 `}
       >
         <ul className=" list-none flex  flex-col  flex-1">
           <Link className={`${styles.mobileMenu} `} href={`/`} scroll={false}>

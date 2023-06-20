@@ -1,7 +1,7 @@
 import React from "react";
-import styles, { layout } from "../styles/style";
+import styles from "../styles/style";
 
-import img from "../../public/images/herobg.jpg"
+import img from "../../public/images/herobg.webp"
 
 import { Button } from "../components";
 
@@ -41,12 +41,10 @@ const Hero = () => {
             কোর্স মেয়াদ: 03 মাস, 06 মাস, 12 মাস
           </p>
 
-          <Button styles="mt-20 font-bangla ">
-            কোর্স সমূহ
-          </Button>
+          <Button styles="mt-20 font-bangla ">কোর্স সমূহ</Button>
         </div>
-        
       </div>
+  
     </div>
   );
 };

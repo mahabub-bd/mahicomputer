@@ -15,7 +15,7 @@ const Instractor = () => {
         {instractor.map((item) => (
           <div
             key={item.des}
-            className="vxs:w-[10px]  lg:w-[175px]  m-2 rounded-lg flex flex-col justify-center items-center   hover:cursor-pointer hover:translate-y-1"
+            className="vxs:w-[170px]  lg:w-[180px]  m-2 rounded-lg flex flex-col flex-wrap justify-center items-center   hover:cursor-pointer hover:translate-y-1"
           >
             <div
               href={item.des}
@@ -26,7 +26,7 @@ const Instractor = () => {
                 src={item.img}
                 alt={item.des}
               />
-              <h3 className="text-mahitwo text-center font-bangla  mt-5 font-bold xl:text-[18px] md:marker:">
+              <h3 className="text-mahitwo text-center font-bangla  mt-5 font-bold xl:text-[17px] ">
                 {item.name}
               </h3>
               <h4 className="text-mahithree text-center mt-2 font-bangla xl:text-[16px]">

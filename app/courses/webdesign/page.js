@@ -9,16 +9,15 @@ import React from "react";
 const webdesign = () => {
   return (
     <div>
-    
       <div className={`${styles.boxWidth} $${styles.paddingY}`}>
         <h1 className={`${styles.heading3} text-blue-700 text-3xl my-6`}>
           Course Name : Responsive Web Design
         </h1>
-        <div className="flex my-4 md:flex-row flex-col justify-around items-center">
+        <div className="flex my-4 md:flex-row flex-col justify-between items-center">
           <div className=" p-3">
             <Image
               src={responsive}
-              className="w-[600px] shadow-lg"
+              className="w-[600px] "
               alt="office"
             />
           </div>
@@ -42,11 +41,11 @@ const webdesign = () => {
           </div>
         </div>
         <div className="flex  mx-auto w-full my-4  items-center md:flex-row flex-col  justify-around ">
-          <div>
-            <h2 className="text-[24px] text-blue-700 py-3">
+          <div className="bg-[#faf9fd] rounded-3xl p-3 flex-1 ">
+            <h2 className="text-[20px] text-blue-700 py-3 m-2">
               Inside This Course
             </h2>
-            <ul class="list-disc list-outside ">
+            <ul class="list-disc list-inside ">
               <li className="p-2">HTML5</li>
               <li className="p-2">CSS3</li>
               <li className="p-2">Bootstrap</li>
@@ -55,12 +54,12 @@ const webdesign = () => {
               <li className="p-2">Javascript</li>
             </ul>
           </div>
-          <div>
+          <div className="flex-1  p-4 m-3">
             <div className=" flex flex-col justify-center items-center">
-              <h2 className="text-[24px] py-3 text-blue-700 text-center">
+              <h2 className="text-[20px] py-3 text-blue-700 text-center">
                 Instractor Details
               </h2>
-              <div className="flex justify-between items-center w-full">
+              <div className="flex justify-around items-center ">
                 <Image
                   src={instractor1}
                   className="w-[70px] rounded-full h-[70px] shadow-lg"

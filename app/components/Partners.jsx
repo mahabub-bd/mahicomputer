@@ -19,7 +19,7 @@ const Partners = () => (
       {partners.map((item) => (
         <div
           key={item.alt}
-          className="xs:w-[210px] xl:w-[150px]   rounded-lg xl:gap-0 md:gap-6 flex-wrap  hover:cursor-pointer"
+          className="xs:w-[120px] xl:w-[160px] m-2  rounded-lg xl:gap-0 md:gap-12 flex-wrap  hover:cursor-pointer"
         >
           <Image
             className=" rounded-sm text-center mx-auto "

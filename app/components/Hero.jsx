@@ -44,7 +44,7 @@ const Hero = () => {
           <Button styles="mt-20 font-bangla ">কোর্স সমূহ</Button>
         </div>
       </div>
-  
+      <div className=" absolute shape-1"></div>
     </div>
   );
 };

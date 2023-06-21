@@ -6,7 +6,7 @@ import { instractor } from "../constants";
 
 const Instractor = () => {
   return (
-    <div className={`${styles.boxWidth} my-5 lg:${styles.paddingX} xl:px-0`}>
+    <div className={`${styles.boxWidth} my-5  xl:px-0`}>
       <h2 className={`${styles.heading2} text-center my-4 font-bangla`}>
         কোর্স ইন্সট্রাক্টর
       </h2>
@@ -15,14 +15,14 @@ const Instractor = () => {
         {instractor.map((item) => (
           <div
             key={item.des}
-            className="vxs:w-[170px]  lg:w-[170px]  m-2 rounded-lg flex flex-col flex-wrap justify-center items-center   hover:cursor-pointer hover:translate-y-1"
+            className="vxs:w-[170px]  lg:w-[170px]  xl:m-2 vxs:m-1 rounded-lg flex flex-col flex-wrap justify-center items-center   hover:cursor-pointer hover:translate-y-1"
           >
             <div
               href={item.des}
               className="flex flex-col  justify-around flex-wrap p-3 "
             >
               <Image
-                className="vxs:w-[160px] vxs:h-[170px]  lg:w-[140px]  shadow-2xl rounded-md"
+                className="vxs:w-[160px] vxs:h-[170px] xl:w-[170px] lg:w-[160px]  shadow-2xl rounded-md"
                 src={item.img}
                 alt={item.des}
               />

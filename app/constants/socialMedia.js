@@ -6,7 +6,7 @@ export const socialMedia = [
   {
     id: "social-media-2",
     icon: facebook,
-    link: "https://www.facebook.com/Qpaysolutions",
+    link: "https://www.facebook.com/mahicomputertraining",
   },
   {
     id: "social-media-3",

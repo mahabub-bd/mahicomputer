@@ -3,13 +3,16 @@ import styles from "../styles/style";
 import Image from "next/image";
 
 import { categories } from "../constants";
-import { shepe2, shepe, shape2, shape } from "@/public";
+import {  shape2, shape } from "@/public";
 
 const Categories = () => {
   return (
     <div className="relative" id="categories">
       <div className={`${styles.boxWidth} my-5`}>
-        <h2 className={`${styles.heading2} text-center my-4 font-bangla`}>
+        <h2
+          className={`${styles.heading2} text-center my-4 font-bangla`}
+          data-aos="fade-up"
+        >
           আমাদের সার্ভিস সমূহ
         </h2>
 

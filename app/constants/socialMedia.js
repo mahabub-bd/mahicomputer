@@ -1,4 +1,4 @@
-import { facebook,twitter,linkedin,instagram } from "@/public";
+import { facebook,twitter,linkedin,instagram, youtube } from "@/public";
 
 
 
@@ -20,7 +20,7 @@ export const socialMedia = [
   },
   {
     id: "social-media-1",
-    icon: instagram,
+    icon: youtube,
     link: "https://www.instagram.com/Qpaysolutions",
   },
 ];

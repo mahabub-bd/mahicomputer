@@ -1,7 +1,9 @@
 import {
+  bkash,
     bteb,
+  dmpi,
   gov,
-  instractor1, mtb, nrb,
+   mtb, nrb,
   
 } from "@/public";
 
@@ -27,5 +29,16 @@ export const partners = [
     img: gov,
 
     alt: "gov",
+  },
+  {
+    img: bkash,
+
+    alt: "bkash",
+  },
+
+  {
+    img: dmpi,
+
+    alt: "dmpi",
   },
 ];

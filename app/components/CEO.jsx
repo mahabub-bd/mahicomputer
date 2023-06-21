@@ -4,12 +4,12 @@ import styles from "../styles/style";
 
 const CEO = () => {
   return (
-    <div
-      className=" relative bg   "
-      id="about"
-    >
+    <div className=" relative bg   " id="about">
       <section className={`${styles.boxWidth} ${styles.paddingY} mx-auto`}>
-        <h2 className={`text-center ${styles.heading2} font-bangla `}>
+        <h2
+          className={`text-center ${styles.heading2} font-bangla `}
+          data-aos="fade-up"
+        >
           Message from CEO & Founder
         </h2>
 
@@ -21,7 +21,7 @@ const CEO = () => {
             <Image
               src={ceo}
               alt="paymentapp "
-              className="w-[60%] rounded-md shadow-md"
+              className="w-[80%] rounded-md shadow-md"
               priority
             />
           </div>

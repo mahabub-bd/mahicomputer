@@ -6,7 +6,7 @@ import { review } from "../constants";
 
 const Review = () => {
   return (
-    <div id="review" className={`${styles.boxWidth} my-5 `}>
+    <div id="review" className={`${styles.boxWidth} my-5  `} data-aos="fade-up">
       <h2 className={`${styles.heading2} font-bangla text-center my-4`}>
         কোর্স সম্পর্কে লার্নারদের অভিমত
       </h2>

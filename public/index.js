@@ -14,6 +14,8 @@ import twitter from "./images/twitter.svg";
 
 import linkedin from "./images/linkedin.svg";
 
+import youtube from "./images/youtube.svg"
+
 import instagram from "./images/instagram.svg";
 
 import uparrow from "./images/up-arrow.svg";
@@ -138,6 +140,10 @@ import bteb from "./images/bteb.png";
 
 import gov from "./images/gov.png";
 
+import bkash from "./images/bkash.svg"
+
+import dmpi from "./images/dmpi_logo.jpg"
+
 export {
   responsive,
   officeapplication,
@@ -155,6 +161,8 @@ export {
   bteb,
   ceo,
   gov,
+  bkash,
+  dmpi,
   paymentapp,
   email,
   phone,
@@ -169,6 +177,7 @@ export {
   twitter,
   instagram,
   linkedin,
+  youtube,
   shape3,
   ui,
   webdesign,

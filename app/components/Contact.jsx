@@ -6,7 +6,10 @@ const Contact = () => {
   return (
     <div id="contact" className=" relative">
       <div className={`${styles.boxWidth}`}>
-        <h2 className={`${styles.heading2} text-center my-4 font-bangla`}>
+        <h2
+          className={`${styles.heading2} text-center my-4 font-bangla`}
+          data-aos="fade-up"
+        >
           আমাদের সাথে যোগাযোগ করুন
         </h2>
 
@@ -16,7 +19,7 @@ const Contact = () => {
               আপনার প্রতিক্রিয়া, অভিযোগ এবং পরামর্শের জন্য আমাদের সাথে যোগাযোগ
               করুন
             </p>
-            
+
             <p className=" text-[24px] font-bangla mt-3 text-blue-500 ">
               মাহি কম্পিউটার এবং ট্রেনিং সেন্টার
             </p>
@@ -33,7 +36,7 @@ const Contact = () => {
         </div>
       </div>
       <div className=" absolute shape-1"></div>
-     
+
       <div className=" absolute shape-3"></div>
     </div>
   );

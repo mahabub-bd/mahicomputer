@@ -11,10 +11,13 @@ const Courses = () => {
   return (
     <div id="courses">
       <div className={`${styles.boxWidth}`}>
-        <h2 className={`${styles.heading2} text-center my-4 font-bangla`}>
+        <h2
+          className={`${styles.heading2} text-center my-4 font-bangla`}
+          data-aos="fade-up"
+        >
           আমাদের কোর্সসমূহ
         </h2>
-      
+
         <div className="flex flex-wrap my-10 gap-8 justify-around">
           {courses.map((card, index) => (
             <CourseCard key={card.title} index={index} {...card} />

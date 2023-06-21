@@ -6,7 +6,10 @@ const About = () => {
   return (
     <div className="relative" id="about">
       <section className={`${styles.boxWidth} ${styles.paddingY} mx-auto`}>
-        <h2 className={`text-center ${styles.heading2} font-bangla `}>
+        <h2
+          className={`text-center ${styles.heading2} font-bangla `}
+          data-aos="fade-up"
+        >
           About Mahi Computer Institute
         </h2>
 

@@ -5,7 +5,10 @@ import styles from "../styles/style";
 export default function Gallery() {
   return (
     <div className={styles.boxWidth} id="gallery">
-      <h2 className={`${styles.heading2} text-center my-4 font-bangla`}>
+      <h2
+        className={`${styles.heading2} text-center my-4 font-bangla`}
+        data-aos="fade-up"
+      >
         ইমেজ গ্যালারী
       </h2>
       <div className="flex flex-wrap gap-2 justify-around">

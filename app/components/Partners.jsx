@@ -3,8 +3,13 @@ import { partners } from "../constants";
 import styles from "../styles/style";
 
 const Partners = () => (
+
+  
   <div className={`${styles.boxWidth} my-5`}>
-    <h6 className={`${styles.heading2} text-center font-bangla `}>
+    <h6
+      className={`${styles.heading2} text-center font-bangla  `}
+      data-aos="fade-up"
+    >
       আমাদের পার্টনার
     </h6>
     <div
@@ -14,9 +19,13 @@ const Partners = () => (
       {partners.map((item) => (
         <div
           key={item.alt}
-          className="xs:w-[210px] xl:w-[300px]  m-2 rounded-lg xl:gap-0 md:gap-6 flex-wrap  hover:cursor-pointer"
+          className="xs:w-[210px] xl:w-[150px]   rounded-lg xl:gap-0 md:gap-6 flex-wrap  hover:cursor-pointer"
         >
-          <Image className=" rounded-sm text-center mx-auto " src={item.img} alt={item.alt} />
+          <Image
+            className=" rounded-sm text-center mx-auto "
+            src={item.img}
+            alt={item.alt}
+          />
         </div>
       ))}
     </div>

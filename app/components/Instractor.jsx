@@ -26,7 +26,7 @@ const Instractor = () => {
                 src={item.img}
                 alt={item.des}
               />
-              <h3 className="text-mahitwo text-center font-bangla  mt-5 font-bold xl:text-[17px] ">
+              <h3 className="text-mahitwo text-center font-bangla  mt-5 font-bold xl:text-[16px] ">
                 {item.name}
               </h3>
               <h4 className="text-mahithree text-center mt-2 font-bangla xl:text-[16px]">

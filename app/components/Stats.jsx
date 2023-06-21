@@ -1,6 +1,5 @@
 
-import { useCountUp } from "react-countup";
-import CountUp from "react-countup";
+
 import { stats } from "../constants";
 import styles from "../styles/style";
 

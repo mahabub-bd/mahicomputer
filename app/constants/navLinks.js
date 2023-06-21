@@ -39,7 +39,7 @@ export const navLinks = [
   },
 
   {
-    id: "contact",
+    id: "#contact",
     title: "Contact",
     class: "nothoverable",
   },

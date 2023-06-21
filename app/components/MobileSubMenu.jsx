@@ -24,8 +24,8 @@ const MobileSubMenu = ({ menuLink, menu }) => {
             <div key={item.id}>
               <ul className=" list-none flex  flex-col  flex-1">
                 <Link
-                  href={`/${menu}${item.link}`}
-                  className={`${styles.mobileMenu} ml-6 [&:not(:last-child)]:mb-2  `}
+                  href={`/${menu}/${item.link}`}
+                  className={`${styles.mobileMenu} ml-6 [&:not(:last-child)]:mb-3  `}
                   scroll={false}
                 >
                   {item.title}

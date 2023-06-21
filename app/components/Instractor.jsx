@@ -15,14 +15,14 @@ const Instractor = () => {
         {instractor.map((item) => (
           <div
             key={item.des}
-            className="vxs:w-[170px]  lg:w-[180px]  m-2 rounded-lg flex flex-col flex-wrap justify-center items-center   hover:cursor-pointer hover:translate-y-1"
+            className="vxs:w-[170px]  lg:w-[170px]  m-2 rounded-lg flex flex-col flex-wrap justify-center items-center   hover:cursor-pointer hover:translate-y-1"
           >
             <div
               href={item.des}
               className="flex flex-col  justify-around flex-wrap p-3 "
             >
               <Image
-                className="vxs:w-[160px] vxs:h-[170px]  lg:w-[150px]  shadow-2xl rounded-md"
+                className="vxs:w-[160px] vxs:h-[170px]  lg:w-[140px]  shadow-2xl rounded-md"
                 src={item.img}
                 alt={item.des}
               />

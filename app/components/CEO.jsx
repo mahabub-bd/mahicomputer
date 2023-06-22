@@ -21,7 +21,7 @@ const CEO = () => {
             <Image
               src={ceo}
               alt="paymentapp "
-              className="w-[80%] rounded-md shadow-md"
+              className="w-[100%] rounded-md shadow-md"
               priority
             />
           </div>
@@ -30,7 +30,7 @@ const CEO = () => {
             data-aos="fade-left"
           >
             <p
-              className={`${styles.paragraph} mt-5 text-justify  font-bangla `}
+              className={`${styles.paragraph}  text-justify  font-bangla `}
             >
               অত্যন্ত অল্প বেতনে আমরা বিশ্বমানের অটোক্যাড ২ডি, থ্রি-ডি স্টেডিও
               ম্যাকাস্ এর মাধ্যমে ড্রইনিং শিক্ষা দিচ্ছি- যাহা বড়ই আর্কষনীয় ।

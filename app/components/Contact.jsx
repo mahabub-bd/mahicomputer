@@ -35,9 +35,8 @@ const Contact = () => {
           </div>
         </div>
       </div>
-     
 
-      <div className=" absolute shape-3"></div>
+      <div className=" sm:flex hidden lg:block absolute shape-3"></div>
     </div>
   );
 };

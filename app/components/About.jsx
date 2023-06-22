@@ -43,7 +43,7 @@ const About = () => {
             <Image
               src={paymentapp}
               alt="paymentapp "
-              className="w-[80%] rounded-md shadow-md"
+              className="w-[100%] rounded-md shadow-md"
               priority
             />
           </div>

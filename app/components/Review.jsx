@@ -8,10 +8,10 @@ const Review = () => {
   return (
     <div id="review" className={`${styles.boxWidth} my-5  `} data-aos="fade-up">
       <h2 className={`${styles.heading2} font-bangla text-center my-4`}>
-        কোর্স সম্পর্কে লার্নারদের অভিমত
+        কোর্স সম্পর্কে শিক্ষার্থীদের অভিমত
       </h2>
       <p className="font-bangla text-center text-[18px]">
-        লার্নাররা সর্বদাই মাহি কম্পিউটার এর প্রতি তাদের ভালবাসা প্রকাশ করেছেন
+        শিক্ষার্থীগণ সর্বদাই মাহি কম্পিউটার এর প্রতি তাদের ভালবাসা প্রকাশ করেছেন
       </p>
       <div
         className="flex flex-wrap  justify-center w-full  "

@@ -10,9 +10,9 @@ import { Button } from "../components";
 const Hero = () => {
   return (
     <div
-      className="hero relative "
+      className={"hero relative "} 
       style={{
-        backgroundImage: `linear-gradient(to right bottom, rgba(38,59,94,0.9), rgba(38,59,94,0.9)),url(${img.src}); 
+        backgroundImage: `linear-gradient(to right bottom, rgba(38,59,94,0.9), rgba(38,59,94,0.9)),url(${img.src})
         `,
       }}
     >

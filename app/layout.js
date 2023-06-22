@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 
 export const metadata = {
-  title: "Mahi Computer",
+  title: "Mahi Computer Tranning Center",
   description: "Tranning Center",
 };
 

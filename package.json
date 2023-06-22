@@ -12,7 +12,7 @@
     "@vercel/analytics": "^1.0.1",
     "aos": "^3.0.0-beta.6",
     "autoprefixer": "10.4.14",
-    "emailjs-com": "^3.2.0",
+    "@emailjs/browser": "^3.11.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
     "next": "^13.4.6",

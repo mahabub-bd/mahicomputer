@@ -15,7 +15,7 @@ const About = () => {
 
         <div className={`flex md:flex-row flex-col ${styles.paddingY}`}>
           <div
-            className="flex flex-col flex-1 xl:px-0 sm:px-16 px-6"
+            className="flex flex-col flex-1  sm:px-16 px-6"
             data-aos="fade-right"
           >
             <p

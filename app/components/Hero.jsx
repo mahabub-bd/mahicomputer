@@ -21,12 +21,12 @@ const Hero = () => {
           className={`${styles.flexCenter} flex-col justify-between items-center `}
         >
           <h2
-            className={`${styles.heading2}  font-bangla animate-charcter xl:text-[60px] xs:text-[40px] xl:py-10 xs:py-4 mt-3 text-center`}
+            className={`${styles.heading2}  font-bangla animate-charcter lg:text-[60px] vxs:text-[30px] xl:py-10 xs:py-4 mt-3 text-center`}
           >
             মাহি কম্পিউটার ট্রেনিং ইনস্টিটিউট
           </h2>
           <p
-            className={` xl:text-[24px]  mt-5 xl:leading-16 vxs:text-[18px] vxs:leading-8 text-blue-50 font-bangla p-3 max-w-[900px] text-justify `}
+            className={` xl:text-[24px]  mt-5 xl:leading-16 vxs:text-[18px] vxs:leading-8 text-blue-50 font-bangla vxs:p-4 max-w-[900px] text-justify `}
           >
             আমরা সব কোর্সের অ্যাডভান্স লেভেল শেখাচ্ছি এবং আমরা সঠিকভাবে সব
             কোর্সের যত্ন নেই । ঢাকা জেলার গুলশান, ভাটারা , বাড্ডা থানায় এই
@@ -36,7 +36,7 @@ const Hero = () => {
           </p>
 
           <p
-            className={`mt-5 leading-8 text-rose-50 font-bangla  text-[30px] xs:text-[24px] text-center  w-full`}
+            className={`mt-5 leading-8 text-rose-50 font-bangla  text-[30px] vxs:text-[24px] text-center  w-full`}
           >
             কোর্স মেয়াদ: 03 মাস, 06 মাস, 12 মাস
           </p>

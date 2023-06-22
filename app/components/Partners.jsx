@@ -3,8 +3,6 @@ import { partners } from "../constants";
 import styles from "../styles/style";
 
 const Partners = () => (
-
-  
   <div className={`${styles.boxWidth} my-5`}>
     <h6
       className={`${styles.heading2} text-center font-bangla  `}
@@ -19,7 +17,7 @@ const Partners = () => (
       {partners.map((item) => (
         <div
           key={item.alt}
-          className="xs:w-[120px] xl:w-[160px] m-2  rounded-lg xl:gap-0 md:gap-12 flex-wrap  hover:cursor-pointer"
+          className="xs:w-[120px] xl:w-[160px] m-2 h-auto   rounded-lg xl:gap-0 md:gap-12 flex-wrap  hover:cursor-pointer"
         >
           <Image
             className=" rounded-sm text-center mx-auto "

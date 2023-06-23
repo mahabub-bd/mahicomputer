@@ -11,13 +11,17 @@ export default function Gallery() {
       >
         ইমেজ গ্যালারী
       </h2>
-      <div className="flex flex-wrap gap-2 justify-around">
+      <div className="flex flex-wrap gap-20 justify-around">
         {gallery.map((item) => (
-          <div key={item.alt}>
+          <div
+            key={item.alt}
+            className="lg:w-[550px] xl:w-[580px] lg:h-[310px] xl:h-[326.25] hover:scale-95 hover:border-blue-500"
+          >
             <Image
-              className="w-[610px] lg:w-[550px] xl:w-[580px] m-3 shadow-xl  rounded-sm h-[300px]"
+              className="m-2 shadow-xl  rounded-sm w-full h-full hover:z-0"
               src={item.img}
               alt={item.alt}
+              priority
             />
           </div>
         ))}

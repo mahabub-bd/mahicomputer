@@ -114,23 +114,23 @@ import shape3 from "./images/banner-3.png";
 
 import location from "./images/location.svg";
 
-import gallery_1 from "./images/gallary-1 (1).jpg";
+import gallery_1 from "./images/Galary-1.webp";
 
-import gallery_2 from "./images/gallary-1 (2).jpg";
+import gallery_2 from "./images/Galary-2.webp";
 
-import gallery_3 from "./images/gallary-1 (3).jpg";
+import gallery_3 from "./images/Galary-3.webp";
 
-import gallery_4 from "./images/gallary-1 (4).jpg";
+import gallery_4 from "./images/Galary-4.webp";
 
-import gallery_5 from "./images/gallary-1 (5).jpg";
+import gallery_5 from "./images/Galary-5.webp";
 
-import gallery_6 from "./images/gallary-1 (6).jpg";
-import gallery_7 from "./images/gallary-1 (7).jpg";
-import gallery_8 from "./images/gallary-1 (8).jpg";
-import gallery_9 from "./images/gallary-1 (9).jpg";
-import gallery_10 from "./images/gallary-1 (10).jpg";
-import gallery_11 from "./images/gallary-1 (11).jpg";
-import gallery_12 from "./images/gallary-1 (12).jpg";
+import gallery_6 from "./images/Galary-6.webp";
+import gallery_7 from "./images/Galary-7.webp";
+import gallery_8 from "./images/Galary-8.webp";
+import gallery_9 from "./images/Galary-9.jpg";
+import gallery_10 from "./images/Galary-10.jpg";
+import gallery_11 from "./images/Galary-13.jpg";
+import gallery_12 from "./images/Galary-12.jpg";
 
 import nrb from "./images/nrbbank.png";
 

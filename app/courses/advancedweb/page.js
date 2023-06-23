@@ -68,9 +68,9 @@ const webdesign = () => {
 
                 <div className="flex flex-col ml-5">
                   <p className="font-semibold text-[18px] font-plusjakarta text-blue-700 ">
-                    {instractor[5].name}
+                    {instractor[2].name}
                   </p>
-                  <p>{instractor[5].des}</p>
+                  <p>{instractor[2].des}</p>
                 </div>
               </div>
 

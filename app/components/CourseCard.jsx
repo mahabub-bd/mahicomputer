@@ -17,8 +17,7 @@ const CourseCard = ({
   price,
 }) => {
   return (
-    /* courseImage, alt,link, tag,title,lesson,duration,instractorname,photo,price*/
-
+    
     <Link
       href={`/courses/${link}`}
       className="shadow-2xl rounded-md  hover:scale-95 cursor-pointer"

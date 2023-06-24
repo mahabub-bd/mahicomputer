@@ -11,7 +11,7 @@ export default function Gallery() {
       >
         ইমেজ গ্যালারী
       </h2>
-      <div className="flex flex-wrap gap-20 justify-around">
+      <div className="flex flex-wrap gap-20 justify-around py-5">
         {gallery.map((item) => (
           <div
             key={item.alt}

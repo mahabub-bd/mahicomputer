@@ -14,7 +14,7 @@ import twitter from "./images/twitter.svg";
 
 import linkedin from "./images/linkedin.svg";
 
-import youtube from "./images/youtube.svg"
+import youtube from "./images/youtube.svg";
 
 import instagram from "./images/instagram.svg";
 
@@ -127,10 +127,18 @@ import gallery_5 from "./images/Galary-5.webp";
 import gallery_6 from "./images/Galary-6.webp";
 import gallery_7 from "./images/Galary-7.webp";
 import gallery_8 from "./images/Galary-8.webp";
-import gallery_9 from "./images/Galary-9.jpg";
-import gallery_10 from "./images/Galary-10.jpg";
-import gallery_11 from "./images/Galary-13.jpg";
-import gallery_12 from "./images/Galary-12.jpg";
+import gallery_9 from "./images/Galary-9.webp";
+import gallery_10 from "./images/Galary-10.webp";
+import gallery_11 from "./images/Galary-11.webp";
+import gallery_12 from "./images/Galary-12.webp";
+import gallery_13 from "./images/Galary-13.webp";
+import gallery_14 from "./images/Galary-14.webp";
+import gallery_15 from "./images/Galary-15.webp";
+import gallery_16 from "./images/Galary-16.webp";
+import gallery_17 from "./images/Galary-17.webp";
+import gallery_18 from "./images/Galary-18.webp";
+import gallery_19 from "./images/Galary-19.webp";
+import gallery_20 from "./images/Galary-20.webp";
 
 import nrb from "./images/nrbbank.png";
 
@@ -140,9 +148,9 @@ import bteb from "./images/bteb.png";
 
 import gov from "./images/gov.png";
 
-import bkash from "./images/bkash.svg"
+import bkash from "./images/bkash.svg";
 
-import dmpi from "./images/dmpi_logo.jpg"
+import dmpi from "./images/dmpi_logo.jpg";
 
 export {
   responsive,
@@ -222,4 +230,12 @@ export {
   gallery_10,
   gallery_11,
   gallery_12,
+  gallery_13,
+  gallery_14,
+  gallery_15,
+  gallery_16,
+  gallery_17,
+  gallery_18,
+  gallery_19,
+  gallery_20,
 };

@@ -58,6 +58,12 @@ import instractor5 from "./images/instractor5.jpg";
 
 import instractor6 from "./images/instractor6.jpg";
 
+import instractor7 from "./images/instractor7.jpg";
+
+import instractor8 from "./images/instractor8.jpg";
+import instractor9 from "./images/instractor9.jpg";
+import instractor10 from "./images/instractor10.jpg";
+
 import rating from "./images/rating.png";
 
 import student1 from "./images/people02.png";
@@ -83,6 +89,12 @@ import officeapplication from "./images/officeapplication.png";
 import autocadprogram from "./images/autocadprogram.png";
 
 import computerhardware from "./images/computerhardware.png";
+
+import digitalmarketing from "./images/digitalmarketing.jpg"
+
+import informationatechnology from "./images/informationtechnology.png"
+
+import freelancing from "./images/freelancing.png"
 
 import max from "./images/max.png";
 
@@ -164,6 +176,8 @@ export {
   max,
   autocadprogram,
   computerhardware,
+  digitalmarketing,
+  freelancing,informationatechnology,
   nrb,
   mtb,
   bteb,
@@ -203,6 +217,10 @@ export {
   instractor4,
   instractor5,
   instractor6,
+  instractor7,
+  instractor8,
+  instractor9,
+  instractor10,
   rating,
   student1,
   student2,

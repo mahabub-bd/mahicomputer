@@ -1,6 +1,6 @@
 /* courseImg, courseImgalt,link, tag,title,lesson,duration,instractorName,instractorphoto,price*/
 
-import { advancedweb, autocad, autocadprogram, computer, computerhardware, courseweb, graphics, graphicsdesign, instractor1, instractor3, instractor4, instractor6, max, office, officeapplication, responsive, sketch, spokenenglish, videoediting } from "@/public";
+import { advancedweb, autocad, autocadprogram, computer, computerhardware, courseweb, digitalmarketing, freelancing, graphics, graphicsdesign, informationatechnology, instractor1, instractor3, instractor4, instractor6, max, office, officeapplication, responsive, sketch, spokenenglish, videoediting } from "@/public";
 import { instractor } from "./instractor";
 
 export const courses = [
@@ -158,6 +158,45 @@ export const courses = [
     tag: "Hardware",
     tagbg: "bg-teal-600",
     title: "Computer Hardware",
+    lesson: 10,
+    duration: "3",
+    instractorName: "Moniruzzaman",
+    instractorphoto: instractor1,
+    price: 7000,
+  },
+  {
+    courseImg: informationatechnology,
+    courseImgalt: "ict",
+    link: "ict",
+    tag: "Hardware",
+    tagbg: "bg-teal-600",
+    title: "ICT HSC/SSC",
+    lesson: 10,
+    duration: "3",
+    instractorName: "Moniruzzaman",
+    instractorphoto: instractor1,
+    price: 7000,
+  },
+  {
+    courseImg: digitalmarketing,
+    courseImgalt: "digitalmarketing",
+    link: "digitalmarketing",
+    tag: "ICT",
+    tagbg: "bg-teal-600",
+    title: "Digital Marketing",
+    lesson: 10,
+    duration: "3",
+    instractorName: "Moniruzzaman",
+    instractorphoto: instractor1,
+    price: 10000,
+  },
+  {
+    courseImg: freelancing,
+    courseImgalt: "freelancing",
+    link: "freelancing",
+    tag: "Freelancing",
+    tagbg: "bg-teal-600",
+    title: "Freelancing Course",
     lesson: 10,
     duration: "3",
     instractorName: "Moniruzzaman",

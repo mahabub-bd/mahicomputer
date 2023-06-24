@@ -39,7 +39,7 @@ const CourseCard = ({
           4.9/31
         </p>
         <p
-          className={`${tagbg} text-white  font-light rounded-md px-2 py-1  text-[12px]`}
+          className={`${tagbg} text-white  font-light rounded-md px-2 py-1  text-[14px]`}
         >
           {tag}
         </p>

@@ -82,6 +82,8 @@ import video from "./images/videoediting.jpg";
 
 import spokenenglish from "./images/spokenenglish.jpg";
 
+import japanilanguage from "./images/japani.png"
+
 import videoediting from "./images/videoediting.jpg";
 
 import officeapplication from "./images/officeapplication.png";
@@ -112,7 +114,7 @@ import computer from "./images/hardware.jpg";
 
 import bannerhero from "./images/banner-2.jpg";
 
-import ceo from "./images/ceo.jpg";
+import ceo from "./images/Galary-14.webp";
 
 import shape from "./images/shape.svg";
 
@@ -170,6 +172,7 @@ export {
   video,
   graphicsdesign,
   spokenenglish,
+  japanilanguage,
   advancedweb,
   videoediting,
   sketch,

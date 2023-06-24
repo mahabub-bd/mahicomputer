@@ -15,7 +15,7 @@ const CEO = () => {
 
         <div className={`flex md:flex-row flex-col ${styles.paddingY}`}>
           <div
-            className={`flex flex-1 items-center xl:justify-start vxs:justify-center `}
+            className={`flex flex-1 items-center xl:justify-start vxs:justify-center sm:px-16 xl:px-0  `}
             data-aos="fade-right"
           >
             <Image

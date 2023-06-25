@@ -37,13 +37,13 @@ const About = () => {
             </p>
           </div>
           <div
-            className={`flex flex-1 items-center xl:justify-end vxs:justify-center sm:px-16 xl:px-0 `}
+            className={`flex flex-1 items-center xl:justify-end vxs:justify-center `}
             data-aos="fade-left"
           >
             <Image
               src={paymentapp}
               alt="paymentapp "
-              className="w-[100%] rounded-md shadow-md "
+              className="w-[95%] rounded-md shadow-md "
               priority
             />
           </div>

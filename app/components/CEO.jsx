@@ -13,20 +13,20 @@ const CEO = () => {
           Message from CEO & Founder
         </h2>
 
-        <div className={`flex md:flex-row flex-col ${styles.paddingY}`}>
+        <div className={`flex md:flex-row flex-col`}>
           <div
-            className={`flex flex-1 items-center xl:justify-start vxs:justify-center sm:px-16 xl:px-0  `}
+            className={`flex flex-1 items-center xl:justify-start vxs:justify-center `}
             data-aos="fade-right"
           >
             <Image
               src={ceo}
               alt="paymentapp "
-              className="w-[100%] rounded-md shadow-md"
+              className="w-[95%] rounded-md shadow-md"
               priority
             />
           </div>
           <div
-            className="flex flex-col flex-1  sm:px-16 px-6"
+            className="flex flex-col flex-1 sm:px-16 px-6 "
             data-aos="fade-right"
           >
             <p className={`${styles.paragraph} text-justify font-bangla`}>

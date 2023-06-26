@@ -21,19 +21,18 @@ const autocad = () => {
 
         <div className="  max-w-xl xl:px-0 md:px-3">
           <p className={`${styles.paragraph} text-justify`}>
-            Nowdays, computers are used in almost all fields due to the rise of
-            information technology. Computer skills have become mandatory for
-            almost everyone in education or the workplace, from superiors to
-            subordinates. Typing skills in Bengali and English as well as
-            knowledge of office software will boost your confidence
-            tremendously.
+            AutoCAD is a leading software program used in various industries for
+            computer-aided design (CAD) and drafting. It offers powerful tools
+            for creating precise 2D and 3D models, making it a fundamental skill
+            for architects, engineers, designers, and drafters. An AutoCAD 2D
+            and 3D course modular provides a structured and comprehensive
+            learning path to master the intricacies of this versatile software.
+            In this article, we will explore the key modules of an AutoCAD
+            course, highlighting the skills and knowledge gained at each stage.
           </p>
           <p className={`${styles.paragraph} text-justify`}>
-            So, enroll in Mahi Computer Institute “Computer Office Application
-            Course” today to enhance your skills and increase your efficiency.
-            Take advantage of the free time you have especially after the SSC
-            exam. “ Computer Office Application Course ” is a course of 3 months
-            duration that includes detailed modules
+            So, enroll in Mahi Computer Institute “AutoCAD Course” today to
+            enhance your skills and increase your efficiency. 
           </p>
         </div>
       </div>
@@ -43,12 +42,47 @@ const autocad = () => {
             Inside This Course
           </h2>
           <ul class="list-disc list-inside ">
-            <li className="p-2">Introduction to AutoCAD Software</li>
-            <li className="p-2">System of CAD</li>
-            <li className="p-2">Drawing Techniques</li>
-            <li className="p-2">3D Drawings</li>
-            <li className="p-2">2D Drawings</li>
-            <li className="p-2">Design and Layout of Object</li>
+            <li className="p-2">
+              Introduction to AutoCAD: The course begins with an introduction to
+              AutoCAD, familiarizing participants with the software interface,
+              navigation, and basic commands. They learn essential skills such
+              as drawing lines, circles, arcs, and rectangles, using precision
+              tools, and organizing drawings with layers. This module serves as
+              the foundation for subsequent modules and helps participants build
+              confidence in using AutoCAD.
+            </li>
+            <li className="p-2">
+              2D Drawing and Editing: The second module focuses on 2D drawing
+              and editing techniques. Participants learn to create complex
+              geometries using advanced commands like offset, trim, extend,
+              fillet, and chamfer. They explore methods for drawing precise
+              dimensions, adding text annotations, and creating reusable blocks.
+              This module enhances participants ability to create accurate and
+              detailed 2D drawings.
+            </li>
+            <li className="p-2">
+              2D Design and Documentation: In this module, participants dive
+              into more advanced 2D design and documentation. They learn to use
+              hatch patterns, gradients, and linetypes to enhance drawings. The
+              module covers techniques for creating sections, elevations, and
+              construction details. Participants also gain proficiency in
+              dimensioning, creating and managing layouts, and generating plots
+              and printouts. This module equips participants with the skills
+              needed to produce professional-quality 2D designs and
+              documentation.
+            </li>
+            <li className="p-2">
+              Introduction to 3D Modeling: The course then progresses to the 3D
+              modeling module, where participants explore the world of 3D
+              design. They learn to create solid and surface models using
+              commands such as extrude, revolve, sweep, and loft. Participants
+              understand the principles of creating complex 3D objects and
+              manipulating them in 3D space. This module expands their design
+              capabilities beyond 2D and introduces them to the realm of 3D
+              visualization.
+            </li>
+
+            
           </ul>
         </div>
         <div className="flex-1  p-4 m-3">

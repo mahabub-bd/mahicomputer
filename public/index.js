@@ -67,8 +67,11 @@ import instractor10 from "./images/instractor10.jpg";
 import rating from "./images/rating.png";
 
 import student1 from "./images/people02.png";
-import student2 from "./images/people02.png";
-import student3 from "./images/people03.png";
+import student2 from "./images/student2.jpg";
+import student3 from "./images/student3.jpg";
+import student4 from "./images/student4.jpg";
+import student5 from "./images/student1.jpg";
+import student6 from "./images/people03.png";
 
 import courseweb from "./images/courseweb.webp";
 
@@ -82,7 +85,7 @@ import video from "./images/videoediting.jpg";
 
 import spokenenglish from "./images/spokenenglish.jpg";
 
-import japanilanguage from "./images/japani.png"
+import japanilanguage from "./images/japani.png";
 
 import videoediting from "./images/videoediting.jpg";
 
@@ -92,11 +95,11 @@ import autocadprogram from "./images/autocadprogram.png";
 
 import computerhardware from "./images/computerhardware.png";
 
-import digitalmarketing from "./images/digitalmarketing.jpg"
+import digitalmarketing from "./images/digitalmarketing.jpg";
 
-import informationatechnology from "./images/informationtechnology.png"
+import informationatechnology from "./images/informationtechnology.png";
 
-import freelancing from "./images/freelancing.png"
+import freelancing from "./images/freelancing.png";
 
 import max from "./images/max.png";
 
@@ -180,7 +183,8 @@ export {
   autocadprogram,
   computerhardware,
   digitalmarketing,
-  freelancing,informationatechnology,
+  freelancing,
+  informationatechnology,
   nrb,
   mtb,
   bteb,
@@ -228,6 +232,9 @@ export {
   student1,
   student2,
   student3,
+  student4,
+  student5,
+  student6,
   courseweb,
   lessonimg,
   day,

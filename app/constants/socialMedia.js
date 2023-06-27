@@ -11,7 +11,7 @@ export const socialMedia = [
   {
     id: "social-media-3",
     icon: twitter,
-    link: "https://www.twitter.com/Qpaysolutions",
+    link: "https://goo.gl/maps/aYt5nDC4ya7fVRnSA",
   },
   {
     id: "social-media-4",

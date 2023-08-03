@@ -8,7 +8,7 @@ const Partners = () => (
       className={`${styles.heading2} text-center font-bangla  `}
       data-aos="fade-up"
     >
-      আমাদের পার্টনার
+      আমাদের সহযোগী পার্টনার
     </h6>
     <div
       className="flex flex-wrap my-10 justify-between items-center "

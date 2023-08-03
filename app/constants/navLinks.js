@@ -28,8 +28,8 @@ export const navLinks = [
     class: "nothoverable",
   },
   {
-    id: "#blog",
-    title: "Blog",
+    id: "notice",
+    title: "Notice",
     class: "nothoverable",
   },
   {

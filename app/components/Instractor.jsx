@@ -8,7 +8,7 @@ const Instractor = () => {
   return (
     <div className={`${styles.boxWidth} my-5  xl:px-0`}>
       <h2 className={`${styles.heading2} text-center my-4 font-bangla`}>
-        কোর্স ইন্সট্রাক্টর
+        Course Instractor
       </h2>
 
       <div className="flex flex-wrap my-10 justify-evenly" data-aos="fade-up">

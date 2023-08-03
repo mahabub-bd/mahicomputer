@@ -47,7 +47,7 @@ export const footerLinks = [
       {
         id: 3,
         name: "Notice",
-        link: "#",
+        link: "notice",
       },
       {
         id: 4,

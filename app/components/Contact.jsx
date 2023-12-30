@@ -39,7 +39,7 @@ const Contact = () => {
             </p>
             <p className=" text-[18px] font-bangla py-3 border-b-2  ">
               <span className="text-blue-500">
-                Corporate Page: <br />{" "}
+                Corporate Ofiice: <br />{" "}
               </span>{" "}
               Ka-65 Shahajadpur, Gulshan, Dhaka-1212
             </p>

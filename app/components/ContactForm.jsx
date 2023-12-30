@@ -71,7 +71,7 @@ const ContactForm = () => {
               required
               placeholder="Write Message Us"
               name="message"
-              rows={3}
+              rows={5}
               className="w-full py-1 px-2 mb-1 text-base leading-normal bg-white focus:outline-blue-400  focus:shadow-outline border-black-100 text-blue-500 border rounded "
             />
           </div>

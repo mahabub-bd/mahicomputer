@@ -9,7 +9,10 @@ import { email } from "@/public";
 
 const Contact = () => {
   return (
-    <div id="contact" className=" relative">
+    <div
+      id="contact"
+      className=" bg-gradient-to-l from-pink-50 via-blue-50 relative pb-3"
+    >
       <div className={`${styles.boxWidth}`}>
         <h2
           className={`${styles.heading2} text-center my-4 font-bangla`}
@@ -23,7 +26,6 @@ const Contact = () => {
             <p className=" text-[18px] font-bangla py-3  border-b-2 ">
               <span className="text-blue-500">
                 Email Us : <br />{" "}
-                
               </span>
 
               <a className="text-[16px]" href="mailto:info@mahicomputerbd.com">

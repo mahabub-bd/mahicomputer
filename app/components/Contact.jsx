@@ -20,7 +20,7 @@ const Contact = () => {
         >
           Have Any Query ?
         </h2>
-
+        <p className="text-center mt-4 font-bangla text-xl font-semibold text-slate-600"> ট্রেনিং সংক্রান্ত যে কোন বিষয়ে জানতে ইমেইল বা মেসেজ করুন  </p>
         <div className="flex vxs:flex-col xl:flex-row lg:flex-row  py-4 px-4 gap-12   justify-around items-center ">
           <div className="w-full " data-aos="fade-right">
             <p className=" text-[18px] font-bangla py-3  border-b-2 ">

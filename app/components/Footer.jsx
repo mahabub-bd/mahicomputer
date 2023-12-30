@@ -83,7 +83,7 @@ const Footer = () => {
           className={`${styles.boxWidth}  flex items-center justify-between vxs:flex-col-reverse lg:flex-row-reverse xl:flex-row-reverse   pt-6 border-t-[1px] border-t-[#3F3E45]`}
         >
           <p className="font-poppins font-light text-[14px] leading-[27px] text-white vxs:mt-4 xl:mt-0">
-            © 2023 Mahi Computer All Rights Reserved
+            © 2024 Mahi Computer All Rights Reserved
           </p>
 
           <div className="flex flex-row  md:mt-4 mt-6 md:justify-center  xl:justify-end ">

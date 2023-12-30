@@ -1,6 +1,11 @@
 import React from "react";
 import styles from "../styles/style";
 import { ContactForm } from ".";
+import Image from "next/image";
+import { email } from "@/public";
+
+
+
 
 const Contact = () => {
   return (
@@ -10,24 +15,33 @@ const Contact = () => {
           className={`${styles.heading2} text-center my-4 font-bangla`}
           data-aos="fade-up"
         >
-          আমাদের সাথে যোগাযোগ করুন
+          Have Any Query ?
         </h2>
 
         <div className="flex vxs:flex-col xl:flex-row lg:flex-row  py-4 px-4 gap-12   justify-around items-center ">
           <div className="w-full " data-aos="fade-right">
-            <p className="font-bangla text-[20px] leading-normal">
-              আপনার প্রতিক্রিয়া, অভিযোগ এবং পরামর্শের জন্য আমাদের সাথে যোগাযোগ
-              করুন
-            </p>
+            <p className=" text-[18px] font-bangla py-3  border-b-2 ">
+              <span className="text-blue-500">
+                Email Us : <br />{" "}
+                
+              </span>
 
-            <p className=" text-[24px] font-bangla mt-3 text-blue-500 ">
-              মাহি কম্পিউটার এবং ট্রেনিং সেন্টার
+              <a className="text-[16px]" href="mailto:info@mahicomputerbd.com">
+                info@mahicomputerbd.com
+              </a>
             </p>
-            <p className=" text-[18px] font-bangla mt-3 ">
-              মোবাইল নাম্বার - 01711102944
+            <p className=" text-[18px] font-bangla py-3 border-b-2 ">
+              {" "}
+              <span className="text-blue-500">
+                Make A Call: <br />{" "}
+              </span>{" "}
+              +8801711102944
             </p>
-            <p className=" text-[18px] font-bangla mt-3 ">
-              ক-৬৫, শাহাজাদপুর, গুলশান ,ঢাকা
+            <p className=" text-[18px] font-bangla py-3 border-b-2  ">
+              <span className="text-blue-500">
+                Corporate Page: <br />{" "}
+              </span>{" "}
+              Ka-65 Shahajadpur, Gulshan, Dhaka-1212
             </p>
           </div>
           <div className="w-full " data-aos="fade-left">

@@ -84,7 +84,7 @@ const AdminDashboard = async () => {
     prisma.partner.count(),
     prisma.contactMessage.count(),
     prisma.contactMessage.count({ where: { read: false } }),
-    prisma.enrollment.count({ where: { read: false } }),
+    prisma.enrollment.count({ where: { status: "PENDING" } }),
     prisma.course.findMany({ orderBy: { updatedAt: "desc" }, take: 10 }),
     prisma.contactMessage.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
     getGalleryItems(),
@@ -170,7 +170,7 @@ const AdminDashboard = async () => {
     { label: "Published courses", value: publishedCount, Icon: Eye, tone: "text-emerald-600" },
     { label: "Hidden courses", value: hiddenCount, Icon: EyeOff, tone: "text-slate-500" },
     { label: "Total messages", value: messageCount, Icon: Inbox, tone: "text-blue-600" },
-    { label: "New enrollments", value: newEnrollmentCount, Icon: GraduationCap, tone: "text-violet-600" },
+    { label: "Pending enrollments", value: newEnrollmentCount, Icon: GraduationCap, tone: "text-violet-600" },
   ];
 
   const quickActions = [
@@ -222,19 +222,19 @@ const AdminDashboard = async () => {
         )}
       </div>
 
-      {/* Primary stats */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Primary stats — 2 per row on mobile */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map(({ label, value, hint, href, Icon }) => (
           <Link
             key={label}
             href={href}
-            className="flex items-center gap-4 rounded-xl bg-white p-5 shadow-sm transition hover:shadow-md"
+            className="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm transition hover:shadow-md sm:p-5 sm:gap-4"
           >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600 sm:h-12 sm:w-12">
               <Icon size={22} />
             </span>
             <span className="min-w-0">
-              <span className="block text-2xl font-semibold text-blue-700">{value}</span>
+              <span className="block text-lg font-semibold text-blue-700 sm:text-2xl">{value}</span>
               <span className="block truncate text-sm text-slate-500">{label}</span>
               <span className="mt-0.5 block truncate text-xs text-slate-400">{hint}</span>
             </span>
@@ -242,8 +242,8 @@ const AdminDashboard = async () => {
         ))}
       </div>
 
-      {/* Secondary stats */}
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Secondary stats — 2 per row on mobile */}
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map(({ label, value, Icon, tone }) => (
           <div
             key={label}
@@ -266,7 +266,9 @@ const AdminDashboard = async () => {
           <div>
             <SectionHeading title="Recent courses" href="/admin/courses" />
             <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
-              <table className="w-full text-left text-sm">
+              {/* min-w keeps the table scrollable on mobile instead of
+                  squeezing the columns together on small screens. */}
+              <table className="w-full min-w-[560px] text-left text-sm">
                 <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
                   <tr>
                     <th className="px-4 py-3">Course</th>

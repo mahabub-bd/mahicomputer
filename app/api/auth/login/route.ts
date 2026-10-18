@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma";
 import { createToken, setAuthCookie } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { loginSchema } from "@/lib/validators";
+import bcrypt from "bcryptjs";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);

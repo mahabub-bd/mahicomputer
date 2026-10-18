@@ -9,7 +9,8 @@ const EnrollmentsAdminPage = async () => {
     orderBy: { createdAt: "desc" },
   });
 
-  const unread = enrollments.filter((e) => !e.read).length;
+  const unread = enrollments.filter((e) => e.status === "PENDING").length;
+  const approved = enrollments.filter((e) => e.status === "APPROVED").length;
 
   return (
     <div>
@@ -17,7 +18,7 @@ const EnrollmentsAdminPage = async () => {
         title="Enrollments"
         description={
           enrollments.length > 0
-            ? `${enrollments.length} total · ${unread} new`
+            ? `${enrollments.length} total · ${unread} pending · ${approved} approved`
             : "Enroll Now form submissions"
         }
       />

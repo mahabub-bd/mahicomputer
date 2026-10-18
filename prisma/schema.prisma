@@ -138,15 +138,22 @@ model ContactMessage {
   createdAt DateTime @default(now())
 }
 
+enum EnrollmentStatus {
+  PENDING
+  APPROVED
+  DECLINED
+}
+
 model Enrollment {
-  id        String   @id @default(cuid())
+  id        String           @id @default(cuid())
   name      String
   phone     String
-  email     String   @default("")
-  course    String   @default("")
-  message   String   @default("")
-  read      Boolean  @default(false)
-  createdAt DateTime @default(now())
+  email     String           @default("")
+  course    String           @default("")
+  message   String           @default("")
+  status    EnrollmentStatus @default(PENDING)
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
 }
 
 model Notice {

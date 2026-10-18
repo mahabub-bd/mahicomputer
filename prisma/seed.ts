@@ -5,6 +5,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
 import { categories, extraCategories } from "../app/constants/categories";
 import { courses } from "../app/constants/courses";
+import { faqs } from "../app/constants/faq";
 import { footerLinks } from "../app/constants/footerLinks";
 import { gallery } from "../app/constants/gallery";
 import { instractor } from "../app/constants/instractor";
@@ -128,6 +129,15 @@ async function main() {
     })),
   });
 
+  await prisma.faq.deleteMany();
+  await prisma.faq.createMany({
+    data: faqs.map((f, i) => ({
+      question: f.question,
+      answer: f.answer,
+      order: i,
+    })),
+  });
+
   await prisma.socialLink.deleteMany();
   await prisma.socialLink.createMany({
     data: socialMedia.map((s, i) => ({
@@ -174,6 +184,7 @@ async function main() {
     gallery: gallery.length,
     social: socialMedia.length,
     navLinks: navLinks.length,
+    faqs: faqs.length,
     footerGroups: footerLinks.length,
     admin: email,
   });

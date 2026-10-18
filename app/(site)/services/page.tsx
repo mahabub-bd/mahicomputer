@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { getPublicCategories, toCategoryView } from "@/lib/data";
-=======
-import { getCategories, toCategoryView } from "@/lib/data";
->>>>>>> 8b57dd81f4b6274869ff3d96c8916c651ef76d20
+import { getCategories, getPublicCategories, toCategoryView } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
 import AosProvider from "@/app/_components/AosProvider";
 import { Categories } from "@/app/components";

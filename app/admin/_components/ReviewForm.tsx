@@ -3,13 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import type { Review } from "@/lib/types";
+import type { Course, Review } from "@/lib/types";
 import { apiPost, apiPut } from "./api";
 import ImageUpload from "./ImageUpload";
 import { inputCls, labelCls, submitCls } from "./inputs";
 
 interface ReviewFormProps {
   review?: Review;
+  /** Course titles offered in the Course dropdown. */
+  courses: Course[];
   /** When provided, the parent handles post-save behavior (e.g. closing a modal) instead of navigating. */
   onSuccess?: () => void;
 }
@@ -24,7 +26,7 @@ const empty = {
   order: 0,
 };
 
-const ReviewForm = ({ review, onSuccess }: ReviewFormProps) => {
+const ReviewForm = ({ review, courses, onSuccess }: ReviewFormProps) => {
   const router = useRouter();
   const editing = Boolean(review);
   const [form, setForm] = useState(
@@ -95,12 +97,23 @@ const ReviewForm = ({ review, onSuccess }: ReviewFormProps) => {
         </div>
         <div>
           <label className={labelCls}>Course</label>
-          <input
+          <select
             className={inputCls}
             value={form.course}
             onChange={(e) => set("course", e.target.value)}
-            placeholder="Auto Cad"
-          />
+          >
+            <option value="">No course</option>
+            {courses.map((c) => (
+              <option key={c.id} value={c.title}>
+                {c.title}
+              </option>
+            ))}
+            {/* Keep a saved value selectable when its course was renamed or deleted */}
+            {review?.course &&
+              !courses.some((c) => c.title === review.course) && (
+                <option value={review.course}>{review.course}</option>
+              )}
+          </select>
         </div>
         <div>
           <label className={labelCls}>Rating (0–5)</label>

@@ -167,7 +167,7 @@ const Sidebar = ({ user }: SidebarProps) => {
           <p className="text-xs text-slate-400">Admin Panel</p>
         </div>
       </div>
-      <nav className="flex-1 overflow-y-auto p-3">
+      <nav className="admin-sidebar-scroll flex-1 overflow-y-auto p-3">
         {sections.map(({ label, links }) => (
           <div key={label ?? "main"} className="mb-2">
             {label && (

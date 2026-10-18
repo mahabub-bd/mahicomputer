@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
+import { logo } from "@/public";
 import { apiPost } from "../_components/api";
 import { inputCls, labelCls, submitCls } from "../_components/inputs";
 
@@ -37,8 +39,15 @@ const LoginPage = () => {
         className="w-full max-w-sm space-y-4 rounded-xl bg-white p-8 shadow-md"
       >
         <div className="mb-6 text-center">
-          <h1 className="text-xl font-semibold text-slate-900">Mahi Computer</h1>
-          <p className="text-sm text-slate-500">Sign in to the admin panel</p>
+          <Image
+            src={logo}
+            alt="Mahi Computer"
+            width={160}
+            height={48}
+            className="mx-auto h-12 w-auto"
+            priority
+          />
+          <p className="mt-3 text-sm text-slate-500">Sign in to the admin panel</p>
         </div>
         <div>
           <label className={labelCls}>Email</label>

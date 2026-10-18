@@ -2,16 +2,17 @@
 
 import { useState } from "react";
 import { Pencil, Plus, Star } from "lucide-react";
-import type { Review } from "@/lib/types";
+import type { Course, Review } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import ReviewForm from "./ReviewForm";
 
 interface ReviewsListProps {
   reviews: Review[];
+  courses: Course[];
 }
 
-const ReviewsList = ({ reviews }: ReviewsListProps) => {
+const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
   const [modal, setModal] = useState<{ review?: Review } | null>(null);
 
   return (
@@ -111,6 +112,7 @@ const ReviewsList = ({ reviews }: ReviewsListProps) => {
           <ReviewForm
             key={modal.review?.id ?? "new"}
             review={modal.review}
+            courses={courses}
             onSuccess={() => setModal(null)}
           />
         )}

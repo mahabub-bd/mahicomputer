@@ -34,6 +34,8 @@ const empty = {
   instructorName: "",
   instructorPhotoUrl: "",
   price: 0,
+  rating: 4.9,
+  reviewCount: 31,
   descriptionText: "",
   modulesText: "",
   prerequisite: "",
@@ -59,6 +61,8 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
           instructorName: course.instructorName,
           instructorPhotoUrl: course.instructorPhotoUrl,
           price: course.price,
+          rating: course.rating,
+          reviewCount: course.reviewCount,
           descriptionText: toStringArray(course.description).join("\n\n"),
           modulesText: toStringArray(course.modules).join("\n"),
           prerequisite: course.prerequisite,
@@ -227,6 +231,28 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
             className={inputCls}
             value={form.price}
             onChange={(e) => set("price", Number(e.target.value))}
+          />
+        </div>
+        <div>
+          <label className={labelCls}>Rating (0–5, shown on card)</label>
+          <input
+            type="number"
+            min={0}
+            max={5}
+            step={0.1}
+            className={inputCls}
+            value={form.rating}
+            onChange={(e) => set("rating", Number(e.target.value))}
+          />
+        </div>
+        <div>
+          <label className={labelCls}>Review count</label>
+          <input
+            type="number"
+            min={0}
+            className={inputCls}
+            value={form.reviewCount}
+            onChange={(e) => set("reviewCount", Number(e.target.value))}
           />
         </div>
         <div>

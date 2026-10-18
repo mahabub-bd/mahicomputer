@@ -8,7 +8,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 
 import EnrollButton from "@/app/_components/EnrollButton";
-import type { CourseView, NavLinkView, SocialView } from "@/lib/types";
+import type { CourseView, NavLinkView, SiteSettingsView, SocialView } from "@/lib/types";
 import { logo } from "@/public";
 import { MobileSubMenu } from "../components";
 import { navLinks as staticNavLinks } from "../constants";
@@ -17,6 +17,7 @@ interface TogglerMenuProps {
   courses?: CourseView[];
   navLinks?: NavLinkView[];
   social?: SocialView[];
+  settings?: SiteSettingsView;
 }
 
 /** "#about" -> "/#about", "notice" -> "/notice", "/" stays "/". */
@@ -35,7 +36,10 @@ const TogglerMenu = ({
   courses = [],
   navLinks = staticNavLinks,
   social = [],
+  settings,
 }: TogglerMenuProps) => {
+  const phone = settings?.phone?.trim() || defaults.phone;
+  const email = settings?.email?.trim() || defaults.email;
   const [open, setOpen] = useState(false);
   // Portal target only exists after mount (SSR has no document).
   // useSyncExternalStore avoids a setState-in-effect for the mounted flag.
@@ -190,7 +194,7 @@ const TogglerMenu = ({
 
                 <div className="mt-2.5 space-y-1.5">
                   <a
-                    href={`tel:${defaults.phone.replace(/[\s()-]/g, "")}`}
+                    href={`tel:${phone.replace(/[\s()-]/g, "")}`}
                     className="flex items-center gap-2.5 text-[13px] text-slate-600 transition-colors hover:text-blue-700"
                   >
                     <span
@@ -199,10 +203,10 @@ const TogglerMenu = ({
                     >
                       <Phone size={13} />
                     </span>
-                    {defaults.phone}
+                    {phone}
                   </a>
                   <a
-                    href={`mailto:${defaults.email}`}
+                    href={`mailto:${email}`}
                     className="flex items-center gap-2.5 text-[13px] text-slate-600 transition-colors hover:text-blue-700"
                   >
                     <span
@@ -211,7 +215,7 @@ const TogglerMenu = ({
                     >
                       <Mail size={13} />
                     </span>
-                    {defaults.email}
+                    {email}
                   </a>
                 </div>
 

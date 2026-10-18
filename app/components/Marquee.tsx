@@ -1,7 +1,8 @@
 import { BadgeCheck, Megaphone } from "lucide-react";
+import type { SiteSettingsView } from "@/lib/types";
 
-/** Announcement items shown in the scrolling news bar. */
-const items = [
+/** Announcement items shown in the scrolling news bar (fallback when unset). */
+const DEFAULT_ITEMS = [
   "বাংলাদেশ কারিগরি শিক্ষাবোর্ড কর্তৃক অনুমোদিত প্রতিষ্ঠান। কোড: 50969",
   "মাহি কম্পিউটার আধুনিক কম্পিউটার শিক্ষার উন্নয়নে এক অনন্য উদাহরণ।",
   "মাহী সকল কোর্স 85% প্যাক্ট্রিক্যাল কাজের মাধ্যমে বাস্তবমূখী ট্রেনিং প্রদান করেন।",
@@ -9,7 +10,11 @@ const items = [
   "মাহী 100% পাশের নিশ্চয়তা প্রদান করে ইনশাল্লাহ।",
 ];
 
-const MarqueeList = ({ hidden = false }: { hidden?: boolean }) => (
+interface MarqueeProps {
+  settings?: SiteSettingsView;
+}
+
+const MarqueeList = ({ items, hidden = false }: { items: string[]; hidden?: boolean }) => (
   <ul
     className="flex w-max shrink-0 items-center"
     aria-hidden={hidden || undefined}
@@ -26,7 +31,10 @@ const MarqueeList = ({ hidden = false }: { hidden?: boolean }) => (
   </ul>
 );
 
-const Marquee = () => {
+const Marquee = ({ settings }: MarqueeProps) => {
+  const items =
+    settings?.marqueeItems?.filter((s) => s.trim()) ?? DEFAULT_ITEMS;
+
   return (
     <section
       role="marquee"
@@ -52,9 +60,9 @@ const Marquee = () => {
         />
 
         <div className="marquee-track flex w-max items-center">
-          <MarqueeList />
+          <MarqueeList items={items} />
           {/* Duplicated copy drives the seamless loop; hidden from AT */}
-          <MarqueeList hidden />
+          <MarqueeList items={items} hidden />
         </div>
       </div>
     </section>

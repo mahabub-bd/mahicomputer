@@ -1,11 +1,11 @@
 "use client";
 
+import { logo } from "@/public";
+import { AlertCircle, Eye, EyeOff, Loader2, Lock, LogIn, Mail } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
-import { AlertCircle, Eye, EyeOff, Loader2, Lock, LogIn, Mail } from "lucide-react";
-import { logo } from "@/public";
 import { apiPost } from "../_components/api";
 
 /* Local field styles — the shared inputCls in _components/inputs.ts is used
@@ -51,11 +51,11 @@ const LoginPage = () => {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-blue-500/20 blur-3xl"
+          className="pointer-events-none absolute -bottom-40 -right-24 h-112 w-md rounded-full bg-blue-500/20 blur-3xl"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:44px_44px]"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-size-[44px_44px]"
         />
 
         <div className="relative">
@@ -104,7 +104,7 @@ const LoginPage = () => {
 
       {/* ---------- Form panel ---------- */}
       <main className="flex flex-1 items-center justify-center bg-slate-50 px-4 py-12 sm:px-8">
-        <div className="w-full max-w-[400px]">
+        <div className="w-full max-w-100">
           {/* Mobile logo */}
           <div className="mb-8 text-center lg:hidden">
             <Image

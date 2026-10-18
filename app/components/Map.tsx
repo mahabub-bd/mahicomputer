@@ -1,4 +1,5 @@
 import { MapPin, Navigation } from "lucide-react";
+import type { SiteSettingsView } from "@/lib/types";
 
 const MAP_EMBED =
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.7484415562553!2d90.4210082745189!3d23.791970687180747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c76498e3c7e3%3A0x5d40fe44a7af631e!2sMahi%20Computers%20and%20Training%20Center!5e0!3m2!1sen!2sbd!4v1686542976316!5m2!1sen!2sbd";
@@ -7,7 +8,13 @@ const MAP_EMBED =
 const DIRECTIONS_URL =
   "https://www.google.com/maps/dir/?api=1&destination=Mahi+Computers+and+Training+Center";
 
-const Map = () => {
+interface MapProps {
+  settings?: SiteSettingsView;
+}
+
+const Map = ({ settings }: MapProps) => {
+  // Admin can paste a fresh Google Maps embed URL; default is the fallback.
+  const embedUrl = settings?.mapEmbedUrl?.trim() || MAP_EMBED;
   return (
     <section
       id="location"
@@ -42,7 +49,7 @@ const Map = () => {
           <div className="relative overflow-hidden rounded-[1.75rem] border border-white bg-white shadow-xl shadow-slate-200/60 ring-1 ring-slate-200/60">
             <iframe
               title="মাহি কম্পিউটার ট্রেনিং সেন্টার — Google Map"
-              src={MAP_EMBED}
+              src={embedUrl}
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"

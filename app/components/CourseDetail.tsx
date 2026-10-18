@@ -14,12 +14,15 @@ import type { Course } from "@/lib/types";
 interface CourseDetailProps {
   course: Course;
   instructorDescription?: string;
-  /** Intro paragraphs shown under "About This Course" (from the DB). */
+  /** Intro paragraphs shown under the About heading (from the DB). */
   description?: string[];
-  /** Syllabus items under "Inside This Course" (from the DB). */
+  /** Syllabus items under the Inside heading (from the DB). */
   modules?: string[];
   prerequisite?: string;
   seats?: string;
+  /** Section headings (admin-editable via site settings). */
+  aboutTitle?: string;
+  insideTitle?: string;
 }
 
 const chipCls =
@@ -37,6 +40,8 @@ const CourseDetail = ({
   modules = [],
   prerequisite = "SSC pass / basic computer knowledge",
   seats = "10 students per batch.",
+  aboutTitle = "About This Course",
+  insideTitle = "Inside This Course",
 }: CourseDetailProps) => {
   const details = [
     { icon: Wallet, label: "Course Fee", value: `৳${course.price.toLocaleString("en-BD")}` },
@@ -122,7 +127,7 @@ const CourseDetail = ({
         <div className="grid items-start gap-8 lg:grid-cols-[1.6fr_1fr] xl:gap-12">
           <div>
             <h2 className="text-[26px] font-bold tracking-tight text-[#112244]">
-              About This Course
+              {aboutTitle}
             </h2>
             <div className="mt-4 space-y-4">
               {description.map((paragraph, i) => (
@@ -134,7 +139,7 @@ const CourseDetail = ({
 
             <div className="mt-10">
               <h2 className="text-[26px] font-bold tracking-tight text-[#112244]">
-                Inside This Course
+                {insideTitle}
               </h2>
               <ol className="mt-5 grid items-start gap-4 sm:grid-cols-2">
                 {modules.map((module, i) => (

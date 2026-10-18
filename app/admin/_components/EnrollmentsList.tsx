@@ -4,10 +4,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
+  BookOpen,
   CheckCheck,
   CheckCircle2,
   Clock,
+  Mail,
   MailOpen,
+  MessageSquare,
+  Phone,
   Trash2,
   Undo2,
   XCircle,
@@ -164,104 +168,119 @@ const EnrollmentsList = ({ enrollments }: EnrollmentsListProps) => {
                   meta.accent
                 } ${!en.read ? "ring-1 ring-blue-300" : ""}`}
               >
-                <div className="flex items-start gap-3">
-                  {/* Avatar */}
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">
-                    {initials(en.name)}
-                  </span>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  {/* Left — 2 lines of info */}
+                  <div className="flex min-w-0 flex-1 items-start gap-3">
+                    {/* Avatar */}
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-700">
+                      {initials(en.name)}
+                    </span>
 
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="font-medium text-slate-900">{en.name}</p>
-                      {!en.read && (
-                        <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[11px] text-white">
-                          New
+                    <div className="min-w-0 flex-1">
+                      {/* Line 1 — name · badges · date */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-[15px] font-semibold text-slate-900">{en.name}</p>
+                        {!en.read && (
+                          <span className="rounded-full bg-blue-600 px-2 py-0.5 text-xs text-white">
+                            New
+                          </span>
+                        )}
+                        <span
+                          className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${meta.badge}`}
+                        >
+                          <StatusIcon size={13} />
+                          {meta.label}
                         </span>
-                      )}
-                      <span
-                        className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${meta.badge}`}
-                      >
-                        <StatusIcon size={12} />
-                        {meta.label}
-                      </span>
-                    </div>
-
-                    <p className="mt-0.5 text-xs text-slate-500">
-                      {en.phone}
-                      {en.email ? ` · ${en.email}` : ""}
-                    </p>
-
-                    {en.course && (
-                      <div className="mt-2">
-                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700 ring-1 ring-emerald-100">
-                          {en.course}
+                        <span className="flex items-center gap-1 text-xs text-slate-400">
+                          <Clock size={12} />
+                          {new Date(en.createdAt).toLocaleString("en-GB", {
+                            timeStyle: "short",
+                            dateStyle: "short",
+                          })}
                         </span>
                       </div>
-                    )}
 
-                    {en.message && (
-                      <p className="mt-2 whitespace-pre-wrap text-sm text-slate-700">
-                        {en.message}
-                      </p>
-                    )}
+                      {/* Line 2 — email · phone (same order + gaps as messages list) */}
+                      <div className="mt-1.5 flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                        {en.email && (
+                          <p className="flex min-w-0 items-center gap-1 truncate text-slate-500">
+                            <Mail size={13} className="shrink-0 text-slate-400" />
+                            <span className="min-w-0 truncate">{en.email}</span>
+                          </p>
+                        )}
+                        <p className="flex shrink-0 items-center gap-1 text-slate-500">
+                          <Phone size={13} className="shrink-0 text-slate-400" />
+                          {en.phone}
+                        </p>
+                      </div>
 
-                    <p className="mt-2 text-xs text-slate-400">
-                      {new Date(en.createdAt).toLocaleString("en-GB", {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      })}
-                    </p>
+                      {/* Line 3 — course chip · message (truncated to one line) */}
+                      <div className="mt-1.5 flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                        {en.course && (
+                          <span className="flex min-w-0 shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700 ring-1 ring-emerald-100">
+                            <BookOpen size={11} className="shrink-0" />
+                            <span className="max-w-[14rem] truncate">{en.course}</span>
+                          </span>
+                        )}
+                        {en.message && (
+                          <p className="flex min-w-0 flex-1 items-center gap-1 truncate text-slate-500">
+                            <MessageSquare size={13} className="shrink-0 text-slate-400" />
+                            <span className="min-w-0 truncate">{en.message}</span>
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
 
-                {/* Actions */}
-                <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-100 pt-3">
-                  {en.status === "PENDING" ? (
-                    <>
+                  {/* Right — status actions in a single line */}
+                  <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
+                    {en.status === "PENDING" ? (
+                      <>
+                        <button
+                          onClick={() => setStatus(en, "APPROVED")}
+                          disabled={busy}
+                          className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
+                        >
+                          <CheckCircle2 size={15} />
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => setStatus(en, "DECLINED")}
+                          disabled={busy}
+                          className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100 disabled:opacity-50"
+                        >
+                          <XCircle size={15} />
+                          Decline
+                        </button>
+                      </>
+                    ) : (
                       <button
-                        onClick={() => setStatus(en, "APPROVED")}
+                        onClick={() => setStatus(en, "PENDING")}
                         disabled={busy}
-                        className="flex items-center gap-1.5 rounded-md bg-emerald-50 px-3 py-1.5 text-sm text-emerald-700 ring-1 ring-emerald-200 hover:bg-emerald-100 disabled:opacity-50"
+                        className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100 disabled:opacity-50"
                       >
-                        <CheckCircle2 size={15} />
-                        Approve
+                        <Undo2 size={15} />
+                        Move to pending
                       </button>
-                      <button
-                        onClick={() => setStatus(en, "DECLINED")}
-                        disabled={busy}
-                        className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-slate-600 ring-1 ring-slate-200 hover:bg-slate-100 disabled:opacity-50"
-                      >
-                        <XCircle size={15} />
-                        Decline
-                      </button>
-                    </>
-                  ) : (
+                    )}
+
                     <button
-                      onClick={() => setStatus(en, "PENDING")}
+                      onClick={() => markRead(en)}
                       disabled={busy}
-                      className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-slate-600 ring-1 ring-slate-200 hover:bg-slate-100 disabled:opacity-50"
+                      title={en.read ? "Mark as unread" : "Mark as read"}
+                      className="flex items-center justify-center rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 disabled:opacity-50"
                     >
-                      <Undo2 size={15} />
-                      Move to pending
+                      {en.read ? <MailOpen size={15} /> : <CheckCheck size={15} />}
                     </button>
-                  )}
-                  <span className="flex-1" />
-                  <button
-                    onClick={() => markRead(en)}
-                    disabled={busy}
-                    className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-slate-600 ring-1 ring-slate-200 hover:bg-slate-100 disabled:opacity-50"
-                  >
-                    {en.read ? <MailOpen size={15} /> : <CheckCheck size={15} />}
-                    Mark as {en.read ? "unread" : "read"}
-                  </button>
-                  <button
-                    onClick={() => remove(en)}
-                    disabled={busy}
-                    className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-rose-600 ring-1 ring-rose-200 hover:bg-rose-50 disabled:opacity-50"
-                  >
-                    <Trash2 size={15} />
-                    Delete
-                  </button>
+                    <button
+                      onClick={() => remove(en)}
+                      disabled={busy}
+                      title="Delete"
+                      className="flex items-center justify-center rounded-lg p-2 text-rose-500 transition hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50"
+                    >
+                      <Trash2 size={15} />
+                      </button>
+                  </div>
                 </div>
               </div>
             );

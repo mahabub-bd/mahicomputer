@@ -61,13 +61,19 @@ const ReviewCard = ({
       </blockquote>
 
       <figcaption className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
-        <Image
-          src={img}
-          alt={name}
-          width={48}
-          height={48}
-          className="h-12 w-12 rounded-full object-cover shadow-sm ring-2 ring-white"
-        />
+        {img ? (
+          <Image
+            src={img}
+            alt={name}
+            width={48}
+            height={48}
+            className="h-12 w-12 rounded-full object-cover shadow-sm ring-2 ring-white"
+          />
+        ) : (
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-[15px] font-bold text-blue-600 ring-2 ring-white">
+            {name.charAt(0).toUpperCase()}
+          </span>
+        )}
         <div className="min-w-0">
           <p className="truncate text-[15px] font-bold text-slate-900">
             {name}

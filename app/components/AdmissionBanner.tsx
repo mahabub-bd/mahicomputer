@@ -1,12 +1,17 @@
 import { Phone } from "lucide-react";
 import EnrollButton from "@/app/_components/EnrollButton";
+import type { SiteSettingsView } from "@/lib/types";
 
 interface AdmissionBannerProps {
   courses?: string[];
+  settings?: SiteSettingsView;
 }
 
+const DEFAULT_PHONE = "+8801711102944";
+
 /** Bold mid-page banner: admission is open — enroll or call. */
-const AdmissionBanner = ({ courses = [] }: AdmissionBannerProps) => {
+const AdmissionBanner = ({ courses = [], settings }: AdmissionBannerProps) => {
+  const phone = settings?.phone?.trim() || DEFAULT_PHONE;
   return (
     <section className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6">
       <div
@@ -38,11 +43,11 @@ const AdmissionBanner = ({ courses = [] }: AdmissionBannerProps) => {
             className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3 text-[15px] font-bold text-blue-700 shadow-md transition hover:bg-blue-50"
           />
           <a
-            href="tel:+8801711102944"
+            href={`tel:${phone.replace(/[\s()-]/g, "")}`}
             className="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-[14px] font-semibold text-white transition hover:bg-white/10"
           >
             <Phone size={16} />
-            কল করুন: +8801711102944
+            কল করুন: {phone}
           </a>
         </div>
       </div>

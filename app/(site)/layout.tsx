@@ -28,6 +28,7 @@ const SiteLayout = async ({ children }: { children: ReactNode }) => {
         courses={courses}
         social={social}
         navLinks={navLinks.map(toNavLinkView)}
+        settings={settings}
       />
       <main>{children}</main>
       <Footer

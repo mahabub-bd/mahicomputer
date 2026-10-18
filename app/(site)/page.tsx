@@ -51,16 +51,16 @@ const HomePage = async () => {
   return (
     <AosProvider>
       <div className=" w-full overflow-hidden scroll-smooth ">
-        <Marquee />
+        <Marquee settings={settings} />
 
         <Hero settings={settings} />
         <About settings={settings} />
-        <CEO />
+        <CEO settings={settings} />
         <Categories categories={categories.map(toCategoryView)} />
         <Courses courses={courses} />
-        <AdmissionBanner courses={courseTitles} />
+        <AdmissionBanner courses={courseTitles} settings={settings} />
         <Instractor instructors={instructors.map(toInstructorView)} />
-        <WhyChooseUs />
+        <WhyChooseUs settings={settings} />
         <Review reviews={reviews} />
         <Stats stats={settings.stats} />
         <NoticePreview notices={notices} />
@@ -68,7 +68,7 @@ const HomePage = async () => {
         <Faq faqs={faqs} />
         <Partners partners={partners} />
         <Contact settings={settings} />
-        <Map />
+        <Map settings={settings} />
       </div>
     </AosProvider>
   );

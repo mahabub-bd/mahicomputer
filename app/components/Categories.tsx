@@ -38,17 +38,18 @@ const Categories = ({ categories = staticCategories }: CategoriesProps) => {
               data-aos="fade-up"
               data-aos-delay={(i % 8) * 70}
             >
-              <article className="group flex h-full min-h-36 cursor-pointer flex-col items-center justify-center rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1.5 hover:border-blue-100 hover:shadow-lg">
-                <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-blue-50/70 ring-1 ring-blue-100/70 transition duration-300 group-hover:bg-blue-600 group-hover:ring-blue-600">
+              <article className="group flex h-full cursor-pointer flex-col rounded-2xl border border-slate-100 bg-white p-3 shadow-sm transition duration-300 hover:-translate-y-1.5 hover:border-blue-100 hover:shadow-lg">
+                {/* Large image tile — fills the card width with a fixed ratio */}
+                <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-blue-50/70 ring-1 ring-blue-100/70 transition duration-300 group-hover:bg-blue-600/10 group-hover:ring-blue-200">
                   <Image
                     src={item.img}
                     alt={item.alt}
-                    width={48}
-                    height={48}
-                    className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110"
+                    fill
+                    sizes="(max-width: 640px) 45vw, (max-width: 1024px) 20vw, 150px"
+                    className="object-contain p-3 transition-transform duration-300 group-hover:scale-110 sm:p-4"
                   />
                 </div>
-                <h3 className="mt-4 text-center text-[15px] font-semibold text-slate-900 transition-colors duration-300 group-hover:text-blue-700">
+                <h3 className="mt-3 line-clamp-2 min-h-[2.5rem] text-center text-[14px] font-semibold leading-tight text-slate-900 transition-colors duration-300 group-hover:text-blue-700 sm:text-[15px]">
                   {item.title}
                 </h3>
               </article>

@@ -11,7 +11,7 @@ interface CoursesProps {
 const Courses = ({ courses = staticCourses }: CoursesProps) => {
   return (
     <section id="courses" className="section-shell">
-      <div className={`${styles.boxWidth}`}>
+      <div className={`${styles.boxWidth} px-4 sm:px-6`}>
         <h2
           className={`${styles.heading2} section-title my-6 text-center font-bangla md:my-8`}
           data-aos="fade-up"

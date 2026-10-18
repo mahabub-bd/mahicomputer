@@ -85,10 +85,14 @@ const InstructorForm = ({ instructor, onSuccess }: InstructorFormProps) => {
         />
       </div>
       <ImageUpload
-        label="Photo"
+        label="Photo (high-res recommended: 600×750px min — small images look blurry in the cards)"
         value={form.imageUrl}
         onChange={(url) => set("imageUrl", url)}
       />
+      <p className="text-xs text-slate-400">
+        Portrait crop, 4:5 ratio. Photos smaller than ~400px wide will appear soft/blurry on the
+        site.
+      </p>
 
       {error && <p className="text-sm text-rose-600">{error}</p>}
       <button type="submit" disabled={busy} className={submitCls}>

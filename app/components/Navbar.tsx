@@ -1,7 +1,7 @@
 "use client";
 
 import EnrollButton from "@/app/_components/EnrollButton";
-import type { CourseView, NavLinkView, SocialView } from "@/lib/types";
+import type { CourseView, NavLinkView, SiteSettingsView, SocialView } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -15,6 +15,7 @@ interface NavbarProps {
   courses?: CourseView[];
   social?: SocialView[];
   navLinks?: NavLinkView[];
+  settings?: SiteSettingsView;
 }
 
 /** "#about" -> "/#about", "notice" -> "/notice", "/" stays "/". */
@@ -25,6 +26,7 @@ const Navbar = ({
   courses = [],
   social,
   navLinks = staticNavLinks,
+  settings,
 }: NavbarProps) => {
   const [active, setActive] = useState("Home");
 
@@ -32,7 +34,7 @@ const Navbar = ({
 
   return (
     <>
-      <PreHeader social={social} />
+      <PreHeader social={social} settings={settings} />
       <div
         className={`relative z-50 border-b border-slate-100 bg-white/95 backdrop-blur transition-shadow ${
           scrolled && "sticky drop-shadow-lg"
@@ -87,7 +89,7 @@ const Navbar = ({
             className="ml-3 hidden items-center gap-2 rounded-full bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow-md md:inline-flex"
           />
 
-          <TogglerMenu courses={courses} navLinks={navLinks} social={social} />
+          <TogglerMenu courses={courses} navLinks={navLinks} social={social} settings={settings} />
         </nav>
       </div>
     </>

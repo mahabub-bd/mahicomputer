@@ -1,8 +1,35 @@
 import { ceo } from "@/public";
-import Image from "next/image";
 import { Quote } from "lucide-react";
+import type { SiteSettingsView } from "@/lib/types";
 
-const CEO = () => {
+interface CeoProps {
+  settings?: SiteSettingsView;
+}
+
+const defaults = {
+  ceoTitle: "Message from CEO & Founder",
+  ceoText:
+    "প্রিয় ছাত্রছাত্রীরা, আজকে আমাদের সম্মানিত কম্পিউটার প্রশিক্ষণ কেন্দ্রের সিইও হিসেবে আপনাদের সম্বোধন করতে পেরে আমি রোমাঞ্চিত। এটা অত্যন্ত গর্ব এবং উত্সাহের সাথে যে আমি কম্পিউটিং জগতে জ্ঞান, দক্ষতা বিকাশ এবং কর্মজীবনের উন্নতির যাত্রা শুরু করতে চাওয়া সকলকে উষ্ণ স্বাগত জানাই।\n\nআমাদের কম্পিউটার প্রশিক্ষণ কেন্দ্রে, আমরা আপনাকে আজকের দ্রুতগতির, প্রযুক্তি-চালিত যুগে উন্নতির জন্য প্রয়োজনীয় সরঞ্জাম এবং দক্ষতার সাথে সজ্জিত করতে প্রতিশ্রুতিবদ্ধ। আমরা বুঝতে পারি যে ক্রমবর্ধমান ডিজিটাল বিশ্বে, যোগ্য এবং সু-প্রশিক্ষিত ব্যক্তিদের চাহিদা আগের যেকোনো সময়ের চেয়ে বেশি। অতএব, আমরা আমাদের প্রোগ্রামগুলিকে বিশদে মনোযোগ সহকারে ডিজাইন করেছি, নিশ্চিত করে যে সেগুলি শিল্পের মানগুলির সাথে সারিবদ্ধ হয় এবং চাকরির বাজারের ক্রমবর্ধমান চাহিদাগুলি পূরণ করে।\n\nআমাদের কম্পিউটার প্রশিক্ষণ কেন্দ্রে স্বাগতম, যেখানে স্বপ্ন উড়ে যায়।",
+};
+
+/** Split the admin-managed blob of text into readable paragraphs. */
+const toParagraphs = (text: string) =>
+  text
+    .split(/\n{2,}/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+const CEO = ({ settings }: CeoProps) => {
+  // Empty admin fields fall back to the component defaults, not blank content.
+  const s = {
+    ceoTitle: settings?.ceoTitle?.trim() || defaults.ceoTitle,
+    ceoText: settings?.ceoText?.trim() || defaults.ceoText,
+    // Admin-uploaded image; the bundled image is the fallback.
+    ceoImageUrl: settings?.ceoImageUrl?.trim() || "",
+  };
+  const paragraphs = toParagraphs(s.ceoText);
+  const [lead, ...rest] = paragraphs;
+
   return (
     <section
       id="ceo-message"
@@ -31,7 +58,7 @@ const CEO = () => {
           data-aos="fade-up"
           data-aos-delay="60"
         >
-          Message from CEO & Founder
+          {s.ceoTitle}
         </h2>
         <div
           className="mx-auto mt-4 h-1 w-16 rounded-full bg-blue-600/70"
@@ -46,10 +73,11 @@ const CEO = () => {
               aria-hidden
             />
             <div className="relative overflow-hidden rounded-[1.75rem] border border-white bg-white shadow-xl shadow-slate-200/60 ring-1 ring-slate-200/60">
-              <Image
-                src={ceo}
+              {/* eslint-disable-next-line @next/next/no-img-element -- uses local /uploads/... or any URL the admin pastes */}
+              <img
+                src={s.ceoImageUrl || ceo.src}
                 alt="CEO & Founder of Mahi Computer Institute"
-                priority
+                loading="eager"
                 sizes="(min-width: 1200px) 45vw, 92vw"
                 className="h-auto w-full object-cover"
               />
@@ -83,29 +111,18 @@ const CEO = () => {
                 aria-hidden
               />
               <p className="font-bangla text-[17px] leading-8 text-slate-700 sm:text-[18px] sm:leading-9">
-                প্রিয় ছাত্রছাত্রীরা, আজকে আমাদের সম্মানিত কম্পিউটার প্রশিক্ষণ
-                কেন্দ্রের সিইও হিসেবে আপনাদের সম্বোধন করতে পেরে আমি রোমাঞ্চিত। এটা
-                অত্যন্ত গর্ব এবং উত্সাহের সাথে যে আমি কম্পিউটিং জগতে জ্ঞান, দক্ষতা
-                বিকাশ এবং কর্মজীবনের উন্নতির যাত্রা শুরু করতে চাওয়া সকলকে উষ্ণ
-                স্বাগত জানাই।
+                {lead}
               </p>
             </div>
 
-            <p className="mt-5 font-bangla text-[15px] leading-7 text-slate-600 sm:text-[16px] sm:leading-8">
-              আমাদের কম্পিউটার প্রশিক্ষণ কেন্দ্রে, আমরা আপনাকে আজকের দ্রুতগতির,
-              প্রযুক্তি-চালিত যুগে উন্নতির জন্য প্রয়োজনীয় সরঞ্জাম এবং দক্ষতার
-              সাথে সজ্জিত করতে প্রতিশ্রুতিবদ্ধ। আমরা বুঝতে পারি যে ক্রমবর্ধমান
-              ডিজিটাল বিশ্বে, যোগ্য এবং সু-প্রশিক্ষিত ব্যক্তিদের চাহিদা আগের
-              যেকোনো সময়ের চেয়ে বেশি। অতএব, আমরা আমাদের প্রোগ্রামগুলিকে
-              বিশদে মনোযোগ সহকারে ডিজাইন করেছি, নিশ্চিত করে যে সেগুলি শিল্পের
-              মানগুলির সাথে সারিবদ্ধ হয় এবং চাকরির বাজারের ক্রমবর্ধমান
-              চাহিদাগুলি পূরণ করে।
-            </p>
-
-            <p className="mt-5 font-bangla text-[15px] leading-7 text-slate-600 sm:text-[16px] sm:leading-8">
-              আমাদের কম্পিউটার প্রশিক্ষণ কেন্দ্রে স্বাগতম, যেখানে স্বপ্ন উড়ে
-              যায়।
-            </p>
+            {rest.map((paragraph) => (
+              <p
+                key={paragraph}
+                className="mt-5 font-bangla text-[15px] leading-7 text-slate-600 sm:text-[16px] sm:leading-8"
+              >
+                {paragraph}
+              </p>
+            ))}
 
             <div className="mt-8 inline-flex flex-col rounded-2xl border border-slate-100 bg-white/80 px-5 py-3 shadow-sm backdrop-blur-sm">
               <span className="font-bangla text-[16px] font-bold text-slate-900">

@@ -1,4 +1,4 @@
-import { lessonimg, rating, signal, day } from "@/public";
+import { lessonimg, rating as ratingIcon, signal, day } from "@/public";
 import Image from "next/image";
 import Link from "next/link";
 import type { CourseView } from "@/lib/types";
@@ -15,6 +15,8 @@ const CourseCard = ({
   instractorName,
   instractorphoto,
   price,
+  rating = 4.9,
+  reviewCount = 31,
 }: CourseView) => {
   return (
     <Link
@@ -39,14 +41,14 @@ const CourseCard = ({
       <div className="flex flex-1 flex-col px-5 pt-4">
         <div className="mb-2 flex items-center gap-2 text-sm text-slate-600">
           <Image
-            src={rating}
+            src={ratingIcon}
             width={14}
             height={14}
             className="h-[14px] w-[14px]"
             alt="rating"
           />
-          <span className="font-medium text-slate-700">4.9</span>
-          <span className="text-slate-400">(31)</span>
+          <span className="font-medium text-slate-700">{rating.toFixed(1)}</span>
+          <span className="text-slate-400">({reviewCount})</span>
         </div>
 
         <h3 className="mb-3 line-clamp-2 text-lg font-semibold text-slate-900 transition-colors duration-300 group-hover:text-blue-700 md:text-[20px]">

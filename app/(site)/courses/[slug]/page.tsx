@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getCourseDetail } from "@/lib/data";
+import { getCourseDetail, getSiteSettings } from "@/lib/data";
 import CourseDetail from "@/app/components/CourseDetail";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +8,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export default async function Page({ params }: Props) {
   const { slug } = await params;
-  const data = await getCourseDetail(slug);
+  const [data, settings] = await Promise.all([getCourseDetail(slug), getSiteSettings()]);
   if (!data) notFound();
   return (
     <CourseDetail
@@ -16,6 +16,8 @@ export default async function Page({ params }: Props) {
       instructorDescription={data.instructorDescription}
       description={data.description}
       modules={data.modules}
+      aboutTitle={settings.courseAboutTitle}
+      insideTitle={settings.courseInsideTitle}
     />
   );
 }

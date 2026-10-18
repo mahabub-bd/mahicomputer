@@ -20,7 +20,22 @@ import type {
   SiteSettingsView,
   SocialLink,
   StatItem,
+  WhyFeature,
 } from "./types";
+
+/** Defensive parsers for Json columns holding complex values. */
+function parseStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((s): s is string => typeof s === "string");
+}
+
+function parseWhyFeatures(value: unknown): WhyFeature[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter(
+    (f): f is WhyFeature =>
+      typeof f === "object" && f !== null && "title" in f && "text" in f,
+  );
+}
 
 export async function getCourses(): Promise<Course[]> {
   return prisma.course.findMany({
@@ -86,15 +101,32 @@ export async function getSiteSettings(): Promise<SiteSettingsView> {
       heroTitle: "",
       heroSubtitle: "",
       heroNote: "",
+      heroImageUrl: "",
+      marqueeItems: [],
+      whyTitle: "",
+      whySubtitle: "",
+      whyFeatures: [],
+      mapEmbedUrl: "",
+      courseAboutTitle: "",
+      courseInsideTitle: "",
       aboutTitle: "",
       aboutText: "",
+      aboutImageUrl: "",
+      ceoTitle: "",
+      ceoText: "",
+      ceoImageUrl: "",
       phone: "",
       email: "",
       address: "",
       stats: DEFAULT_STATS,
     };
   }
-  return { ...row, stats: parseStats(row.stats) };
+  return {
+    ...row,
+    marqueeItems: parseStringArray(row.marqueeItems),
+    whyFeatures: parseWhyFeatures(row.whyFeatures),
+    stats: parseStats(row.stats),
+  };
 }
 
 function parseStats(value: unknown): StatItem[] {
@@ -124,6 +156,8 @@ export function toCourseView(c: Course): CourseView {
     instractorName: c.instructorName,
     instractorphoto: c.instructorPhotoUrl,
     price: c.price,
+    rating: c.rating,
+    reviewCount: c.reviewCount,
   };
 }
 
@@ -158,16 +192,18 @@ export async function getCourseViews(): Promise<CourseView[]> {
 
 export async function getReviewViews(): Promise<ReviewView[]> {
   const reviews = await getReviews();
-  return reviews.map(toReviewView);
+  // Skip rows whose image was never uploaded — rendering an empty src is invalid.
+  return reviews.filter((r) => r.imageUrl.trim()).map(toReviewView);
 }
 
 export async function getPartnerViews(): Promise<PartnerView[]> {
   const partners = await getPartners();
-  return partners.map(toPartnerView);
+  return partners.filter((p) => p.imageUrl.trim()).map(toPartnerView);
 }
 
 export async function getGalleryItems(): Promise<GalleryItem[]> {
-  return prisma.galleryItem.findMany({ orderBy: { order: "asc" } });
+  const items = await prisma.galleryItem.findMany({ orderBy: { order: "asc" } });
+  return items.filter((g) => g.imageUrl.trim());
 }
 
 export async function getSocialLinks(): Promise<SocialLink[]> {

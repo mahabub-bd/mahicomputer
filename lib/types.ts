@@ -49,6 +49,9 @@ export interface CourseView {
   instractorName: string;
   instractorphoto: string;
   price: number;
+  /** Card rating row; falls back to the historical 4.9 / 31 when absent. */
+  rating?: number;
+  reviewCount?: number;
 }
 
 export interface CategoryView {
@@ -118,12 +121,30 @@ export interface StatItem {
   class: string;
 }
 
+/** One "Why Choose Us" feature card (icon is assigned by render order). */
+export interface WhyFeature {
+  title: string;
+  text: string;
+}
+
 export interface SiteSettingsView {
   heroTitle: string;
   heroSubtitle: string;
   heroNote: string;
+  heroImageUrl: string;
+  marqueeItems: string[];
+  whyTitle: string;
+  whySubtitle: string;
+  whyFeatures: WhyFeature[];
+  mapEmbedUrl: string;
+  courseAboutTitle: string;
+  courseInsideTitle: string;
   aboutTitle: string;
   aboutText: string;
+  aboutImageUrl: string;
+  ceoTitle: string;
+  ceoText: string;
+  ceoImageUrl: string;
   phone: string;
   email: string;
   address: string;

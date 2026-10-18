@@ -19,16 +19,19 @@ const defaults = {
   heroSubtitle:
     "আমরা সব কোর্সের অ্যাডভান্স লেভেল শেখাচ্ছি এবং আমরা সঠিকভাবে সব কোর্সের যত্ন নেই । ঢাকা জেলার গুলশান, ভাটারা , বাড্ডা থানায় এই ট্রেনিং সেন্টারটি খুবই বিখ্যাত । আমরা বিশ্বাস করি 85% প্রাক্টিক্যাল কাজই সেরা প্রশিক্ষণ। আমরা সর্বোত্তম শিক্ষা দেওয়ার প্রতিশ্রুতি প্রদান করি।",
   heroNote: "কোর্স মেয়াদ: 03 মাস, 06 মাস, 12 মাস",
+  heroImageUrl: "",
 };
 
 const Hero = ({ settings }: HeroProps) => {
   const s = { ...defaults, ...settings };
+  // Admin-uploaded hero background; the bundled image is the fallback.
+  const heroImage = s.heroImageUrl?.trim() || herobg.src;
 
   return (
     <section
       className="hero relative flex items-center overflow-hidden"
       style={{
-        backgroundImage: `linear-gradient(to right bottom, rgba(17,31,54,0.92), rgba(31,52,92,0.78)), url(${herobg.src})`,
+        backgroundImage: `linear-gradient(to right bottom, rgba(17,31,54,0.92), rgba(31,52,92,0.78)), url(${heroImage})`,
       }}
     >
       {/* Floating decorative shapes (animations live in globals.css) */}

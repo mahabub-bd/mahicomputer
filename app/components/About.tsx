@@ -1,5 +1,4 @@
 import { paymentapp } from "@/public";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 import type { SiteSettingsView } from "@/lib/types";
@@ -26,6 +25,8 @@ const About = ({ settings }: AboutProps) => {
   const s = {
     aboutTitle: settings?.aboutTitle?.trim() || defaults.aboutTitle,
     aboutText: settings?.aboutText?.trim() || defaults.aboutText,
+    // Admin-uploaded image; the bundled image is the fallback.
+    aboutImageUrl: settings?.aboutImageUrl?.trim() || "",
   };
 
   const paragraphs = toParagraphs(s.aboutText);
@@ -107,10 +108,11 @@ const About = ({ settings }: AboutProps) => {
           <div className="relative" data-aos="fade-left">
             <div className="absolute -inset-3 rounded-[2rem] border border-blue-100 bg-blue-50/40" aria-hidden />
             <div className="relative overflow-hidden rounded-[1.75rem] border border-white bg-white shadow-xl shadow-slate-200/60 ring-1 ring-slate-200/60">
-              <Image
-                src={paymentapp}
+              {/* eslint-disable-next-line @next/next/no-img-element -- uses local /uploads/... or any URL the admin pastes */}
+              <img
+                src={s.aboutImageUrl || paymentapp.src}
                 alt="মাহি কম্পিউটার ট্রেনিং সেন্টার"
-                priority
+                loading="eager"
                 sizes="(min-width: 1200px) 45vw, 92vw"
                 className="h-auto w-full object-cover"
               />

@@ -1,56 +1,57 @@
-import { instractor1, instractor10, instractor2, instractor3, instractor4, instractor5, instractor6, instractor7, instractor8, instractor9 } from "@/public";
+import type { InstructorView } from "@/lib/types";
 
+export type Instractor = InstructorView;
 
-export const instractor = [
+export const instractor: Instractor[] = [
   {
-    img: instractor1,
+    img: "/images/instractor1.jpg",
     name: "Muniruzzaman",
     des: "CEO & Founder",
   },
   {
-    img: instractor2,
+    img: "/images/instractor2.jpg",
     name: "Mokramin Hossain",
     des: "ICT Teacher",
   },
   {
-    img: instractor6,
+    img: "/images/instractor6.jpg",
     name: "Mahabub Hossain",
     des: "Web Developer",
   },
   {
-    img: instractor3,
+    img: "/images/instractor3.jpg",
     name: "Md Alamin Hossain",
     des: "Office Application ",
   },
   {
-    img: instractor4,
+    img: "/images/instractor4.jpg",
     name: "Sumon Chandra",
     des: "Graphics Designer",
   },
   {
-    img: instractor5,
+    img: "/images/instractor5.jpg",
     name: "Md. Rasel Ahmed",
     des: "Auto Cad",
   },
   {
-    img: instractor7,
+    img: "/images/instractor7.jpg",
     name: "Eliash Hossain ",
     des: "English Teacher",
   },
   {
-    img: instractor8,
+    img: "/images/instractor8.jpg",
     name: "Maksuda Akter",
     des: "Office Application",
   },
 
   {
-    img: instractor9,
+    img: "/images/instractor9.jpg",
     name: "Jointi Barua",
     des: "Office Application",
   },
 
   {
-    img: instractor10,
+    img: "/images/instractor10.jpg",
     name: "Magdona",
     des: "English Teacher",
   },

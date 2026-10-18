@@ -1,44 +1,81 @@
-import { rating } from "@/public";
 import Image from "next/image";
-import React from "react";
-import type { StaticImageData } from "next/image";
+import { Quote, Star } from "lucide-react";
 
 interface ReviewCardProps {
   name: string;
   title: string;
   content: string;
-  img: StaticImageData;
+  course: string;
+  rating: number;
+  img: string;
 }
 
-const ReviewCard = ({ name, title, content, img }: ReviewCardProps) => {
+const ReviewCard = ({
+  name,
+  title,
+  content,
+  course,
+  rating,
+  img,
+}: ReviewCardProps) => {
+  const fullStars = Math.round(rating);
+
   return (
-    <div className="flex  justify-around flex-col px-5 py-5 rounded-[20px] max-w-[350px] md:mr-10 sm:mr-5  mr-0 my-5 shadow-2xl ">
-      <div className="flex justify-between items-center">
-        <Image src={rating} alt="quote" className=" w-[24px] object-contain" />
-        <p>
-         
-          <span className="font-semibold mr-2">4.8</span>Rating For Auto Cad
-        </p>
+    <figure className="group flex h-full flex-col rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+      <div className="flex items-start justify-between gap-3">
+        <div
+          className="flex items-center gap-0.5"
+          aria-label={`Rated ${rating} out of 5`}
+        >
+          {Array.from({ length: 5 }, (_, i) => (
+            <Star
+              key={i}
+              size={16}
+              className={
+                i < fullStars
+                  ? "fill-amber-400 text-amber-400"
+                  : "fill-slate-100 text-slate-200"
+              }
+            />
+          ))}
+          <span className="ml-1.5 text-[13px] font-bold text-slate-700">
+            {rating.toFixed(1)}
+          </span>
+        </div>
+
+        {course && (
+          <span className="shrink-0 rounded-full bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700">
+            {course}
+          </span>
+        )}
       </div>
-      <p
-        className={`  font-light text-justify text-[14px] leading-[21px]  my-4`}
-      >
+
+      <Quote
+        size={32}
+        aria-hidden
+        className="mt-4 text-blue-100 transition-colors duration-300 group-hover:text-blue-200"
+      />
+
+      <blockquote className="mt-2 flex-1 text-[15px] leading-7 text-slate-600">
         {content}
-      </p>
-      <div className="flex flex-row justify-between items-center mt-5">
+      </blockquote>
+
+      <figcaption className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
         <Image
           src={img}
-          alt="prifile "
-          className="w-[58px] h-[58px] object-contain rounded-full"
+          alt={name}
+          width={48}
+          height={48}
+          className="h-12 w-12 rounded-full object-cover shadow-sm ring-2 ring-white"
         />
-        <div className="flex flex-col ml-4">
-          <h6 className=" font-bold text-[20px] leading-[32px]">{name}</h6>
-          <p className="font-normal text-[16px] leading-[24px] text-blue-900 opacity-80 mt-2 ">
-            {title}
+        <div className="min-w-0">
+          <p className="truncate text-[15px] font-bold text-slate-900">
+            {name}
           </p>
+          <p className="truncate text-[13px] text-slate-500">{title}</p>
         </div>
-      </div>
-    </div>
+      </figcaption>
+    </figure>
   );
 };
 

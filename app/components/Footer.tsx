@@ -1,110 +1,210 @@
-"use client";
-import { logodark, email, phone, location } from "@/public";
+import { Mail, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { footerLinks, socialMedia } from "../constants";
+import { logodark } from "@/public";
+import {
+  footerLinks as staticFooterLinks,
+  socialMedia as staticSocial,
+} from "../constants";
 import styles from "../styles/style";
+import type { FooterGroupView, SiteSettingsView, SocialView } from "@/lib/types";
 
-const Footer = () => {
+interface FooterProps {
+  social?: SocialView[];
+  footerLinks?: FooterGroupView[];
+  settings?: SiteSettingsView;
+}
+
+const defaults = {
+  phone: "+8801711102944",
+  email: "info@mahicomputerbd.com",
+  address: "Ka-65 Shahajadpur, Gulshan, Dhaka-1212",
+};
+
+/**
+ * Footer link values are admin-editable, so normalize stray shapes:
+ * bare phone numbers become tel: links, "notice" becomes "/notice".
+ */
+const toHref = (raw: string) => {
+  const v = (raw || "").trim();
+  if (!v) return "#";
+  if (/^(https?:|mailto:|tel:)/i.test(v) || v.startsWith("#")) return v;
+  if (/^[+\d][\d\s()-]{5,}$/.test(v)) return `tel:${v.replace(/[\s()-]/g, "")}`;
+  return v.startsWith("/") ? v : `/${v}`;
+};
+
+const isExternal = (href: string) => /^https?:/i.test(href);
+const isScheme = (href: string) => /^(mailto:|tel:)/i.test(href);
+
+const contactRowCls =
+  "group flex items-start gap-3 text-[15px] text-slate-300 transition-colors hover:text-white";
+
+const contactIconCls =
+  "mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5 text-blue-300 ring-1 ring-white/10 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white group-hover:ring-blue-600";
+
+const Footer = ({
+  social = staticSocial,
+  footerLinks = staticFooterLinks,
+  settings,
+}: FooterProps) => {
+  // Empty admin fields should fall back to the defaults, not blank them out.
+  const s = {
+    phone: settings?.phone?.trim() || defaults.phone,
+    email: settings?.email?.trim() || defaults.email,
+    address: settings?.address?.trim() || defaults.address,
+  };
+
   return (
-    <>
-      <section
-        className={`${styles.flexCenter} ${styles.paddingY} flex-col bg-[#131A22] xl:px-0 sm:px-16 px-6 relative`}
-      >
-        <div
-          className={`${styles.flexStart} ${styles.boxWidth}  md:flex-row flex-col mb-5 w-full`}
-        >
-          <div className="flex flex-1 flex-col w-full xl:justify-start  lg:justify-start  lg:items-start xl:items-start vxs:justify-center vxs:items-center mr-10  md:w-full">
-            <Link href="/">
+    <footer className="relative overflow-hidden bg-[#101d36]">
+      {/* soft decorative glows */}
+      <div
+        className="pointer-events-none absolute -top-32 left-1/4 h-64 w-64 rounded-full bg-blue-600/10 blur-3xl"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -bottom-40 right-1/4 h-72 w-72 rounded-full bg-blue-500/5 blur-3xl"
+        aria-hidden
+      />
+
+      <div className={`${styles.boxWidth} relative px-4 pt-14 pb-10 sm:px-6 sm:pt-16`}>
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_2fr] lg:gap-16">
+          {/* ---------- Brand + contact ---------- */}
+          <div>
+            <Link href="/" className="inline-block">
               <Image
                 src={logodark}
-                alt="footer__logo"
-                className="w-[166px] md:w-[80px]xs:w-[60px] h-[72px] object-contain"
-                priority
+                alt="Mahi Computer"
+                className="h-12 w-auto object-contain"
               />
             </Link>
 
-            <div
-              className={`${styles.paragraph} mt-2 max-w-[310px] text-white flex`}
-            >
-              <Image src={phone} alt="phone_icon" className="w-[18px] mr-3" />
-              <a className=" text-[16px]" href="tel:+8801711102944">
-                +8801711102944
-              </a>
-            </div>
-            <div
-              className={`${styles.paragraph} mt-2 max-w-[310px] text-white flex`}
-            >
-              <Image src={email} alt="phone_icon" className="w-[18px] mr-3" />
-              <a className="text-[16px]" href="mailto:info@mahicomputerbd.com">
-                info@mahicomputerbd.com
-              </a>
-            </div>
-            <div
-              className={`${styles.paragraph} mt-2 max-w-[400px] text-white flex`}
-            >
-              <Image
-                src={location}
-                alt="location_icon"
-                className="w-[18px] mr-3"
-              />
-              <p className="text-[16px]">
-                Ka-65 Shahajadpur, Gulshan, Dhaka-1212
-              </p>
-            </div>
+            <ul className="mt-7 space-y-4">
+              <li>
+                <a
+                  href={`tel:${s.phone.replace(/[\s()-]/g, "")}`}
+                  className={contactRowCls}
+                >
+                  <span className={contactIconCls} aria-hidden>
+                    <Phone size={16} />
+                  </span>
+                  {/* leading-9 matches the 36px icon tile so text stays optically centered */}
+                  <span className="leading-9">{s.phone}</span>
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${s.email}`} className={contactRowCls}>
+                  <span className={contactIconCls} aria-hidden>
+                    <Mail size={16} />
+                  </span>
+                  <span className="leading-9">{s.email}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.address)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={contactRowCls}
+                >
+                  <span className={contactIconCls} aria-hidden>
+                    <MapPin size={16} />
+                  </span>
+                  <span className="leading-7">{s.address}</span>
+                </a>
+              </li>
+            </ul>
           </div>
-          <div className="flex-1 flex w-full flex-row justify-between  flex-wrap md:mt-0 mt-10">
-            {footerLinks.map((footerLink) => (
-              <div
-                key={footerLink.id}
-                className="flex flex-col ss:my-0 my-4 min-w-[150px]"
-              >
-                <h4 className="font-poppins font-medium text-[18px] leading-[27px] text-white">
-                  {footerLink.title}
-                </h4>
-                <ul key={footerLink.id} className="list-none mt-4">
-                  {footerLink.links.map((Link, index) => (
-                    <li
-                      key={Link.id}
-                      className={`font-poppins font-normal text-[16px] leading-[24px] text-dimWhite hover:text-qpayone cursor-pointer
-                  
-                  ${index !== footerLink.links.length - 1 ? "mb-4" : "mb-0"}
-                  `}
-                    >
-                      <a href={Link.link}> {Link.name}</a>
-                    </li>
-                  ))}
+
+          {/* ---------- Link groups (admin-managed) ---------- */}
+          <div className="flex flex-wrap gap-x-10 gap-y-10">
+            {footerLinks.map((group) => (
+              <div key={group.id} className="min-w-[170px] flex-1">
+                <h3 className="text-[16px] font-bold text-white">
+                  {group.title}
+                </h3>
+                <span
+                  className="mt-2 block h-0.5 w-8 rounded-full bg-blue-500"
+                  aria-hidden
+                />
+
+                <ul className="mt-4 space-y-2.5">
+                  {group.links.map((item) => {
+                    const href = toHref(item.link);
+                    const external = isExternal(href);
+                    const scheme = isScheme(href);
+                    const cls =
+                      "group inline-flex items-center gap-2 text-[14.5px] text-slate-300 transition-colors hover:text-white";
+                    const inner = (
+                      <>
+                        <span
+                          aria-hidden
+                          className="h-1 w-1 rounded-full bg-blue-400 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                        />
+                        {item.name}
+                      </>
+                    );
+
+                    return (
+                      <li key={item.id}>
+                        {external || scheme ? (
+                          <a
+                            href={href}
+                            className={cls}
+                            {...(external
+                              ? { target: "_blank", rel: "noopener noreferrer" }
+                              : {})}
+                          >
+                            {inner}
+                          </a>
+                        ) : (
+                          <Link href={href} className={cls}>
+                            {inner}
+                          </Link>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))}
           </div>
         </div>
-        <div
-          className={`${styles.boxWidth}  flex items-center justify-between vxs:flex-col-reverse lg:flex-row-reverse xl:flex-row-reverse   pt-6 border-t-[1px] border-t-[#3F3E45]`}
-        >
-          <p className="font-poppins font-light text-[14px] leading-[27px] text-white vxs:mt-4 xl:mt-0">
-            © 2024 Mahi Computer All Rights Reserved
+
+        {/* ---------- Bottom bar ---------- */}
+        <div className="mt-12 flex flex-col items-center gap-5 border-t border-white/10 pt-6 sm:flex-row sm:justify-between">
+          <p className="text-[13px] text-slate-400">
+            © {new Date().getFullYear()} Mahi Computer. All Rights Reserved.
           </p>
 
-          <div className="flex flex-row  md:mt-4 mt-6 md:justify-center  xl:justify-end ">
-            {socialMedia.map((social) => (
-              <Link
-                key={social.id}
-                href={social.link}
-                className="cursor-pointer hover:text-qpayone [&:not(:last-child)]:mr-6 
-                hover:opacity-80"
-              >
-                <Image
-                  src={social.icon}
-                  alt={social.id}
-                  className={`w-[21px] h-[21px] object-contain `}
-                />
-              </Link>
-            ))}
+          <div className="flex items-center gap-3">
+            {social.map((item) => {
+              // Derive a readable label ("facebook") from the icon filename.
+              const platform =
+                item.icon.split("/").pop()?.replace(/\.\w+$/, "") || item.id;
+              return (
+                <Link
+                  key={item.id}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={platform}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10 transition duration-300 hover:-translate-y-0.5 hover:bg-blue-600 hover:ring-blue-600"
+                >
+                  <Image
+                    src={item.icon}
+                    alt=""
+                    aria-hidden
+                    width={18}
+                    height={18}
+                    className="h-[18px] w-[18px] object-contain"
+                  />
+                </Link>
+              );
+            })}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </footer>
   );
 };
 

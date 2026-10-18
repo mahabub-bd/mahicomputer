@@ -1,26 +1,13 @@
 /* courseImg, courseImgalt,link, tag,title,lesson,duration,instractorName,instractorphoto,price*/
 
-import { advancedweb, autocadprogram, computerhardware, digitalmarketing, freelancing, graphicsdesign, informationatechnology, instractor1, instractor2, instractor3, instractor4, instractor5, instractor6, instractor7, japanilanguage, max, officeapplication, responsive, sketch, spokenenglish, videoediting } from "@/public";
-import type { StaticImageData } from "next/image";
+import type { CourseView } from "@/lib/types";
 import { instractor } from "./instractor";
 
-export interface Course {
-  courseImg: StaticImageData;
-  courseImgalt: string;
-  link: string;
-  tag: string;
-  tagbg: string;
-  title: string;
-  lesson: number;
-  duration: string;
-  instractorName: string;
-  instractorphoto: StaticImageData;
-  price: number;
-}
+export type Course = CourseView;
 
 export const courses: Course[] = [
   {
-    courseImg: responsive,
+    courseImg: "/images/responsive.jpg",
     courseImgalt: "responsive",
     link: "webdesign",
     tag: "Web Development",
@@ -29,11 +16,11 @@ export const courses: Course[] = [
     lesson: 15,
     duration: "3",
     instractorName: "Moniruzzaman",
-    instractorphoto: instractor1,
+    instractorphoto: "/images/instractor1.jpg",
     price: 12000,
   },
   {
-    courseImg: advancedweb,
+    courseImg: "/images/webdevelopment.jpg",
     courseImgalt: "advancedweb",
     link: "advancedweb",
     tag: "Web Development",
@@ -42,12 +29,12 @@ export const courses: Course[] = [
     lesson: 30,
     duration: "6",
     instractorName: instractor[2].name,
-    instractorphoto: instractor6,
+    instractorphoto: "/images/instractor6.jpg",
     price: 25000,
   },
 
   {
-    courseImg: autocadprogram,
+    courseImg: "/images/autocadprogram.png",
     courseImgalt: "autocadprogram",
     link: "autocad",
     tag: "Autocad",
@@ -56,12 +43,12 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "3",
     instractorName: instractor[0].name,
-    instractorphoto: instractor1,
+    instractorphoto: "/images/instractor1.jpg",
     price: 6000,
   },
 
   {
-    courseImg: sketch,
+    courseImg: "/images/sketchup.png",
     courseImgalt: "sketchup",
     link: "sketchup",
     tag: "Sketchup",
@@ -70,12 +57,12 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "2",
     instractorName: instractor[5].name,
-    instractorphoto: instractor5,
+    instractorphoto: "/images/instractor5.jpg",
     price: 5000,
   },
 
   {
-    courseImg: max,
+    courseImg: "/images/max.png",
     courseImgalt: "max",
     link: "3dmax",
     tag: "3D Max",
@@ -84,11 +71,11 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "3",
     instractorName: instractor[5].name,
-    instractorphoto: instractor5,
+    instractorphoto: "/images/instractor5.jpg",
     price: 14000,
   },
   {
-    courseImg: officeapplication,
+    courseImg: "/images/officeapplication.png",
     courseImgalt: "officeapplication",
     link: "office",
     tag: "Office",
@@ -97,11 +84,11 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "3",
     instractorName: instractor[3].name,
-    instractorphoto: instractor3,
+    instractorphoto: "/images/instractor3.jpg",
     price: 4500,
   },
   {
-    courseImg: officeapplication,
+    courseImg: "/images/officeapplication.png",
     courseImgalt: "office",
     link: "advancedoffice",
     tag: "Office",
@@ -110,11 +97,11 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "6",
     instractorName: instractor[3].name,
-    instractorphoto: instractor3,
+    instractorphoto: "/images/instractor3.jpg",
     price: 6000,
   },
   {
-    courseImg: graphicsdesign,
+    courseImg: "/images/graphicsdesign.jpg",
     courseImgalt: "graphicsdesign",
     link: "graphics",
     tag: "Graphics Design",
@@ -123,11 +110,11 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "3",
     instractorName: instractor[4].name,
-    instractorphoto: instractor4,
+    instractorphoto: "/images/instractor4.jpg",
     price: 7000,
   },
   {
-    courseImg: spokenenglish,
+    courseImg: "/images/spokenenglish.jpg",
     courseImgalt: "spokenenglish",
     link: "english",
     tag: "Language",
@@ -136,11 +123,11 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "3",
     instractorName: instractor[6].name,
-    instractorphoto: instractor7,
+    instractorphoto: "/images/instractor7.jpg",
     price: 5000,
   },
   {
-    courseImg: japanilanguage,
+    courseImg: "/images/japani.png",
     courseImgalt: "japani",
     link: "japani",
     tag: "Language",
@@ -149,11 +136,11 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "4",
     instractorName: instractor[6].name,
-    instractorphoto: instractor7,
+    instractorphoto: "/images/instractor7.jpg",
     price: 25000,
   },
   {
-    courseImg: videoediting,
+    courseImg: "/images/videoediting.jpg",
     courseImgalt: "videoediting",
     link: "videoediting",
     tag: "Video Editing",
@@ -162,12 +149,12 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "2",
     instractorName: "Moniruzzaman",
-    instractorphoto: instractor1,
+    instractorphoto: "/images/instractor1.jpg",
     price: 5000,
   },
 
   {
-    courseImg: computerhardware,
+    courseImg: "/images/computerhardware.png",
     courseImgalt: "web",
     link: "hardware",
     tag: "Hardware",
@@ -176,11 +163,11 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "3",
     instractorName: "Moniruzzaman",
-    instractorphoto: instractor1,
+    instractorphoto: "/images/instractor1.jpg",
     price: 7000,
   },
   {
-    courseImg: informationatechnology,
+    courseImg: "/images/informationtechnology.png",
     courseImgalt: "ict",
     link: "ict",
     tag: "Hardware",
@@ -189,11 +176,11 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "3",
     instractorName: instractor[1].name,
-    instractorphoto: instractor2,
+    instractorphoto: "/images/instractor2.jpg",
     price: 7000,
   },
   {
-    courseImg: digitalmarketing,
+    courseImg: "/images/digitalmarketing.jpg",
     courseImgalt: "digitalmarketing",
     link: "digitalmarketing",
     tag: "Digital Marketing",
@@ -202,11 +189,11 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "3",
     instractorName: instractor[1].name,
-    instractorphoto: instractor2,
+    instractorphoto: "/images/instractor2.jpg",
     price: 7000,
   },
   {
-    courseImg: freelancing,
+    courseImg: "/images/freelancing.png",
     courseImgalt: "freelancing",
     link: "freelancing",
     tag: "Freelancing",
@@ -215,7 +202,7 @@ export const courses: Course[] = [
     lesson: 10,
     duration: "3",
     instractorName: "Moniruzzaman",
-    instractorphoto: instractor1,
+    instractorphoto: "/images/instractor1.jpg",
     price: 6000,
   },
 ];

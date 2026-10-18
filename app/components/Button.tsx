@@ -10,7 +10,7 @@ const Button = ({ styles, children }: ButtonProps) => {
     <a href="#courses">
       <button
         type="button"
-        className={`py-1 btn px-8 sm:text-center  font-poppins font-medium text-[22px] text-primary outline-none rounded-[10px] hover:opacity-95 ${styles}`}
+        className={`py-1 btn px-8 sm:text-center  font-poppins font-medium text-[22px] text-primary outline-hidden rounded-[10px] hover:opacity-95 ${styles}`}
       >
         {children}
       </button>

@@ -1,44 +1,30 @@
-import {
-  bkash,
-    bteb,
-  dmpi,
-  gov,
-   mtb, nrb,
-  
-} from "@/public";
+import type { PartnerView } from "@/lib/types";
 
-export const partners = [
+export type Partner = PartnerView;
+
+export const partners: Partner[] = [
   {
-    img: nrb,
-
+    img: "/images/nrbbank.png",
     alt: "nrb",
   },
   {
-    img: mtb,
-
+    img: "/images/mtbl.webp",
     alt: "mtb",
   },
-
   {
-    img: bteb,
-
+    img: "/images/bteb.png",
     alt: "bteb",
   },
-
   {
-    img: gov,
-
+    img: "/images/gov.png",
     alt: "gov",
   },
   {
-    img: bkash,
-
+    img: "/images/bkash.svg",
     alt: "bkash",
   },
-
   {
-    img: dmpi,
-
+    img: "/images/dmpi_logo.jpg",
     alt: "dmpi",
   },
 ];

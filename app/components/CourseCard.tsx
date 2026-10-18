@@ -1,8 +1,7 @@
 import { lessonimg, rating, signal, day } from "@/public";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import type { Course } from "../constants";
+import type { CourseView } from "@/lib/types";
 
 const CourseCard = ({
   courseImg,
@@ -16,65 +15,83 @@ const CourseCard = ({
   instractorName,
   instractorphoto,
   price,
-}: Course) => {
+}: CourseView) => {
   return (
-    
     <Link
       href={`/courses/${link}`}
-      className="shadow-2xl rounded-md  hover:scale-95 cursor-pointer"
+      className="course-card group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-rose-100/80 hover:shadow-lg"
     >
-      <div>
+      <div className="relative overflow-hidden">
         <Image
           src={courseImg}
-          className="w-[368px] h-[207px]  "
+          width={640}
+          height={360}
+          className="aspect-video w-full object-cover transition duration-500 group-hover:scale-[1.04]"
           alt={courseImgalt}
         />
-      </div>
-      <div className="flex justify-between items-center p-2 mt-2 ">
-        <p className="text-[14px]">
-          <Image
-            src={rating}
-            className="w-[14px] inline mr-2"
-            alt="rating_image"
-          />
-          4.9/31
-        </p>
-        <p
-          className={`${tagbg} text-white  font-light rounded-md px-2 py-1  text-[14px]`}
+        <span
+          className={`${tagbg} absolute right-3 top-3 inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium text-white shadow-sm`}
         >
           {tag}
-        </p>
+        </span>
       </div>
-      <div>
-        <p className="text-center font-semibold text-[20px] text-blue-700">
-          {title}
-        </p>
-      </div>
-      <div className="flex justify-between items-center my-2  border-b-[1px] px-2 py-2 ">
-        <div className="flex items-center justify-between">
-          <Image src={lessonimg} className="w-[16px] h-[16px]" alt="lesson" />
-          <p className="text-[14px] ml-2">{lesson} Lessons</p>
-        </div>
-        <div className="flex items-center justify-between">
-          <Image src={day} className="w-[16px] h-[16px]" alt="day" />
-          <p className="text-[14px] ml-2">{duration} Month</p>
-        </div>
-        <div className="flex items-center justify-between">
-          <Image src={signal} className="w-[16px] h-[16px]" alt="signal" />
-          <p className="text-[14px] ml-2">Begineer</p>
-        </div>
-      </div>
-      <div className="flex justify-between items-center p-2">
-        <div className="flex justify-between items-center  ">
+
+      <div className="flex flex-1 flex-col px-5 pt-4">
+        <div className="mb-2 flex items-center gap-2 text-sm text-slate-600">
           <Image
-            src={instractorphoto}
-            className="w-[40px] h-[40px] rounded-full"
-            alt="instractor_photo"
+            src={rating}
+            width={14}
+            height={14}
+            className="h-[14px] w-[14px]"
+            alt="rating"
           />
-          <p className="text-[14px] font-normal ml-3">{instractorName}</p>
+          <span className="font-medium text-slate-700">4.9</span>
+          <span className="text-slate-400">(31)</span>
         </div>
 
-        <h6 className="text-[20px] font-semibold text-qpayone">BDT {price}</h6>
+        <h3 className="mb-3 line-clamp-2 text-lg font-semibold text-slate-900 transition-colors duration-300 group-hover:text-blue-700 md:text-[20px]">
+          {title}
+        </h3>
+
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 py-4">
+          <div className="flex items-center gap-2">
+            <Image
+              src={instractorphoto}
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-full object-cover ring-2 ring-white"
+              alt={instractorName}
+            />
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-slate-800">
+                {instractorName}
+              </span>
+              <span className="text-xs text-slate-500">Instructor</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-slate-600">BDT</span>
+            <span className="text-xl font-semibold text-qpayone">
+              {price.toLocaleString("en-BD")}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between gap-3 border-t border-slate-100 px-5 py-3 text-sm text-slate-600">
+        <div className="flex items-center gap-1.5">
+          <Image src={lessonimg} width={16} height={16} alt="lessons" />
+          <span>{lesson} Lessons</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Image src={day} width={16} height={16} alt="duration" />
+          <span>{duration} {Number(duration) > 1 ? "Months" : "Month"}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Image src={signal} width={16} height={16} alt="level" />
+          <span>Beginner</span>
+        </div>
       </div>
     </Link>
   );

@@ -21,8 +21,12 @@ module.exports = {
           "linear-gradient(90deg, rgba(236,27,36,1) 0%, rgba(249,159,31,1) 35%)",
       },
       fontFamily: {
-        bangla: ["Hind Siliguri", "sans-serif"],
-        plusjakarta: ["Plus Jakarta Sans", "sans-serif"],
+        bangla: ["var(--font-hind-siliguri)", "Hind Siliguri", "sans-serif"],
+        plusjakarta: [
+          "var(--font-plus-jakarta)",
+          "Plus Jakarta Sans",
+          "sans-serif",
+        ],
       },
     },
     screens: {
@@ -33,6 +37,7 @@ module.exports = {
       md: "1060px",
       lg: "1200px",
       xl: "1700px",
+      "2xl": "1800px",
     },
   },
 };

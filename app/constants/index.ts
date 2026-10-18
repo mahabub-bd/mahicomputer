@@ -6,22 +6,17 @@ import { socialMedia } from "./socialMedia";
 import { stats } from "./stats";
 
 import { categories } from "./categories";
-import { instractor } from "./instractor";
-import { review } from "./review";
 import { courses } from "./courses";
-import { partners } from "./partners";
-export type { Course } from "./courses";
 import { gallery } from "./gallery";
+import { instractor } from "./instractor";
+import { partners } from "./partners";
+import { review } from "./review";
+export type { Course } from "./courses";
 
 export {
-  partners,
-  footerLinks,
-  gallery,
-  navLinks,
-  instractor,
-  socialMedia,
-  stats,
   categories,
-  courses,
-  review,
+  courses, footerLinks,
+  gallery, instractor, navLinks, partners, review, socialMedia,
+  stats
 };
+

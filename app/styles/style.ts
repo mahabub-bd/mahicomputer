@@ -1,5 +1,6 @@
 const styles = {
-  boxWidth: "xl:max-w-[1300px] lg:max-w-[1200px] w-full mx-auto",
+  boxWidth:
+    "2xl:max-w-[1400px] xl:max-w-[1152px] lg:max-w-[1024px] w-full mx-auto",
 
   heading2:
     "font-poppins font-semibold vxs:text-[24px] lg:text-[36px] text-blue-600  vxs:leading-[56.8px] lg:leading-[70.8px] w-full",
@@ -17,8 +18,6 @@ const styles = {
 
   marginX: "sm:mx-16 mx-6",
   marginY: "sm:my-16 my-6",
-  mobileMenu:
-    "font-plusjakarta font-normal text-white hover:text-dimWhite cursor-pointer text-[16px] [&:not(:last-child)]:mb-2 font-semibold   ",
 };
 
 export const layout = {

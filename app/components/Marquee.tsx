@@ -1,5 +1,5 @@
-import { BadgeCheck, Megaphone } from "lucide-react";
 import type { SiteSettingsView } from "@/lib/types";
+import { BadgeCheck, Megaphone } from "lucide-react";
 
 /** Announcement items shown in the scrolling news bar (fallback when unset). */
 const DEFAULT_ITEMS = [

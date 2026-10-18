@@ -6,12 +6,12 @@ export const navLinks = [
   },
 
   {
-    id: "#about",
+    id: "about",
     title: "About",
     class: "nothoverable",
   },
   {
-    id: "#categories",
+    id: "services",
     title: "Services",
     class: "nothoverable",
   },
@@ -23,7 +23,7 @@ export const navLinks = [
   },
 
   {
-    id: "#review",
+    id: "feedback",
     title: "Feedback",
     class: "nothoverable",
   },
@@ -33,13 +33,13 @@ export const navLinks = [
     class: "nothoverable",
   },
   {
-    id: "#gallery",
+    id: "gallery",
     title: "Gallery",
     class: "nothoverable",
   },
 
   {
-    id: "#contact",
+    id: "contact",
     title: "Contact",
     class: "nothoverable",
   },

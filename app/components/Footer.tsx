@@ -224,7 +224,7 @@ const Footer = ({
                 {[
                   { name: "Notice", href: "/notice" },
                   { name: "All courses", href: "/courses" },
-                  { name: "Contact us", href: "/#contact" },
+                  { name: "Contact us", href: "/contact" },
                 ].map((item) => (
                   <li key={item.name}>
                     <Link

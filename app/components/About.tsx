@@ -96,7 +96,7 @@ const About = ({ settings }: AboutProps) => {
                 <ArrowRight size={16} aria-hidden />
               </Link>
               <Link
-                href="#contact"
+                href="/contact"
                 className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3 text-[15px] font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700"
               >
                 যোগাযোগ করুন

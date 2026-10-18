@@ -1,66 +1,117 @@
-@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+@import 'tailwindcss';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config '../tailwind.config.js';
 
-* {
-  font-family: "Hind Siliguri", sans-serif;
-  font-family: "Plus Jakarta Sans", sans-serif;
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+body {
+  font-family: var(--font-hind-siliguri), "Hind Siliguri", sans-serif;
+  color: #172033;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+html { scroll-behavior: smooth; }
+
+::selection { color: #fff; background: #1d4ed8; }
+
+.section-shell {
+  padding-top: clamp(3.5rem, 7vw, 6rem);
+  padding-bottom: clamp(3.5rem, 7vw, 6rem);
+}
+
+.section-title {
+  color: #112244;
+  font-size: clamp(1.8rem, 3vw, 2.65rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
 }
 
 .btn{
       background: linear-gradient(102.6deg,#23bfb8 -.49%,#85ea80 104.37%);
 }
 
-.features-mega-menu {
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  width: 300px;
-  transform: translate(0%, -55%);
-  left: 45%;
-  top: 70px;
-  transform-origin: top;
-  transform: scaleY(0);
-  transition: all 1s ease-in-out;
-  z-index: 100;
+/* ---------- Navbar hover dropdown ----------
+   A nav <li> marked "feature-hoverable" (from the admin panel) anchors the
+   dropdown below itself. Opening keeps the transform intact (no jump) and
+   works with the keyboard via :focus-within. */
 
-  @media only screen and (min-width: 1700px) {
-    width: 300px;
-    transform: translate(0%, -50%);
-    left: 50%;
-  }
-}
-
-/* #hoverable Class Styles */
 .feature-hoverable {
-  position: static;
-}
-
-.feature-hoverable > a:after {
-  content: "\25BC";
-  font-size: 10px;
-  padding-left: 6px;
   position: relative;
-  top: -1px;
 }
 
-.feature-hoverable:hover .features-mega-menu {
-  visibility: visible;
+.feature-hoverable > a {
+  gap: 6px;
+}
+
+/* Chevron indicator pointing down, flips up while the menu is open */
+.feature-hoverable > a::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid currentcolor;
+  border-bottom: 2px solid currentcolor;
+  border-radius: 1px;
+  transform: rotate(45deg);
+  transition: transform 0.25s ease;
+}
+
+.feature-hoverable:hover > a::after,
+.feature-hoverable:focus-within > a::after {
+  transform: rotate(225deg);
+}
+
+.features-mega-menu {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  padding-top: 12px; /* invisible bridge so the menu survives the trip down */
+  transform: translate(-50%, -10px) scale(0.985);
+  transform-origin: top center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.18s ease,
+    transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0.24s;
+  z-index: 120;
+}
+
+.feature-hoverable:hover .features-mega-menu,
+.feature-hoverable:focus-within .features-mega-menu {
   opacity: 1;
-  transform: scaleY(1);
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
 }
 
 /* Help Mega menu */
 
 .hero {
   position: relative;
-  height: 70vh;
+  min-height: 620px;
   
 
   background-size: cover;
-  background-position: top;
+  background-position: center;
 
 
   
@@ -71,15 +122,6 @@
   -moz-animation: animation1 2s linear infinite;
   -o-animation: animation1 2s linear infinite;
   animation: animation1 2s linear infinite;
-}
-
-.bg-black-gradient {
-  background: linear-gradient(
-    144.39deg,
-    #ffffff -278.56%,
-    #6d6d6d -78.47%,
-    #11101d 91.61%
-  );
 }
 
 .shape-1 {
@@ -314,30 +356,18 @@
   }
 }
 
-.sidebar {
-  -webkit-animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+/* Gallery lightbox */
+
+.gallery-lightbox {
+  animation: gallery-lightbox-in 0.2s ease-out both;
 }
 
-@-webkit-keyframes slide-top {
-  0% {
-    -webkit-transform: translateX(100px);
-    transform: translateX(100px);
+@keyframes gallery-lightbox-in {
+  from {
+    opacity: 0;
   }
-  100% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-  }
-}
-
-@keyframes slide-top {
-  0% {
-    -webkit-transform: translateY(100px);
-    transform: translateY(100px);
-  }
-  100% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
+  to {
+    opacity: 1;
   }
 }
 
@@ -356,7 +386,7 @@
 }
 
 .nav-font {
-  font-family: "Hind Siliguri", sans-serif !important;
+  font-family: var(--font-hind-siliguri), "Hind Siliguri", sans-serif !important;
 }
 
 .errorMessage {
@@ -373,4 +403,10 @@
   width: 200px;
   margin-left: 75px;
   background-color: green;
+}
+
+/* Shared course detail page system — retained for any legacy pages still relying on it.
+   The new CourseDetail component no longer needs these constraints. */
+.course-page {
+  min-height: 60vh;
 }

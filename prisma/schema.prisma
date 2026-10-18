@@ -1,0 +1,185 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String   @default("Admin")
+  createdAt    DateTime @default(now())
+}
+
+model Course {
+  id                 String   @id @default(cuid())
+  slug               String   @unique
+  title              String
+  tag                String   @default("")
+  tagbg              String   @default("bg-fuchsia-800")
+  imageUrl           String
+  imageAlt           String   @default("")
+  lesson             Int      @default(0)
+  duration           String   @default("")
+  instructorName     String   @default("")
+  instructorPhotoUrl String   @default("")
+  price              Int      @default(0)
+  description        Json     @default("[]")
+  modules            Json     @default("[]")
+  prerequisite       String   @default("")
+  seats              String   @default("")
+  published          Boolean  @default(true)
+  order              Int      @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  title     String
+  imageUrl  String
+  alt       String   @default("")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Instructor {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @default("")
+  imageUrl    String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  name      String
+  title     String   @default("Student")
+  content   String
+  course    String   @default("")
+  rating    Float    @default(5)
+  imageUrl  String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Partner {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  alt       String   @default("")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  alt       String   @default("")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SocialLink {
+  id        String   @id @default(cuid())
+  icon      String
+  link      String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model NavLink {
+  id        String   @id @default(cuid())
+  title     String
+  href      String
+  cssClass  String   @default("nothoverable")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FooterLinkGroup {
+  id        String       @id @default(cuid())
+  title     String
+  order     Int          @default(0)
+  links     FooterLink[]
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model FooterLink {
+  id      String          @id @default(cuid())
+  name    String
+  href    String
+  order   Int             @default(0)
+  groupId String
+  group   FooterLinkGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@index([groupId])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Enrollment {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String   @default("")
+  course    String   @default("")
+  message   String   @default("")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Notice {
+  id        String   @id @default(cuid())
+  title     String
+  body      String   @default("")
+  date      DateTime @default(now())
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Faq {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSetting {
+  id           Int      @id @default(1)
+  heroTitle    String   @default("")
+  heroSubtitle String   @default("")
+  heroNote     String   @default("")
+  aboutTitle   String   @default("")
+  aboutText    String   @default("")
+  phone        String   @default("")
+  email        String   @default("")
+  address      String   @default("")
+  stats        Json     @default("[]")
+  updatedAt    DateTime @updatedAt
+}

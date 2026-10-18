@@ -6,6 +6,7 @@ import { getSession } from "@/lib/auth";
 
 export const metadata = {
   title: "Admin — Mahi Computer",
+  robots: { index: false, follow: false },
 };
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {

@@ -4,9 +4,9 @@ import { prisma } from "@/lib/prisma";
 import {
   Bell,
   BookOpen,
-  GraduationCap,
   Eye,
   EyeOff,
+  GraduationCap,
   Handshake,
   Images,
   Inbox,
@@ -20,22 +20,14 @@ import {
   Star,
   Users,
 } from "lucide-react";
-<<<<<<< HEAD
+import Link from "next/link";
 import GalleryPreview from "../_components/dashboard/GalleryPreview";
 import QuickActions from "../_components/dashboard/QuickActions";
-import RecentCourses from "../_components/dashboard/RecentCourses";
-import RecentMessages from "../_components/dashboard/RecentMessages";
-import SiteInfo, { type ContactInfoItem } from "../_components/dashboard/SiteInfo";
-import StatCards, {
-  type SecondaryStat,
-  type StatCard,
-} from "../_components/dashboard/StatCards";
-import WelcomeCard from "../_components/dashboard/WelcomeCard";
+import SectionHeading from "../_components/dashboard/SectionHeading";
+import SiteInfo, { ContactInfoItem } from "../_components/dashboard/SiteInfo";
 import SocialLinksPanel from "../_components/dashboard/SocialLinksPanel";
-=======
-import Link from "next/link";
-import type { ReactNode } from "react";
->>>>>>> 8b57dd81f4b6274869ff3d96c8916c651ef76d20
+import StatCards, { SecondaryStat, StatCard } from "../_components/dashboard/StatCards";
+import WelcomeCard from "../_components/dashboard/WelcomeCard";
 
 export const dynamic = "force-dynamic";
 
@@ -82,9 +74,9 @@ const AdminDashboard = async () => {
     getSiteSettings(),
     session
       ? prisma.user.findUnique({
-          where: { id: session.sub },
-          select: { name: true },
-        })
+        where: { id: session.sub },
+        select: { name: true },
+      })
       : null,
   ]);
 
@@ -194,14 +186,6 @@ const AdminDashboard = async () => {
           sits under Recent courses so the left column isn't left with a
           tall empty gap beside the Quick actions stack. */}
       <div className="mt-8 grid items-start gap-6 lg:grid-cols-3">
-<<<<<<< HEAD
-        {/* min-w-0 lets this column shrink below the table's min width, so
-            the overflow-x-auto inside RecentCourses actually scrolls instead
-            of the whole page overflowing on mobile. */}
-        <div className="min-w-0 space-y-6 lg:col-span-2">
-          <RecentCourses courses={recentCourses} />
-          <RecentMessages messages={recentMessages} unreadCount={unreadCount} />
-=======
         <div className="space-y-6 lg:col-span-2">
           {/* Recent courses */}
           <div>
@@ -311,7 +295,6 @@ const AdminDashboard = async () => {
               </div>
             )}
           </div>
->>>>>>> 8b57dd81f4b6274869ff3d96c8916c651ef76d20
         </div>
 
         {/* Quick actions + site info share the right column */}

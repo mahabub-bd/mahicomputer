@@ -1,9 +1,21 @@
 import styles from "@/app/styles/style";
+<<<<<<< HEAD
 import { getPublicNotices } from "@/lib/data";
+=======
+import { getNotices } from "@/lib/data";
+>>>>>>> 8b57dd81f4b6274869ff3d96c8916c651ef76d20
 import { SITE_NAME } from "@/lib/site";
 import type { Metadata } from "next";
 
 // Content is DB-driven and editable from the admin panel — never prerender at build time.
+
+export const metadata: Metadata = {
+  title: "Notice Board",
+  description:
+    "Official announcements, admission notices and exam updates from Mahi Computer Training Center.",
+  alternates: { canonical: "/notice" },
+  openGraph: { url: "/notice", title: `Notice Board | ${SITE_NAME}` },
+};
 
 export const metadata: Metadata = {
   title: "Notice Board",

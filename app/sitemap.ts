@@ -1,4 +1,4 @@
-import { getPublicCourses, getPublicPosts } from "@/lib/data";
+import { getCourses } from "@/lib/data";
 import { absoluteUrl } from "@/lib/site";
 import type { MetadataRoute } from "next";
 
@@ -12,16 +12,12 @@ const STATIC_PATHS = [
   "/services",
   "/gallery",
   "/notice",
-  "/blogs",
   "/feedback",
   "/contact",
 ] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [courses, posts] = await Promise.all([
-    getPublicCourses(),
-    getPublicPosts(),
-  ]);
+  const courses = await getCourses();
 
   const staticPages: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => ({
     url: absoluteUrl(path),
@@ -37,12 +33,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  const postPages: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: absoluteUrl(`/blogs/${post.slug}`),
-    lastModified: post.updatedAt,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
-
-  return [...staticPages, ...coursePages, ...postPages];
+  return [...staticPages, ...coursePages];
 }

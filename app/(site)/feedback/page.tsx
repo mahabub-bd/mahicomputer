@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { getPublicReviewViews } from "@/lib/data";
+=======
+import { getReviewViews } from "@/lib/data";
+>>>>>>> 8b57dd81f4b6274869ff3d96c8916c651ef76d20
 import { SITE_NAME } from "@/lib/site";
 import AosProvider from "@/app/_components/AosProvider";
 import { Review } from "@/app/components";

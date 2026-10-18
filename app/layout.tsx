@@ -58,7 +58,9 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: "/uploads/1792310963250-67078284e0f7.webp",
+        url: "/images/hero.jpg",
+        width: 2000,
+        height: 1199,
         alt: "Mahi Computer Training Center campus and students",
       },
     ],
@@ -90,8 +92,6 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       data-scroll-behavior="smooth"
       className={`${hindSiliguri.variable} ${plusJakarta.variable}`}
     >
-      {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla's
-          cz-shortcut-listen) inject attributes into <body> before hydration. */}
       <body suppressHydrationWarning>
         {children}
         <Analytics />

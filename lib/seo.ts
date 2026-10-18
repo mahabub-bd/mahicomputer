@@ -1,13 +1,7 @@
-import type { Course, Faq, SocialLink } from "@/lib/types";
-import type { SiteSettingsView } from "@/lib/types";
+import type { Course, Faq, SiteSettingsView, SocialLink } from "@/lib/types";
 import { toStringArray } from "./course-view";
 import { absoluteUrl, assetUrl, SITE_NAME, SITE_SHORT_NAME, truncate } from "./site";
 
-/**
- * JSON-LD builders for the homepage (schema.org rich-result eligibility).
- * Everything is derived from the admin-managed DB content so it never
- * drifts from what the page renders.
- */
 
 type JsonLdNode = Record<string, unknown>;
 
@@ -31,7 +25,7 @@ function buildOrganization(settings: SiteSettingsView, socials: SocialLink[]): J
       width: 134,
       height: 67,
     },
-    image: assetUrl("/uploads/1792310963250-67078284e0f7.webp"),
+    image: assetUrl("/images/hero.jpg"),
     description: truncate(
       settings.aboutText ||
         "Practical computer and IT training courses with expert instructors, hands-on labs and certification.",

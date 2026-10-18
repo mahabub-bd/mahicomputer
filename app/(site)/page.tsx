@@ -1,4 +1,5 @@
 import {
+<<<<<<< HEAD
   getPublicCategories,
   getPublicCourses,
   getPublicFaqs,
@@ -9,6 +10,18 @@ import {
   getPublicReviewViews,
   getPublicSiteSettings,
   getPublicSocialLinks,
+=======
+  getCourses,
+  getCategories,
+  getFaqs,
+  getGalleryViews,
+  getInstructors,
+  getNotices,
+  getPartnerViews,
+  getReviewViews,
+  getSiteSettings,
+  getSocialLinks,
+>>>>>>> 8b57dd81f4b6274869ff3d96c8916c651ef76d20
   toCategoryView,
   toCourseView,
   toInstructorView,
@@ -42,11 +55,32 @@ import WhyChooseUs from "../components/WhyChooseUs";
 const HOME_TITLE = `${SITE_NAME} — Computer & IT Courses`;
 
 export const generateMetadata = async (): Promise<Metadata> => {
+<<<<<<< HEAD
   const settings = await getPublicSiteSettings();
 
   // Strictly DB-driven: no fallback copy.
   const description = truncate(settings.heroSubtitle);
   const heroImage = settings.heroImageUrl;
+=======
+  const [settings, courses, categories] = await Promise.all([
+    getSiteSettings(),
+    getCourses(),
+    getCategories(),
+  ]);
+
+  // DB-driven description: hero line, or a real course/category name list.
+  const topicNames = [
+    ...new Set([
+      ...categories.slice(0, 4).map((c) => c.title),
+      ...courses.slice(0, 6).map((c) => c.title),
+    ]),
+  ].join(", ");
+  const fallback = topicNames
+    ? `${SITE_NAME} offers ${topicNames} and more — expert instructors, hands-on training and certification.`
+    : `${SITE_NAME} — practical computer and IT training with expert instructors, hands-on labs and certification.`;
+  const description = truncate(settings.heroSubtitle || fallback);
+  const heroImage = settings.heroImageUrl || "/images/hero.jpg";
+>>>>>>> 8b57dd81f4b6274869ff3d96c8916c651ef76d20
 
   return {
     title: { absolute: HOME_TITLE },
@@ -56,15 +90,32 @@ export const generateMetadata = async (): Promise<Metadata> => {
       url: `${SITE_URL}/`,
       title: HOME_TITLE,
       description,
+<<<<<<< HEAD
       ...(heroImage
         ? { images: [{ url: heroImage, alt: SITE_NAME }] }
         : {}),
+=======
+      images: [
+        {
+          url: heroImage,
+          // Dimensions only known for the bundled fallback image.
+          ...(settings.heroImageUrl
+            ? {}
+            : { width: 2000, height: 1199 }),
+          alt: SITE_NAME,
+        },
+      ],
+>>>>>>> 8b57dd81f4b6274869ff3d96c8916c651ef76d20
     },
     twitter: {
       card: "summary_large_image",
       title: HOME_TITLE,
       description,
+<<<<<<< HEAD
       ...(heroImage ? { images: [heroImage] } : {}),
+=======
+      images: [heroImage],
+>>>>>>> 8b57dd81f4b6274869ff3d96c8916c651ef76d20
     },
   };
 };
@@ -72,6 +123,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 const HomePage = async () => {
   const [rawCourses, categories, instructors, reviews, partners, gallery, settings, notices, faqs, socials] =
     await Promise.all([
+<<<<<<< HEAD
       getPublicCourses(),
       getPublicCategories(),
       getPublicInstructors(),
@@ -82,6 +134,18 @@ const HomePage = async () => {
       getPublicNotices(),
       getPublicFaqs(),
       getPublicSocialLinks(),
+=======
+      getCourses(),
+      getCategories(),
+      getInstructors(),
+      getReviewViews(),
+      getPartnerViews(),
+      getGalleryViews(),
+      getSiteSettings(),
+      getNotices(),
+      getFaqs(),
+      getSocialLinks(),
+>>>>>>> 8b57dd81f4b6274869ff3d96c8916c651ef76d20
     ]);
 
   const courses = rawCourses.map(toCourseView);

@@ -1,6 +1,5 @@
 import { Star } from "lucide-react";
 import { ReviewCard } from "../components";
-import { review as staticReviews } from "../constants";
 import styles from "../styles/style";
 import type { ReviewView } from "@/lib/types";
 
@@ -8,7 +7,7 @@ interface ReviewProps {
   reviews?: ReviewView[];
 }
 
-const Review = ({ reviews = staticReviews }: ReviewProps) => {
+const Review = ({ reviews = [] }: ReviewProps) => {
   const rated = reviews.filter((r) => r.rating > 0);
   const avg = rated.length
     ? rated.reduce((sum, r) => sum + r.rating, 0) / rated.length

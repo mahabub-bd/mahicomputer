@@ -4,10 +4,10 @@ import EnrollButton from "@/app/_components/EnrollButton";
 import type { CourseView, NavLinkView, SiteSettingsView, SocialView } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { logo } from "../../public";
 import { MegaMenu, PreHeader, TogglerMenu } from "../components";
-import { navLinks as staticNavLinks } from "../constants";
 import useScroll from "../hooks/useScroll";
 import styles from "../styles/style";
 
@@ -22,13 +22,48 @@ interface NavbarProps {
 const toHref = (id: string) =>
   id.startsWith("#") ? `/${id}` : id.startsWith("/") ? id : `/${id}`;
 
+/**
+ * Which nav item lights up for the current URL.
+ *
+ * Real routes are derived from the pathname, so a hard load of e.g.
+ * /courses never leaves "Home" highlighted. In-page sections ("#courses")
+ * can't be read from the pathname, so they follow the click while we're on
+ * "/" — and light up for their route ("/courses") anywhere else, which is
+ * what the mega menu's "View all courses" link points at.
+ */
+const isNavActive = (
+  nav: NavLinkView,
+  href: string,
+  pathname: string,
+  section: string | null,
+) => {
+  if (href.startsWith("/#")) {
+    const route = `/${nav.id.slice(1)}`;
+    return pathname === "/"
+      ? section === nav.title
+      : pathname === route || pathname.startsWith(`${route}/`);
+  }
+  if (href === "/") return pathname === "/" && section === null;
+  return pathname === href || pathname.startsWith(`${href}/`);
+};
+
 const Navbar = ({
   courses = [],
   social,
-  navLinks = staticNavLinks,
+  navLinks = [],
   settings,
 }: NavbarProps) => {
-  const [active, setActive] = useState("Home");
+  const pathname = usePathname();
+
+  // Only section links write this; cleared as soon as a real route opens.
+  // (Adjust-during-render pattern instead of an effect.)
+  const [section, setSection] = useState<string | null>(null);
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    // Coming home to "/#courses" keeps the section lit; anything else resets.
+    if (pathname !== "/" && section !== null) setSection(null);
+  }
 
   const { scrolled } = useScroll();
 
@@ -60,13 +95,14 @@ const Navbar = ({
           <ul className="list-none hidden flex-1 items-center justify-center sm:flex">
             {navLinks.map((nav) => {
               const hasDropdown = (nav.class ?? "").includes("feature-hoverable");
-              const isActive = active === nav.title;
+              const href = toHref(nav.id);
+              const isActive = isNavActive(nav, href, pathname, section);
 
               return (
                 <li key={nav.id} className={`${nav.class} nav-font relative`}>
                   <Link
-                    href={toHref(nav.id)}
-                    onClick={() => setActive(nav.title)}
+                    href={href}
+                    onClick={() => setSection(href.startsWith("/#") ? nav.title : null)}
                     className={`relative inline-flex items-center px-2.5 py-6 text-[15px] font-semibold transition-colors before:absolute before:bottom-4 before:left-1/2 before:h-0.75 before:w-[calc(100%-20px)] before:-translate-x-1/2 before:rounded-full before:bg-blue-700 before:transition-transform lg:px-3 ${
                       isActive
                         ? "before:scale-x-100 text-blue-700"

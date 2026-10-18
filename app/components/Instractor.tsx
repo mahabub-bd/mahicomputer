@@ -1,15 +1,13 @@
-import React from "react";
-import styles from "../styles/style";
 import Image from "next/image";
+import styles from "../styles/style";
 
-import { instractor as staticInstractor } from "../constants";
 import type { InstructorView } from "@/lib/types";
 
 interface InstractorProps {
   instructors?: InstructorView[];
 }
 
-const Instractor = ({ instructors = staticInstractor }: InstractorProps) => {
+const Instractor = ({ instructors = [] }: InstractorProps) => {
   return (
     <section
       id="instructors"
@@ -41,7 +39,7 @@ const Instractor = ({ instructors = staticInstractor }: InstractorProps) => {
               data-aos-delay={(i % 5) * 80}
             >
               <div className="group h-full cursor-pointer rounded-2xl border border-slate-100 bg-white p-3 shadow-sm transition duration-300 hover:-translate-y-1.5 hover:shadow-xl">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-slate-100">
+                <div className="relative aspect-4/5 overflow-hidden rounded-xl bg-slate-100">
                   <Image
                     src={item.img}
                     alt={item.name}
@@ -57,7 +55,7 @@ const Instractor = ({ instructors = staticInstractor }: InstractorProps) => {
                     {item.name}
                   </h3>
                   <p className="mt-2 inline-block max-w-full truncate rounded-full bg-blue-50 px-3 py-1 text-[12px] font-semibold text-blue-700">
-                    {item.des?.trim() || "Instructor"}
+                    {item.des}
                   </p>
                 </div>
               </div>

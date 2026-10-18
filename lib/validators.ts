@@ -22,6 +22,7 @@ export const loginSchema = z.object({
 export const userCreateSchema = z.object({
   email: z.string().email("A valid email is required").max(200),
   name: z.string().min(1, "Name is required").max(100),
+  imageUrl: imageField,
   password: z
     .string()
     .min(8, "Password must be at least 8 characters")
@@ -32,6 +33,7 @@ export const userCreateSchema = z.object({
 export const userUpdateSchema = z.object({
   email: z.string().email("A valid email is required").max(200),
   name: z.string().min(1, "Name is required").max(100),
+  imageUrl: imageField,
   password: z.union([
     z.literal(""),
     z
@@ -52,6 +54,10 @@ export const courseSchema = z.object({
   duration: z.string().max(50).default(""),
   instructorName: z.string().max(200).default(""),
   instructorPhotoUrl: imageField,
+  /** Selected Instructor row; the API syncs name/photo from it on save. */
+  instructorId: z.string().max(50).nullish(),
+  /** Selected Category row. */
+  categoryId: z.string().max(50).nullish(),
   price: z.coerce.number().int().min(0).default(0),
   rating: z.coerce.number().min(0).max(5).default(4.9),
   reviewCount: z.coerce.number().int().min(0).default(31),
@@ -113,6 +119,16 @@ export const noticeSchema = z.object({
   order: z.coerce.number().int().default(0),
 });
 
+export const postSchema = z.object({
+  slug,
+  title: z.string().min(1, "Title is required").max(200),
+  excerpt: z.string().max(500).default(""),
+  content: z.string().max(50000).default(""),
+  imageUrl: imageField,
+  imageAlt: z.string().max(200).default(""),
+  published: z.coerce.boolean().default(true),
+});
+
 export const faqSchema = z.object({
   question: z.string().min(1, "Question is required").max(500),
   answer: z.string().min(1, "Answer is required").max(5000),
@@ -144,6 +160,10 @@ export const contactMessageSchema = z.object({
   email: z.string().email("Invalid email").max(200),
   phone: z.string().min(1, "Phone is required").max(50),
   message: z.string().min(1, "Message is required").max(5000),
+});
+
+export const newsletterSchema = z.object({
+  email: z.string().email("Invalid email").max(200),
 });
 
 export const enrollmentSchema = z.object({
@@ -209,6 +229,7 @@ export type PartnerInput = z.infer<typeof partnerSchema>;
 export type GalleryItemInput = z.infer<typeof galleryItemSchema>;
 export type SocialLinkInput = z.infer<typeof socialLinkSchema>;
 export type NoticeInput = z.infer<typeof noticeSchema>;
+export type PostInput = z.infer<typeof postSchema>;
 export type FaqInput = z.infer<typeof faqSchema>;
 export type NavLinkInput = z.infer<typeof navLinkSchema>;
 export type FooterGroupInput = z.infer<typeof footerGroupSchema>;

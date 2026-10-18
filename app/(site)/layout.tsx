@@ -1,9 +1,9 @@
 import {
-  getCourseViews,
-  getFooterLinkGroups,
-  getNavLinks,
-  getSiteSettings,
-  getSocialLinks,
+  getPublicCourseViews,
+  getPublicFooterLinkGroups,
+  getPublicNavLinks,
+  getPublicSiteSettings,
+  getPublicSocialLinks,
   toFooterGroupView,
   toNavLinkView,
 } from "@/lib/data";
@@ -11,15 +11,15 @@ import type { ReactNode } from "react";
 import { Footer, Navbar } from "../components";
 
 // Content is DB-driven and editable from the admin panel — never prerender at build time.
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const SiteLayout = async ({ children }: { children: ReactNode }) => {
   const [courses, social, navLinks, footerGroups, settings] = await Promise.all([
-    getCourseViews(),
-    getSocialLinks(),
-    getNavLinks(),
-    getFooterLinkGroups(),
-    getSiteSettings(),
+    getPublicCourseViews(),
+    getPublicSocialLinks(),
+    getPublicNavLinks(),
+    getPublicFooterLinkGroups(),
+    getPublicSiteSettings(),
   ]);
 
   return (

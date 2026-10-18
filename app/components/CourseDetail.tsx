@@ -1,5 +1,6 @@
-import Image from "next/image";
-import Link from "next/link";
+import EnrollButton from "@/app/_components/EnrollButton";
+import styles from "@/app/styles/style";
+import type { Course } from "@/lib/types";
 import {
   Award,
   BookOpen,
@@ -7,13 +8,14 @@ import {
   Users,
   Wallet,
 } from "lucide-react";
-import styles from "@/app/styles/style";
-import EnrollButton from "@/app/_components/EnrollButton";
-import type { Course } from "@/lib/types";
+import Image from "next/image";
+import Link from "next/link";
 
 interface CourseDetailProps {
   course: Course;
   instructorDescription?: string;
+  /** Category title shown in the breadcrumb (from the linked Category row). */
+  category?: string;
   /** Intro paragraphs shown under the About heading (from the DB). */
   description?: string[];
   /** Syllabus items under the Inside heading (from the DB). */
@@ -36,6 +38,7 @@ const chipCls =
 const CourseDetail = ({
   course,
   instructorDescription = "",
+  category = "",
   description = [],
   modules = [],
   prerequisite = "SSC pass / basic computer knowledge",
@@ -67,19 +70,46 @@ const CourseDetail = ({
             <Link href="/courses" className="transition-colors hover:text-blue-700">
               Courses
             </Link>
+            {category && (
+              <>
+                <span aria-hidden>/</span>
+                <span className="font-semibold text-slate-800">{category}</span>
+              </>
+            )}
             <span aria-hidden>/</span>
             <span className="font-semibold text-slate-800">{course.title}</span>
           </nav>
 
           <div className="mt-6 grid items-center gap-8 lg:grid-cols-[1.2fr_1fr] xl:gap-12">
             <div>
-              {course.tag && (
-                <span
-                  className={`inline-block rounded-full px-3 py-1 text-[12px] font-bold text-white ${course.tagbg || "bg-blue-600"}`}
-                >
-                  {course.tag}
-                </span>
-              )}
+              <div className="flex flex-wrap items-center gap-2">
+                {category && (
+                  <>
+                    <span className="text-[12px] font-bold uppercase tracking-wider text-slate-500">
+                      Category
+                    </span>
+                    <Link
+                      href="/courses"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-3 py-1 text-[12px] font-bold text-white transition hover:bg-blue-700"
+                    >
+                      <BookOpen size={12} aria-hidden />
+                      {category}
+                    </Link>
+                  </>
+                )}
+                {course.tag && (
+                  <>
+                    <span className="text-[12px] font-bold uppercase tracking-wider text-slate-500">
+                      Tag
+                    </span>
+                    <span
+                      className={`inline-block rounded-full px-3 py-1 text-[12px] font-bold text-white ${course.tagbg || "bg-blue-600"}`}
+                    >
+                      {course.tag}
+                    </span>
+                  </>
+                )}
+              </div>
 
               <h1 className="mt-4 text-[clamp(1.9rem,4vw,3rem)] font-bold leading-tight tracking-tight text-slate-900">
                 {course.title}
@@ -108,7 +138,7 @@ const CourseDetail = ({
               </div>
             </div>
 
-            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-xl">
+            <div className="relative aspect-16/10 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-xl">
               <Image
                 src={course.imageUrl}
                 alt={course.imageAlt || course.title}

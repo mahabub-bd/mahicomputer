@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { resolveCourseRelations } from "@/lib/data";
 import { courseSchema } from "@/lib/validators";
 
 export async function GET() {
@@ -24,8 +26,17 @@ export async function POST(req: Request) {
     );
   }
 
+  const data = await resolveCourseRelations(parsed.data);
+  if (!data) {
+    return NextResponse.json(
+      { error: "Selected instructor or category not found", issues: ["Selected instructor or category not found"] },
+      { status: 400 }
+    );
+  }
+
   try {
-    const course = await prisma.course.create({ data: parsed.data });
+    const course = await prisma.course.create({ data });
+    revalidateTag("public-data", "max");
     return NextResponse.json(course, { status: 201 });
   } catch (e: unknown) {
     if (typeof e === "object" && e !== null && "code" in e && e.code === "P2002") {

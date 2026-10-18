@@ -71,7 +71,7 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
         </div>
         <button
           onClick={() => openModal()}
-          className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
+          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
         >
           <Plus size={16} />
           Add group
@@ -85,8 +85,10 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
             className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
           >
             <div className="flex items-center justify-between gap-3">
-              <h2 className="font-semibold text-slate-900">{g.title}</h2>
-              <div className="flex gap-2">
+              <h2 className="min-w-0 truncate font-semibold text-slate-900">
+                {g.title}
+              </h2>
+              <div className="flex shrink-0 gap-2">
                 <button
                   onClick={() => openModal(g)}
                   title="Edit"

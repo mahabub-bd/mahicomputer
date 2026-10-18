@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { siteSettingSchema } from "@/lib/validators";
@@ -29,5 +30,6 @@ export async function PUT(req: Request) {
     update: parsed.data,
     create: { id: 1, ...parsed.data },
   });
+  revalidateTag("public-data", "max");
   return NextResponse.json(settings);
 }

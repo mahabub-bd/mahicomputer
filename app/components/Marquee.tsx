@@ -1,15 +1,6 @@
 import type { SiteSettingsView } from "@/lib/types";
 import { BadgeCheck, Megaphone } from "lucide-react";
 
-/** Announcement items shown in the scrolling news bar (fallback when unset). */
-const DEFAULT_ITEMS = [
-  "বাংলাদেশ কারিগরি শিক্ষাবোর্ড কর্তৃক অনুমোদিত প্রতিষ্ঠান। কোড: 50969",
-  "মাহি কম্পিউটার আধুনিক কম্পিউটার শিক্ষার উন্নয়নে এক অনন্য উদাহরণ।",
-  "মাহী সকল কোর্স 85% প্যাক্ট্রিক্যাল কাজের মাধ্যমে বাস্তবমূখী ট্রেনিং প্রদান করেন।",
-  "প্রশিক্ষন শেষে কারিগরি শিক্ষাবোর্ডের অধীনে পরীক্ষার মাধ্যমে সরকারী সার্টিফিকেট প্রদান করেন।",
-  "মাহী 100% পাশের নিশ্চয়তা প্রদান করে ইনশাল্লাহ।",
-];
-
 interface MarqueeProps {
   settings?: SiteSettingsView;
 }
@@ -32,8 +23,7 @@ const MarqueeList = ({ items, hidden = false }: { items: string[]; hidden?: bool
 );
 
 const Marquee = ({ settings }: MarqueeProps) => {
-  const items =
-    settings?.marqueeItems?.filter((s) => s.trim()) ?? DEFAULT_ITEMS;
+  const items = settings?.marqueeItems?.filter((s) => s.trim()) ?? [];
 
   return (
     <section

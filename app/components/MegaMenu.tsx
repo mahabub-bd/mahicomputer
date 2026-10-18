@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import type { CourseView } from "@/lib/types";
 
@@ -16,7 +17,7 @@ const MegaMenu = ({ menuLink, menu }: MegaMenuProps) => {
   return (
     <div
       className={`features-mega-menu ${
-        wide ? "w-[min(90vw,640px)]" : "w-[min(90vw,330px)]"
+        wide ? "w-[min(90vw,660px)]" : "w-[min(90vw,390px)]"
       }`}
     >
       <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_24px_60px_-15px_rgba(15,35,75,0.30)]">
@@ -34,9 +35,20 @@ const MegaMenu = ({ menuLink, menu }: MegaMenuProps) => {
             <li key={item.link}>
               <Link
                 href={`/${menu}/${item.link}`}
-                className="group/course flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-blue-50"
+                className="group/course flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-blue-50"
               >
-                <span className="min-w-0">
+                {item.courseImg && (
+                  <span className="h-10 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-100">
+                    <Image
+                      src={item.courseImg}
+                      alt={item.courseImgalt || item.title}
+                      width={56}
+                      height={40}
+                      className="h-full w-full object-cover transition duration-300 group-hover/course:scale-110"
+                    />
+                  </span>
+                )}
+                <span className="min-w-0 flex-1">
                   <span className="block truncate text-[15px] font-semibold text-slate-800 transition-colors group-hover/course:text-blue-700">
                     {item.title}
                   </span>

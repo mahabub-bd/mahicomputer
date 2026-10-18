@@ -28,6 +28,24 @@ const NavLinksList = ({ links }: NavLinksListProps) => {
     setModal({ link });
   };
 
+  // Shared with the mobile card list below so the two views cannot drift.
+  const actions = (l: NavLink) => (
+    <div className="flex flex-wrap gap-2">
+      <button
+        onClick={() => openModal(l)}
+        title="Edit"
+        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+      >
+        <Pencil size={15} />
+        Edit
+      </button>
+      <DeleteButton
+        url={`/api/admin/nav-links/${l.id}`}
+        confirmText={`Delete "${l.title}"?`}
+      />
+    </div>
+  );
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
@@ -58,15 +76,16 @@ const NavLinksList = ({ links }: NavLinksListProps) => {
         </div>
         <button
           onClick={() => openModal()}
-          className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
+          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
         >
           <Plus size={16} />
           Add link
         </button>
       </div>
 
-      <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
+      {/* ---------- md and up: table ---------- */}
+      <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
+        <table className="w-full min-w-[800px] text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Title</th>
@@ -84,20 +103,7 @@ const NavLinksList = ({ links }: NavLinksListProps) => {
                 <td className="px-4 py-3 text-slate-500">{l.cssClass}</td>
                 <td className="px-4 py-3">{l.order}</td>
                 <td className="px-4 py-3">
-                  <div className="flex items-center justify-end gap-2">
-                    <button
-                      onClick={() => openModal(l)}
-                      title="Edit"
-                      className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
-                    >
-                      <Pencil size={15} />
-                      Edit
-                    </button>
-                    <DeleteButton
-                      url={`/api/admin/nav-links/${l.id}`}
-                      confirmText={`Delete "${l.title}"?`}
-                    />
-                  </div>
+                  <div className="flex justify-end">{actions(l)}</div>
                 </td>
               </tr>
             ))}
@@ -111,6 +117,48 @@ const NavLinksList = ({ links }: NavLinksListProps) => {
           </tbody>
         </table>
       </div>
+
+      {/* ---------- below md: one card per link ----------
+          Five columns are unusable at phone widths, so each row becomes
+          a stacked card: title, the target href, a class / order grid
+          and a wrapping action row. */}
+      <ul className="space-y-3 md:hidden">
+        {links.map((l) => (
+          <li key={l.id} className="rounded-xl bg-white p-4 shadow-sm">
+            <p className="min-w-0 truncate font-medium text-slate-900">
+              {l.title}
+            </p>
+            <p className="truncate text-xs text-slate-400">{l.href}</p>
+
+            <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
+              <div className="min-w-0">
+                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
+                  Class
+                </dt>
+                <dd className="mt-0.5 truncate text-sm font-medium text-slate-700">
+                  {l.cssClass}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
+                  Order
+                </dt>
+                <dd className="mt-0.5 text-sm font-medium text-slate-700">
+                  {l.order}
+                </dd>
+              </div>
+            </dl>
+
+            <div className="mt-3">{actions(l)}</div>
+          </li>
+        ))}
+
+        {links.length === 0 && (
+          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
+            No nav links yet.
+          </li>
+        )}
+      </ul>
 
       <Modal
         open={modal !== null}

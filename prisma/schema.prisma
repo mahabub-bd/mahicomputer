@@ -12,7 +12,31 @@ model User {
   email        String   @unique
   passwordHash String
   name         String   @default("Admin")
+  imageUrl     String   @default("")
   createdAt    DateTime @default(now())
+  notices      Notice[]
+  posts        Post[]
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Post {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  excerpt       String   @default("")
+  content       String   @default("")
+  imageUrl      String   @default("")
+  imageAlt      String   @default("")
+  published     Boolean  @default(true)
+  publishedById String?
+  publishedBy   User?    @relation(fields: [publishedById], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Course {
@@ -27,6 +51,10 @@ model Course {
   duration           String   @default("")
   instructorName     String   @default("")
   instructorPhotoUrl String   @default("")
+  instructorId       String?
+  instructor         Instructor? @relation(fields: [instructorId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  categoryId         String?
+  category           Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   price              Int      @default(0)
   rating             Float    @default(4.9)
   reviewCount        Int      @default(31)
@@ -48,6 +76,7 @@ model Category {
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  courses   Course[]
 }
 
 model Instructor {
@@ -58,6 +87,7 @@ model Instructor {
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  courses     Course[]
 }
 
 model Review {
@@ -159,14 +189,16 @@ model Enrollment {
 }
 
 model Notice {
-  id        String   @id @default(cuid())
-  title     String
-  body      String   @default("")
-  date      DateTime @default(now())
-  published Boolean  @default(true)
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(cuid())
+  title        String
+  body         String   @default("")
+  date         DateTime @default(now())
+  published    Boolean  @default(true)
+  order        Int      @default(0)
+  publishedById String?
+  publishedBy  User?    @relation(fields: [publishedById], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Faq {

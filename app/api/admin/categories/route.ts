@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { categorySchema } from "@/lib/validators";
@@ -25,5 +26,6 @@ export async function POST(req: Request) {
   }
 
   const category = await prisma.category.create({ data: parsed.data });
+  revalidateTag("public-data", "max");
   return NextResponse.json(category, { status: 201 });
 }

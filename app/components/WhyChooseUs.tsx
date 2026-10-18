@@ -1,3 +1,5 @@
+import type { SiteSettingsView } from "@/lib/types";
+import type { LucideIcon } from "lucide-react";
 import {
   BadgeCheck,
   BriefcaseBusiness,
@@ -6,40 +8,6 @@ import {
   Users,
   Wifi,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-import type { SiteSettingsView } from "@/lib/types";
-
-/** Fallback cards when the admin hasn't defined whyFeatures yet. */
-const DEFAULT_FEATURES: { title: string; text: string }[] = [
-  {
-    title: "৮৫% হাতে-কলমে প্র্যাক্টিক্যাল",
-    text: "প্রতিটি ক্লাসে ল্যাবে বসে নিজে করে শেখা — শুধু থিওরি নয়।",
-  },
-  {
-    title: "অভিজ্ঞ প্রশিক্ষক",
-    text: "ইন্ডাস্ট্রি-অভিজ্ঞ প্রশিক্ষকমণ্ডলীর তত্ত্বাবধানে প্রশিক্ষণ।",
-  },
-  {
-    title: "সার্টিফিকেট",
-    text: "কোর্স শেষে সনদ যা চাকরি ও ফ্রিল্যান্সিংয়ে কাজে লাগে।",
-  },
-  {
-    title: "ফ্রিল্যান্সিং গাইডলাইন",
-    text: "কোর্স শেষে ফ্রিল্যান্সিং ও চাকরির দিকনির্দেশনা।",
-  },
-  {
-    title: "ফ্লেক্সিবল ব্যাচ",
-    text: "সকাল-বিকাল-সন্ধ্যা — নিজের সুবিধামতো ব্যাচ বেছে নিন।",
-  },
-  {
-    title: "মডার্ন ল্যাব ও ইন্টারনেট",
-    text: " সম্পূর্ণ এসি ল্যাব, হাই-স্পিড ইন্টারনেটসহ প্রতিটি পিসি।",
-  },
-];
-
-const DEFAULT_TITLE = "কেন মাহি কম্পিউটার ট্রেনিং সেন্টার?";
-const DEFAULT_SUBTITLE =
-  "সঠিক প্রশিক্ষণই ক্যারিয়ারের প্রথম সিঁড়ি — আমরা তাই প্রতিটি শিক্ষার্থীর যত্ন নিই";
 
 /** Icons cycle through this pool for admin-defined features. */
 const FEATURE_ICONS: LucideIcon[] = [
@@ -56,14 +24,14 @@ interface WhyChooseUsProps {
 }
 
 const WhyChooseUs = ({ settings }: WhyChooseUsProps) => {
-  const title = settings?.whyTitle?.trim() || DEFAULT_TITLE;
-  const subtitle = settings?.whySubtitle?.trim() || DEFAULT_SUBTITLE;
+  const title = settings?.whyTitle?.trim() || "";
+  const subtitle = settings?.whySubtitle?.trim() || "";
   const features =
-    settings?.whyFeatures?.filter((f) => f.title.trim() || f.text.trim()) ?? DEFAULT_FEATURES;
+    settings?.whyFeatures?.filter((f) => f.title.trim() || f.text.trim()) ?? [];
 
   return (
     <section className="section-shell bg-slate-50">
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+      <div className="mx-auto max-w-350 px-4 sm:px-6">
         <h2 className="section-title text-center font-bangla" data-aos="fade-up">
           {title}
         </h2>

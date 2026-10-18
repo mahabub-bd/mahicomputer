@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { noticeSchema } from "@/lib/validators";
@@ -14,7 +15,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { response } = await requireAdmin();
+  const { response, session } = await requireAdmin();
   if (response) return response;
 
   const body = await req.json().catch(() => null);
@@ -26,6 +27,9 @@ export async function POST(req: Request) {
     );
   }
 
-  const notice = await prisma.notice.create({ data: parsed.data });
+  const notice = await prisma.notice.create({
+    data: { ...parsed.data, publishedById: session!.sub },
+  });
+  revalidateTag("public-data", "max");
   return NextResponse.json(notice, { status: 201 });
 }

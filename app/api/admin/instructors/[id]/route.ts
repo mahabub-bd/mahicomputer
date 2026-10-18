@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { instructorSchema } from "@/lib/validators";
@@ -21,6 +22,7 @@ export async function PUT(req: Request, { params }: Params) {
 
   try {
     const instructor = await prisma.instructor.update({ where: { id }, data: parsed.data });
+    revalidateTag("public-data", "max");
     return NextResponse.json(instructor);
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -34,6 +36,7 @@ export async function DELETE(_req: Request, { params }: Params) {
   const { id } = await params;
   try {
     await prisma.instructor.delete({ where: { id } });
+    revalidateTag("public-data", "max");
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

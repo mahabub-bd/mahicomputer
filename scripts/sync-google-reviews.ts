@@ -1,5 +1,5 @@
 /**
- * Inserts the Google reviews (from app/constants/review.ts) into the database
+ * Inserts the Google reviews (from prisma/seed-data/review.ts) into the database
  * without touching any other reviews. Idempotent: Google rows (id "google-*")
  * are replaced, every other review keeps its relative order, shifted after
  * the Google ones. Run: npx tsx scripts/sync-google-reviews.ts
@@ -9,7 +9,7 @@ config({ path: ".env.local" });
 config({ path: ".env" });
 
 import { PrismaPg } from "@prisma/adapter-pg";
-import { review } from "../app/constants/review";
+import { review } from "../prisma/seed-data/review";
 import { PrismaClient } from "../app/generated/prisma/client";
 
 const googleReviews = review.filter((r) => r.id.startsWith("google-"));

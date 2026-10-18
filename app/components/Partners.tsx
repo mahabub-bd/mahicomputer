@@ -1,13 +1,12 @@
-import Image from "next/image";
-import { partners as staticPartners } from "../constants";
-import styles from "../styles/style";
 import type { PartnerView } from "@/lib/types";
+import Image from "next/image";
+import styles from "../styles/style";
 
 interface PartnersProps {
   partners?: PartnerView[];
 }
 
-const Partners = ({ partners = staticPartners }: PartnersProps) => (
+const Partners = ({ partners = [] }: PartnersProps) => (
   <section className="section-shell bg-linear-to-b from-blue-50/50 to-white">
     <div className={`${styles.boxWidth} mx-auto px-4 sm:px-6`}>
       <h2
@@ -34,7 +33,7 @@ const Partners = ({ partners = staticPartners }: PartnersProps) => (
             data-aos-delay={i * 70}
           >
             <div className="group h-full rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-              <div className="relative aspect-[16/10] w-full">
+              <div className="relative aspect-16/10 w-full">
                 <Image
                   src={item.img}
                   alt={item.alt}

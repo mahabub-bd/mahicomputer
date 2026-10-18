@@ -1,16 +1,15 @@
 "use client";
 
+import type { GalleryView } from "@/lib/types";
+import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
-import { gallery as staticGallery } from "../constants";
-import type { GalleryView } from "@/lib/types";
 import styles from "../styles/style";
 
 const GRID_SIZES =
   "(min-width: 1800px) 500px, (min-width: 1700px) 440px, (min-width: 768px) 45vw, 92vw";
 
-const Gallery = ({ items = staticGallery }: { items?: GalleryView[] }) => {
+const Gallery = ({ items = [] }: { items?: GalleryView[] }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const closeLightbox = useCallback(() => setActiveIndex(null), []);
@@ -95,7 +94,7 @@ const Gallery = ({ items = staticGallery }: { items?: GalleryView[] }) => {
           aria-modal="true"
           aria-label="ছবি প্রিভিউ"
           onClick={closeLightbox}
-          className="gallery-lightbox fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+          className="gallery-lightbox fixed inset-0 z-100 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
         >
           <button
             type="button"

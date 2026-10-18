@@ -6,6 +6,7 @@ import { getSession } from "@/lib/auth";
 
 export const metadata = {
   title: "Admin — Mahi Computer",
+  robots: { index: false, follow: false },
 };
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
@@ -13,7 +14,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const user = session
     ? await prisma.user.findUnique({
         where: { id: session.sub },
-        select: { name: true, email: true },
+        select: { name: true, email: true, imageUrl: true },
       })
     : null;
 

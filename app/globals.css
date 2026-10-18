@@ -42,6 +42,27 @@
   display: none;
 }
 
+/* Thin horizontal scrollbar for scrollable dashboard tables, so it's obvious
+   the section itself scrolls on narrow screens instead of the page. */
+.admin-table-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-slate-300) transparent;
+  overscroll-behavior-x: contain;
+}
+.admin-table-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.admin-table-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.admin-table-scroll::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: var(--color-slate-300);
+}
+.admin-table-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-slate-400);
+}
+
 body {
   font-family: var(--font-hind-siliguri), "Hind Siliguri", sans-serif;
   color: #172033;

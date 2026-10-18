@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { UserView } from "@/lib/types";
 import { apiPost, apiPut } from "./api";
+import ImageUpload from "./ImageUpload";
 import { inputCls, labelCls, submitCls } from "./inputs";
 
 interface UserFormProps {
@@ -17,6 +18,7 @@ const UserForm = ({ user, onSuccess }: UserFormProps) => {
   const [form, setForm] = useState({
     name: user?.name ?? "",
     email: user?.email ?? "",
+    imageUrl: user?.imageUrl ?? "",
     password: "",
   });
   const [busy, setBusy] = useState(false);
@@ -64,6 +66,11 @@ const UserForm = ({ user, onSuccess }: UserFormProps) => {
           required
         />
       </div>
+      <ImageUpload
+        label="Profile photo"
+        value={form.imageUrl}
+        onChange={(url) => setForm((f) => ({ ...f, imageUrl: url }))}
+      />
       <div>
         <label className={labelCls}>
           Password {user ? "(leave blank to keep current)" : "*"}

@@ -41,17 +41,18 @@ export async function PUT(req: Request, { params }: Params) {
     // Only rotate the hash when a new password was provided.
     const data =
       parsed.data.password === ""
-        ? { email, name: parsed.data.name }
+        ? { email, name: parsed.data.name, imageUrl: parsed.data.imageUrl }
         : {
             email,
             name: parsed.data.name,
+            imageUrl: parsed.data.imageUrl,
             passwordHash: await bcrypt.hash(parsed.data.password, 10),
           };
 
     const user = await prisma.user.update({
       where: { id },
       data,
-      select: { id: true, email: true, name: true, createdAt: true },
+      select: { id: true, email: true, name: true, imageUrl: true, createdAt: true },
     });
     return NextResponse.json(user);
   } catch {

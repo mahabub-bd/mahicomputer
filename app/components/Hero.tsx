@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   ArrowRight,
   ChevronDown,
@@ -6,32 +5,30 @@ import {
   MapPin,
   Sparkles,
 } from "lucide-react";
+import Link from "next/link";
 
-import herobg from "../../public/images/herobg.webp";
 import type { SiteSettingsView } from "@/lib/types";
 
 interface HeroProps {
   settings?: SiteSettingsView;
 }
 
-const defaults = {
-  heroTitle: "মাহি কম্পিউটার ট্রেনিং ইনস্টিটিউট",
-  heroSubtitle:
-    "আমরা সব কোর্সের অ্যাডভান্স লেভেল শেখাচ্ছি এবং আমরা সঠিকভাবে সব কোর্সের যত্ন নেই । ঢাকা জেলার গুলশান, ভাটারা , বাড্ডা থানায় এই ট্রেনিং সেন্টারটি খুবই বিখ্যাত । আমরা বিশ্বাস করি 85% প্রাক্টিক্যাল কাজই সেরা প্রশিক্ষণ। আমরা সর্বোত্তম শিক্ষা দেওয়ার প্রতিশ্রুতি প্রদান করি।",
-  heroNote: "কোর্স মেয়াদ: 03 মাস, 06 মাস, 12 মাস",
-  heroImageUrl: "",
-};
-
 const Hero = ({ settings }: HeroProps) => {
-  const s = { ...defaults, ...settings };
-  // Admin-uploaded hero background; the bundled image is the fallback.
-  const heroImage = s.heroImageUrl?.trim() || herobg.src;
+  const s = {
+    heroTitle: settings?.heroTitle?.trim() || "",
+    heroSubtitle: settings?.heroSubtitle?.trim() || "",
+    heroNote: settings?.heroNote?.trim() || "",
+  };
+  // Admin-uploaded hero background — shown only when set.
+  const heroImage = settings?.heroImageUrl?.trim() || "";
 
   return (
     <section
       className="hero relative flex items-center overflow-hidden"
       style={{
-        backgroundImage: `linear-gradient(to right bottom, rgba(17,31,54,0.92), rgba(31,52,92,0.78)), url(${heroImage})`,
+        backgroundImage: heroImage
+          ? `linear-gradient(to right bottom, rgba(17,31,54,0.92), rgba(31,52,92,0.78)), url(${heroImage})`
+          : "linear-gradient(to right bottom, rgba(17,31,54,0.92), rgba(31,52,92,0.78))",
       }}
     >
       {/* Floating decorative shapes (animations live in globals.css) */}
@@ -50,7 +47,7 @@ const Hero = ({ settings }: HeroProps) => {
       />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 py-20 sm:px-6 sm:py-28">
+      <div className="relative z-10 mx-auto w-full max-w-350 px-4 py-20 sm:px-6 sm:py-28">
         <div className="flex flex-col items-center gap-6 text-center">
           {/* Eyebrow badge */}
           <p
@@ -72,7 +69,7 @@ const Hero = ({ settings }: HeroProps) => {
 
           {/* Subtitle */}
           <p
-            className="max-w-[780px] font-bangla text-[16px] leading-8 text-blue-100/85 sm:text-[18px] sm:leading-9"
+            className="max-w-195 font-bangla text-[16px] leading-8 text-blue-100/85 sm:text-[18px] sm:leading-9"
             data-aos="fade-up"
             data-aos-delay="120"
           >

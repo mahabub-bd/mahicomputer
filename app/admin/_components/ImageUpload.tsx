@@ -44,8 +44,13 @@ const ImageUpload = ({ value, onChange, label }: ImageUploadProps) => {
           className="group relative flex h-44 w-full shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-50 ring-1 ring-inset ring-slate-200 transition hover:ring-blue-300 disabled:opacity-60 sm:h-36 sm:w-48"
         >
           {value ? (
+            // object-contain: the whole photo stays visible, never cropped.
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="preview" className="h-full w-full object-cover" />
+            <img
+              src={value}
+              alt="preview"
+              className="h-full w-full object-contain p-2"
+            />
           ) : (
             <span className="flex flex-col items-center gap-1.5">
               <ImageUp size={22} className="text-slate-300" />

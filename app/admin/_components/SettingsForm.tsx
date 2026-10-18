@@ -202,7 +202,7 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
           {text("courseInsideTitle", "Modules section heading")}
         </div>
         <p className="text-xs text-slate-400">
-          Leave empty to keep the defaults ("About This Course" / "Inside This Course").
+          Leave empty to keep the defaults (&quot;About This Course&quot; / &quot;Inside This Course&quot;).
         </p>
       </fieldset>
 

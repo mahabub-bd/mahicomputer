@@ -1,3 +1,5 @@
+import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import { toStringArray } from "./course-view";
 import { prisma } from "./prisma";
 import type {
@@ -5,6 +7,7 @@ import type {
   CategoryView,
   Course,
   CourseView,
+  CourseWithCategory,
   FooterGroupView,
   GalleryItem,
   GalleryView,
@@ -22,6 +25,7 @@ import type {
   StatItem,
   WhyFeature,
 } from "./types";
+import type { CourseInput } from "./validators";
 
 /** Defensive parsers for Json columns holding complex values. */
 function parseStringArray(value: unknown): string[] {
@@ -37,15 +41,19 @@ function parseWhyFeatures(value: unknown): WhyFeature[] {
   );
 }
 
-export async function getCourses(): Promise<Course[]> {
+export async function getCourses(): Promise<CourseWithCategory[]> {
   return prisma.course.findMany({
     where: { published: true },
     orderBy: { order: "asc" },
+    include: { category: true, instructor: true },
   });
 }
 
-export async function getAllCourses(): Promise<Course[]> {
-  return prisma.course.findMany({ orderBy: { order: "asc" } });
+export async function getAllCourses(): Promise<CourseWithCategory[]> {
+  return prisma.course.findMany({
+    orderBy: { order: "asc" },
+    include: { category: true, instructor: true },
+  });
 }
 
 export async function getCourseBySlug(slug: string): Promise<Course | null> {
@@ -55,19 +63,63 @@ export async function getCourseBySlug(slug: string): Promise<Course | null> {
 /** Course + its instructor's designation, for the detail pages. */
 /** Prisma Json columns hold string arrays; be defensive when parsing. */
 export async function getCourseDetail(slug: string) {
-  const course = await prisma.course.findUnique({ where: { slug } });
+  const course = await prisma.course.findUnique({
+    where: { slug },
+    include: { instructor: true, category: true },
+  });
   if (!course) return null;
-  const instructor = course.instructorName
-    ? await prisma.instructor.findFirst({
-        where: { name: { equals: course.instructorName, mode: "insensitive" } },
-      })
-    : null;
   return {
     course,
-    instructorDescription: instructor?.description ?? "",
+    instructorDescription: course.instructor?.description ?? "",
+    categoryTitle: course.category?.title ?? "",
     description: toStringArray(course.description),
     modules: toStringArray(course.modules),
   };
+}
+
+export type CourseWriteData = Omit<CourseInput, "instructorId" | "categoryId"> & {
+  instructorId: string | null;
+  categoryId: string | null;
+};
+
+/**
+ * Resolve the instructor/category selected in the course form: validates
+ * both ids and keeps the denormalized instructorName/instructorPhotoUrl
+ * display columns in sync with the Instructor row. Returns null when any
+ * selected id no longer exists.
+ */
+export async function resolveCourseRelations(
+  data: CourseInput
+): Promise<CourseWriteData | null> {
+  const { instructorId, categoryId, ...rest } = data;
+
+  const resolved: CourseWriteData = {
+    ...rest,
+    instructorId: null,
+    categoryId: null,
+    instructorName: "",
+    instructorPhotoUrl: "",
+  };
+
+  if (instructorId) {
+    const instructor = await prisma.instructor.findUnique({
+      where: { id: instructorId },
+    });
+    if (!instructor) return null;
+    resolved.instructorId = instructorId;
+    resolved.instructorName = instructor.name;
+    resolved.instructorPhotoUrl = instructor.imageUrl;
+  }
+
+  if (categoryId) {
+    const category = await prisma.category.findUnique({
+      where: { id: categoryId },
+    });
+    if (!category) return null;
+    resolved.categoryId = categoryId;
+  }
+
+  return resolved;
 }
 
 export async function getCategories(): Promise<Category[]> {
@@ -86,14 +138,7 @@ export async function getPartners(): Promise<Partner[]> {
   return prisma.partner.findMany({ orderBy: { order: "asc" } });
 }
 
-export const DEFAULT_STATS: StatItem[] = [
-  { id: "stats-1", title: "Rating", value: "4.8/5", class: "bg-stat-1" },
-  { id: "stats-2", title: "Students", value: "5000+", class: "bg-stat-2" },
-  { id: "stats-3", title: "Instractor", value: "25+", class: "bg-stat-3" },
-  { id: "stats-4", title: "Subject & Skill", value: "75+", class: "bg-stat-4" },
-];
-
-/** Site settings singleton; falls back to typed defaults if the row is missing. */
+/** Site settings singleton; every field comes from the admin-managed DB row. */
 export async function getSiteSettings(): Promise<SiteSettingsView> {
   const row = await prisma.siteSetting.findUnique({ where: { id: 1 } });
   if (!row) {
@@ -118,7 +163,7 @@ export async function getSiteSettings(): Promise<SiteSettingsView> {
       phone: "",
       email: "",
       address: "",
-      stats: DEFAULT_STATS,
+      stats: [],
     };
   }
   return {
@@ -130,7 +175,7 @@ export async function getSiteSettings(): Promise<SiteSettingsView> {
 }
 
 function parseStats(value: unknown): StatItem[] {
-  if (!Array.isArray(value)) return DEFAULT_STATS;
+  if (!Array.isArray(value)) return [];
   return value.filter(
     (s): s is StatItem =>
       typeof s === "object" &&
@@ -143,7 +188,7 @@ function parseStats(value: unknown): StatItem[] {
 
 /* ---------- view mappers: DB rows -> component prop shapes ---------- */
 
-export function toCourseView(c: Course): CourseView {
+export function toCourseView(c: CourseWithCategory): CourseView {
   return {
     courseImg: c.imageUrl,
     courseImgalt: c.imageAlt,
@@ -153,8 +198,10 @@ export function toCourseView(c: Course): CourseView {
     title: c.title,
     lesson: c.lesson,
     duration: c.duration,
-    instractorName: c.instructorName,
-    instractorphoto: c.instructorPhotoUrl,
+    // Prefer the live relations; fall back to the denormalized display columns.
+    instractorName: c.instructor?.name || c.instructorName,
+    instractorphoto: c.instructor?.imageUrl || c.instructorPhotoUrl,
+    category: c.category?.title || c.tag,
     price: c.price,
     rating: c.rating,
     reviewCount: c.reviewCount,
@@ -226,10 +273,25 @@ export async function getFaqs() {
   });
 }
 
+/** Published blog posts, newest first. */
+export async function getPosts() {
+  return prisma.post.findMany({
+    where: { published: true },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export async function getPostBySlug(slug: string) {
+  return prisma.post.findUnique({
+    where: { slug },
+    include: { publishedBy: { select: { name: true } } },
+  });
+}
+
 /** All admin accounts, oldest first (never expose passwordHash). */
 export async function getUsers() {
   return prisma.user.findMany({
-    select: { id: true, email: true, name: true, createdAt: true },
+    select: { id: true, email: true, name: true, imageUrl: true, createdAt: true },
     orderBy: { createdAt: "asc" },
   });
 }
@@ -270,3 +332,42 @@ export function toFooterGroupView(g: FooterLinkGroupWithLinks): FooterGroupView 
     links: g.links.map((l) => ({ id: l.id, name: l.name, link: l.href })),
   };
 }
+
+/* ---------- cached public reads ----------
+ * The public site revalidates every PUBLIC_REVALIDATE seconds instead of
+ * hitting the database on every request. Admin pages keep using the
+ * uncached getters above so edits are always visible immediately.
+ *
+ * `cache()` also dedupes calls within one request (layout + page +
+ * generateMetadata used to fetch the same rows 2–3×).
+ */
+const PUBLIC_REVALIDATE = 60;
+
+function cachedPublic<A extends unknown[], R>(
+  key: string,
+  fn: (...args: A) => Promise<R>,
+): (...args: A) => Promise<R> {
+  return cache(
+    unstable_cache(fn, [key], {
+      revalidate: PUBLIC_REVALIDATE,
+      tags: ["public-data"],
+    }),
+  );
+}
+
+export const getPublicCourses = cachedPublic("public:courses", getCourses);
+export const getPublicCourseViews = cachedPublic("public:courseViews", getCourseViews);
+export const getPublicCategories = cachedPublic("public:categories", getCategories);
+export const getPublicInstructors = cachedPublic("public:instructors", getInstructors);
+export const getPublicReviewViews = cachedPublic("public:reviewViews", getReviewViews);
+export const getPublicPartnerViews = cachedPublic("public:partnerViews", getPartnerViews);
+export const getPublicGalleryViews = cachedPublic("public:galleryViews", getGalleryViews);
+export const getPublicSiteSettings = cachedPublic("public:siteSettings", getSiteSettings);
+export const getPublicNotices = cachedPublic("public:notices", getNotices);
+export const getPublicFaqs = cachedPublic("public:faqs", getFaqs);
+export const getPublicSocialLinks = cachedPublic("public:socialLinks", getSocialLinks);
+export const getPublicNavLinks = cachedPublic("public:navLinks", getNavLinks);
+export const getPublicFooterLinkGroups = cachedPublic("public:footerLinkGroups", getFooterLinkGroups);
+export const getPublicCourseDetail = cachedPublic("public:courseDetail", getCourseDetail);
+export const getPublicPosts = cachedPublic("public:posts", getPosts);
+export const getPublicPostBySlug = cachedPublic("public:postBySlug", getPostBySlug);

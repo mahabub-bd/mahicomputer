@@ -5,17 +5,17 @@ config({ path: ".env", quiet: true });
 
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
-import { categories, extraCategories } from "../app/constants/categories";
-import { courses } from "../app/constants/courses";
-import { faqs } from "../app/constants/faq";
-import { footerLinks } from "../app/constants/footerLinks";
-import { gallery } from "../app/constants/gallery";
-import { instractor } from "../app/constants/instractor";
-import { navLinks } from "../app/constants/navLinks";
-import { partners } from "../app/constants/partners";
-import { review } from "../app/constants/review";
-import { socialMedia } from "../app/constants/socialMedia";
-import { stats } from "../app/constants/stats";
+import { categories, extraCategories } from "./seed-data/categories";
+import { courses } from "./seed-data/courses";
+import { faqs } from "./seed-data/faq";
+import { footerLinks } from "./seed-data/footerLinks";
+import { gallery } from "./seed-data/gallery";
+import { instractor } from "./seed-data/instractor";
+import { navLinks } from "./seed-data/navLinks";
+import { partners } from "./seed-data/partners";
+import { review } from "./seed-data/review";
+import { socialMedia } from "./seed-data/socialMedia";
+import { stats } from "./seed-data/stats";
 import { PrismaClient } from "../app/generated/prisma/client";
 import { courseContent } from "./course-content";
 

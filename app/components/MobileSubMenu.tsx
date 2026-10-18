@@ -12,6 +12,8 @@ interface MobileSubMenuProps {
   label: string;
   /** Resolved href for the row's main link. */
   href: string;
+  /** Highlight the row for the current route (mirrors the desktop nav). */
+  active?: boolean;
   /** Close the parent drawer after navigating. */
   onNavigate: () => void;
 }
@@ -26,6 +28,7 @@ const MobileSubMenu = ({
   menu,
   label,
   href,
+  active = false,
   onNavigate,
 }: MobileSubMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,11 +37,17 @@ const MobileSubMenu = ({
 
   return (
     <div>
-      <div className="flex items-center rounded-xl transition-colors hover:bg-slate-50">
+      <div
+        className={`flex items-center rounded-xl transition-colors ${
+          active ? "bg-blue-50" : "hover:bg-slate-50"
+        }`}
+      >
         <Link
           href={href}
           onClick={onNavigate}
-          className="flex-1 px-3 py-2.5 text-[15px] font-semibold text-slate-700 transition-colors hover:text-blue-700"
+          className={`flex-1 px-3 py-2.5 text-[15px] font-semibold transition-colors ${
+            active ? "text-blue-700" : "text-slate-700 hover:text-blue-700"
+          }`}
         >
           {label}
         </Link>

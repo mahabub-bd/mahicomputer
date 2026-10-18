@@ -11,7 +11,6 @@ import EnrollButton from "@/app/_components/EnrollButton";
 import type { CourseView, NavLinkView, SiteSettingsView, SocialView } from "@/lib/types";
 import { logo } from "@/public";
 import { MobileSubMenu } from "../components";
-import { navLinks as staticNavLinks } from "../constants";
 
 interface TogglerMenuProps {
   courses?: CourseView[];
@@ -24,22 +23,17 @@ interface TogglerMenuProps {
 const toHref = (id: string) =>
   id.startsWith("#") ? `/${id}` : id.startsWith("/") ? id : `/${id}`;
 
-const defaults = {
-  phone: "+8801711102944",
-  email: "info@mahicomputerbd.com",
-};
-
 /** No-op subscriber for useSyncExternalStore's mounted check. */
 const subscribeNoop = () => () => {};
 
 const TogglerMenu = ({
   courses = [],
-  navLinks = staticNavLinks,
+  navLinks = [],
   social = [],
   settings,
 }: TogglerMenuProps) => {
-  const phone = settings?.phone?.trim() || defaults.phone;
-  const email = settings?.email?.trim() || defaults.email;
+  const phone = settings?.phone?.trim() || "";
+  const email = settings?.email?.trim() || "";
   const [open, setOpen] = useState(false);
   // Portal target only exists after mount (SSR has no document).
   // useSyncExternalStore avoids a setState-in-effect for the mounted flag.
@@ -144,13 +138,16 @@ const TogglerMenu = ({
                       "feature-hoverable",
                     );
                     const href = toHref(nav.id);
-                    // Anchor links (#about) can't be tracked from the pathname,
-                    // so only real routes get an active highlight.
-                    const isActive =
-                      !href.includes("#") &&
-                      (href === "/"
+                    // Anchor links (#about) can't be read from the pathname,
+                    // but their route ("/about", "/courses") can — so opening
+                    // /courses still lights up the Courses row.
+                    const isActive = href.startsWith("/#")
+                      ? pathname === `/${nav.id.slice(1)}` ||
+                        pathname.startsWith(`/${nav.id.slice(1)}/`)
+                      : href === "/"
                         ? pathname === "/"
-                        : pathname.startsWith(href.split("#")[0]));
+                        : pathname === href ||
+                          pathname.startsWith(`${href}/`);
 
                     if (hasDropdown && courses.length > 0) {
                       return (
@@ -160,6 +157,7 @@ const TogglerMenu = ({
                             menu="courses"
                             label={nav.title}
                             href={href}
+                            active={isActive}
                             onNavigate={close}
                           />
                         </li>

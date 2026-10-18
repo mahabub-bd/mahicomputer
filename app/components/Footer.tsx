@@ -2,10 +2,6 @@ import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { logodark } from "@/public";
-import {
-  footerLinks as staticFooterLinks,
-  socialMedia as staticSocial,
-} from "../constants";
 import styles from "../styles/style";
 import EnrollButton from "../_components/EnrollButton";
 import BackToTop from "../_components/BackToTop";
@@ -16,12 +12,6 @@ interface FooterProps {
   footerLinks?: FooterGroupView[];
   settings?: SiteSettingsView;
 }
-
-const defaults = {
-  phone: "+8801711102944",
-  email: "info@mahicomputerbd.com",
-  address: "Ka-65 Shahajadpur, Gulshan, Dhaka-1212",
-};
 
 /**
  * Footer link values are admin-editable, so normalize stray shapes:
@@ -45,15 +35,14 @@ const contactIconCls =
   "flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-white/5 text-blue-300 ring-1 ring-white/10 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white group-hover:ring-blue-600";
 
 const Footer = ({
-  social = staticSocial,
-  footerLinks = staticFooterLinks,
+  social = [],
+  footerLinks = [],
   settings,
 }: FooterProps) => {
-  // Empty admin fields should fall back to the defaults, not blank them out.
   const s = {
-    phone: settings?.phone?.trim() || defaults.phone,
-    email: settings?.email?.trim() || defaults.email,
-    address: settings?.address?.trim() || defaults.address,
+    phone: settings?.phone?.trim() || "",
+    email: settings?.email?.trim() || "",
+    address: settings?.address?.trim() || "",
   };
 
   return (

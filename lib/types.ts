@@ -11,6 +11,7 @@ import type {
   NavLink,
   Notice,
   Partner,
+  Post,
   Review,
   SocialLink,
 } from "@/app/generated/prisma/client";
@@ -28,8 +29,25 @@ export type {
   NavLink,
   Notice,
   Partner,
+  Post,
   Review,
   SocialLink
+};
+
+/** Course row with its linked category + instructor (getAllCourses include payload). */
+export type CourseWithCategory = Course & {
+  category: Category | null;
+  instructor: Instructor | null;
+};
+
+/** Instructor row with its linked-course count (_count include payload). */
+export type InstructorWithCourseCount = Instructor & {
+  _count: { courses: number };
+};
+
+/** Category row with its linked-course count (_count include payload). */
+export type CategoryWithCourseCount = Category & {
+  _count: { courses: number };
 };
 
 /**
@@ -48,6 +66,8 @@ export interface CourseView {
   duration: string;
   instractorName: string;
   instractorphoto: string;
+  /** Linked category title (falls back to the tag when unassigned). */
+  category?: string;
   price: number;
   /** Card rating row; falls back to the historical 4.9 / 31 when absent. */
   rating?: number;
@@ -98,6 +118,7 @@ export interface UserView {
   id: string;
   email: string;
   name: string;
+  imageUrl: string;
   createdAt: Date;
 }
 

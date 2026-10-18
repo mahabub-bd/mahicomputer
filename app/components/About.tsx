@@ -1,17 +1,11 @@
-import { paymentapp } from "@/public";
-import Link from "next/link";
-import { ArrowRight, MapPin } from "lucide-react";
 import type { SiteSettingsView } from "@/lib/types";
+
+import { ArrowRight, MapPin } from "lucide-react";
+import Link from "next/link";
 
 interface AboutProps {
   settings?: SiteSettingsView;
 }
-
-const defaults = {
-  aboutTitle: "About Mahi Computer Institute",
-  aboutText:
-    "মাহি কম্পিউটার ট্রেনিং সেন্টার, গুলশান, ঢাকা হলো একটি প্রযুক্তি শিক্ষার প্রতিষ্ঠান। এটি ঢাকার গুলশান এলাকায় অবস্থিত একটি জনপ্রিয় কম্পিউটার ট্রেনিং সেন্টার। এই প্রতিষ্ঠানটি বিভিন্ন প্রযুক্তি বিষয়ে প্রশিক্ষণ প্রদান করে এবং ছাত্রদের প্রযুক্তি দক্ষতা বৃদ্ধি করে। এখানে কম্পিউটার\nঅপারেটিং সিস্টেম, কম্পিউটার নেটওয়ার্কিং, ওয়েব ডেভেলপমেন্ট, গ্রাফিক্স ডিজাইনিং, মাল্টিমিডিয়া, অটোক্যাড, প্রোগ্রামিং এবং ডাটাবেস ম্যানেজমেন্ট এমনকি ইথিক্যাল হ্যাকিং এই ধরণের বিভিন্ন প্রশিক্ষণ কোর্স উপলব্ধ আছে।\n\nমাহি কম্পিউটার ট্রেনিং সেন্টারে উপযুক্ত শিক্ষার্থীদের জন্য সুবিধাজনক শিক্ষামূলক পাঠ্যপুস্তক এবং নতুনত্বপূর্ণ কম্পিউটার যন্ত্রাংশ ও সফ্টওয়্যার প্রদান করা হয়। এছাড়াও, প্রশিক্ষকদের পরামর্শ ও পরিচালনা নিশ্চিত করে ছাত্রদের ভাল প্রশিক্ষণ দেয়া হয়। মাহি কম্পিউটার ট্রেনিং সেন্টার যোগ্যতামূলক উপকরণ ও সুযোগ-সুবিধা সহ একটি আধুনিক কম্পিউটার ট্রেনিং প্রতিষ্ঠান।",
-};
 
 /** Split the admin-managed blob of text into readable paragraphs. */
 const toParagraphs = (text: string) =>
@@ -21,11 +15,9 @@ const toParagraphs = (text: string) =>
     .filter(Boolean);
 
 const About = ({ settings }: AboutProps) => {
-  // Empty admin fields should fall back to the defaults, not blank the section.
   const s = {
-    aboutTitle: settings?.aboutTitle?.trim() || defaults.aboutTitle,
-    aboutText: settings?.aboutText?.trim() || defaults.aboutText,
-    // Admin-uploaded image; the bundled image is the fallback.
+    aboutTitle: settings?.aboutTitle?.trim() || "",
+    aboutText: settings?.aboutText?.trim() || "",
     aboutImageUrl: settings?.aboutImageUrl?.trim() || "",
   };
 
@@ -48,7 +40,7 @@ const About = ({ settings }: AboutProps) => {
         className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-rose-100/40 blur-3xl"
       />
 
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+      <div className="mx-auto max-w-350 px-4 sm:px-6">
         {/* Section header */}
         <p
           className="text-center font-bangla text-[13px] font-bold uppercase tracking-[0.2em] text-blue-600"
@@ -106,15 +98,16 @@ const About = ({ settings }: AboutProps) => {
 
           {/* Image */}
           <div className="relative" data-aos="fade-left">
-            <div className="absolute -inset-3 rounded-[2rem] border border-blue-100 bg-blue-50/40" aria-hidden />
+            <div className="absolute -inset-3 rounded-4xl border border-blue-100 bg-blue-50/40" aria-hidden />
             <div className="relative overflow-hidden rounded-[1.75rem] border border-white bg-white shadow-xl shadow-slate-200/60 ring-1 ring-slate-200/60">
               {/* eslint-disable-next-line @next/next/no-img-element -- uses local /uploads/... or any URL the admin pastes */}
               <img
-                src={s.aboutImageUrl || paymentapp.src}
+                src={s.aboutImageUrl}
                 alt="মাহি কম্পিউটার ট্রেনিং সেন্টার"
                 loading="eager"
                 sizes="(min-width: 1200px) 45vw, 92vw"
                 className="h-auto w-full object-cover"
+                hidden={!s.aboutImageUrl}
               />
               <div
                 className="pointer-events-none absolute inset-0 bg-linear-to-t from-slate-900/45 via-transparent to-transparent"

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { resolveCourseRelations } from "@/lib/data";
 import { courseSchema } from "@/lib/validators";
 
 type Params = { params: Promise<{ id: string }> };
@@ -19,8 +21,17 @@ export async function PUT(req: Request, { params }: Params) {
     );
   }
 
+  const data = await resolveCourseRelations(parsed.data);
+  if (!data) {
+    return NextResponse.json(
+      { error: "Selected instructor or category not found", issues: ["Selected instructor or category not found"] },
+      { status: 400 }
+    );
+  }
+
   try {
-    const course = await prisma.course.update({ where: { id }, data: parsed.data });
+    const course = await prisma.course.update({ where: { id }, data });
+    revalidateTag("public-data", "max");
     return NextResponse.json(course);
   } catch (e: unknown) {
     if (typeof e === "object" && e !== null && "code" in e && e.code === "P2002") {
@@ -40,6 +51,7 @@ export async function DELETE(_req: Request, { params }: Params) {
   const { id } = await params;
   try {
     await prisma.course.delete({ where: { id } });
+    revalidateTag("public-data", "max");
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

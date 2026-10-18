@@ -12,14 +12,12 @@ const InstructorDetailsAdminPage = async ({ params }: Props) => {
   const instructor = await prisma.instructor.findUnique({ where: { id } });
   if (!instructor) notFound();
 
-  // Courses whose stored instructor name matches this instructor.
-  const courses = instructor.name
-    ? await prisma.course.findMany({
-        where: { instructorName: instructor.name },
-        orderBy: { order: "asc" },
-        select: { id: true, title: true, published: true, price: true },
-      })
-    : [];
+  // Courses linked to this instructor through the Course.instructorId relation.
+  const courses = await prisma.course.findMany({
+    where: { instructorId: id },
+    orderBy: { order: "asc" },
+    select: { id: true, title: true, published: true, price: true },
+  });
 
   const summary = [
     { label: "Display order", value: String(instructor.order) },

@@ -3,13 +3,12 @@ import styles from "../styles/style";
 
 import type { CategoryView } from "@/lib/types";
 import { shape, shape2 } from "@/public";
-import { categories as staticCategories } from "../constants";
 
 interface CategoriesProps {
   categories?: CategoryView[];
 }
 
-const Categories = ({ categories = staticCategories }: CategoriesProps) => {
+const Categories = ({ categories = [] }: CategoriesProps) => {
   return (
     <section className="relative overflow-hidden" id="categories">
       <div className={`${styles.boxWidth} section-shell mx-auto px-4 sm:px-6`}>
@@ -49,7 +48,7 @@ const Categories = ({ categories = staticCategories }: CategoriesProps) => {
                     className="object-contain p-3 transition-transform duration-300 group-hover:scale-110 sm:p-4"
                   />
                 </div>
-                <h3 className="mt-3 line-clamp-2 min-h-[2.5rem] text-center text-[14px] font-semibold leading-tight text-slate-900 transition-colors duration-300 group-hover:text-blue-700 sm:text-[15px]">
+                <h3 className="mt-3 line-clamp-2 min-h-10 text-center text-[14px] font-semibold leading-tight text-slate-900 transition-colors duration-300 group-hover:text-blue-700 sm:text-[15px]">
                   {item.title}
                 </h3>
               </article>

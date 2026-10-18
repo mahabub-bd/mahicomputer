@@ -73,7 +73,9 @@ const MessagesList = ({ messages }: MessagesListProps) => {
               <div className="min-w-0 flex-1">
                 {/* Line 1 — name · badges · date */}
                 <div className="flex flex-wrap items-center gap-2">
-                  <p className="text-[15px] font-semibold text-slate-900">{m.name}</p>
+                  <p className="min-w-0 break-words text-[15px] font-semibold text-slate-900">
+                    {m.name}
+                  </p>
                   {!m.read && (
                     <span className="rounded-full bg-blue-600 px-2 py-0.5 text-xs text-white">
                       New
@@ -105,7 +107,7 @@ const MessagesList = ({ messages }: MessagesListProps) => {
                 {/* Line 3 — message body */}
                 <p className="mt-1.5 flex items-start gap-1 whitespace-pre-wrap text-sm text-slate-700">
                   <MessageSquare size={13} className="mt-1 shrink-0 text-slate-400" />
-                  <span className="min-w-0">{m.message}</span>
+                  <span className="min-w-0 break-words">{m.message}</span>
                 </p>
               </div>
             </div>

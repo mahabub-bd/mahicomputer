@@ -16,6 +16,39 @@ interface ReviewsListProps {
 const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
   const [modal, setModal] = useState<{ review?: Review } | null>(null);
 
+  // Shared with the mobile card list below so the two views cannot drift.
+  const rating = (value: number) => (
+    <span className="inline-flex items-center gap-1 text-amber-600">
+      <Star size={14} fill="currentColor" />
+      {value}
+    </span>
+  );
+
+  const actions = (r: Review) => (
+    <div className="flex flex-wrap gap-2">
+      <Link
+        href={`/admin/reviews/${r.id}`}
+        title="Details"
+        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+      >
+        <Info size={15} />
+        Details
+      </Link>
+      <button
+        onClick={() => setModal({ review: r })}
+        title="Edit"
+        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+      >
+        <Pencil size={15} />
+        Edit
+      </button>
+      <DeleteButton
+        url={`/api/admin/reviews/${r.id}`}
+        confirmText={`Delete the review by "${r.name}"? This cannot be undone.`}
+      />
+    </div>
+  );
+
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -27,15 +60,16 @@ const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
+          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
         >
           <Plus size={16} />
           Add review
         </button>
       </div>
 
-      <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
+      {/* ---------- md and up: table ---------- */}
+      <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
+        <table className="w-full min-w-[800px] text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Student</th>
@@ -59,7 +93,7 @@ const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
                       />
                     )}
                     <div className="min-w-0">
-                      <p className="font-medium text-slate-900">{r.name}</p>
+                      <p className="truncate font-medium text-slate-900">{r.name}</p>
                       <p className="max-w-xs truncate text-xs text-slate-400">
                         {r.content}
                       </p>
@@ -67,36 +101,10 @@ const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
                   </div>
                 </td>
                 <td className="px-4 py-3 text-slate-500">{r.course}</td>
-                <td className="px-4 py-3">
-                  <span className="inline-flex items-center gap-1 text-amber-600">
-                    <Star size={14} fill="currentColor" />
-                    {r.rating}
-                  </span>
-                </td>
+                <td className="px-4 py-3">{rating(r.rating)}</td>
                 <td className="px-4 py-3">{r.order}</td>
                 <td className="px-4 py-3">
-                  <div className="flex items-center justify-end gap-2">
-                    <Link
-                      href={`/admin/reviews/${r.id}`}
-                      title="Details"
-                      className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
-                    >
-                      <Info size={15} />
-                      Details
-                    </Link>
-                    <button
-                      onClick={() => setModal({ review: r })}
-                      title="Edit"
-                      className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
-                    >
-                      <Pencil size={15} />
-                      Edit
-                    </button>
-                    <DeleteButton
-                      url={`/api/admin/reviews/${r.id}`}
-                      confirmText={`Delete the review by "${r.name}"? This cannot be undone.`}
-                    />
-                  </div>
+                  <div className="flex justify-end">{actions(r)}</div>
                 </td>
               </tr>
             ))}
@@ -110,6 +118,63 @@ const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
           </tbody>
         </table>
       </div>
+
+      {/* ---------- below md: one card per review ----------}
+          A five-column table is unusable at phone widths, so each row
+          becomes a stacked card: avatar + name with the star rating,
+          the comment, a course / order grid and a wrapping action row. */}
+      <ul className="space-y-3 md:hidden">
+        {reviews.map((r) => (
+          <li key={r.id} className="rounded-xl bg-white p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              {r.imageUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={r.imageUrl}
+                  alt=""
+                  className="h-10 w-10 shrink-0 rounded-full object-cover"
+                />
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="flex items-start justify-between gap-2">
+                  <p className="min-w-0 flex-1 truncate font-medium text-slate-900">
+                    {r.name}
+                  </p>
+                  <span className="shrink-0">{rating(r.rating)}</span>
+                </div>
+                <p className="truncate text-xs text-slate-400">{r.content}</p>
+              </div>
+            </div>
+
+            <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
+              <div className="min-w-0">
+                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
+                  Course
+                </dt>
+                <dd className="mt-0.5 truncate text-sm font-medium text-slate-700">
+                  {r.course}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
+                  Order
+                </dt>
+                <dd className="mt-0.5 text-sm font-medium text-slate-700">
+                  {r.order}
+                </dd>
+              </div>
+            </dl>
+
+            <div className="mt-3">{actions(r)}</div>
+          </li>
+        ))}
+
+        {reviews.length === 0 && (
+          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
+            No reviews yet.
+          </li>
+        )}
+      </ul>
 
       <Modal
         open={modal !== null}

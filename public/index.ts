@@ -6,8 +6,6 @@ import logo from "./images/logo_dark.webp";
 
 import logodark from "./images/logo_white.webp";
 
-import paymentapp from "./images/payment.webp";
-
 import facebook from "./images/facebook.svg";
 
 import twitter from "./images/twitter.svg";
@@ -101,9 +99,7 @@ import informationatechnology from "./images/informationtechnology.png";
 
 import freelancing from "./images/freelancing.png";
 
-import max from "./images/max.png";
 
-import sketch from "./images/sketchup.png";
 
 import lessonimg from "./images/chapter.png";
 
@@ -193,9 +189,9 @@ export {
   instractor7,
   instractor8,
   instractor9, japanilanguage, lessonimg, linkedin, location, logo,
-  logodark, max, menu, mtb, nrb, office, officeapplication, paymentapp, phone, rating, responsive, shape,
+  logodark, menu, mtb, nrb, office, officeapplication, phone, rating, responsive, shape,
   shape2, shape3, shepedark,
-  shepedark2, signal, sketch, spokenenglish, student1,
+  shepedark2, signal, spokenenglish, student1,
   student2,
   student3,
   student4,

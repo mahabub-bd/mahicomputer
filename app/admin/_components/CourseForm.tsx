@@ -31,8 +31,8 @@ const empty = {
   imageAlt: "",
   lesson: 10,
   duration: "3",
-  instructorName: "",
-  instructorPhotoUrl: "",
+  instructorId: "",
+  categoryId: "",
   price: 0,
   rating: 4.9,
   reviewCount: 31,
@@ -58,8 +58,8 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
           imageAlt: course.imageAlt,
           lesson: course.lesson,
           duration: course.duration,
-          instructorName: course.instructorName,
-          instructorPhotoUrl: course.instructorPhotoUrl,
+          instructorId: course.instructorId ?? "",
+          categoryId: course.categoryId ?? "",
           price: course.price,
           rating: course.rating,
           reviewCount: course.reviewCount,
@@ -74,16 +74,39 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
   );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [instructors, setInstructors] = useState<string[]>([]);
+  const [instructors, setInstructors] = useState<{ id: string; name: string }[]>(
+    []
+  );
+  const [categories, setCategories] = useState<{ id: string; title: string }[]>(
+    []
+  );
 
-  // Instructor picker options come from the existing instructors in the DB.
+  // Instructor/category picker options come from the existing DB rows.
   useEffect(() => {
     let cancelled = false;
     fetch("/api/admin/instructors")
       .then((res) => (res.ok ? res.json() : []))
       .then((data) => {
         if (!cancelled && Array.isArray(data)) {
-          setInstructors(data.map((i: { name: string }) => i.name));
+          setInstructors(
+            data.map((i: { id: string; name: string }) => ({
+              id: i.id,
+              name: i.name,
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+    fetch("/api/admin/categories")
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (!cancelled && Array.isArray(data)) {
+          setCategories(
+            data.map((c: { id: string; title: string }) => ({
+              id: c.id,
+              title: c.title,
+            }))
+          );
         }
       })
       .catch(() => {});
@@ -91,11 +114,6 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
       cancelled = true;
     };
   }, []);
-
-  /** Existing value stays selectable even if it no longer matches an instructor. */
-  const instructorOptions = Array.from(
-    new Set([form.instructorName, ...instructors].filter(Boolean))
-  );
 
   const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
@@ -106,6 +124,8 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
     setError(null);
     const payload = {
       ...form,
+      instructorId: form.instructorId || null,
+      categoryId: form.categoryId || null,
       description: form.descriptionText
         .split(/\n\s*\n/)
         .map((p) => p.trim())
@@ -202,26 +222,33 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
         </div>
         <div>
           <label className={labelCls}>Instructor</label>
-          {instructors.length > 0 ? (
-            <select
-              className={inputCls}
-              value={form.instructorName}
-              onChange={(e) => set("instructorName", e.target.value)}
-            >
-              <option value="">— None —</option>
-              {instructorOptions.map((name) => (
-                <option key={name} value={name}>
-                  {name}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <input
-              className={inputCls}
-              value={form.instructorName}
-              onChange={(e) => set("instructorName", e.target.value)}
-            />
-          )}
+          <select
+            className={inputCls}
+            value={form.instructorId}
+            onChange={(e) => set("instructorId", e.target.value)}
+          >
+            <option value="">— None —</option>
+            {instructors.map((i) => (
+              <option key={i.id} value={i.id}>
+                {i.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className={labelCls}>Category</label>
+          <select
+            className={inputCls}
+            value={form.categoryId}
+            onChange={(e) => set("categoryId", e.target.value)}
+          >
+            <option value="">— None —</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.title}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label className={labelCls}>Price (BDT)</label>
@@ -289,11 +316,6 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
           onChange={(e) => set("imageAlt", e.target.value)}
         />
       </div>
-      <ImageUpload
-        label="Instructor photo"
-        value={form.instructorPhotoUrl}
-        onChange={(url) => set("instructorPhotoUrl", url)}
-      />
 
       <div>
         <label className={labelCls}>

@@ -14,11 +14,13 @@ import {
   GraduationCap,
   Handshake,
   Images,
+  Inbox,
   LayoutDashboard,
   LayoutGrid,
   LogOut,
   Mail,
   Menu,
+  Newspaper,
   PanelBottom,
   Settings,
   Share2,
@@ -55,6 +57,7 @@ const sections: SidebarSection[] = [
       { href: "/admin/categories", label: "Categories", Icon: LayoutGrid },
       { href: "/admin/instructors", label: "Instructors", Icon: Users },
       { href: "/admin/notices", label: "Notices", Icon: Bell },
+      { href: "/admin/blogs", label: "Blogs", Icon: Newspaper },
   { href: "/admin/faqs", label: "FAQ", Icon: CircleHelp },
     ],
   },
@@ -73,6 +76,7 @@ const sections: SidebarSection[] = [
     label: "Inbox",
     links: [
       { href: "/admin/messages", label: "Messages", Icon: Mail },
+      { href: "/admin/newsletter", label: "Newsletter", Icon: Inbox },
       { href: "/admin/enrollments", label: "Enrollments", Icon: GraduationCap },
     ],
   },
@@ -86,7 +90,7 @@ const sections: SidebarSection[] = [
 ];
 
 interface SidebarProps {
-  user?: { name: string; email: string } | null;
+  user?: { name: string; email: string; imageUrl?: string | null } | null;
 }
 
 const Sidebar = ({ user }: SidebarProps) => {
@@ -228,9 +232,18 @@ const Sidebar = ({ user }: SidebarProps) => {
           onClick={() => setMenuOpen((o) => !o)}
           className="flex w-full items-center gap-3 rounded-md px-2 py-2 text-left hover:bg-slate-800"
         >
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
-            {initials}
-          </span>
+          {user?.imageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={user.imageUrl}
+              alt=""
+              className="h-9 w-9 shrink-0 rounded-full bg-white object-contain p-0.5"
+            />
+          ) : (
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+              {initials}
+            </span>
+          )}
           <span className="min-w-0 flex-1">
             <span className="block truncate text-sm font-medium text-white">
               {displayName}

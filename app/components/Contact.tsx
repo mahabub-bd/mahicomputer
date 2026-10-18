@@ -1,24 +1,17 @@
-import { Mail, MapPin, Phone } from "lucide-react";
-import styles from "../styles/style";
-import { ContactForm } from ".";
 import type { SiteSettingsView } from "@/lib/types";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { ContactForm } from ".";
+import styles from "../styles/style";
 
 interface ContactProps {
   settings?: SiteSettingsView;
 }
 
-const defaults = {
-  email: "info@mahicomputerbd.com",
-  phone: "+8801711102944",
-  address: "Ka-65 Shahajadpur, Gulshan, Dhaka-1212",
-};
-
 const Contact = ({ settings }: ContactProps) => {
-  // Empty admin fields should fall back to the defaults, not blank them out.
   const s = {
-    email: settings?.email?.trim() || defaults.email,
-    phone: settings?.phone?.trim() || defaults.phone,
-    address: settings?.address?.trim() || defaults.address,
+    email: settings?.email?.trim() || "",
+    phone: settings?.phone?.trim() || "",
+    address: settings?.address?.trim() || "",
   };
 
   const channels = [
@@ -82,7 +75,7 @@ const Contact = ({ settings }: ContactProps) => {
                   <span className="block text-[12px] font-bold uppercase tracking-[0.14em] text-slate-400">
                     {c.label}
                   </span>
-                  <span className="mt-1 block break-words text-[16px] font-semibold text-slate-800 transition-colors duration-300 group-hover:text-blue-700">
+                  <span className="mt-1 block wrap-break-word text-[16px] font-semibold text-slate-800 transition-colors duration-300 group-hover:text-blue-700">
                     {c.value}
                   </span>
                 </span>

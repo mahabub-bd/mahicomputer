@@ -1,8 +1,5 @@
-import { MapPin, Navigation } from "lucide-react";
 import type { SiteSettingsView } from "@/lib/types";
-
-const MAP_EMBED =
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.7484415562553!2d90.4210082745189!3d23.791970687180747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c76498e3c7e3%3A0x5d40fe44a7af631e!2sMahi%20Computers%20and%20Training%20Center!5e0!3m2!1sen!2sbd!4v1686542976316!5m2!1sen!2sbd";
+import { MapPin, Navigation } from "lucide-react";
 
 /** Opens Google Maps directions straight to the training centre. */
 const DIRECTIONS_URL =
@@ -13,14 +10,13 @@ interface MapProps {
 }
 
 const Map = ({ settings }: MapProps) => {
-  // Admin can paste a fresh Google Maps embed URL; default is the fallback.
-  const embedUrl = settings?.mapEmbedUrl?.trim() || MAP_EMBED;
+  const embedUrl = settings?.mapEmbedUrl?.trim() || "";
   return (
     <section
       id="location"
       className="section-shell relative scroll-mt-24 overflow-hidden bg-white"
     >
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+      <div className="mx-auto max-w-350 px-4 sm:px-6">
         {/* Section header */}
         <p
           className="text-center font-bangla text-[13px] font-bold uppercase tracking-[0.2em] text-blue-600"
@@ -40,10 +36,11 @@ const Map = ({ settings }: MapProps) => {
           aria-hidden
         />
 
-        {/* Framed map card */}
+        {/* Framed map card — rendered only when the admin has set an embed URL */}
+        {embedUrl && (
         <div className="relative mt-10" data-aos="fade-up" data-aos-delay="120">
           <div
-            className="absolute -inset-3 rounded-[2rem] border border-blue-100 bg-blue-50/40"
+            className="absolute -inset-3 rounded-4xl border border-blue-100 bg-blue-50/40"
             aria-hidden
           />
           <div className="relative overflow-hidden rounded-[1.75rem] border border-white bg-white shadow-xl shadow-slate-200/60 ring-1 ring-slate-200/60">
@@ -53,7 +50,7 @@ const Map = ({ settings }: MapProps) => {
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
-              className="h-[360px] w-full border-0 sm:h-[420px]"
+              className="h-90 w-full border-0 sm:h-105"
             />
 
             {/* Directions CTA */}
@@ -83,6 +80,7 @@ const Map = ({ settings }: MapProps) => {
             </span>
           </div>
         </div>
+        )}
       </div>
     </section>
   );

@@ -10,7 +10,10 @@ type Props = { params: Promise<{ id: string }> };
 
 const CourseDetailsAdminPage = async ({ params }: Props) => {
   const { id } = await params;
-  const course = await prisma.course.findUnique({ where: { id } });
+  const course = await prisma.course.findUnique({
+    where: { id },
+    include: { category: true },
+  });
   if (!course) notFound();
 
   const enrollments = await prisma.enrollment.findMany({
@@ -20,6 +23,7 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
 
   const summary = [
     { label: "Slug", value: `/${course.slug}` },
+    { label: "Category", value: course.category?.title || "—" },
     { label: "Tag", value: course.tag || "—" },
     { label: "Fee", value: `৳${course.price.toLocaleString("en-BD")}` },
     { label: "Duration", value: `${course.duration} Month` },

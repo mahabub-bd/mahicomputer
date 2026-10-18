@@ -1,4 +1,3 @@
-import { stats as staticStats } from "../constants";
 import styles from "../styles/style";
 import type { StatItem } from "@/lib/types";
 
@@ -6,7 +5,7 @@ interface StatsProps {
   stats?: StatItem[];
 }
 
-const Stats = ({ stats = staticStats }: StatsProps) => (
+const Stats = ({ stats = [] }: StatsProps) => (
   <section className="section-shell bg-linear-to-b from-white to-blue-50/60">
     <div className={`${styles.boxWidth} mx-auto px-4 sm:px-6`}>
       <h2

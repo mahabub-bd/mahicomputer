@@ -24,6 +24,7 @@ import Review from "./Review";
 
 import ReviewCard from "./ReviewCard";
 
+import BlogCard from "./BlogCard";
 import CourseCard from "./CourseCard";
 
 import Map from "./Map";
@@ -37,6 +38,8 @@ import Contact from "./Contact";
 import ContactForm from "./ContactForm";
 
 import Partners from "./Partners";
+
+import Newsletter from "./Newsletter";
 
 import Photo from "./Photo";
 import CEO from "./CEO"
@@ -67,9 +70,11 @@ export {
   Instractor,
   Review,
   ReviewCard,
+  BlogCard,
   CourseCard,
   ContactForm,
   Map,
   Partners,
+  Newsletter,
   Photo,
 };

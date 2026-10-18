@@ -1,19 +1,17 @@
-import { Phone } from "lucide-react";
 import EnrollButton from "@/app/_components/EnrollButton";
 import type { SiteSettingsView } from "@/lib/types";
+import { Phone } from "lucide-react";
 
 interface AdmissionBannerProps {
   courses?: string[];
   settings?: SiteSettingsView;
 }
 
-const DEFAULT_PHONE = "+8801711102944";
-
 /** Bold mid-page banner: admission is open — enroll or call. */
 const AdmissionBanner = ({ courses = [], settings }: AdmissionBannerProps) => {
-  const phone = settings?.phone?.trim() || DEFAULT_PHONE;
+  const phone = settings?.phone?.trim() || "";
   return (
-    <section className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6">
+    <section className="mx-auto max-w-350 px-4 py-6 sm:px-6">
       <div
         className="relative overflow-hidden rounded-3xl bg-linear-to-r from-blue-800 via-blue-700 to-blue-600 px-6 py-10 text-center shadow-xl sm:px-12"
         data-aos="zoom-in"

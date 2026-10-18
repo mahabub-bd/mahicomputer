@@ -1,5 +1,7 @@
 import { config } from "dotenv";
 config({ path: ".env.local" });
+config({ path: ".env", quiet: true });
+
 
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";

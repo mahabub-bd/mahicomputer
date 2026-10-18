@@ -2,7 +2,10 @@ import { config } from "dotenv";
 import { defineConfig, env } from "prisma/config";
 
 // Prisma 7 no longer auto-loads env files; Next.js uses .env.local.
+// .env.local is gitignored — fall back to the committed .env when it's absent.
+// dotenv never overrides keys it already saw, so .env.local keeps precedence.
 config({ path: ".env.local" });
+config({ path: ".env", quiet: true });
 
 export default defineConfig({
   schema: "prisma/schema.prisma",

@@ -1,7 +1,6 @@
 import { getSession } from "@/lib/auth";
 import { getGalleryItems, getSiteSettings, getSocialLinks } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
-import type { ReactNode } from "react";
 import {
   ArrowUpRight,
   Bell,
@@ -26,6 +25,7 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -268,7 +268,7 @@ const AdminDashboard = async () => {
             <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
               {/* min-w keeps the table scrollable on mobile instead of
                   squeezing the columns together on small screens. */}
-              <table className="w-full min-w-[560px] text-left text-sm">
+              <table className="w-full min-w-140 text-left text-sm">
                 <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
                   <tr>
                     <th className="px-4 py-3">Course</th>

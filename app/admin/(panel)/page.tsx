@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/auth";
 import { getGalleryItems, getSiteSettings, getSocialLinks } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
+import type { ReactNode } from "react";
 import {
   ArrowUpRight,
   Bell,
@@ -27,6 +28,33 @@ import {
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
+
+/** Shared section heading: title (+ optional badge) with a right-aligned action link. */
+const SectionHeading = ({
+  title,
+  href,
+  action = "Manage",
+  children,
+}: {
+  title: string;
+  href: string;
+  action?: string;
+  children?: ReactNode;
+}) => (
+  <div className="mb-3 flex items-center justify-between gap-3">
+    <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+      {title}
+      {children}
+    </h2>
+    <Link
+      href={href}
+      className="flex shrink-0 items-center gap-1 text-sm text-blue-600 hover:underline"
+    >
+      {action}
+      <ArrowUpRight size={14} />
+    </Link>
+  </div>
+);
 
 const AdminDashboard = async () => {
   const session = await getSession();
@@ -228,83 +256,117 @@ const AdminDashboard = async () => {
         ))}
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-3">
-        {/* Recent courses */}
-        <div className="lg:col-span-2">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-slate-900">Recent courses</h2>
-            <Link
-              href="/admin/courses"
-              className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
-            >
-              Manage
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
-          <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
-            <table className="w-full text-left text-sm">
-              <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
-                <tr>
-                  <th className="px-4 py-3">Course</th>
-                  <th className="px-4 py-3">Price</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3 text-right">Updated</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {recentCourses.map((c) => (
-                  <tr key={c.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        {c.imageUrl && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={c.imageUrl}
-                            alt=""
-                            className="h-10 w-16 shrink-0 rounded object-cover"
-                          />
-                        )}
-                        <div className="min-w-0">
-                          <Link
-                            href={`/admin/courses/${c.id}`}
-                            className="block truncate font-medium text-slate-900 hover:text-blue-600"
-                          >
-                            {c.title}
-                          </Link>
-                          <p className="truncate text-xs text-slate-400">{c.tag || c.slug}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-slate-600">{c.price}৳</td>
-                    <td className="px-4 py-3">
-                      {c.published ? (
-                        <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700">
-                          Published
-                        </span>
-                      ) : (
-                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500">
-                          Hidden
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-right text-xs text-slate-400">
-                      {new Date(c.updatedAt).toLocaleDateString("en-GB")}
-                    </td>
-                  </tr>
-                ))}
-                {recentCourses.length === 0 && (
+      {/* Main row — activity (left) · actions & info (right).
+          items-start keeps each column its natural height; Recent messages
+          sits under Recent courses so the left column isn't left with a
+          tall empty gap beside the Quick actions stack. */}
+      <div className="mt-8 grid items-start gap-6 lg:grid-cols-3">
+        <div className="space-y-6 lg:col-span-2">
+          {/* Recent courses */}
+          <div>
+            <SectionHeading title="Recent courses" href="/admin/courses" />
+            <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-slate-500">
-                      No courses yet.{" "}
-                      <Link href="/admin/courses" className="text-blue-600 hover:underline">
-                        Add one
-                      </Link>
-                      .
-                    </td>
+                    <th className="px-4 py-3">Course</th>
+                    <th className="px-4 py-3">Price</th>
+                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3 text-right">Updated</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {recentCourses.map((c) => (
+                    <tr key={c.id} className="hover:bg-slate-50">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          {c.imageUrl && (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={c.imageUrl}
+                              alt=""
+                              className="h-10 w-16 shrink-0 rounded object-cover"
+                            />
+                          )}
+                          <div className="min-w-0">
+                            <Link
+                              href={`/admin/courses/${c.id}`}
+                              className="block truncate font-medium text-slate-900 hover:text-blue-600"
+                            >
+                              {c.title}
+                            </Link>
+                            <p className="truncate text-xs text-slate-400">{c.tag || c.slug}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-slate-600">{c.price}৳</td>
+                      <td className="px-4 py-3">
+                        {c.published ? (
+                          <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700">
+                            Published
+                          </span>
+                        ) : (
+                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500">
+                            Hidden
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-right text-xs text-slate-400">
+                        {new Date(c.updatedAt).toLocaleDateString("en-GB")}
+                      </td>
+                    </tr>
+                  ))}
+                  {recentCourses.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="px-4 py-8 text-center text-slate-500">
+                        No courses yet.{" "}
+                        <Link href="/admin/courses" className="text-blue-600 hover:underline">
+                          Add one
+                        </Link>
+                        .
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Recent messages — moved here to balance the column heights */}
+          <div>
+            <SectionHeading title="Recent messages" href="/admin/messages" action="View all">
+              {unreadCount > 0 && (
+                <span className="rounded-full bg-blue-600 px-2 py-0.5 text-xs font-normal text-white">
+                  {unreadCount} new
+                </span>
+              )}
+            </SectionHeading>
+            {recentMessages.length === 0 ? (
+              <p className="rounded-xl bg-white p-4 text-sm text-slate-500 shadow-sm">
+                No messages yet.
+              </p>
+            ) : (
+              <div className="divide-y divide-slate-100 rounded-xl bg-white shadow-sm">
+                {recentMessages.map((m) => (
+                  <div key={m.id} className="flex items-center justify-between gap-4 p-4">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-slate-900">
+                        {m.name}
+                        {!m.read && (
+                          <span className="ml-2 rounded-full bg-blue-600 px-2 py-0.5 text-[11px] text-white">
+                            New
+                          </span>
+                        )}
+                      </p>
+                      <p className="truncate text-xs text-slate-500">{m.message}</p>
+                    </div>
+                    <p className="shrink-0 text-xs text-slate-400">
+                      {new Date(m.createdAt).toLocaleDateString("en-GB")}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -380,19 +442,10 @@ const AdminDashboard = async () => {
       </div>
 
       {/* Gallery + social */}
-      <div className="mt-8 grid gap-6 lg:grid-cols-3">
+      <div className="mt-8 grid items-start gap-6 lg:grid-cols-3">
         {/* Gallery preview */}
         <div className="lg:col-span-2">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-slate-900">Gallery</h2>
-            <Link
-              href="/admin/gallery"
-              className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
-            >
-              Manage
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
+          <SectionHeading title="Gallery" href="/admin/gallery" />
           <div className="rounded-xl bg-white p-4 shadow-sm">
             {galleryItems.length === 0 ? (
               <p className="text-sm text-slate-500">
@@ -435,16 +488,7 @@ const AdminDashboard = async () => {
 
         {/* Social links */}
         <div>
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-slate-900">Social links</h2>
-            <Link
-              href="/admin/social"
-              className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
-            >
-              Manage
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
+          <SectionHeading title="Social links" href="/admin/social" />
           <div className="rounded-xl bg-white p-4 shadow-sm">
             {socialLinks.length === 0 ? (
               <p className="text-sm text-slate-500">
@@ -481,49 +525,6 @@ const AdminDashboard = async () => {
             )}
           </div>
         </div>
-      </div>
-
-      {/* Recent messages */}
-      <div className="mt-8">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Recent messages
-            {unreadCount > 0 && (
-              <span className="ml-2 rounded-full bg-blue-600 px-2 py-0.5 text-xs font-normal text-white">
-                {unreadCount} new
-              </span>
-            )}
-          </h2>
-          <Link href="/admin/messages" className="text-sm text-blue-600 hover:underline">
-            View all
-          </Link>
-        </div>
-        {recentMessages.length === 0 ? (
-          <p className="rounded-xl bg-white p-4 text-sm text-slate-500 shadow-sm">
-            No messages yet.
-          </p>
-        ) : (
-          <div className="divide-y divide-slate-100 rounded-xl bg-white shadow-sm">
-            {recentMessages.map((m) => (
-              <div key={m.id} className="flex items-center justify-between gap-4 p-4">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-slate-900">
-                    {m.name}
-                    {!m.read && (
-                      <span className="ml-2 rounded-full bg-blue-600 px-2 py-0.5 text-[11px] text-white">
-                        New
-                      </span>
-                    )}
-                  </p>
-                  <p className="truncate text-xs text-slate-500">{m.message}</p>
-                </div>
-                <p className="shrink-0 text-xs text-slate-400">
-                  {new Date(m.createdAt).toLocaleDateString("en-GB")}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ import {
   Settings,
   Share2,
   Star,
+  UserCog,
   Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -79,6 +80,7 @@ const sections: SidebarSection[] = [
     label: "System",
     links: [
       { href: "/admin/settings", label: "Settings", Icon: Settings },
+      { href: "/admin/users", label: "Admin users", Icon: UserCog },
     ],
   },
 ];
@@ -169,9 +171,9 @@ const Sidebar = ({ user }: SidebarProps) => {
       </div>
       <nav className="admin-sidebar-scroll flex-1 overflow-y-auto p-3">
         {sections.map(({ label, links }) => (
-          <div key={label ?? "main"} className="mb-2">
+          <div key={label ?? "main"} className="mb-1">
             {label && (
-              <p className="px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              <p className="px-3 pb-0.5 pt-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                 {label}
               </p>
             )}
@@ -181,7 +183,7 @@ const Sidebar = ({ user }: SidebarProps) => {
                   key={href}
                   href={href}
                   onClick={() => setDrawerOpen(false)}
-                  className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition ${
+                  className={`flex items-center gap-3 rounded-md px-3 py-1.5 text-sm transition ${
                     isActive(href, exact)
                       ? "bg-blue-600 text-white"
                       : "text-slate-300 hover:bg-slate-800"

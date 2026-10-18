@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { toStringArray } from "@/lib/course-view";
@@ -38,16 +37,9 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
       <PageHeader
         title={course.title}
         description={course.published ? "Published course" : "Hidden course"}
+        backHref="/admin/courses"
+        backLabel="Back to all courses"
       />
-
-      <div className="mb-6">
-        <Link
-          href="/admin/courses"
-          className="text-sm text-slate-500 hover:text-slate-700"
-        >
-          ← Back to all courses
-        </Link>
-      </div>
 
       <div className="grid items-start gap-6 xl:grid-cols-[1.4fr_1fr]">
         <div className="space-y-6">

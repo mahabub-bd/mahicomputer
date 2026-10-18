@@ -1,5 +1,3 @@
-import { Footer, Navbar } from "../components";
-import type { ReactNode } from "react";
 import {
   getCourseViews,
   getFooterLinkGroups,
@@ -9,6 +7,8 @@ import {
   toFooterGroupView,
   toNavLinkView,
 } from "@/lib/data";
+import type { ReactNode } from "react";
+import { Footer, Navbar } from "../components";
 
 // Content is DB-driven and editable from the admin panel — never prerender at build time.
 export const dynamic = "force-dynamic";

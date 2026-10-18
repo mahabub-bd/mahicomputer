@@ -1,7 +1,8 @@
 "use client";
 
 import type { Category } from "@/lib/types";
-import { Pencil, Plus } from "lucide-react";
+import Link from "next/link";
+import { Info, Pencil, Plus } from "lucide-react";
 import { useState } from "react";
 import CategoryForm from "./CategoryForm";
 import DeleteButton from "./DeleteButton";
@@ -63,6 +64,14 @@ const CategoriesList = ({ categories }: CategoriesListProps) => {
                   <td className="px-4 py-3">{c.order}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">
+                      <Link
+                        href={`/admin/categories/${c.id}`}
+                        title="Details"
+                        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
+                      >
+                        <Info size={15} />
+                        Details
+                      </Link>
                       <button
                         onClick={() => setModal({ category: c })}
                         title="Edit"

@@ -226,7 +226,7 @@ const TogglerMenu = ({
                           key={item.id}
                           href={item.link}
                           aria-label={platform}
-                          className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-50 ring-1 ring-slate-200 transition hover:bg-blue-600 hover:ring-blue-600"
+                          className="group flex h-8 w-8 items-center justify-center rounded-full bg-slate-50 ring-1 ring-slate-200 transition hover:scale-105 hover:bg-blue-50 hover:ring-blue-300"
                         >
                           <Image
                             src={item.icon}
@@ -234,7 +234,7 @@ const TogglerMenu = ({
                             aria-hidden
                             width={14}
                             height={14}
-                            className="h-3.5 w-3.5 object-contain"
+                            className="h-3.5 w-3.5 object-contain transition-transform duration-300 group-hover:scale-110"
                           />
                         </Link>
                       );

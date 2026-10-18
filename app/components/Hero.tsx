@@ -1,9 +1,13 @@
-import React from "react";
-import styles from "../styles/style";
+import Link from "next/link";
+import {
+  ArrowRight,
+  ChevronDown,
+  Clock,
+  MapPin,
+  Sparkles,
+} from "lucide-react";
 
 import herobg from "../../public/images/herobg.webp";
-
-import { Button } from "../components";
 import type { SiteSettingsView } from "@/lib/types";
 
 interface HeroProps {
@@ -19,39 +23,110 @@ const defaults = {
 
 const Hero = ({ settings }: HeroProps) => {
   const s = { ...defaults, ...settings };
+
   return (
     <section
-      className={"hero relative flex items-center overflow-hidden py-16 sm:py-24"}
+      className="hero relative flex items-center overflow-hidden"
       style={{
-        backgroundImage: `linear-gradient(to right bottom, rgba(38,59,94,0.9), rgba(38,59,94,0.9)),url(${herobg.src})
-        `,
+        backgroundImage: `linear-gradient(to right bottom, rgba(17,31,54,0.92), rgba(31,52,92,0.78)), url(${herobg.src})`,
       }}
     >
-      <div className={`${styles.boxWidth} relative z-10 mx-auto`}>
-        <div
-          className={`${styles.flexCenter} flex-col items-center gap-5 text-center`}
-        >
-          <h2
-            className={`${styles.heading2} max-w-4xl font-bangla text-white lg:text-[60px] vxs:text-[34px] xl:py-4 xs:py-2 mt-3 text-center`}
+      {/* Floating decorative shapes (animations live in globals.css) */}
+      <span aria-hidden className="shape-1 absolute" />
+      <span aria-hidden className="shape-2 absolute" />
+      <span aria-hidden className="shape-3 absolute" />
+
+      {/* Soft glow accents — purely decorative, never intercept taps */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-orange-400/10 blur-3xl"
+      />
+
+      {/* Content */}
+      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 py-20 sm:px-6 sm:py-28">
+        <div className="flex flex-col items-center gap-6 text-center">
+          {/* Eyebrow badge */}
+          <p
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 font-bangla text-[13px] font-semibold text-blue-100 backdrop-blur-sm"
+            data-aos="fade-up"
+          >
+            <Sparkles size={14} className="text-amber-300" aria-hidden />
+            ঢাকার সেরা কম্পিউটার প্রশিক্ষণ কেন্দ্র
+          </p>
+
+          {/* Title */}
+          <h1
+            className="max-w-4xl font-bangla text-[30px] font-bold leading-[1.3] text-white ss:text-[38px] lg:text-[54px] lg:leading-[1.2]"
+            data-aos="fade-up"
+            data-aos-delay="60"
           >
             {s.heroTitle}
-          </h2>
+          </h1>
+
+          {/* Subtitle */}
           <p
-            className={`xl:text-[22px] xl:leading-10 vxs:text-[18px] vxs:leading-8 text-blue-50 font-bangla vxs:p-4 max-w-[820px] text-center `}
+            className="max-w-[780px] font-bangla text-[16px] leading-8 text-blue-100/85 sm:text-[18px] sm:leading-9"
+            data-aos="fade-up"
+            data-aos-delay="120"
           >
             {s.heroSubtitle}
           </p>
 
+          {/* Duration note pill */}
           <p
-            className={`leading-8 text-rose-50 font-bangla text-[24px] vxs:text-[20px] text-center w-full`}
+            className="inline-flex items-center gap-2 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-5 py-2.5 font-bangla text-[16px] font-medium text-emerald-100 sm:text-[17px]"
+            data-aos="fade-up"
+            data-aos-delay="180"
           >
+            <Clock size={18} className="text-emerald-300" aria-hidden />
             {s.heroNote}
           </p>
 
-          <Button styles="mt-3 font-bangla ">কোর্স সমূহ</Button>
+          {/* CTAs */}
+          <div
+            className="mt-1 flex flex-wrap items-center justify-center gap-3"
+            data-aos="fade-up"
+            data-aos-delay="240"
+          >
+            <Link
+              href="#courses"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 font-bangla text-[16px] font-semibold text-slate-900 shadow-lg shadow-blue-950/30 transition duration-300 hover:-translate-y-0.5 hover:bg-blue-50 hover:shadow-xl"
+            >
+              কোর্স সমূহ দেখুন
+              <ArrowRight size={18} aria-hidden />
+            </Link>
+            <Link
+              href="#contact"
+              className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-7 py-3.5 font-bangla text-[16px] font-semibold text-white backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-white/50 hover:bg-white/10"
+            >
+              ভর্তি ও যোগাযোগ
+            </Link>
+          </div>
+
+          {/* Location mini-line */}
+          <span
+            className="mt-1 inline-flex items-center gap-1.5 font-bangla text-[14px] text-blue-100/70"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <MapPin size={16} className="text-rose-300" aria-hidden />
+            গুলশান, ভাটারা, বাড্ডা — ঢাকা
+          </span>
         </div>
       </div>
-      <div className=" absolute shape-1"></div>
+
+      {/* Scroll cue */}
+      <a
+        href="#about"
+        aria-label="নিচে স্ক্রল করুন"
+        className="absolute bottom-5 left-1/2 z-10 hidden -translate-x-1/2 text-white/60 transition hover:text-white sm:block"
+      >
+        <ChevronDown size={24} className="animate-bounce" aria-hidden />
+      </a>
     </section>
   );
 };

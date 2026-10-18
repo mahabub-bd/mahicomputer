@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Plus, Star } from "lucide-react";
+import Link from "next/link";
+import { Info, Pencil, Plus, Star } from "lucide-react";
 import type { Course, Review } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
@@ -75,6 +76,14 @@ const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
                 <td className="px-4 py-3">{r.order}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-end gap-2">
+                    <Link
+                      href={`/admin/reviews/${r.id}`}
+                      title="Details"
+                      className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
+                    >
+                      <Info size={15} />
+                      Details
+                    </Link>
                     <button
                       onClick={() => setModal({ review: r })}
                       title="Edit"

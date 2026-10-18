@@ -190,6 +190,14 @@ export async function getFaqs() {
   });
 }
 
+/** All admin accounts, oldest first (never expose passwordHash). */
+export async function getUsers() {
+  return prisma.user.findMany({
+    select: { id: true, email: true, name: true, createdAt: true },
+    orderBy: { createdAt: "asc" },
+  });
+}
+
 export async function getNavLinks(): Promise<NavLink[]> {
   return prisma.navLink.findMany({ orderBy: { order: "asc" } });
 }

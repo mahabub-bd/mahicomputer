@@ -19,6 +19,28 @@ export const loginSchema = z.object({
   password: z.string().min(1),
 });
 
+export const userCreateSchema = z.object({
+  email: z.string().email("A valid email is required").max(200),
+  name: z.string().min(1, "Name is required").max(100),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(72, "Password is too long"),
+});
+
+/** Empty password on update = keep the current password. */
+export const userUpdateSchema = z.object({
+  email: z.string().email("A valid email is required").max(200),
+  name: z.string().min(1, "Name is required").max(100),
+  password: z.union([
+    z.literal(""),
+    z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(72, "Password is too long"),
+  ]),
+});
+
 export const courseSchema = z.object({
   slug,
   title: z.string().min(1, "Title is required").max(200),

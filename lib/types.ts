@@ -90,6 +90,14 @@ export interface SocialView {
   link: string;
 }
 
+/** Admin account row without the password hash. */
+export interface UserView {
+  id: string;
+  email: string;
+  name: string;
+  createdAt: Date;
+}
+
 /** Matches the shape Navbar's navLinks constant always had (id = href). */
 export interface NavLinkView {
   id: string;

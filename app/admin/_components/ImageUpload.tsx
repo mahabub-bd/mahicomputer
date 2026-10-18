@@ -36,7 +36,11 @@ const ImageUpload = ({ value, onChange, label }: ImageUploadProps) => {
         <div className="flex h-20 w-28 shrink-0 items-center justify-center overflow-hidden rounded-md border border-slate-200 bg-slate-50">
           {value ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="preview" className="h-full w-full object-cover" />
+            <img
+              src={value}
+              alt="preview"
+              className="h-full w-full object-contain"
+            />
           ) : (
             <span className="text-xs text-slate-400">No image</span>
           )}

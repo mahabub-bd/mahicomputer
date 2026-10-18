@@ -1,8 +1,8 @@
-import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import { Hind_Siliguri, Plus_Jakarta_Sans } from "next/font/google";
+import type { ReactNode } from "react";
+import "./globals.css";
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["bengali", "latin"],

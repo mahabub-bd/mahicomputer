@@ -1,7 +1,6 @@
 import { getSession } from "@/lib/auth";
 import { getGalleryItems, getSiteSettings, getSocialLinks } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
-import type { ReactNode } from "react";
 import {
   ArrowUpRight,
   Bell,
@@ -26,6 +25,7 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 export const dynamic = "force-dynamic";
 

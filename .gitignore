@@ -37,6 +37,3 @@ next-env.d.ts
 # prisma generated client
 /app/generated
 
-# runtime uploads (keep the folder, ignore its contents)
-/public/uploads/*
-!/public/uploads/.gitkeep

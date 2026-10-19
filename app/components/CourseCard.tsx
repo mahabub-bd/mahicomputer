@@ -93,10 +93,10 @@ const CourseCard = ({
             )}
             <span className="flex min-w-0 flex-col">
               <span className="truncate text-sm font-medium text-slate-800">
-                {instractorName || "ইন্সট্রাক্টর"}
+                {instractorName || "Instructor"}
               </span>
               <span className="text-[11px] uppercase tracking-wide text-slate-400">
-                ইন্সট্রাক্টর
+                Instructor
               </span>
             </span>
           </div>

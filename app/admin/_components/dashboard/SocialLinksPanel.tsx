@@ -12,7 +12,7 @@ export type SocialLinkItem = {
 const SocialLinksPanel = ({ links }: { links: SocialLinkItem[] }) => (
   <div>
     <SectionHeading title="Social links" href="/admin/social" />
-    <div className="rounded-xl bg-white p-4 shadow-sm">
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
       {links.length === 0 ? (
         <p className="text-sm text-slate-500">
           No social links yet.{" "}

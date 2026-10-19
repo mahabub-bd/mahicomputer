@@ -190,11 +190,11 @@ const AdminDashboard = async () => {
           {/* Recent courses */}
           <div>
             <SectionHeading title="Recent courses" href="/admin/courses" />
-            <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
+            <div className="overflow-x-auto rounded-2xl border border-slate-200/80 bg-white shadow-sm">
               {/* min-w keeps the table scrollable on mobile instead of
                   squeezing the columns together on small screens. */}
               <table className="w-full min-w-140 text-left text-sm">
-                <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
+                <thead className="border-b border-slate-100 text-xs font-semibold uppercase text-slate-400">
                   <tr>
                     <th className="px-4 py-3">Course</th>
                     <th className="px-4 py-3">Price</th>
@@ -229,11 +229,11 @@ const AdminDashboard = async () => {
                       <td className="px-4 py-3 text-slate-600">{c.price}৳</td>
                       <td className="px-4 py-3">
                         {c.published ? (
-                          <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700">
+                          <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-200">
                             Published
                           </span>
                         ) : (
-                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500">
+                          <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-500 ring-1 ring-slate-200">
                             Hidden
                           </span>
                         )}
@@ -269,13 +269,13 @@ const AdminDashboard = async () => {
               )}
             </SectionHeading>
             {recentMessages.length === 0 ? (
-              <p className="rounded-xl bg-white p-4 text-sm text-slate-500 shadow-sm">
+              <p className="rounded-2xl border border-slate-200/80 bg-white p-4 text-sm text-slate-500 shadow-sm">
                 No messages yet.
               </p>
             ) : (
-              <div className="divide-y divide-slate-100 rounded-xl bg-white shadow-sm">
+              <div className="divide-y divide-slate-100 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
                 {recentMessages.map((m) => (
-                  <div key={m.id} className="flex items-center justify-between gap-4 p-4">
+                  <div key={m.id} className="flex items-center justify-between gap-4 p-4 transition hover:bg-slate-50">
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-slate-900">
                         {m.name}

@@ -11,7 +11,7 @@ export type GalleryPreviewItem = {
 const GalleryPreview = ({ items }: { items: GalleryPreviewItem[] }) => (
   <div className="lg:col-span-2">
     <SectionHeading title="Gallery" href="/admin/gallery" />
-    <div className="rounded-xl bg-white p-4 shadow-sm">
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm">
       {items.length === 0 ? (
         <p className="text-sm text-slate-500">
           No gallery images yet.{" "}

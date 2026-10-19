@@ -16,7 +16,7 @@ const NewslettersPage = async () => {
   const newsletters = await getPublicNewsletters();
 
   return (
-    <div className={`${styles.boxWidth} py-5 sm:py-10`}>
+    <div className={`${styles.boxWidth} px-4 py-5 sm:px-6 sm:py-10`}>
       <h2 className={`text-center ${styles.heading2} font-bangla`}>নিউজলেটার</h2>
       <p className="mt-3 text-center font-bangla text-[15px] leading-7 text-slate-500">
         নতুন ব্যাচ, অফার ও ইভেন্টের খবর

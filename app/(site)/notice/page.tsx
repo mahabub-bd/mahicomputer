@@ -19,7 +19,7 @@ const NoticeBoardPage = async () => {
   const notices = await getPublicNotices();
 
   return (
-    <div className={`${styles.boxWidth} py-5 sm:py-10`}>
+    <div className={`${styles.boxWidth} px-4 py-5 sm:px-6 sm:py-10`}>
       <h2 className={`text-center ${styles.heading2} font-bangla`}>নোটিশ বোর্ড</h2>
 
       <div className="mx-auto mt-8 max-w-350 space-y-4">

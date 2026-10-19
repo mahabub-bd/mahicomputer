@@ -1,10 +1,10 @@
 import { getPublicPostBySlug } from "@/lib/data";
 import { SITE_NAME, truncate } from "@/lib/site";
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
 import { CalendarDays, User } from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -15,8 +15,8 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
   const description = truncate(
     post.excerpt ||
-      post.content.slice(0, 160) ||
-      `${post.title} — blog post at ${SITE_NAME}.`
+    post.content.slice(0, 160) ||
+    `${post.title} — blog post at ${SITE_NAME}.`
   );
 
   return {
@@ -56,7 +56,7 @@ const BlogDetailPage = async ({ params }: Props) => {
   const [lead, ...rest] = paragraphs;
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+    <article className="mx-auto max-w-350 px-4 py-5 sm:py-10 sm:px-6">
       <nav
         className="flex flex-wrap items-center gap-2 text-[13px] text-slate-500"
         aria-label="Breadcrumb"
@@ -87,11 +87,30 @@ const BlogDetailPage = async ({ params }: Props) => {
               dateStyle: "long",
             })}
           </time>
-          {post.publishedBy?.name && (
-            <span className="flex items-center gap-1.5">
-              <User size={14} aria-hidden />
-              {post.publishedBy.name}
+          {post.author?.name ? (
+            <span className="flex items-center gap-2">
+              {post.author.imageUrl ? (
+                <Image
+                  src={post.author.imageUrl}
+                  alt={post.author.name}
+                  width={24}
+                  height={24}
+                  className="h-6 w-6 rounded-full object-cover"
+                />
+              ) : (
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-[11px] font-semibold text-blue-700">
+                  {post.author.name.trim().charAt(0)}
+                </span>
+              )}
+              <span className="font-medium text-slate-600">{post.author.name}</span>
             </span>
+          ) : (
+            post.publishedBy?.name && (
+              <span className="flex items-center gap-1.5">
+                <User size={14} aria-hidden />
+                {post.publishedBy.name}
+              </span>
+            )
           )}
         </div>
 

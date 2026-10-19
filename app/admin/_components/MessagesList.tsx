@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { CheckCheck, Clock, Mail, MailOpen, MessageSquare, Phone, Trash2 } from "lucide-react";
 import type { ContactMessage } from "@/lib/types";
 import { apiDelete, apiPatch } from "./api";
+import { btn, btnIcon } from "./buttonStyles";
 
 interface MessagesListProps {
   messages: ContactMessage[];
@@ -117,7 +118,7 @@ const MessagesList = ({ messages }: MessagesListProps) => {
               <button
                 onClick={() => markRead(m)}
                 disabled={busyId === m.id}
-                className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100 disabled:opacity-50"
+                className={btn("secondary", "sm")}
               >
                 {m.read ? <MailOpen size={15} /> : <CheckCheck size={15} />}
                 Mark as {m.read ? "unread" : "read"}
@@ -126,7 +127,7 @@ const MessagesList = ({ messages }: MessagesListProps) => {
                 onClick={() => remove(m)}
                 disabled={busyId === m.id}
                 title="Delete"
-                className="flex items-center justify-center rounded-lg p-2 text-rose-500 transition hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50"
+                className={btnIcon("danger", "sm")}
               >
                 <Trash2 size={15} />
               </button>

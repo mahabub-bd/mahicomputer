@@ -7,14 +7,24 @@ import type { Course, CourseWithCategory } from "@/lib/types";
 import CourseForm from "./CourseForm";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
+import useEditDeepLink from "./useEditDeepLink";
+import { btn } from "./buttonStyles";
 
 interface CoursesListProps {
   courses: CourseWithCategory[];
+  /** From ?edit=<id> — opens that course's edit modal on mount. */
+  editId?: string;
 }
 
-const CoursesList = ({ courses }: CoursesListProps) => {
+const CoursesList = ({ courses, editId }: CoursesListProps) => {
   // null = closed; { course: undefined } = create; { course } = edit
   const [modal, setModal] = useState<{ course?: Course } | null>(null);
+  const closeModal = useEditDeepLink(
+    editId,
+    courses,
+    (course) => setModal({ course }),
+    () => setModal(null),
+  );
 
   const statusPill = (published: boolean) =>
     published ? (
@@ -31,14 +41,14 @@ const CoursesList = ({ courses }: CoursesListProps) => {
     <div className="flex flex-wrap gap-2">
       <Link
         href={`/admin/courses/${c.id}`}
-        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+        className={btn("secondary", "sm")}
       >
         <Info size={15} />
         Details
       </Link>
       <button
         onClick={() => setModal({ course: c })}
-        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+        className={btn("secondary", "sm")}
       >
         <Pencil size={15} />
         Edit
@@ -63,7 +73,7 @@ const CoursesList = ({ courses }: CoursesListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
+          className={`w-full sm:w-auto ${btn("primary")}`}
         >
           <Plus size={16} />
           Add course
@@ -226,7 +236,7 @@ const CoursesList = ({ courses }: CoursesListProps) => {
 
       <Modal
         open={modal !== null}
-        onClose={() => setModal(null)}
+        onClose={closeModal}
         title={modal?.course ? `Edit: ${modal.course.title}` : "Add course"}
         wide
       >
@@ -234,7 +244,7 @@ const CoursesList = ({ courses }: CoursesListProps) => {
           <CourseForm
             key={modal.course?.id ?? "new"}
             course={modal.course}
-            onSuccess={() => setModal(null)}
+            onSuccess={closeModal}
           />
         )}
       </Modal>

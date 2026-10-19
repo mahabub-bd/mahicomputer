@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { btn, btnIcon } from "./buttonStyles";
 import {
   BookOpen,
   CheckCheck,
@@ -134,7 +135,7 @@ const EnrollmentsList = ({ enrollments }: EnrollmentsListProps) => {
           <button
             key={tab}
             onClick={() => setFilter(tab)}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition ${
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-semibold transition duration-150 ${
               filter === tab
                 ? "bg-blue-600 text-white"
                 : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
@@ -239,7 +240,7 @@ const EnrollmentsList = ({ enrollments }: EnrollmentsListProps) => {
                         <button
                           onClick={() => setStatus(en, "APPROVED")}
                           disabled={busy}
-                          className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-[13px] font-semibold text-white shadow-sm transition duration-150 hover:bg-emerald-700 active:translate-y-px disabled:pointer-events-none disabled:opacity-50"
                         >
                           <CheckCircle2 size={15} />
                           Approve
@@ -247,7 +248,7 @@ const EnrollmentsList = ({ enrollments }: EnrollmentsListProps) => {
                         <button
                           onClick={() => setStatus(en, "DECLINED")}
                           disabled={busy}
-                          className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100 disabled:opacity-50"
+                          className={btn("secondary", "sm")}
                         >
                           <XCircle size={15} />
                           Decline
@@ -268,7 +269,7 @@ const EnrollmentsList = ({ enrollments }: EnrollmentsListProps) => {
                       onClick={() => markRead(en)}
                       disabled={busy}
                       title={en.read ? "Mark as unread" : "Mark as read"}
-                      className="flex items-center justify-center rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 disabled:opacity-50"
+                      className={btnIcon("ghost", "sm")}
                     >
                       {en.read ? <MailOpen size={15} /> : <CheckCheck size={15} />}
                     </button>
@@ -276,7 +277,7 @@ const EnrollmentsList = ({ enrollments }: EnrollmentsListProps) => {
                       onClick={() => remove(en)}
                       disabled={busy}
                       title="Delete"
-                      className="flex items-center justify-center rounded-lg p-2 text-rose-500 transition hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50"
+                      className={btnIcon("danger", "sm")}
                     >
                       <Trash2 size={15} />
                       </button>

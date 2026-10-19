@@ -1,7 +1,10 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { formatDateTime } from "@/lib/format";
+import DetailActions from "../../../_components/DetailActions";
 import PageHeader from "../../../_components/PageHeader";
+import SectionCard from "../../../_components/SectionCard";
+import SummaryList from "../../../_components/SummaryList";
 
 export const dynamic = "force-dynamic";
 
@@ -16,26 +19,8 @@ const CategoryDetailsAdminPage = async ({ params }: Props) => {
     { label: "Display order", value: String(category.order) },
     { label: "Alt text", value: category.alt || "—" },
     { label: "Image URL", value: category.imageUrl || "—" },
-    {
-      label: "Created",
-      value: category.createdAt.toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    },
-    {
-      label: "Last updated",
-      value: category.updatedAt.toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    },
+    { label: "Created", value: formatDateTime(category.createdAt) },
+    { label: "Last updated", value: formatDateTime(category.updatedAt) },
   ];
 
   return (
@@ -43,15 +28,23 @@ const CategoryDetailsAdminPage = async ({ params }: Props) => {
       <PageHeader
         title={category.title}
         description="Service category"
-        backHref="/admin/categories"
-        backLabel="Back to all categories"
+        actions={
+          <DetailActions
+            backHref="/admin/categories"
+            backLabel="Back to all categories"
+            viewHref="/#categories"
+            editHref={`/admin/categories?edit=${category.id}`}
+            deleteUrl={`/api/admin/categories/${category.id}`}
+            deleteConfirm={`Delete "${category.title}"? Its courses will become uncategorized. This cannot be undone.`}
+            afterDeleteHref="/admin/categories"
+          />
+        }
       />
 
       <div className="grid items-start gap-6 xl:grid-cols-[1.4fr_1fr]">
         <div className="space-y-6">
           {/* Image preview */}
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">Image</h2>
+          <SectionCard title="Image">
             {category.imageUrl ? (
               <div className="flex items-center justify-center rounded-lg border border-slate-100 bg-slate-50 p-6">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -70,13 +63,10 @@ const CategoryDetailsAdminPage = async ({ params }: Props) => {
                 {category.alt}
               </p>
             )}
-          </div>
+          </SectionCard>
 
           {/* Public preview note */}
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">
-              Where it appears
-            </h2>
+          <SectionCard title="Where it appears">
             <p className="text-[15px] leading-7 text-slate-600">
               This category is shown in the{" "}
               <span className="font-medium text-slate-900">
@@ -86,39 +76,19 @@ const CategoryDetailsAdminPage = async ({ params }: Props) => {
               <span className="font-medium text-slate-900">display order</span>{" "}
               (lower numbers first).
             </p>
-            <Link
-              href="/#categories"
-              className="mt-4 inline-block rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
-            >
-              View on home page
-            </Link>
-          </div>
+          </SectionCard>
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">Summary</h2>
-            <dl className="divide-y divide-slate-100">
-              {summary.map((item) => (
-                <div
-                  key={item.label}
-                  className="flex justify-between gap-3 py-2 text-sm"
-                >
-                  <dt className="shrink-0 text-slate-500">{item.label}</dt>
-                  <dd className="break-all text-right font-medium text-slate-900">
-                    {item.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+          <SectionCard title="Summary">
+            <SummaryList items={summary} />
+          </SectionCard>
 
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">Record ID</h2>
+          <SectionCard title="Record ID">
             <code className="block break-all rounded bg-slate-50 px-3 py-2 text-xs text-slate-500">
               {category.id}
             </code>
-          </div>
+          </SectionCard>
         </div>
       </div>
     </div>

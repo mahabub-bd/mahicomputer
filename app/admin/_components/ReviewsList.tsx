@@ -7,14 +7,24 @@ import type { Course, Review } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import ReviewForm from "./ReviewForm";
+import useEditDeepLink from "./useEditDeepLink";
+import { btn } from "./buttonStyles";
 
 interface ReviewsListProps {
   reviews: Review[];
   courses: Course[];
+  /** From ?edit=<id> — opens that review's edit modal on mount. */
+  editId?: string;
 }
 
-const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
+const ReviewsList = ({ reviews, courses, editId }: ReviewsListProps) => {
   const [modal, setModal] = useState<{ review?: Review } | null>(null);
+  const closeModal = useEditDeepLink(
+    editId,
+    reviews,
+    (review) => setModal({ review }),
+    () => setModal(null),
+  );
 
   // Shared with the mobile card list below so the two views cannot drift.
   const rating = (value: number) => (
@@ -29,7 +39,7 @@ const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
       <Link
         href={`/admin/reviews/${r.id}`}
         title="Details"
-        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+        className={btn("secondary", "sm")}
       >
         <Info size={15} />
         Details
@@ -37,7 +47,7 @@ const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
       <button
         onClick={() => setModal({ review: r })}
         title="Edit"
-        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+        className={btn("secondary", "sm")}
       >
         <Pencil size={15} />
         Edit
@@ -60,7 +70,7 @@ const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
+          className={`w-full sm:w-auto ${btn("primary")}`}
         >
           <Plus size={16} />
           Add review
@@ -178,7 +188,7 @@ const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
 
       <Modal
         open={modal !== null}
-        onClose={() => setModal(null)}
+        onClose={closeModal}
         title={modal?.review ? `Edit: ${modal.review.name}` : "Add review"}
         wide
       >
@@ -187,7 +197,7 @@ const ReviewsList = ({ reviews, courses }: ReviewsListProps) => {
             key={modal.review?.id ?? "new"}
             review={modal.review}
             courses={courses}
-            onSuccess={() => setModal(null)}
+            onSuccess={closeModal}
           />
         )}
       </Modal>

@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react";
 import { useEffect } from "react";
+import { btnIcon } from "./buttonStyles";
 
 interface ModalProps {
   open: boolean;
@@ -40,7 +41,7 @@ const Modal = ({ open, onClose, title, children, wide }: ModalProps) => {
           <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
           <button
             onClick={onClose}
-            className="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+            className={btnIcon("ghost", "sm")}
             aria-label="Close"
           >
             <X size={18} />

@@ -16,7 +16,7 @@ const BlogsPage = async () => {
   const posts = await getPublicPosts();
 
   return (
-    <div className="mx-auto max-w-350 px-4 py-12 sm:px-6">
+    <div className="mx-auto max-w-350 px-4 py-5 sm:py-10 sm:px-6">
       <h1 className="text-center font-bangla text-[28px] font-bold text-slate-900 sm:text-[36px]">
         ব্লগ
       </h1>

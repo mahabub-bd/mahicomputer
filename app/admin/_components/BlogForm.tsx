@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import type { Post } from "@/lib/types";
 import { apiPost, apiPut } from "./api";
@@ -19,6 +19,7 @@ const empty = {
   content: "",
   imageUrl: "",
   imageAlt: "",
+  authorId: "",
   published: true,
 };
 
@@ -33,10 +34,33 @@ const BlogForm = ({ post, onSuccess }: BlogFormProps) => {
           content: post.content,
           imageUrl: post.imageUrl,
           imageAlt: post.imageAlt,
+          authorId: post.authorId ?? "",
           published: post.published,
         }
       : empty
   );
+  const [authors, setAuthors] = useState<{ id: string; name: string }[]>([]);
+
+  // Author picker options come from the existing Instructor rows.
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/admin/instructors")
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (!cancelled && Array.isArray(data)) {
+          setAuthors(
+            data.map((i: { id: string; name: string }) => ({
+              id: i.id,
+              name: i.name,
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,9 +71,10 @@ const BlogForm = ({ post, onSuccess }: BlogFormProps) => {
     e.preventDefault();
     setBusy(true);
     setError(null);
+    const payload = { ...form, authorId: form.authorId || null };
     try {
       if (editing) {
-        await apiPut(`/api/admin/blogs/${post!.id}`, form);
+        await apiPut(`/api/admin/blogs/${post!.id}`, payload);
         toast.success("Blog updated");
       } else {
         await apiPost("/api/admin/blogs", form);
@@ -127,6 +152,22 @@ const BlogForm = ({ post, onSuccess }: BlogFormProps) => {
           value={form.imageAlt}
           onChange={(e) => set("imageAlt", e.target.value)}
         />
+      </div>
+
+      <div className="max-w-xs">
+        <label className={labelCls}>Author (Instructor)</label>
+        <select
+          className={inputCls}
+          value={form.authorId}
+          onChange={(e) => set("authorId", e.target.value)}
+        >
+          <option value="">— None —</option>
+          {authors.map((a) => (
+            <option key={a.id} value={a.id}>
+              {a.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <label className="flex items-center gap-2 text-sm">

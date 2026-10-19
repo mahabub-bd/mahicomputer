@@ -15,6 +15,7 @@ import type {
   InstructorView,
   NavLink,
   NavLinkView,
+  Newsletter,
   Notice,
   Partner,
   PartnerView,
@@ -265,6 +266,14 @@ export async function getNotices(): Promise<Notice[]> {
   });
 }
 
+/** Published newsletter issues for the public newsletters page (newest first). */
+export async function getNewsletters(): Promise<Newsletter[]> {
+  return prisma.newsletter.findMany({
+    where: { published: true },
+    orderBy: [{ order: "asc" }, { date: "desc" }],
+  });
+}
+
 /** Published FAQs for the homepage (admin-managed). */
 export async function getFaqs() {
   return prisma.faq.findMany({
@@ -277,6 +286,7 @@ export async function getFaqs() {
 export async function getPosts() {
   return prisma.post.findMany({
     where: { published: true },
+    include: { author: { select: { name: true, imageUrl: true } } },
     orderBy: { createdAt: "desc" },
   });
 }
@@ -284,7 +294,10 @@ export async function getPosts() {
 export async function getPostBySlug(slug: string) {
   return prisma.post.findUnique({
     where: { slug },
-    include: { publishedBy: { select: { name: true } } },
+    include: {
+      author: { select: { name: true, imageUrl: true, description: true } },
+      publishedBy: { select: { name: true } },
+    },
   });
 }
 
@@ -364,6 +377,10 @@ export const getPublicPartnerViews = cachedPublic("public:partnerViews", getPart
 export const getPublicGalleryViews = cachedPublic("public:galleryViews", getGalleryViews);
 export const getPublicSiteSettings = cachedPublic("public:siteSettings", getSiteSettings);
 export const getPublicNotices = cachedPublic("public:notices", getNotices);
+export const getPublicNewsletters = cachedPublic(
+  "public:newsletters",
+  getNewsletters
+);
 export const getPublicFaqs = cachedPublic("public:faqs", getFaqs);
 export const getPublicSocialLinks = cachedPublic("public:socialLinks", getSocialLinks);
 export const getPublicNavLinks = cachedPublic("public:navLinks", getNavLinks);

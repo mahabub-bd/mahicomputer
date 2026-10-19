@@ -8,6 +8,7 @@ import { apiPost, apiPut } from "./api";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import { inputCls, labelCls, submitCls } from "./inputs";
+import { btn, btnIcon } from "./buttonStyles";
 
 interface FooterLinksListProps {
   groups: FooterLinkGroupWithLinks[];
@@ -71,7 +72,7 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
         </div>
         <button
           onClick={() => openModal()}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
+          className={`w-full sm:w-auto ${btn("primary")}`}
         >
           <Plus size={16} />
           Add group
@@ -92,7 +93,7 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
                 <button
                   onClick={() => openModal(g)}
                   title="Edit"
-                  className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+                  className={btn("secondary", "sm")}
                 >
                   <Pencil size={14} />
                   Edit
@@ -162,7 +163,7 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
                   <button
                     type="button"
                     onClick={() => setRows((r) => r.filter((_, j) => j !== i))}
-                    className="shrink-0 rounded-md border border-rose-200 p-2 text-rose-600 hover:bg-rose-50"
+                    className={`shrink-0 ${btnIcon("danger", "md")}`}
                     aria-label="Remove link"
                   >
                     <Trash2 size={15} />
@@ -172,7 +173,7 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
               <button
                 type="button"
                 onClick={() => setRows((r) => [...r, { name: "", href: "", order: r.length }])}
-                className="rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+                className={btn("secondary", "sm")}
               >
                 + Add link row
               </button>

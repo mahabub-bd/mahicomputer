@@ -57,6 +57,7 @@ const sections: SidebarSection[] = [
       { href: "/admin/categories", label: "Categories", Icon: LayoutGrid },
       { href: "/admin/instructors", label: "Instructors", Icon: Users },
       { href: "/admin/notices", label: "Notices", Icon: Bell },
+      { href: "/admin/newsletters", label: "Newsletters", Icon: Mail },
       { href: "/admin/blogs", label: "Blogs", Icon: Newspaper },
   { href: "/admin/faqs", label: "FAQ", Icon: CircleHelp },
     ],
@@ -76,7 +77,7 @@ const sections: SidebarSection[] = [
     label: "Inbox",
     links: [
       { href: "/admin/messages", label: "Messages", Icon: Mail },
-      { href: "/admin/newsletter", label: "Newsletter", Icon: Inbox },
+      { href: "/admin/newsletter", label: "Subscriber list", Icon: Inbox },
       { href: "/admin/enrollments", label: "Enrollments", Icon: GraduationCap },
     ],
   },
@@ -119,8 +120,13 @@ const Sidebar = ({ user }: SidebarProps) => {
     router.refresh();
   };
 
+  // Segment-aware: a link is active only when the path equals it or
+  // continues with "/", so /admin/newsletters does not also highlight
+  // /admin/newsletter (Subscriber list).
   const isActive = (href: string, exact?: boolean) =>
-    exact ? pathname === href : pathname.startsWith(href);
+    exact
+      ? pathname === href
+      : pathname === href || pathname.startsWith(`${href}/`);
 
   const displayName = user?.name || "Admin";
   const initials = displayName.slice(0, 1).toUpperCase();
@@ -132,7 +138,7 @@ const Sidebar = ({ user }: SidebarProps) => {
         <button
           onClick={() => setDrawerOpen(true)}
           aria-label="Open menu"
-          className="rounded-md p-1.5 hover:bg-slate-800"
+          className="rounded-lg p-1.5 hover:bg-slate-800"
         >
           <Menu size={22} />
         </button>
@@ -211,7 +217,7 @@ const Sidebar = ({ user }: SidebarProps) => {
             </div>
             <Link
               href="/"
-              className="flex items-center gap-2.5 px-4 py-2 text-sm text-slate-300 hover:bg-slate-700"
+              className="flex w-full items-center gap-2.5 rounded-lg px-4 py-2 text-left text-sm text-slate-300 hover:bg-slate-700"
               onClick={() => setMenuOpen(false)}
             >
               <ExternalLink size={15} />
@@ -220,7 +226,7 @@ const Sidebar = ({ user }: SidebarProps) => {
             <button
               onClick={logout}
               disabled={loggingOut}
-              className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm text-rose-300 hover:bg-slate-700 disabled:opacity-50"
+              className="flex w-full items-center gap-2.5 rounded-lg px-4 py-2 text-left text-sm text-rose-300 hover:bg-slate-700 disabled:opacity-50"
             >
               <LogOut size={15} />
               {loggingOut ? "Logging out…" : "Logout"}
@@ -230,7 +236,7 @@ const Sidebar = ({ user }: SidebarProps) => {
 
         <button
           onClick={() => setMenuOpen((o) => !o)}
-          className="flex w-full items-center gap-3 rounded-md px-2 py-2 text-left hover:bg-slate-800"
+          className="flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left hover:bg-slate-800"
         >
           {user?.imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element

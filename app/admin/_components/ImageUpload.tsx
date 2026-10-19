@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { ImageUp, Link2, Trash2 } from "lucide-react";
 import { apiUpload } from "./api";
+import { btn } from "./buttonStyles";
 
 interface ImageUploadProps {
   value: string;
@@ -76,7 +77,7 @@ const ImageUpload = ({ value, onChange, label }: ImageUploadProps) => {
               type="button"
               onClick={() => onChange("")}
               disabled={busy}
-              className="flex w-fit items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-sm text-rose-600 ring-1 ring-rose-200 transition hover:bg-rose-50 disabled:opacity-50"
+              className={`w-fit ${btn("danger", "sm")}`}
             >
               <Trash2 size={15} />
               Remove image

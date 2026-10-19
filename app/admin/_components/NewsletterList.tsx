@@ -21,7 +21,7 @@ const NewsletterList = ({ subscribers }: NewsletterListProps) => {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-slate-900">Newsletter</h1>
+        <h1 className="text-2xl font-semibold text-slate-900">Subscriber list</h1>
         <p className="mt-1 text-sm text-slate-500">
           {subscribers.length} subscriber{subscribers.length === 1 ? "" : "s"}{" "}
           from the site footer signup form

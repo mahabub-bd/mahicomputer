@@ -6,6 +6,13 @@ const nextConfig: NextConfig = {
     // max.png becomes a ~100 KB thumbnail per card).
     minimumCacheTTL: 3600,
   },
+  async redirects() {
+    return [
+      // The public newsletters page lives at /newsletters — send the
+      // singular spelling there instead of a 404.
+      { source: "/newsletter", destination: "/newsletters", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

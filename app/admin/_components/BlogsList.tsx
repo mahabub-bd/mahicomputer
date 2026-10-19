@@ -1,18 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import { Pencil, Plus } from "lucide-react";
 import type { Post } from "@/lib/types";
+import { Eye, Pencil, Plus } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import BlogForm from "./BlogForm";
+import { btn } from "./buttonStyles";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
-import BlogForm from "./BlogForm";
+import useEditDeepLink from "./useEditDeepLink";
 
 interface BlogsListProps {
   posts: (Post & { publishedBy: { name: string } | null })[];
+  /** From ?edit=<id> — opens that post's edit modal on mount. */
+  editId?: string;
 }
 
-const BlogsList = ({ posts }: BlogsListProps) => {
+const BlogsList = ({ posts, editId }: BlogsListProps) => {
   const [modal, setModal] = useState<{ post?: Post } | null>(null);
+  const closeModal = useEditDeepLink(
+    editId,
+    posts,
+    (post) => setModal({ post }),
+    () => setModal(null),
+  );
 
   const fmtDate = (value: Date | string) =>
     new Date(value).toLocaleDateString("en-GB", { dateStyle: "medium" });
@@ -31,10 +42,18 @@ const BlogsList = ({ posts }: BlogsListProps) => {
 
   const actions = (n: Post) => (
     <div className="flex flex-wrap gap-2">
+      <Link
+        href={`/admin/blogs/${n.id}`}
+        title="Details"
+        className={btn("secondary", "sm")}
+      >
+        <Eye size={15} />
+        View
+      </Link>
       <button
         onClick={() => setModal({ post: n })}
         title="Edit"
-        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
+        className={btn("secondary", "sm")}
       >
         <Pencil size={15} />
         Edit
@@ -57,7 +76,7 @@ const BlogsList = ({ posts }: BlogsListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
+          className={`w-full sm:w-auto ${btn("primary")}`}
         >
           <Plus size={16} />
           Add blog
@@ -66,7 +85,7 @@ const BlogsList = ({ posts }: BlogsListProps) => {
 
       {/* ---------- md and up: table ---------- */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-[900px] text-left text-sm">
+        <table className="w-full min-w-225 text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Cover</th>
@@ -95,7 +114,12 @@ const BlogsList = ({ posts }: BlogsListProps) => {
                   )}
                 </td>
                 <td className="max-w-105 px-4 py-3">
-                  <p className="font-medium text-slate-900">{n.title}</p>
+                  <Link
+                    href={`/admin/blogs/${n.id}`}
+                    className="font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                  >
+                    {n.title}
+                  </Link>
                   {n.excerpt && (
                     <p className="mt-0.5 line-clamp-2 text-slate-500">{n.excerpt}</p>
                   )}
@@ -140,9 +164,12 @@ const BlogsList = ({ posts }: BlogsListProps) => {
               )}
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="min-w-0 flex-1 truncate font-medium text-slate-900">
+                  <Link
+                    href={`/admin/blogs/${n.id}`}
+                    className="min-w-0 flex-1 truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                  >
                     {n.title}
-                  </p>
+                  </Link>
                   <span className="shrink-0">{statusPill(n.published)}</span>
                 </div>
                 {n.excerpt && (
@@ -183,7 +210,7 @@ const BlogsList = ({ posts }: BlogsListProps) => {
 
       <Modal
         open={modal !== null}
-        onClose={() => setModal(null)}
+        onClose={closeModal}
         title={modal?.post ? `Edit: ${modal.post.title}` : "Add blog"}
         wide
       >
@@ -191,7 +218,7 @@ const BlogsList = ({ posts }: BlogsListProps) => {
           <BlogForm
             key={modal.post?.id ?? "new"}
             post={modal.post}
-            onSuccess={() => setModal(null)}
+            onSuccess={closeModal}
           />
         )}
       </Modal>

@@ -1,8 +1,13 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { toStringArray } from "@/lib/course-view";
+import { formatDateTime } from "@/lib/format";
+import DetailActions from "../../../_components/DetailActions";
 import EnrollmentsList from "../../../_components/EnrollmentsList";
 import PageHeader from "../../../_components/PageHeader";
+import SectionCard from "../../../_components/SectionCard";
+import StatusBadge from "../../../_components/StatusBadge";
+import SummaryList from "../../../_components/SummaryList";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +36,8 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
     { label: "Pre-requisite", value: course.prerequisite || "—" },
     { label: "Total seat", value: course.seats || "—" },
     { label: "Display order", value: String(course.order) },
+    { label: "Created", value: formatDateTime(course.createdAt) },
+    { label: "Last updated", value: formatDateTime(course.updatedAt) },
   ];
 
   const description = toStringArray(course.description);
@@ -40,17 +47,24 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
     <div>
       <PageHeader
         title={course.title}
-        description={course.published ? "Published course" : "Hidden course"}
-        backHref="/admin/courses"
-        backLabel="Back to all courses"
+        badge={<StatusBadge published={course.published} />}
+        description={course.category?.title || "Course"}
+        actions={
+          <DetailActions
+            backHref="/admin/courses"
+            backLabel="Back to all courses"
+            viewHref={`/courses/${course.slug}`}
+            editHref={`/admin/courses?edit=${course.id}`}
+            deleteUrl={`/api/admin/courses/${course.id}`}
+            deleteConfirm={`Delete "${course.title}"? This cannot be undone.`}
+            afterDeleteHref="/admin/courses"
+          />
+        }
       />
 
       <div className="grid items-start gap-6 xl:grid-cols-[1.4fr_1fr]">
         <div className="space-y-6">
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">
-              About This Course
-            </h2>
+          <SectionCard title="About This Course">
             {description.length > 0 ? (
               <div className="space-y-3">
                 {description.map((paragraph, i) => (
@@ -62,12 +76,9 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
             ) : (
               <p className="text-sm text-slate-400">No description yet.</p>
             )}
-          </div>
+          </SectionCard>
 
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">
-              Inside This Course
-            </h2>
+          <SectionCard title="Inside This Course">
             {modules.length > 0 ? (
               <ol className="space-y-2">
                 {modules.map((module, i) => (
@@ -82,34 +93,19 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
             ) : (
               <p className="text-sm text-slate-400">No modules yet.</p>
             )}
-          </div>
+          </SectionCard>
 
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">
-              Enrollments{" "}
-              <span className="text-sm font-normal text-slate-400">
-                ({enrollments.length})
-              </span>
-            </h2>
+          <SectionCard title="Enrollments" meta={`(${enrollments.length})`}>
             <EnrollmentsList enrollments={enrollments} />
-          </div>
+          </SectionCard>
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">Summary</h2>
-            <dl className="divide-y divide-slate-100">
-              {summary.map((item) => (
-                <div key={item.label} className="flex justify-between gap-3 py-2 text-sm">
-                  <dt className="shrink-0 text-slate-500">{item.label}</dt>
-                  <dd className="text-right font-medium text-slate-900">{item.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+          <SectionCard title="Summary">
+            <SummaryList items={summary} />
+          </SectionCard>
 
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">Instructor</h2>
+          <SectionCard title="Instructor">
             {course.instructorName ? (
               <div>
                 <p className="font-medium text-slate-900">{course.instructorName}</p>
@@ -125,7 +121,13 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
             ) : (
               <p className="text-sm text-slate-400">No instructor assigned.</p>
             )}
-          </div>
+          </SectionCard>
+
+          <SectionCard title="Record ID">
+            <code className="block break-all rounded bg-slate-50 px-3 py-2 text-xs text-slate-500">
+              {course.id}
+            </code>
+          </SectionCard>
         </div>
       </div>
     </div>

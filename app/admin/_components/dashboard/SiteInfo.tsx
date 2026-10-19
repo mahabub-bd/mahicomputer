@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Settings } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { btn } from "../buttonStyles";
 
 export interface ContactInfoItem {
   label: string;
@@ -49,7 +50,7 @@ const SiteInfo = ({ contactInfo }: { contactInfo: ContactInfoItem[] }) => (
 
       <Link
         href="/admin/settings"
-        className="mt-4 flex items-center justify-center gap-2 rounded-md border border-slate-300 py-2 text-sm text-slate-600 hover:bg-slate-50"
+        className={`mt-4 ${btn("secondary")}`}
       >
         <Settings size={15} />
         Edit settings

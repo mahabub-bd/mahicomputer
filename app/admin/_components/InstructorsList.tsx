@@ -7,13 +7,23 @@ import type { Instructor, InstructorWithCourseCount } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import InstructorForm from "./InstructorForm";
 import Modal from "./Modal";
+import useEditDeepLink from "./useEditDeepLink";
+import { btn } from "./buttonStyles";
 
 interface InstructorsListProps {
   instructors: InstructorWithCourseCount[];
+  /** From ?edit=<id> — opens that instructor's edit modal on mount. */
+  editId?: string;
 }
 
-const InstructorsList = ({ instructors }: InstructorsListProps) => {
+const InstructorsList = ({ instructors, editId }: InstructorsListProps) => {
   const [modal, setModal] = useState<{ instructor?: Instructor } | null>(null);
+  const closeModal = useEditDeepLink(
+    editId,
+    instructors,
+    (instructor) => setModal({ instructor }),
+    () => setModal(null),
+  );
 
   // Shared by the md+ table and the phone card list so the two
   // views can never drift apart.
@@ -28,7 +38,7 @@ const InstructorsList = ({ instructors }: InstructorsListProps) => {
       <Link
         href={`/admin/instructors/${i.id}`}
         title="Details"
-        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
+        className={btn("secondary", "sm")}
       >
         <Info size={15} />
         Details
@@ -36,7 +46,7 @@ const InstructorsList = ({ instructors }: InstructorsListProps) => {
       <button
         onClick={() => setModal({ instructor: i })}
         title="Edit"
-        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
+        className={btn("secondary", "sm")}
       >
         <Pencil size={15} />
         Edit
@@ -59,7 +69,7 @@ const InstructorsList = ({ instructors }: InstructorsListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
+          className={`w-full sm:w-auto ${btn("primary")}`}
         >
           <Plus size={16} />
           Add instructor
@@ -169,14 +179,14 @@ const InstructorsList = ({ instructors }: InstructorsListProps) => {
 
       <Modal
         open={modal !== null}
-        onClose={() => setModal(null)}
+        onClose={closeModal}
         title={modal?.instructor ? `Edit: ${modal.instructor.name}` : "Add instructor"}
       >
         {modal !== null && (
           <InstructorForm
             key={modal.instructor?.id ?? "new"}
             instructor={modal.instructor}
-            onSuccess={() => setModal(null)}
+            onSuccess={closeModal}
           />
         )}
       </Modal>

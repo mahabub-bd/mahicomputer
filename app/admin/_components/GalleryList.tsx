@@ -6,6 +6,7 @@ import type { GalleryItem } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import GalleryForm from "./GalleryForm";
 import Modal from "./Modal";
+import { btn, btnIcon } from "./buttonStyles";
 
 interface GalleryListProps {
   items: GalleryItem[];
@@ -25,7 +26,7 @@ const GalleryList = ({ items }: GalleryListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
+          className={`w-full sm:w-auto ${btn("primary")}`}
         >
           <Plus size={16} />
           Add image
@@ -50,7 +51,7 @@ const GalleryList = ({ items }: GalleryListProps) => {
                 <button
                   onClick={() => setModal({ item: g })}
                   title="Edit"
-                  className="rounded-md border border-slate-300 p-1.5 hover:bg-slate-50"
+                  className={btnIcon("secondary", "sm")}
                 >
                   <Pencil size={14} />
                 </button>

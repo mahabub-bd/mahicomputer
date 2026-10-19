@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays } from "lucide-react";
-import type { Post } from "@/lib/types";
+import type { PostWithAuthor } from "@/lib/types";
 
 /** Blog card for the /blogs grid. */
-const BlogCard = ({ post }: { post: Post }) => {
+const BlogCard = ({ post }: { post: PostWithAuthor }) => {
   return (
     <Link
       href={`/blogs/${post.slug}`}
@@ -36,6 +36,27 @@ const BlogCard = ({ post }: { post: Post }) => {
             dateStyle: "medium",
           })}
         </time>
+
+        {post.author && (
+          <div className="mt-2 flex items-center gap-2">
+            {post.author.imageUrl ? (
+              <Image
+                src={post.author.imageUrl}
+                alt={post.author.name}
+                width={24}
+                height={24}
+                className="h-6 w-6 rounded-full object-cover"
+              />
+            ) : (
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-[11px] font-semibold text-blue-700">
+                {post.author.name.trim().charAt(0)}
+              </span>
+            )}
+            <span className="text-xs font-medium text-slate-500">
+              {post.author.name}
+            </span>
+          </div>
+        )}
 
         <h3 className="mt-2 line-clamp-2 font-bangla text-lg font-semibold text-slate-900 transition-colors duration-300 group-hover:text-blue-700">
           {post.title}

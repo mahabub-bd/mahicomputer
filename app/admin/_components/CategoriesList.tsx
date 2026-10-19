@@ -7,13 +7,23 @@ import { useState } from "react";
 import CategoryForm from "./CategoryForm";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
+import useEditDeepLink from "./useEditDeepLink";
+import { btn } from "./buttonStyles";
 
 interface CategoriesListProps {
   categories: CategoryWithCourseCount[];
+  /** From ?edit=<id> — opens that category's edit modal on mount. */
+  editId?: string;
 }
 
-const CategoriesList = ({ categories }: CategoriesListProps) => {
+const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
   const [modal, setModal] = useState<{ category?: Category } | null>(null);
+  const closeModal = useEditDeepLink(
+    editId,
+    categories,
+    (category) => setModal({ category }),
+    () => setModal(null),
+  );
 
   // Shared by the md+ table and the phone card list so the two
   // views can never drift apart.
@@ -28,7 +38,7 @@ const CategoriesList = ({ categories }: CategoriesListProps) => {
       <Link
         href={`/admin/categories/${c.id}`}
         title="Details"
-        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
+        className={btn("secondary", "sm")}
       >
         <Info size={15} />
         Details
@@ -36,7 +46,7 @@ const CategoriesList = ({ categories }: CategoriesListProps) => {
       <button
         onClick={() => setModal({ category: c })}
         title="Edit"
-        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
+        className={btn("secondary", "sm")}
       >
         <Pencil size={15} />
         Edit
@@ -59,7 +69,7 @@ const CategoriesList = ({ categories }: CategoriesListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
+          className={`w-full sm:w-auto ${btn("primary")}`}
         >
           <Plus size={16} />
           Add category
@@ -171,14 +181,14 @@ const CategoriesList = ({ categories }: CategoriesListProps) => {
 
       <Modal
         open={modal !== null}
-        onClose={() => setModal(null)}
+        onClose={closeModal}
         title={modal?.category ? `Edit: ${modal.category.title}` : "Add category"}
       >
         {modal !== null && (
           <CategoryForm
             key={modal.category?.id ?? "new"}
             category={modal.category}
-            onSuccess={() => setModal(null)}
+            onSuccess={closeModal}
           />
         )}
       </Modal>

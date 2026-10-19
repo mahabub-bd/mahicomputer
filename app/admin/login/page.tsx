@@ -190,7 +190,7 @@ const LoginPage = () => {
               <button
                 type="submit"
                 disabled={busy}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3 text-[15px] font-semibold text-white shadow-lg shadow-blue-600/25 transition duration-200 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl disabled:pointer-events-none disabled:opacity-60"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-3 text-[15px] font-semibold text-white shadow-md shadow-blue-600/25 transition duration-150 hover:bg-blue-500 active:translate-y-px disabled:pointer-events-none disabled:opacity-60"
               >
                 {busy ? (
                   <>

@@ -19,10 +19,10 @@ const NoticeBoardPage = async () => {
   const notices = await getPublicNotices();
 
   return (
-    <div className={`${styles.boxWidth} ${styles.paddingY}`}>
+    <div className={`${styles.boxWidth} py-5 sm:py-10`}>
       <h2 className={`text-center ${styles.heading2} font-bangla`}>নোটিশ বোর্ড</h2>
 
-      <div className="mx-auto mt-8 max-w-3xl space-y-4">
+      <div className="mx-auto mt-8 max-w-350 space-y-4">
         {notices.map((notice) => (
           <article
             key={notice.id}

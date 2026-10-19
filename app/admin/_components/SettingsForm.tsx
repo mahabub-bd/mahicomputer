@@ -7,6 +7,7 @@ import type { SiteSettingsView, StatItem, WhyFeature } from "@/lib/types";
 import { apiPut } from "./api";
 import { inputCls, labelCls, submitCls } from "./inputs";
 import ImageUpload from "./ImageUpload";
+import { btn } from "./buttonStyles";
 
 interface SettingsFormProps {
   settings: SiteSettingsView;
@@ -165,7 +166,7 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
             <button
               type="button"
               onClick={() => set("whyFeatures", form.whyFeatures.filter((_, j) => j !== i))}
-              className="rounded-md border border-rose-200 px-3 py-2 text-sm text-rose-600 hover:bg-rose-50"
+              className={btn("danger", "sm")}
             >
               Remove
             </button>
@@ -174,7 +175,7 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         <button
           type="button"
           onClick={() => set("whyFeatures", [...form.whyFeatures, { title: "", text: "" }])}
-          className="rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+          className={btn("secondary", "sm")}
         >
           + Add feature
         </button>
@@ -288,7 +289,7 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
             <button
               type="button"
               onClick={() => set("stats", form.stats.filter((_, j) => j !== i))}
-              className="rounded-md border border-rose-200 px-3 py-2 text-sm text-rose-600 hover:bg-rose-50"
+              className={btn("danger", "sm")}
             >
               Remove
             </button>
@@ -297,7 +298,7 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         <button
           type="button"
           onClick={() => set("stats", [...form.stats, { ...emptyStat }])}
-          className="rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+          className={btn("secondary", "sm")}
         >
           + Add stat
         </button>

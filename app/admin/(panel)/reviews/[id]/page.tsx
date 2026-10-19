@@ -1,7 +1,11 @@
 import { notFound } from "next/navigation";
 import { Star } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { formatDateTime } from "@/lib/format";
+import DetailActions from "../../../_components/DetailActions";
 import PageHeader from "../../../_components/PageHeader";
+import SectionCard from "../../../_components/SectionCard";
+import SummaryList from "../../../_components/SummaryList";
 
 export const dynamic = "force-dynamic";
 
@@ -23,26 +27,8 @@ const ReviewDetailsAdminPage = async ({ params }: Props) => {
   ];
 
   const meta = [
-    {
-      label: "Created",
-      value: new Date(review.createdAt).toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    },
-    {
-      label: "Last updated",
-      value: new Date(review.updatedAt).toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    },
+    { label: "Created", value: formatDateTime(review.createdAt) },
+    { label: "Last updated", value: formatDateTime(review.updatedAt) },
   ];
 
   return (
@@ -52,17 +38,24 @@ const ReviewDetailsAdminPage = async ({ params }: Props) => {
         description={
           review.course ? `Review for: ${review.course}` : "General review"
         }
-        backHref="/admin/reviews"
-        backLabel="Back to all reviews"
+        actions={
+          <DetailActions
+            backHref="/admin/reviews"
+            backLabel="Back to all reviews"
+            viewHref="/feedback"
+            viewLabel="View reviews"
+            editHref={`/admin/reviews?edit=${review.id}`}
+            deleteUrl={`/api/admin/reviews/${review.id}`}
+            deleteConfirm={`Delete the review by "${review.name}"? This cannot be undone.`}
+            afterDeleteHref="/admin/reviews"
+          />
+        }
       />
 
       <div className="grid items-start gap-6 xl:grid-cols-[1.4fr_1fr]">
         <div className="space-y-6">
           {/* Full review text */}
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">
-              Review Content
-            </h2>
+          <SectionCard title="Review Content">
             <div className="mb-4 flex items-center gap-1 text-amber-500">
               {[1, 2, 3, 4, 5].map((i) => (
                 <Star
@@ -79,51 +72,22 @@ const ReviewDetailsAdminPage = async ({ params }: Props) => {
             <p className="text-[15px] leading-7 text-slate-600">
               {review.content}
             </p>
-          </div>
+          </SectionCard>
 
           {/* Audit timestamps */}
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">Record</h2>
-            <dl className="divide-y divide-slate-100">
-              {meta.map((item) => (
-                <div
-                  key={item.label}
-                  className="flex justify-between gap-3 py-2 text-sm"
-                >
-                  <dt className="shrink-0 text-slate-500">{item.label}</dt>
-                  <dd className="text-right font-medium text-slate-900">
-                    {item.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+          <SectionCard title="Record">
+            <SummaryList items={meta} />
+          </SectionCard>
         </div>
 
         <div className="space-y-6">
           {/* Summary */}
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">Summary</h2>
-            <dl className="divide-y divide-slate-100">
-              {summary.map((item) => (
-                <div
-                  key={item.label}
-                  className="flex justify-between gap-3 py-2 text-sm"
-                >
-                  <dt className="shrink-0 text-slate-500">{item.label}</dt>
-                  <dd className="text-right font-medium text-slate-900">
-                    {item.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+          <SectionCard title="Summary">
+            <SummaryList items={summary} />
+          </SectionCard>
 
           {/* Student photo */}
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">
-              Student Photo
-            </h2>
+          <SectionCard title="Student Photo">
             {review.imageUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -134,7 +98,13 @@ const ReviewDetailsAdminPage = async ({ params }: Props) => {
             ) : (
               <p className="text-sm text-slate-400">No photo uploaded.</p>
             )}
-          </div>
+          </SectionCard>
+
+          <SectionCard title="Record ID">
+            <code className="block break-all rounded bg-slate-50 px-3 py-2 text-xs text-slate-500">
+              {review.id}
+            </code>
+          </SectionCard>
         </div>
       </div>
     </div>

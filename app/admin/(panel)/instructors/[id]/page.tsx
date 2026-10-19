@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { formatDateTime } from "@/lib/format";
+import DetailActions from "../../../_components/DetailActions";
 import PageHeader from "../../../_components/PageHeader";
+import SectionCard from "../../../_components/SectionCard";
+import SummaryList from "../../../_components/SummaryList";
 
 export const dynamic = "force-dynamic";
 
@@ -23,26 +27,8 @@ const InstructorDetailsAdminPage = async ({ params }: Props) => {
     { label: "Display order", value: String(instructor.order) },
     { label: "Photo URL", value: instructor.imageUrl || "—" },
     { label: "Courses", value: String(courses.length) },
-    {
-      label: "Created",
-      value: instructor.createdAt.toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    },
-    {
-      label: "Last updated",
-      value: instructor.updatedAt.toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    },
+    { label: "Created", value: formatDateTime(instructor.createdAt) },
+    { label: "Last updated", value: formatDateTime(instructor.updatedAt) },
   ];
 
   return (
@@ -50,15 +36,23 @@ const InstructorDetailsAdminPage = async ({ params }: Props) => {
       <PageHeader
         title={instructor.name}
         description="Instructor"
-        backHref="/admin/instructors"
-        backLabel="Back to all instructors"
+        actions={
+          <DetailActions
+            backHref="/admin/instructors"
+            backLabel="Back to all instructors"
+            viewHref="/about"
+            editHref={`/admin/instructors?edit=${instructor.id}`}
+            deleteUrl={`/api/admin/instructors/${instructor.id}`}
+            deleteConfirm={`Delete "${instructor.name}"? Their courses will become unassigned. This cannot be undone.`}
+            afterDeleteHref="/admin/instructors"
+          />
+        }
       />
 
       <div className="grid items-start gap-6 xl:grid-cols-[1.4fr_1fr]">
         <div className="space-y-6">
           {/* Photo + bio */}
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">Profile</h2>
+          <SectionCard title="Profile">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
               {instructor.imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -87,16 +81,10 @@ const InstructorDetailsAdminPage = async ({ params }: Props) => {
                 )}
               </div>
             </div>
-          </div>
+          </SectionCard>
 
           {/* Courses taught by this instructor */}
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">
-              Courses{" "}
-              <span className="text-sm font-normal text-slate-400">
-                ({courses.length})
-              </span>
-            </h2>
+          <SectionCard title="Courses" meta={`(${courses.length})`}>
             {courses.length > 0 ? (
               <ul className="divide-y divide-slate-100">
                 {courses.map((course) => (
@@ -135,33 +123,19 @@ const InstructorDetailsAdminPage = async ({ params }: Props) => {
                 field on each course.
               </p>
             )}
-          </div>
+          </SectionCard>
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">Summary</h2>
-            <dl className="divide-y divide-slate-100">
-              {summary.map((item) => (
-                <div
-                  key={item.label}
-                  className="flex justify-between gap-3 py-2 text-sm"
-                >
-                  <dt className="shrink-0 text-slate-500">{item.label}</dt>
-                  <dd className="break-all text-right font-medium text-slate-900">
-                    {item.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+          <SectionCard title="Summary">
+            <SummaryList items={summary} />
+          </SectionCard>
 
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900">Record ID</h2>
+          <SectionCard title="Record ID">
             <code className="block break-all rounded bg-slate-50 px-3 py-2 text-xs text-slate-500">
               {instructor.id}
             </code>
-          </div>
+          </SectionCard>
         </div>
       </div>
     </div>

@@ -22,7 +22,7 @@ const WelcomeCard = ({ adminName, today, heroTitle }: WelcomeCardProps) => (
       <Link
         href="/"
         target="_blank"
-        className="flex items-center gap-2 rounded-md bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/20"
+        className="flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/20"
       >
         <ExternalLink size={15} />
         View site

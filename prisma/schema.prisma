@@ -15,6 +15,7 @@ model User {
   imageUrl     String   @default("")
   createdAt    DateTime @default(now())
   notices      Notice[]
+  newsletters  Newsletter[]
   posts        Post[]
 }
 
@@ -33,6 +34,8 @@ model Post {
   imageUrl      String   @default("")
   imageAlt      String   @default("")
   published     Boolean  @default(true)
+  authorId      String?
+  author        Instructor? @relation(fields: [authorId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   publishedById String?
   publishedBy   User?    @relation(fields: [publishedById], references: [id], onDelete: SetNull, onUpdate: Cascade)
   createdAt     DateTime @default(now())
@@ -88,6 +91,7 @@ model Instructor {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   courses     Course[]
+  posts       Post[]
 }
 
 model Review {
@@ -199,6 +203,19 @@ model Notice {
   publishedBy  User?    @relation(fields: [publishedById], references: [id], onDelete: SetNull, onUpdate: Cascade)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model Newsletter {
+  id            String   @id @default(cuid())
+  title         String
+  body          String   @default("")
+  date          DateTime @default(now())
+  published     Boolean  @default(true)
+  order         Int      @default(0)
+  publishedById String?
+  publishedBy   User?    @relation(fields: [publishedById], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Faq {

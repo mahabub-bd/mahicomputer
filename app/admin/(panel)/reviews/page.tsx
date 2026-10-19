@@ -3,9 +3,12 @@ import ReviewsList from "../../_components/ReviewsList";
 
 export const dynamic = "force-dynamic";
 
-const ReviewsAdminPage = async () => {
+type Props = { searchParams: Promise<{ edit?: string }> };
+
+const ReviewsAdminPage = async ({ searchParams }: Props) => {
+  const { edit } = await searchParams;
   const [reviews, courses] = await Promise.all([getReviews(), getAllCourses()]);
-  return <ReviewsList reviews={reviews} courses={courses} />;
+  return <ReviewsList reviews={reviews} courses={courses} editId={edit} />;
 };
 
 export default ReviewsAdminPage;

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2, Trash2 } from "lucide-react";
 import { apiDelete } from "./api";
+import { btn } from "./buttonStyles";
 
 interface DeleteButtonProps {
   url: string;
@@ -44,7 +45,7 @@ const DeleteButton = ({
         onClick={onDelete}
         disabled={busy}
         title={label}
-        className="flex items-center gap-1.5 rounded-md border border-rose-200 px-3 py-1.5 text-sm text-rose-600 hover:bg-rose-50 disabled:opacity-50"
+        className={btn("danger", "sm")}
       >
         {busy ? <Loader2 size={15} className="animate-spin" /> : <Trash2 size={15} />}
         {busy ? "Deleting…" : label}

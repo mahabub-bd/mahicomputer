@@ -6,6 +6,7 @@ import { useState } from "react";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import NoticeForm from "./NoticeForm";
+import { btn } from "./buttonStyles";
 
 interface NoticesListProps {
   notices: (Notice & { publishedBy: { name: string } | null })[];
@@ -35,7 +36,7 @@ const NoticesList = ({ notices }: NoticesListProps) => {
       <button
         onClick={() => setModal({ notice: n })}
         title="Edit"
-        className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-50"
+        className={btn("secondary", "sm")}
       >
         <Pencil size={15} />
         Edit
@@ -58,7 +59,7 @@ const NoticesList = ({ notices }: NoticesListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 sm:w-auto"
+          className={`w-full sm:w-auto ${btn("primary")}`}
         >
           <Plus size={16} />
           Add notice

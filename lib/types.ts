@@ -9,6 +9,7 @@ import type {
   GalleryItem,
   Instructor,
   NavLink,
+  Newsletter,
   Notice,
   Partner,
   Post,
@@ -27,6 +28,7 @@ export type {
   GalleryItem,
   Instructor,
   NavLink,
+  Newsletter,
   Notice,
   Partner,
   Post,
@@ -38,6 +40,11 @@ export type {
 export type CourseWithCategory = Course & {
   category: Category | null;
   instructor: Instructor | null;
+};
+
+/** Blog post row with its linked author (instructor) include payload. */
+export type PostWithAuthor = Post & {
+  author: { name: string; imageUrl: string; description?: string } | null;
 };
 
 /** Instructor row with its linked-course count (_count include payload). */

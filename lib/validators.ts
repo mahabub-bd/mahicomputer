@@ -119,6 +119,15 @@ export const noticeSchema = z.object({
   order: z.coerce.number().int().default(0),
 });
 
+/** A newsletter issue (announcement content), not the email signup. */
+export const newsletterIssueSchema = z.object({
+  title: z.string().min(1, "Title is required").max(300),
+  body: z.string().max(10000).default(""),
+  date: z.coerce.date().default(new Date()),
+  published: z.coerce.boolean().default(true),
+  order: z.coerce.number().int().default(0),
+});
+
 export const postSchema = z.object({
   slug,
   title: z.string().min(1, "Title is required").max(200),
@@ -126,6 +135,8 @@ export const postSchema = z.object({
   content: z.string().max(50000).default(""),
   imageUrl: imageField,
   imageAlt: z.string().max(200).default(""),
+  /** Selected Instructor row shown as the blog author. */
+  authorId: z.string().max(50).nullish(),
   published: z.coerce.boolean().default(true),
 });
 

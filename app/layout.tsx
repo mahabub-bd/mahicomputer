@@ -1,8 +1,8 @@
+import { SITE_NAME, SITE_URL, truncate } from "@/lib/site";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Hind_Siliguri, Plus_Jakarta_Sans } from "next/font/google";
 import type { ReactNode } from "react";
-import { SITE_NAME, SITE_URL, truncate } from "@/lib/site";
 import "./globals.css";
 
 const hindSiliguri = Hind_Siliguri({

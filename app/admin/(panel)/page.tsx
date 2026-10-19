@@ -9,7 +9,6 @@ import {
   GraduationCap,
   Handshake,
   Images,
-  Inbox,
   LayoutGrid,
   Mail,
   MapPin,
@@ -151,7 +150,6 @@ const AdminDashboard = async () => {
   const stats: SecondaryStat[] = [
     { label: "Published courses", value: publishedCount, Icon: Eye, tone: "text-emerald-600" },
     { label: "Hidden courses", value: hiddenCount, Icon: EyeOff, tone: "text-slate-500" },
-    { label: "Total messages", value: messageCount, Icon: Inbox, tone: "text-blue-600" },
     { label: "Pending enrollments", value: newEnrollmentCount, Icon: GraduationCap, tone: "text-violet-600" },
   ];
 

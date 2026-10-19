@@ -42,7 +42,7 @@ const CEO = ({ settings }: CeoProps) => {
           className="text-center font-bangla text-[13px] font-bold uppercase tracking-[0.2em] text-blue-600"
           data-aos="fade-up"
         >
-          CEO & Founder
+          সিইও ও প্রতিষ্ঠাতা
         </p>
         <h2
           className="section-title mt-2 text-center font-bangla"
@@ -89,7 +89,7 @@ const CEO = ({ settings }: CeoProps) => {
                   বার্তা
                 </span>
                 <span className="block font-bangla text-[15px] font-bold text-slate-900">
-                  সিইও ও ফাউন্ডার
+                  সিইও ও প্রতিষ্ঠাতা
                 </span>
               </span>
             </div>
@@ -121,7 +121,7 @@ const CEO = ({ settings }: CeoProps) => {
                 মাহি কম্পিউটার ট্রেনিং সেন্টার
               </span>
               <span className="text-[13px] font-medium uppercase tracking-wider text-blue-600">
-                CEO & Founder
+                সিইও ও প্রতিষ্ঠাতা
               </span>
             </div>
           </div>

@@ -5,6 +5,8 @@ config({ path: ".env", quiet: true });
 
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
+import { PrismaClient } from "../app/generated/prisma/client";
+import { courseContent } from "./course-content";
 import { categories, extraCategories } from "./seed-data/categories";
 import { courses } from "./seed-data/courses";
 import { faqs } from "./seed-data/faq";
@@ -16,8 +18,6 @@ import { partners } from "./seed-data/partners";
 import { review } from "./seed-data/review";
 import { socialMedia } from "./seed-data/socialMedia";
 import { stats } from "./seed-data/stats";
-import { PrismaClient } from "../app/generated/prisma/client";
-import { courseContent } from "./course-content";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });

@@ -7,7 +7,9 @@ import "./globals.css";
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["bengali", "latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  // 300 was only used by the marquee strip (now font-normal); 500 stays —
+  // it backs ~60 font-medium spots across the admin and site UI.
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-hind-siliguri",
 });

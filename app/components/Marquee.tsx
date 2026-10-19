@@ -13,7 +13,7 @@ const MarqueeList = ({ items, hidden = false }: { items: string[]; hidden?: bool
     {items.map((item) => (
       <li
         key={item}
-        className="flex items-center gap-2.5 whitespace-nowrap px-5 py-2.5 font-bangla text-[15px] font-light text-blue-100/90"
+        className="flex items-center gap-2.5 whitespace-nowrap px-5 py-2.5 font-bangla text-[15px] font-normal text-blue-100/90"
       >
         <BadgeCheck size={16} className="shrink-0 text-amber-400" aria-hidden />
         {item}

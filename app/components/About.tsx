@@ -104,8 +104,8 @@ const About = ({ settings }: AboutProps) => {
               <img
                 src={s.aboutImageUrl}
                 alt="মাহি কম্পিউটার ট্রেনিং সেন্টার"
-                loading="eager"
-                sizes="(min-width: 1200px) 45vw, 92vw"
+                loading="lazy"
+                decoding="async"
                 className="h-auto w-full object-cover"
                 hidden={!s.aboutImageUrl}
               />

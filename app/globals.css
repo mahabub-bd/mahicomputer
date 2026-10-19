@@ -149,15 +149,7 @@ html { scroll-behavior: smooth; }
 /* Help Mega menu */
 
 .hero {
-  position: relative;
   min-height: 620px;
-  
-
-  background-size: cover;
-  background-position: center;
-
-
-  
 }
 
 .shape-image {

@@ -69,8 +69,8 @@ const CEO = ({ settings }: CeoProps) => {
                 src={s.ceoImageUrl}
                 hidden={!s.ceoImageUrl}
                 alt="CEO & Founder of Mahi Computer Institute"
-                loading="eager"
-                sizes="(min-width: 1200px) 45vw, 92vw"
+                loading="lazy"
+                decoding="async"
                 className="h-auto w-full object-cover"
               />
               <div

@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
     // Serve resized WebP via sharp instead of originals (e.g. the 8.8 MB
     // max.png becomes a ~100 KB thumbnail per card).
     minimumCacheTTL: 3600,
+    // Admins can paste external image URLs into settings, gallery, etc.
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
   async redirects() {
     return [

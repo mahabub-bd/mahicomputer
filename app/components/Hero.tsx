@@ -5,6 +5,7 @@ import {
   MapPin,
   Sparkles,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import type { SiteSettingsView } from "@/lib/types";
@@ -23,14 +24,23 @@ const Hero = ({ settings }: HeroProps) => {
   const heroImage = settings?.heroImageUrl?.trim() || "";
 
   return (
-    <section
-      className="hero relative flex items-center overflow-hidden"
-      style={{
-        backgroundImage: heroImage
-          ? `linear-gradient(to right bottom, rgba(17,31,54,0.92), rgba(31,52,92,0.78)), url(${heroImage})`
-          : "linear-gradient(to right bottom, rgba(17,31,54,0.92), rgba(31,52,92,0.78))",
-      }}
-    >
+    <section className="hero relative flex items-center overflow-hidden">
+      {/* Admin-uploaded hero background — optimized/resized via next/image */}
+      {heroImage && (
+        <Image
+          src={heroImage}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      )}
+      {/* Gradient scrim — darkens the photo (or acts as the base when no photo is set) */}
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-linear-to-br from-[#111f36]/92 to-[#1f345c]/78"
+      />
       {/* Floating decorative shapes (animations live in globals.css) */}
       <span aria-hidden className="shape-1 absolute" />
       <span aria-hidden className="shape-2 absolute" />

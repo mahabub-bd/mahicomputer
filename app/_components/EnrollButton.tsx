@@ -69,13 +69,13 @@ const EnrollButton = ({
       });
       if (!res.ok) {
         const json = await res.json().catch(() => null);
-        throw new Error(json?.issues?.[0] || "Failed to submit");
+        throw new Error(json?.issues?.[0] || "ফরম জমা দিতে ব্যর্থ হয়েছে, আবার চেষ্টা করুন।");
       }
       setStatus("sent");
       form.reset();
     } catch (err) {
       setStatus("error");
-      setError(err instanceof Error ? err.message : "Failed to submit");
+      setError(err instanceof Error ? err.message : "ফরম জমা দিতে ব্যর্থ হয়েছে, আবার চেষ্টা করুন।");
     }
   };
 
@@ -88,7 +88,7 @@ const EnrollButton = ({
       <button type="button" className={className ?? defaultTriggerCls} onClick={() => setOpen(true)}>
         {children ?? (
           <>
-            Enroll Now
+            ভর্তি হোন
             <ArrowRight size={16} />
           </>
         )}
@@ -106,9 +106,9 @@ const EnrollButton = ({
           >
             <div className="mb-4 flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-lg font-semibold text-slate-900">Enroll Now</h2>
+                <h2 className="text-lg font-semibold text-slate-900">ভর্তি হোন</h2>
                 <p className="mt-0.5 text-sm text-slate-500">
-                  Fill in your details and we&apos;ll contact you.
+                  আপনার তথ্য দিন, আমরা যোগাযোগ করব।
                 </p>
               </div>
               <button
@@ -129,7 +129,7 @@ const EnrollButton = ({
               <form onSubmit={onSubmit} className="space-y-3">
                 <div>
                   <label className={labelCls} htmlFor="enroll-name">
-                    Name *
+                    নাম *
                   </label>
                   <input
                     id="enroll-name"
@@ -141,7 +141,7 @@ const EnrollButton = ({
                 </div>
                 <div>
                   <label className={labelCls} htmlFor="enroll-phone">
-                    Phone *
+                    ফোন *
                   </label>
                   <input
                     id="enroll-phone"
@@ -153,7 +153,7 @@ const EnrollButton = ({
                 </div>
                 <div>
                   <label className={labelCls} htmlFor="enroll-email">
-                    Email (optional)
+                    ইমেইল (ঐচ্ছিক)
                   </label>
                   <input
                     id="enroll-email"
@@ -165,7 +165,7 @@ const EnrollButton = ({
                 </div>
                 <div>
                   <label className={labelCls} htmlFor="enroll-course">
-                    Course
+                    কোর্স
                   </label>
                   {course ? (
                     <input
@@ -177,7 +177,7 @@ const EnrollButton = ({
                     />
                   ) : courses && courses.length > 0 ? (
                     <select id="enroll-course" name="course" className={inputCls} defaultValue="">
-                      <option value="">Select a course</option>
+                      <option value="">কোর্স নির্বাচন করুন</option>
                       {courses.map((title) => (
                         <option key={title} value={title}>
                           {title}
@@ -190,7 +190,7 @@ const EnrollButton = ({
                 </div>
                 <div>
                   <label className={labelCls} htmlFor="enroll-message">
-                    Message (optional)
+                    বার্তা (ঐচ্ছিক)
                   </label>
                   <textarea
                     id="enroll-message"
@@ -208,7 +208,7 @@ const EnrollButton = ({
                   disabled={status === "sending"}
                   className="w-full rounded-md bg-blue-700 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 disabled:opacity-50"
                 >
-                  {status === "sending" ? "Sending…" : "Submit"}
+                  {status === "sending" ? "পাঠানো হচ্ছে…" : "সাবমিট করুন"}
                 </button>
               </form>
             )}

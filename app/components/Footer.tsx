@@ -203,7 +203,7 @@ const Footer = ({
                 never leaves this area blank on small screens. */}
             <div className="min-w-0">
               <h3 className="text-[15px] font-bold uppercase tracking-wider text-white">
-                Get Help
+                সহায়তা
               </h3>
               <span
                 className="mt-1.5 block h-0.5 w-6 rounded-full bg-blue-500"
@@ -211,9 +211,9 @@ const Footer = ({
               />
               <ul className="mt-3 space-y-1">
                 {[
-                  { name: "Notice", href: "/notice" },
-                  { name: "All courses", href: "/courses" },
-                  { name: "Contact us", href: "/contact" },
+                  { name: "নোটিশ", href: "/notice" },
+                  { name: "সকল কোর্স", href: "/courses" },
+                  { name: "যোগাযোগ", href: "/contact" },
                 ].map((item) => (
                   <li key={item.name}>
                     <Link
@@ -232,7 +232,7 @@ const Footer = ({
         {/* ---------- Bottom bar ---------- */}
         <div className="mt-7 flex flex-col items-center gap-3 border-t border-white/10 pt-4 sm:flex-row sm:justify-between">
           <p className="text-center text-[13.5px] text-slate-500 sm:text-left">
-            © {new Date().getFullYear()} Mahi Computer. All Rights Reserved.{" "}
+            © {new Date().getFullYear()} Mahi Computer. সর্বস্বত্ব সংরক্ষিত।{" "}
             <span className="hidden text-slate-600 sm:inline">
               · Gulshan, Dhaka
             </span>
@@ -243,7 +243,7 @@ const Footer = ({
               href="/admin/login"
               className="text-[13.5px] text-slate-500 transition-colors hover:text-slate-300"
             >
-              Staff login
+              স্টাফ লগইন
             </Link>
             <span className="h-3 w-px bg-white/10" aria-hidden />
             <BackToTop />

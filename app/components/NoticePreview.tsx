@@ -44,7 +44,7 @@ const NoticePreview = ({ notices }: NoticePreviewProps) => {
                 dateTime={new Date(notice.date).toISOString()}
                 className="inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600"
               >
-                {new Date(notice.date).toLocaleDateString("en-GB", {
+                {new Date(notice.date).toLocaleDateString("bn-BD", {
                   dateStyle: "medium",
                 })}
               </time>

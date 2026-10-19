@@ -41,17 +41,17 @@ const CourseDetail = ({
   category = "",
   description = [],
   modules = [],
-  prerequisite = "SSC pass / basic computer knowledge",
-  seats = "10 students per batch.",
-  aboutTitle = "About This Course",
-  insideTitle = "Inside This Course",
+  prerequisite = "এসএসসি পাস / কম্পিউটারের বেসিক ধারণা",
+  seats = "প্রতি ব্যাচে সর্বোচ্চ ১০ জন ছাত্রছাত্রী।",
+  aboutTitle = "কোর্স সম্পর্কে",
+  insideTitle = "কোর্সের ভেতরে যা থাকছে",
 }: CourseDetailProps) => {
   const details = [
-    { icon: Wallet, label: "Course Fee", value: `৳${course.price.toLocaleString("en-BD")}` },
-    { icon: Clock, label: "Course Duration", value: `${course.duration} Month` },
-    { icon: BookOpen, label: "Total Classes", value: `${course.lesson}` },
-    { icon: Award, label: "Pre-requisite", value: prerequisite },
-    { icon: Users, label: "Total Seat", value: seats },
+    { icon: Wallet, label: "কোর্স ফি", value: `৳${course.price.toLocaleString("en-BD")}` },
+    { icon: Clock, label: "কোর্সের মেয়াদ", value: `${course.duration} মাস` },
+    { icon: BookOpen, label: "মোট ক্লাস", value: `${course.lesson}` },
+    { icon: Award, label: "প্রয়োজনীয় যোগ্যতা", value: prerequisite },
+    { icon: Users, label: "মোট সিট", value: seats },
   ];
 
   return (
@@ -74,11 +74,11 @@ const CourseDetail = ({
             aria-label="Breadcrumb"
           >
             <Link href="/" className="transition-colors hover:text-blue-700">
-              Home
+              হোম
             </Link>
             <span aria-hidden>/</span>
             <Link href="/courses" className="transition-colors hover:text-blue-700">
-              Courses
+              কোর্স
             </Link>
             {category && (
               <>
@@ -133,7 +133,7 @@ const CourseDetail = ({
                   )}
                   <p className="text-[14px] text-slate-600">
                     <span className="font-semibold text-slate-900">{course.instructorName}</span>
-                    <span className="text-slate-400"> · Course Instructor</span>
+                    <span className="text-slate-400"> · কোর্স ইন্সট্রাক্টর</span>
                   </p>
                 </div>
               )}
@@ -141,11 +141,11 @@ const CourseDetail = ({
               <div className="mt-5 flex flex-wrap gap-2">
                 <span className={chipCls}>
                   <Clock size={15} className="text-blue-600" />
-                  {course.duration} Months
+                  {course.duration} মাস
                 </span>
                 <span className={chipCls}>
                   <BookOpen size={15} className="text-blue-600" />
-                  {course.lesson} Classes
+                  {course.lesson} ক্লাস
                 </span>
               </div>
 
@@ -157,7 +157,7 @@ const CourseDetail = ({
                 />
                 <div className="mt-3 flex items-center justify-center gap-2 sm:mt-0 sm:block">
                   <p className="text-[12px] font-semibold uppercase tracking-wider text-slate-400">
-                    Course Fee
+                    কোর্স ফি
                   </p>
                   <p className="text-[22px] font-bold leading-7 text-blue-700 sm:text-[26px] sm:leading-8">
                     ৳{course.price.toLocaleString("en-BD")}
@@ -185,9 +185,9 @@ const CourseDetail = ({
                 </span>
                 <div>
                   <p className="text-[13px] font-bold text-slate-900 sm:text-[14px]">
-                    {course.duration} Months
+                    {course.duration} মাস
                   </p>
-                  <p className="text-[11px] text-slate-500 sm:text-[12px]">{course.lesson} Classes</p>
+                  <p className="text-[11px] text-slate-500 sm:text-[12px]">{course.lesson} ক্লাস</p>
                 </div>
               </div>
             </div>
@@ -250,7 +250,7 @@ const CourseDetail = ({
                 </ol>
               ) : (
                 <p className="mt-5 text-[15px] text-slate-500">
-                  Detailed syllabus will be added soon.
+                  বিস্তারিত সিলেবাস শীঘ্রই যুক্ত করা হবে।
                 </p>
               )}
             </div>
@@ -260,13 +260,13 @@ const CourseDetail = ({
           <aside className="space-y-5 lg:sticky lg:top-24">
             <div className="rounded-3xl border border-blue-200/60 bg-linear-to-b from-blue-600 to-blue-700 p-6 text-white shadow-lg shadow-blue-700/20">
               <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-blue-100">
-                Course Fee
+                কোর্স ফি
               </p>
               <p className="mt-1 text-[38px] font-bold leading-none tracking-tight">
                 ৳{course.price.toLocaleString("en-BD")}
               </p>
               <p className="mt-2 text-[13px] text-blue-100">
-                {course.duration} Month · {course.lesson} Classes
+                {course.duration} মাস · {course.lesson} ক্লাস
               </p>
               <EnrollButton
                 course={course.title}
@@ -277,7 +277,7 @@ const CourseDetail = ({
 
             <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
               <h3 className="text-[12px] font-bold uppercase tracking-[0.14em] text-slate-400">
-                Course Details
+                কোর্সের বিবরণ
               </h3>
               <dl className="mt-4 divide-y divide-slate-100">
                 {details.map((d) => (
@@ -299,7 +299,7 @@ const CourseDetail = ({
 
             <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
               <h3 className="text-[12px] font-bold uppercase tracking-[0.14em] text-slate-400">
-                Instructor
+                ইন্সট্রাক্টর
               </h3>
               <div className="mt-4 flex items-center gap-4">
                 {course.instructorPhotoUrl ? (
@@ -319,7 +319,7 @@ const CourseDetail = ({
                   <p className="text-[17px] font-bold text-slate-900">
                     {course.instructorName || "—"}
                   </p>
-                  <p className="text-[13px] text-slate-500">Course Instructor</p>
+                  <p className="text-[13px] text-slate-500">কোর্স ইন্সট্রাক্টর</p>
                 </div>
               </div>
               {instructorDescription && (
@@ -331,10 +331,10 @@ const CourseDetail = ({
 
             <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-6 text-center">
               <p className="text-[15px] font-semibold text-slate-800">
-                Have questions about this course?
+                এই কোর্স নিয়ে প্রশ্ন আছে?
               </p>
               <p className="mt-1 text-[13px] text-slate-500">
-                Talk to us before you enroll.
+                ভর্তির আগে আমাদের সাথে কথা বলুন।
               </p>
               <div className="mt-4 flex justify-center">
                 <EnrollButton course={course.title} />
@@ -349,7 +349,7 @@ const CourseDetail = ({
         <div className="mx-auto flex items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-              Course Fee
+              কোর্স ফি
             </p>
             <p className="truncate text-[19px] font-bold leading-6 text-blue-700">
               ৳{course.price.toLocaleString("en-BD")}

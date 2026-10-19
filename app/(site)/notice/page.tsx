@@ -39,7 +39,7 @@ const NoticeBoardPage = async () => {
                 dateTime={new Date(notice.date).toISOString()}
                 className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600"
               >
-                {new Date(notice.date).toLocaleDateString("en-GB", { dateStyle: "medium" })}
+                {new Date(notice.date).toLocaleDateString("bn-BD", { dateStyle: "medium" })}
               </time>
             </div>
             {notice.body && (

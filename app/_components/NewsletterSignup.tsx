@@ -24,7 +24,7 @@ const NewsletterSignup = () => {
       toast.success("ধন্যবাদ! আপনি সাবস্ক্রাইব করেছেন।");
       setEmail("");
     } catch {
-      toast.error("Something went wrong. Please try again.");
+      toast.error("কিছু সমস্যা হয়েছে, আবার চেষ্টা করুন।");
     } finally {
       setBusy(false);
     }
@@ -33,7 +33,7 @@ const NewsletterSignup = () => {
   return (
     <form onSubmit={onSubmit} className="mx-auto w-full max-w-md">
       <label className="block text-[15px] font-bold uppercase tracking-wider text-white">
-        Newsletter
+        নিউজলেটার
       </label>
       <p className="mt-1.5 text-[13px] leading-5 text-slate-400">
         নতুন কোর্স ও অফারের খবর সবার আগে পেতে সাবস্ক্রাইব করুন।
@@ -59,7 +59,7 @@ const NewsletterSignup = () => {
           ) : (
             <Send size={15} aria-hidden />
           )}
-          Subscribe
+          সাবস্ক্রাইব করুন
         </button>
       </div>
     </form>

@@ -72,7 +72,7 @@ const Map = ({ settings }: MapProps) => {
             </span>
             <span className="leading-tight">
               <span className="block text-[12px] font-semibold uppercase tracking-wider text-slate-400">
-                Location
+                অবস্থান
               </span>
               <span className="block font-bangla text-[15px] font-bold text-slate-900">
                 মাহি কম্পিউটার ট্রেনিং সেন্টার, গুলশান, ঢাকা

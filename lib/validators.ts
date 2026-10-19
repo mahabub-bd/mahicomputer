@@ -167,28 +167,28 @@ export const footerGroupSchema = z.object({
 });
 
 export const contactMessageSchema = z.object({
-  name: z.string().min(1, "Name is required").max(200),
-  email: z.string().email("Invalid email").max(200),
-  phone: z.string().min(1, "Phone is required").max(50),
-  message: z.string().min(1, "Message is required").max(5000),
+  name: z.string().min(1, "নাম লিখুন").max(200),
+  email: z.string().email("সঠিক ইমেইল দিন").max(200),
+  phone: z.string().min(1, "ফোন নম্বর দিন").max(50),
+  message: z.string().min(1, "বার্তা লিখুন").max(5000),
 });
 
 export const newsletterSchema = z.object({
-  email: z.string().email("Invalid email").max(200),
+  email: z.string().email("সঠিক ইমেইল দিন").max(200),
 });
 
 export const enrollmentSchema = z.object({
-  name: z.string().min(1, "Name is required").max(200),
+  name: z.string().min(1, "নাম লিখুন").max(200),
   phone: z
     .string()
-    .min(6, "Phone must be at least 6 characters")
-    .max(50, "Phone is too long"),
+    .min(6, "ফোন নম্বর কমপক্ষে ৬ ঘরের হতে হবে")
+    .max(50, "ফোন নম্বর অনেক বড়"),
   email: z
     .string()
     .max(200)
     .default("")
     .refine((v) => v === "" || z.string().email().safeParse(v).success, {
-      message: "Invalid email",
+      message: "সঠিক ইমেইল দিন",
     }),
   course: z.string().max(200).default(""),
   message: z.string().max(5000).default(""),

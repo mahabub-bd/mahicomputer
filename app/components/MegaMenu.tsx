@@ -23,7 +23,7 @@ const MegaMenu = ({ menuLink, menu }: MegaMenuProps) => {
       <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_24px_60px_-15px_rgba(15,35,75,0.30)]">
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-5 py-3">
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
-            Explore courses
+            কোর্স দেখুন
           </p>
           <span className="rounded-full bg-blue-600/10 px-2 py-0.5 text-[11px] font-bold text-blue-700">
             {menuLink.length}
@@ -70,7 +70,7 @@ const MegaMenu = ({ menuLink, menu }: MegaMenuProps) => {
             href={`/${menu}`}
             className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#0b3a6d] to-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
           >
-            View all courses
+            সব কোর্স দেখুন
             <ArrowRight size={16} />
           </Link>
         </div>

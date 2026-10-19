@@ -93,10 +93,10 @@ const CourseCard = ({
             )}
             <span className="flex min-w-0 flex-col">
               <span className="truncate text-sm font-medium text-slate-800">
-                {instractorName || "Instructor"}
+                {instractorName || "ইন্সট্রাক্টর"}
               </span>
               <span className="text-[11px] uppercase tracking-wide text-slate-400">
-                Instructor
+                ইন্সট্রাক্টর
               </span>
             </span>
           </div>
@@ -104,10 +104,10 @@ const CourseCard = ({
           <div className="mt-4 flex items-end justify-between gap-3 border-t border-slate-100 pt-4">
             <span className="flex flex-col">
               <span className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
-                Fee
+                ফি
               </span>
               <span className="flex items-baseline gap-1">
-                <span className="text-xs font-semibold text-slate-500">BDT</span>
+                <span className="text-xs font-semibold text-slate-500">৳</span>
                 <span className="text-2xl font-bold leading-none text-qpayone">
                   {price.toLocaleString("en-BD")}
                 </span>
@@ -115,7 +115,7 @@ const CourseCard = ({
             </span>
 
             <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-blue-600 px-4 py-2 text-[13px] font-semibold text-white shadow-sm transition duration-300 group-hover:bg-blue-700 group-hover:shadow-md">
-              View course
+              কোর্স দেখুন
               <ArrowUpRight
                 size={15}
                 className="transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

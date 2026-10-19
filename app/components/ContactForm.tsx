@@ -57,7 +57,7 @@ const ContactForm = () => {
       if (!res.ok) {
         const body = await res.json().catch(() => null);
         throw new Error(
-          body?.issues?.[0] ?? body?.error ?? "Failed to send message"
+          body?.issues?.[0] ?? body?.error ?? "বার্তা পাঠানো হয়েছে না, আবার চেষ্টা করুন।"
         );
       }
 
@@ -84,7 +84,7 @@ const ContactForm = () => {
       setErrorMsg(
         err instanceof Error
           ? err.message
-          : "Something went wrong. Please try again."
+          : "কিছু সমস্যা হয়েছে, আবার চেষ্টা করুন।"
       );
       setStatus("error");
     }
@@ -102,7 +102,7 @@ const ContactForm = () => {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="from_name" className={labelCls}>
-            Your Name *
+            আপনার নাম *
           </label>
           <div className="relative">
             <input
@@ -111,7 +111,7 @@ const ContactForm = () => {
               type="text"
               required
               disabled={sending}
-              placeholder="Your full name"
+              placeholder="আপনার পূর্ণ নাম"
               className={inputCls}
             />
             <User size={18} className={iconCls} />
@@ -120,7 +120,7 @@ const ContactForm = () => {
 
         <div>
           <label htmlFor="from_email" className={labelCls}>
-            Your Email *
+            আপনার ইমেইল *
           </label>
           <div className="relative">
             <input
@@ -139,7 +139,7 @@ const ContactForm = () => {
 
       <div>
         <label htmlFor="from_phone" className={labelCls}>
-          Phone Number *
+          ফোন নম্বর *
         </label>
         <div className="relative">
           <input
@@ -157,7 +157,7 @@ const ContactForm = () => {
 
       <div>
         <label htmlFor="message" className={labelCls}>
-          Message *
+          বার্তা *
         </label>
         <div className="relative">
           <textarea
@@ -166,7 +166,7 @@ const ContactForm = () => {
             required
             rows={5}
             disabled={sending}
-            placeholder="Write your message…"
+            placeholder="আপনার বার্তা লিখুন…"
             className={`${inputCls} min-h-[120px] resize-y`}
           />
           <MessageSquare
@@ -185,12 +185,12 @@ const ContactForm = () => {
           {sending ? (
             <>
               <Loader2 size={18} className="animate-spin" />
-              Sending…
+              পাঠানো হচ্ছে…
             </>
           ) : (
             <>
               <Send size={18} />
-              Send Message
+              বার্তা পাঠান
             </>
           )}
         </button>
@@ -199,7 +199,7 @@ const ContactForm = () => {
           {status === "sent" && (
             <p className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-[14px] font-medium text-emerald-700">
               <CheckCircle2 size={17} className="shrink-0" />
-              Message sent successfully! We&apos;ll get back to you soon.
+              আপনার বার্তা পাঠানো হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।
             </p>
           )}
           {status === "error" && (
@@ -208,7 +208,7 @@ const ContactForm = () => {
               className="flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-[14px] font-medium text-rose-700"
             >
               <AlertCircle size={17} className="shrink-0" />
-              {errorMsg || "Something went wrong. Please try again."}
+              {errorMsg || "কিছু সমস্যা হয়েছে, আবার চেষ্টা করুন।"}
             </p>
           )}
         </div>

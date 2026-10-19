@@ -86,10 +86,10 @@ const CEO = ({ settings }: CeoProps) => {
               </span>
               <span className="leading-tight">
                 <span className="block text-[12px] font-semibold uppercase tracking-wider text-slate-400">
-                  Message
+                  বার্তা
                 </span>
                 <span className="block font-bangla text-[15px] font-bold text-slate-900">
-                  CEO & Founder
+                  সিইও ও ফাউন্ডার
                 </span>
               </span>
             </div>

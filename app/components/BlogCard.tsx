@@ -32,7 +32,7 @@ const BlogCard = ({ post }: { post: PostWithAuthor }) => {
           className="flex items-center gap-1.5 text-xs text-slate-400"
         >
           <CalendarDays size={13} aria-hidden />
-          {new Date(post.createdAt).toLocaleDateString("en-GB", {
+          {new Date(post.createdAt).toLocaleDateString("bn-BD", {
             dateStyle: "medium",
           })}
         </time>

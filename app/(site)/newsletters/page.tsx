@@ -42,7 +42,7 @@ const NewslettersPage = async () => {
                   dateTime={new Date(issue.date).toISOString()}
                   className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600"
                 >
-                  {new Date(issue.date).toLocaleDateString("en-GB", { dateStyle: "medium" })}
+                  {new Date(issue.date).toLocaleDateString("bn-BD", { dateStyle: "medium" })}
                 </time>
               </div>
               {paragraphs.map((paragraph, i) => (

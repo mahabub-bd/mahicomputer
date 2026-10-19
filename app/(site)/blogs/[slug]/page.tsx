@@ -62,11 +62,11 @@ const BlogDetailPage = async ({ params }: Props) => {
         aria-label="Breadcrumb"
       >
         <Link href="/" className="transition-colors hover:text-blue-700">
-          Home
+          হোম
         </Link>
         <span aria-hidden>/</span>
         <Link href="/blogs" className="transition-colors hover:text-blue-700">
-          Blogs
+          ব্লগ
         </Link>
         <span aria-hidden>/</span>
         <span className="font-semibold text-slate-800">{post.title}</span>
@@ -83,7 +83,7 @@ const BlogDetailPage = async ({ params }: Props) => {
             className="flex items-center gap-1.5"
           >
             <CalendarDays size={14} aria-hidden />
-            {new Date(post.createdAt).toLocaleDateString("en-GB", {
+            {new Date(post.createdAt).toLocaleDateString("bn-BD", {
               dateStyle: "long",
             })}
           </time>
@@ -158,7 +158,7 @@ const BlogDetailPage = async ({ params }: Props) => {
           href="/blogs"
           className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-2.5 text-[15px] font-semibold text-white shadow-md shadow-blue-600/25 transition hover:bg-blue-700"
         >
-          ← All blogs
+          ← সব ব্লগ
         </Link>
       </div>
     </article>

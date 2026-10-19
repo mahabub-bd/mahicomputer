@@ -17,21 +17,21 @@ const Contact = ({ settings }: ContactProps) => {
   const channels = [
     {
       icon: Mail,
-      label: "Email Us",
+      label: "ইমেইল করুন",
       value: s.email,
       href: `mailto:${s.email}`,
       external: false,
     },
     {
       icon: Phone,
-      label: "Make A Call",
+      label: "কল করুন",
       value: s.phone,
       href: `tel:${s.phone.replace(/\s+/g, "")}`,
       external: false,
     },
     {
       icon: MapPin,
-      label: "Corporate Office",
+      label: "অফিসের ঠিকানা",
       value: s.address,
       href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.address)}`,
       external: true,
@@ -88,7 +88,7 @@ const Contact = ({ settings }: ContactProps) => {
             data-aos="fade-left"
           >
             <h3 className="text-[20px] font-bold text-slate-900">
-              Send us a message
+              আমাদের বার্তা পাঠান
             </h3>
             <p className="mt-1 text-[14px] text-slate-500">
               Fill in the form and our team will reach out soon.

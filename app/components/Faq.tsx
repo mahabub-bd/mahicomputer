@@ -27,8 +27,8 @@ const Faq = ({ faqs }: FaqProps) => {
         </p>
 
         <div className="mt-8 grid items-start grid-cols-1 gap-3 md:grid-cols-2">
-          {faqs.map(({ id, question, answer }, i) => (
-            <FaqItem key={id} question={question} answer={answer} defaultOpen={i === 0} />
+          {faqs.map(({ id, question, answer }) => (
+            <FaqItem key={id} question={question} answer={answer} />
           ))}
         </div>
       </div>
@@ -39,13 +39,11 @@ const Faq = ({ faqs }: FaqProps) => {
 const FaqItem = ({
   question,
   answer,
-  defaultOpen,
 }: {
   question: string;
   answer: string;
-  defaultOpen?: boolean;
 }) => {
-  const [open, setOpen] = useState(defaultOpen);
+  const [open, setOpen] = useState(false);
   const toggle = () => setOpen((o) => !o);
 
   return (

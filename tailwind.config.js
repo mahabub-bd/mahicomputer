@@ -8,9 +8,6 @@ module.exports = {
   mode: "jit",
   theme: {
     extend: {
-      backgroundImage: {
-        hero: "url('../public/images/hero.jpg')",
-      },
       colors: {
         bgqpay: "#FFFFFF",
         dimWhite: "rgba(255, 255, 255, 0.7)",

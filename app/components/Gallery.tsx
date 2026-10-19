@@ -19,7 +19,7 @@ const Gallery = ({ items = [] }: { items?: GalleryView[] }) => {
       setActiveIndex((index) =>
         index === null ? index : (index - 1 + items.length) % items.length
       ),
-    []
+    [items.length]
   );
 
   const showNext = useCallback(
@@ -27,7 +27,7 @@ const Gallery = ({ items = [] }: { items?: GalleryView[] }) => {
       setActiveIndex((index) =>
         index === null ? index : (index + 1) % items.length
       ),
-    []
+    [items.length]
   );
 
   useEffect(() => {

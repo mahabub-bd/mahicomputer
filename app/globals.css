@@ -152,13 +152,6 @@ html { scroll-behavior: smooth; }
   min-height: 620px;
 }
 
-.shape-image {
-  -webkit-animation: animation1 2s linear infinite;
-  -moz-animation: animation1 2s linear infinite;
-  -o-animation: animation1 2s linear infinite;
-  animation: animation1 2s linear infinite;
-}
-
 .shape-1 {
   width: 25px;
   height: 25px;

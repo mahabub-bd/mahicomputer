@@ -49,7 +49,6 @@ while (queue.length) {
   flood(x, y - 1);
 }
 
-const stripped = data[data.length - 1] === 0; // sanity: something was modified
 await sharp(data, { raw: info })
   .png()
   .toFile(path);

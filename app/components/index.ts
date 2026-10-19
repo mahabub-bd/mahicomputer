@@ -12,8 +12,6 @@ import Marquee from "./Marquee";
 
 import Hero from "./Hero";
 
-import Button from "./Button";
-
 import Stats from "./Stats";
 
 import Categories from "./Categories";
@@ -31,8 +29,6 @@ import Map from "./Map";
 
 import Gallery from "./Gallery";
 
-import Blog from "./Blog";
-
 import Contact from "./Contact";
 
 import ContactForm from "./ContactForm";
@@ -41,7 +37,6 @@ import Partners from "./Partners";
 
 import Newsletter from "./Newsletter";
 
-import Photo from "./Photo";
 import CEO from "./CEO"
 
 import PreHeader from "./PreHeader";
@@ -55,7 +50,6 @@ export {
   PreHeader,
   MegaMenu,MobileSubMenu,
   Gallery,
-  Blog,
   CEO,
   Contact,
   Footer,
@@ -63,7 +57,6 @@ export {
   TogglerMenu,
   Marquee,
   Hero,
-  Button,
   Stats,
   Categories,
   Courses,
@@ -76,5 +69,4 @@ export {
   Map,
   Partners,
   Newsletter,
-  Photo,
 };

@@ -23,6 +23,7 @@
     "@prisma/client": "^7.10.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@vercel/analytics": "^1.6.1",
+    "@vercel/blob": "^2.8.2",
     "aos": "^3.0.0-beta.6",
     "bcryptjs": "^3.0.3",
     "jose": "^6.2.12",

@@ -4,30 +4,80 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Pencil, Plus } from "lucide-react";
 import type { NavLink } from "@/lib/types";
+import { navLinkSchema, type NavLinkInput } from "@/lib/validators";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import { apiPost, apiPut } from "./api";
-import { inputCls, labelCls, submitCls } from "./inputs";
-import { btn } from "./buttonStyles";
+import { Field, Input, SubmitButton } from "@/components/form/FormControls";
+import { btn } from "@/components/form/buttonStyles";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface NavLinksListProps {
   links: NavLink[];
 }
 
-const NavLinksList = ({ links }: NavLinksListProps) => {
-  const [modal, setModal] = useState<{ link?: NavLink } | null>(null);
-  const [form, setForm] = useState({ title: "", href: "", cssClass: "nothoverable", order: 0 });
-  const [busy, setBusy] = useState(false);
+interface NavLinkFormProps {
+  link?: NavLink;
+  /** Called after a successful save so the parent can close the modal. */
+  onDone: () => void;
+}
 
-  const openModal = (link?: NavLink) => {
-    setForm({
+const NavLinkForm = ({ link, onDone }: NavLinkFormProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useZodForm<NavLinkInput>(navLinkSchema, {
+    defaultValues: {
       title: link?.title ?? "",
       href: link?.href ?? "",
       cssClass: link?.cssClass ?? "nothoverable",
       order: link?.order ?? 0,
-    });
-    setModal({ link });
-  };
+    },
+  });
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      if (link) {
+        await apiPut(`/api/admin/nav-links/${link.id}`, data);
+        toast.success("Nav link updated");
+      } else {
+        await apiPost("/api/admin/nav-links", data);
+        toast.success("Nav link added");
+      }
+      onDone();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Save failed");
+    }
+  });
+
+  return (
+    <form onSubmit={onSubmit} className="space-y-4" noValidate>
+      <Field label="Title" required error={errors.title?.message}>
+        <Input {...register("title")} aria-invalid={!!errors.title} />
+      </Field>
+      <Field label="Href" required hint="e.g. #about, /courses, notice" error={errors.href?.message}>
+        <Input {...register("href")} aria-invalid={!!errors.href} />
+      </Field>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="CSS class" error={errors.cssClass?.message}>
+          <Input {...register("cssClass")} />
+        </Field>
+        <Field label="Display order" error={errors.order?.message}>
+          <Input type="number" {...register("order")} />
+        </Field>
+      </div>
+      <SubmitButton busy={isSubmitting}>
+        {link ? "Update link" : "Add link"}
+      </SubmitButton>
+    </form>
+  );
+};
+
+const NavLinksList = ({ links }: NavLinksListProps) => {
+  const [modal, setModal] = useState<{ link?: NavLink } | null>(null);
+
+  const openModal = (link?: NavLink) => setModal({ link });
 
   // Shared with the mobile card list below so the two views cannot drift.
   const actions = (l: NavLink) => (
@@ -46,25 +96,6 @@ const NavLinksList = ({ links }: NavLinksListProps) => {
       />
     </div>
   );
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
-    try {
-      if (modal?.link) {
-        await apiPut(`/api/admin/nav-links/${modal.link.id}`, form);
-        toast.success("Nav link updated");
-      } else {
-        await apiPost("/api/admin/nav-links", form);
-        toast.success("Nav link added");
-      }
-      setModal(null);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Save failed");
-    } finally {
-      setBusy(false);
-    }
-  };
 
   return (
     <div>
@@ -167,48 +198,11 @@ const NavLinksList = ({ links }: NavLinksListProps) => {
         title={modal?.link ? `Edit: ${modal.link.title}` : "Add nav link"}
       >
         {modal !== null && (
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div>
-              <label className={labelCls}>Title *</label>
-              <input
-                className={inputCls}
-                value={form.title}
-                onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
-                required
-              />
-            </div>
-            <div>
-              <label className={labelCls}>Href * (e.g. #about, /courses, notice)</label>
-              <input
-                className={inputCls}
-                value={form.href}
-                onChange={(e) => setForm((f) => ({ ...f, href: e.target.value }))}
-                required
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className={labelCls}>CSS class</label>
-                <input
-                  className={inputCls}
-                  value={form.cssClass}
-                  onChange={(e) => setForm((f) => ({ ...f, cssClass: e.target.value }))}
-                />
-              </div>
-              <div>
-                <label className={labelCls}>Display order</label>
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={form.order}
-                  onChange={(e) => setForm((f) => ({ ...f, order: Number(e.target.value) }))}
-                />
-              </div>
-            </div>
-            <button type="submit" disabled={busy} className={submitCls}>
-              {busy ? "Saving…" : modal?.link ? "Update link" : "Add link"}
-            </button>
-          </form>
+          <NavLinkForm
+            key={modal.link?.id ?? "new"}
+            link={modal.link}
+            onDone={() => setModal(null)}
+          />
         )}
       </Modal>
     </div>

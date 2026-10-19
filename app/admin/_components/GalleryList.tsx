@@ -6,7 +6,7 @@ import type { GalleryItem } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import GalleryForm from "./GalleryForm";
 import Modal from "./Modal";
-import { btn, btnIcon } from "./buttonStyles";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 
 interface GalleryListProps {
   items: GalleryItem[];

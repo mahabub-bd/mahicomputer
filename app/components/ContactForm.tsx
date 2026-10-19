@@ -1,25 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import type { FormEvent } from "react";
 import {
   AlertCircle,
   CheckCircle2,
-  Loader2,
   Mail,
   MessageSquare,
   Phone,
   Send,
   User,
 } from "lucide-react";
-
-const inputCls =
-  "w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-[15px] text-slate-800 transition placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:bg-slate-50";
+import { contactMessageSchema, type ContactMessageInput } from "@/lib/validators";
+import { Input, SubmitButton, Textarea } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 const iconCls =
   "pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors peer-focus:text-blue-600";
 
 const labelCls = "mb-1.5 block text-[13px] font-semibold text-slate-600";
+
+const errorCls = "mt-1 text-xs font-medium text-rose-600";
 
 const ContactForm = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
@@ -27,31 +27,29 @@ const ContactForm = () => {
   );
   const [errorMsg, setErrorMsg] = useState("");
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useZodForm<ContactMessageInput>(contactMessageSchema, {
+    defaultValues: { name: "", email: "", phone: "", message: "" },
+  });
+
   // Clear stale success/error feedback as soon as the user edits again.
   const resetStatus = () => {
     if (status === "sent" || status === "error") setStatus("idle");
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const data = new FormData(form);
-
+  const onSubmit = handleSubmit(async (data) => {
     setStatus("sending");
     setErrorMsg("");
-
-    const payload = {
-      name: String(data.get("from_name") || ""),
-      email: String(data.get("from_email") || ""),
-      phone: String(data.get("from_phone") || ""),
-      message: String(data.get("message") || ""),
-    };
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(data),
       });
 
       if (!res.ok) {
@@ -69,17 +67,22 @@ const ContactForm = () => {
       ) {
         const emailjs = (await import("@emailjs/browser")).default;
         emailjs
-          .sendForm(
+          .send(
             process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
             process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-            form,
+            {
+              from_name: data.name,
+              from_email: data.email,
+              from_phone: data.phone,
+              message: data.message,
+            },
             process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
           )
           .catch(() => {});
       }
 
       setStatus("sent");
-      form.reset();
+      reset();
     } catch (err) {
       setErrorMsg(
         err instanceof Error
@@ -88,9 +91,9 @@ const ContactForm = () => {
       );
       setStatus("error");
     }
-  };
+  });
 
-  const sending = status === "sending";
+  const sending = status === "sending" || isSubmitting;
 
   return (
     <form
@@ -98,6 +101,7 @@ const ContactForm = () => {
       onSubmit={onSubmit}
       onChange={resetStatus}
       className="space-y-4"
+      noValidate
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
@@ -105,17 +109,19 @@ const ContactForm = () => {
             আপনার নাম *
           </label>
           <div className="relative">
-            <input
+            <Input
+              variant="site"
               id="from_name"
-              name="from_name"
               type="text"
-              required
               disabled={sending}
               placeholder="আপনার পূর্ণ নাম"
-              className={inputCls}
+              className="peer"
+              {...register("name")}
+              aria-invalid={!!errors.name}
             />
             <User size={18} className={iconCls} />
           </div>
+          {errors.name?.message && <p className={errorCls}>{errors.name.message}</p>}
         </div>
 
         <div>
@@ -123,17 +129,21 @@ const ContactForm = () => {
             আপনার ইমেইল *
           </label>
           <div className="relative">
-            <input
+            <Input
+              variant="site"
               id="from_email"
-              name="from_email"
               type="email"
-              required
               disabled={sending}
               placeholder="you@example.com"
-              className={inputCls}
+              className="peer"
+              {...register("email")}
+              aria-invalid={!!errors.email}
             />
             <Mail size={18} className={iconCls} />
           </div>
+          {errors.email?.message && (
+            <p className={errorCls}>{errors.email.message}</p>
+          )}
         </div>
       </div>
 
@@ -142,17 +152,19 @@ const ContactForm = () => {
           ফোন নম্বর *
         </label>
         <div className="relative">
-          <input
+          <Input
+            variant="site"
             id="from_phone"
-            name="from_phone"
             type="tel"
-            required
             disabled={sending}
             placeholder="+8801XXXXXXXXX"
-            className={inputCls}
+            className="peer"
+            {...register("phone")}
+            aria-invalid={!!errors.phone}
           />
           <Phone size={18} className={iconCls} />
         </div>
+        {errors.phone?.message && <p className={errorCls}>{errors.phone.message}</p>}
       </div>
 
       <div>
@@ -160,40 +172,35 @@ const ContactForm = () => {
           বার্তা *
         </label>
         <div className="relative">
-          <textarea
+          <Textarea
+            variant="site"
             id="message"
-            name="message"
-            required
             rows={5}
             disabled={sending}
             placeholder="আপনার বার্তা লিখুন…"
-            className={`${inputCls} min-h-[120px] resize-y`}
+            className="peer min-h-[120px] resize-y"
+            {...register("message")}
+            aria-invalid={!!errors.message}
           />
           <MessageSquare
             size={18}
             className="pointer-events-none absolute left-4 top-3.5 text-slate-400 transition-colors peer-focus:text-blue-600"
           />
         </div>
+        {errors.message?.message && (
+          <p className={errorCls}>{errors.message.message}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center">
-        <button
-          type="submit"
-          disabled={sending}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-8 py-3 text-[15px] font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+        <SubmitButton
+          variant="site"
+          busy={sending}
+          busyLabel="পাঠানো হচ্ছে…"
         >
-          {sending ? (
-            <>
-              <Loader2 size={18} className="animate-spin" />
-              পাঠানো হচ্ছে…
-            </>
-          ) : (
-            <>
-              <Send size={18} />
-              বার্তা পাঠান
-            </>
-          )}
-        </button>
+          <Send size={18} />
+          বার্তা পাঠান
+        </SubmitButton>
 
         <div aria-live="polite" className="min-w-0 flex-1">
           {status === "sent" && (

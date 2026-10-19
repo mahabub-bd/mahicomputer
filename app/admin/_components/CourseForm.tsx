@@ -2,11 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import type { Course } from "@/lib/types";
+import { courseFormSchema, type CourseFormInput } from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
 import ImageUpload from "./ImageUpload";
-import { inputCls, labelCls, submitCls } from "./inputs";
+import { Checkbox, Field, Input, Select, SubmitButton, Textarea } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface CourseFormProps {
   course?: Course;
@@ -47,8 +50,14 @@ const empty = {
 const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
   const router = useRouter();
   const editing = Boolean(course);
-  const [form, setForm] = useState(
-    course
+  const {
+    register,
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useZodForm<CourseFormInput>(courseFormSchema, {
+    defaultValues: course
       ? {
           slug: course.slug,
           title: course.title,
@@ -70,10 +79,8 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
           published: course.published,
           order: course.order,
         }
-      : empty
-  );
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+      : empty,
+  });
   const [instructors, setInstructors] = useState<{ id: string; name: string }[]>(
     []
   );
@@ -115,31 +122,24 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
     };
   }, []);
 
-  const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) =>
-    setForm((f) => ({ ...f, [key]: value }));
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
-    setError(null);
+  const onSubmit = handleSubmit(async (data) => {
+    const { descriptionText, modulesText, ...rest } = data;
     const payload = {
-      ...form,
-      instructorId: form.instructorId || null,
-      categoryId: form.categoryId || null,
-      description: form.descriptionText
+      ...rest,
+      instructorId: rest.instructorId || null,
+      categoryId: rest.categoryId || null,
+      description: descriptionText
         .split(/\n\s*\n/)
         .map((p) => p.trim())
         .filter(Boolean),
-      modules: form.modulesText
+      modules: modulesText
         .split("\n")
         .map((m) => m.trim())
         .filter(Boolean),
     };
-    delete (payload as Record<string, unknown>).descriptionText;
-    delete (payload as Record<string, unknown>).modulesText;
     try {
-      if (editing) {
-        await apiPut(`/api/admin/courses/${course!.id}`, payload);
+      if (course) {
+        await apiPut(`/api/admin/courses/${course.id}`, payload);
         toast.success("Course updated");
       } else {
         await apiPost("/api/admin/courses", payload);
@@ -155,217 +155,168 @@ const CourseForm = ({ course, onSuccess, stayAfterSave }: CourseFormProps) => {
       router.refresh();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Save failed";
-      setError(msg);
+      setError("root", { message: msg });
       toast.error(msg);
-      setBusy(false);
     }
-  };
+  });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-4" noValidate>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div>
-          <label className={labelCls}>Title *</label>
-          <input
-            className={inputCls}
-            value={form.title}
-            onChange={(e) => set("title", e.target.value)}
-            required
+        <Field label="Title" required error={errors.title?.message}>
+          <Input {...register("title")} aria-invalid={!!errors.title} />
+        </Field>
+        <Field
+          label="Slug"
+          required
+          hint="URL: /courses/this-slug"
+          error={errors.slug?.message}
+        >
+          <Input
+            {...register("slug", {
+              setValueAs: (value) => String(value ?? "").toLowerCase(),
+            })}
+            aria-invalid={!!errors.slug}
           />
-        </div>
-        <div>
-          <label className={labelCls}>Slug * (URL: /courses/this-slug)</label>
-          <input
-            className={inputCls}
-            value={form.slug}
-            onChange={(e) => set("slug", e.target.value.toLowerCase())}
-            required
-            pattern="[a-z0-9]+(-[a-z0-9]+)*"
-            title="lowercase letters, numbers and dashes"
+        </Field>
+        <Field label="Tag (e.g. Web Development)" error={errors.tag?.message}>
+          <Input {...register("tag")} />
+        </Field>
+        <Field label="Tag color (Tailwind bg class)" error={errors.tagbg?.message}>
+          <Input {...register("tagbg")} placeholder="bg-fuchsia-800" />
+        </Field>
+        <Field label="Lessons" error={errors.lesson?.message}>
+          <Input type="number" min={0} {...register("lesson")} />
+        </Field>
+        <Field label="Duration (months)" error={errors.duration?.message}>
+          <Input {...register("duration")} placeholder="3" />
+        </Field>
+        <Field label="Instructor" error={errors.instructorId?.message}>
+          <Controller
+            control={control}
+            name="instructorId"
+            render={({ field }) => (
+              <Select
+                name={field.name}
+                ref={field.ref}
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+              >
+                <option value="">— None —</option>
+                {instructors.map((i) => (
+                  <option key={i.id} value={i.id}>
+                    {i.name}
+                  </option>
+                ))}
+              </Select>
+            )}
           />
-        </div>
-        <div>
-          <label className={labelCls}>Tag (e.g. Web Development)</label>
-          <input
-            className={inputCls}
-            value={form.tag}
-            onChange={(e) => set("tag", e.target.value)}
+        </Field>
+        <Field label="Category" error={errors.categoryId?.message}>
+          <Controller
+            control={control}
+            name="categoryId"
+            render={({ field }) => (
+              <Select
+                name={field.name}
+                ref={field.ref}
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+              >
+                <option value="">— None —</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.title}
+                  </option>
+                ))}
+              </Select>
+            )}
           />
-        </div>
-        <div>
-          <label className={labelCls}>Tag color (Tailwind bg class)</label>
-          <input
-            className={inputCls}
-            value={form.tagbg}
-            onChange={(e) => set("tagbg", e.target.value)}
-            placeholder="bg-fuchsia-800"
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Lessons</label>
-          <input
-            type="number"
-            min={0}
-            className={inputCls}
-            value={form.lesson}
-            onChange={(e) => set("lesson", Number(e.target.value))}
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Duration (months)</label>
-          <input
-            className={inputCls}
-            value={form.duration}
-            onChange={(e) => set("duration", e.target.value)}
-            placeholder="3"
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Instructor</label>
-          <select
-            className={inputCls}
-            value={form.instructorId}
-            onChange={(e) => set("instructorId", e.target.value)}
-          >
-            <option value="">— None —</option>
-            {instructors.map((i) => (
-              <option key={i.id} value={i.id}>
-                {i.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className={labelCls}>Category</label>
-          <select
-            className={inputCls}
-            value={form.categoryId}
-            onChange={(e) => set("categoryId", e.target.value)}
-          >
-            <option value="">— None —</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.title}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className={labelCls}>Price (BDT)</label>
-          <input
-            type="number"
-            min={0}
-            className={inputCls}
-            value={form.price}
-            onChange={(e) => set("price", Number(e.target.value))}
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Rating (0–5, shown on card)</label>
-          <input
-            type="number"
-            min={0}
-            max={5}
-            step={0.1}
-            className={inputCls}
-            value={form.rating}
-            onChange={(e) => set("rating", Number(e.target.value))}
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Review count</label>
-          <input
-            type="number"
-            min={0}
-            className={inputCls}
-            value={form.reviewCount}
-            onChange={(e) => set("reviewCount", Number(e.target.value))}
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Display order</label>
-          <input
-            type="number"
-            className={inputCls}
-            value={form.order}
-            onChange={(e) => set("order", Number(e.target.value))}
-          />
-        </div>
+        </Field>
+        <Field label="Price (BDT)" error={errors.price?.message}>
+          <Input type="number" min={0} {...register("price")} />
+        </Field>
+        <Field label="Rating (0–5, shown on card)" error={errors.rating?.message}>
+          <Input type="number" min={0} max={5} step={0.1} {...register("rating")} />
+        </Field>
+        <Field label="Review count" error={errors.reviewCount?.message}>
+          <Input type="number" min={0} {...register("reviewCount")} />
+        </Field>
+        <Field label="Display order" error={errors.order?.message}>
+          <Input type="number" {...register("order")} />
+        </Field>
         <div className="flex items-end">
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={form.published}
-              onChange={(e) => set("published", e.target.checked)}
-            />
-            Published
-          </label>
+          <Controller
+            control={control}
+            name="published"
+            render={({ field }) => (
+              <Checkbox
+                label="Published"
+                checked={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
         </div>
       </div>
 
-      <ImageUpload
-        label="Course image"
-        value={form.imageUrl}
-        onChange={(url) => set("imageUrl", url)}
+      <Controller
+        control={control}
+        name="imageUrl"
+        render={({ field }) => (
+          <ImageUpload
+            label="Course image"
+            value={field.value}
+            onChange={field.onChange}
+          />
+        )}
       />
       <div className="max-w-xs">
-        <label className={labelCls}>Image alt text</label>
-        <input
-          className={inputCls}
-          value={form.imageAlt}
-          onChange={(e) => set("imageAlt", e.target.value)}
-        />
+        <Field label="Image alt text" error={errors.imageAlt?.message}>
+          <Input {...register("imageAlt")} />
+        </Field>
       </div>
 
-      <div>
-        <label className={labelCls}>
-          Description (separate paragraphs with a blank line)
-        </label>
-        <textarea
+      <Field
+        label="Description (separate paragraphs with a blank line)"
+        error={errors.descriptionText?.message}
+      >
+        <Textarea
           rows={6}
-          className={inputCls}
-          value={form.descriptionText}
-          onChange={(e) => set("descriptionText", e.target.value)}
+          {...register("descriptionText")}
           placeholder="Paragraph 1…&#10;&#10;Paragraph 2…"
         />
-      </div>
-      <div>
-        <label className={labelCls}>
-          Modules / syllabus (one per line)
-        </label>
-        <textarea
+      </Field>
+      <Field
+        label="Modules / syllabus (one per line)"
+        error={errors.modulesText?.message}
+      >
+        <Textarea
           rows={6}
-          className={inputCls}
-          value={form.modulesText}
-          onChange={(e) => set("modulesText", e.target.value)}
+          {...register("modulesText")}
           placeholder={"Module 1\nModule 2\nModule 3"}
         />
-      </div>
+      </Field>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div>
-          <label className={labelCls}>Pre-requisite</label>
-          <input
-            className={inputCls}
-            value={form.prerequisite}
-            onChange={(e) => set("prerequisite", e.target.value)}
-            placeholder="Basic English Knowledge"
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Total seat</label>
-          <input
-            className={inputCls}
-            value={form.seats}
-            onChange={(e) => set("seats", e.target.value)}
-            placeholder="10 students per batch."
-          />
-        </div>
+        <Field label="Pre-requisite" error={errors.prerequisite?.message}>
+          <Input {...register("prerequisite")} placeholder="Basic English Knowledge" />
+        </Field>
+        <Field label="Total seat" error={errors.seats?.message}>
+          <Input {...register("seats")} placeholder="10 students per batch." />
+        </Field>
       </div>
 
-      {error && <p className="text-sm text-rose-600">{error}</p>}
-      <button type="submit" disabled={busy} className={submitCls}>
-        {busy ? "Saving…" : editing ? "Update course" : "Create course"}
-      </button>
+      {errors.imageUrl?.message && (
+        <p className="text-sm text-rose-600">{errors.imageUrl.message}</p>
+      )}
+      {errors.root?.message && (
+        <p className="text-sm text-rose-600">{errors.root.message}</p>
+      )}
+      <SubmitButton busy={isSubmitting}>
+        {editing ? "Update course" : "Create course"}
+      </SubmitButton>
     </form>
   );
 };

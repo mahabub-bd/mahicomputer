@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { apiDelete } from "./api";
-import { dangerBtnCls, primaryBtnCls, secondaryBtnCls } from "./buttonStyles";
+import { dangerBtnCls, primaryBtnCls, secondaryBtnCls } from "@/components/form/buttonStyles";
 
 export interface DetailActionsProps {
   /** List page the back button returns to. */

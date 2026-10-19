@@ -4,7 +4,7 @@ import type { Course, CourseWithCategory } from "@/lib/types";
 import { Info, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 import CourseForm from "./CourseForm";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";

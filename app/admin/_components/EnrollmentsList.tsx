@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { btn, btnIcon } from "./buttonStyles";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 import {
   BookOpen,
   CheckCheck,

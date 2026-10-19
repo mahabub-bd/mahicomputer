@@ -1,5 +1,5 @@
-import styles from "../styles/style";
 import type { StatItem } from "@/lib/types";
+import styles from "../styles/style";
 
 interface StatsProps {
   stats?: StatItem[];

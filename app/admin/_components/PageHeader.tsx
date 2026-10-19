@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowLeft, Plus } from "lucide-react";
-import { primaryBtnCls, secondaryBtnCls } from "./buttonStyles";
+import { primaryBtnCls, secondaryBtnCls } from "@/components/form/buttonStyles";
 
 interface PageHeaderProps {
   title: string;

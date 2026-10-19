@@ -8,7 +8,7 @@ import DeleteButton from "./DeleteButton";
 import InstructorForm from "./InstructorForm";
 import Modal from "./Modal";
 import useEditDeepLink from "./useEditDeepLink";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 
 interface InstructorsListProps {
   instructors: InstructorWithCourseCount[];

@@ -2,7 +2,7 @@
 
 import { X } from "lucide-react";
 import { useEffect } from "react";
-import { btnIcon } from "./buttonStyles";
+import { btnIcon } from "@/components/form/buttonStyles";
 
 interface ModalProps {
   open: boolean;

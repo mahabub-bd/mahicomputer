@@ -1,7 +1,7 @@
 import { requireAdmin } from "@/lib/auth";
-import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { categorySchema } from "@/lib/validators";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 type Params = { params: Promise<{ id: string }> };

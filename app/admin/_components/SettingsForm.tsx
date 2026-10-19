@@ -1,96 +1,76 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Controller, useFieldArray } from "react-hook-form";
 import { toast } from "sonner";
-import type { SiteSettingsView, StatItem, WhyFeature } from "@/lib/types";
+import type { SiteSettingsView } from "@/lib/types";
+import { settingsFormSchema, type SettingsFormInput } from "@/lib/validators";
 import { apiPut } from "./api";
-import { inputCls, labelCls, submitCls } from "./inputs";
+import { Button, Field, Input, SubmitButton, Textarea } from "@/components/form/FormControls";
 import ImageUpload from "./ImageUpload";
-import { btn } from "./buttonStyles";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface SettingsFormProps {
   settings: SiteSettingsView;
 }
 
-const emptyStat: StatItem = { id: "", title: "", value: "", class: "bg-stat-1" };
+const emptyStat = { id: "", title: "", value: "", class: "bg-stat-1" };
+
+type TextKey = {
+  [K in keyof SettingsFormInput]: SettingsFormInput[K] extends string ? K : never;
+}[keyof SettingsFormInput];
 
 const SettingsForm = ({ settings }: SettingsFormProps) => {
   const router = useRouter();
-  const [form, setForm] = useState(settings);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { marqueeItems, ...rest } = settings;
+  const {
+    register,
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useZodForm<SettingsFormInput>(settingsFormSchema, {
+    defaultValues: { ...rest, marqueeText: marqueeItems.join("\n") },
+  });
+  const stats = useFieldArray({ control, name: "stats", keyName: "_key" });
+  const features = useFieldArray({ control, name: "whyFeatures" });
 
-  const set = <K extends keyof SiteSettingsView>(key: K, value: SiteSettingsView[K]) => {
-    setForm((f) => ({ ...f, [key]: value }));
-  };
-
-  const setStat = (index: number, key: keyof StatItem, value: string) => {
-    setForm((f) => ({
-      ...f,
-      stats: f.stats.map((s, i) => (i === index ? { ...s, [key]: value } : s)),
-    }));
-  };
-
-  const setFeature = (index: number, key: keyof WhyFeature, value: string) => {
-    setForm((f) => ({
-      ...f,
-      whyFeatures: f.whyFeatures.map((s, i) => (i === index ? { ...s, [key]: value } : s)),
-    }));
-  };
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
-    setError(null);
+  const onSubmit = handleSubmit(async (data) => {
+    const { marqueeText, ...values } = data;
+    const payload = {
+      ...values,
+      marqueeItems: marqueeText
+        .split("\n")
+        .map((s) => s.trim())
+        .filter(Boolean),
+      stats: data.stats.map((s, i) => ({
+        ...s,
+        id: s.id || `stats-${i + 1}`,
+      })),
+    };
     try {
-      const cleaned = {
-        ...form,
-        stats: form.stats.map((s, i) => ({
-          ...s,
-          id: s.id || `stats-${i + 1}`,
-        })),
-      };
-      await apiPut("/api/admin/settings", cleaned);
+      await apiPut("/api/admin/settings", payload);
       toast.success("Settings saved");
       router.refresh();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Save failed";
-      setError(msg);
+      setError("root", { message: msg });
       toast.error(msg);
-    } finally {
-      setBusy(false);
     }
-  };
+  });
 
-  const text = (
-    key: {
-      [K in keyof SiteSettingsView]: SiteSettingsView[K] extends string ? K : never;
-    }[keyof SiteSettingsView],
-    label: string,
-    textarea = false
-  ) => (
-    <div>
-      <label className={labelCls}>{label}</label>
+  const text = (key: TextKey, label: string, textarea = false) => (
+    <Field label={label} error={errors[key]?.message}>
       {textarea ? (
-        <textarea
-          rows={5}
-          className={inputCls}
-          value={form[key]}
-          onChange={(e) => set(key, e.target.value as never)}
-        />
+        <Textarea rows={5} {...register(key)} />
       ) : (
-        <input
-          className={inputCls}
-          value={form[key]}
-          onChange={(e) => set(key, e.target.value as never)}
-        />
+        <Input {...register(key)} />
       )}
-    </div>
+    </Field>
   );
 
   return (
-    <form onSubmit={onSubmit} className="space-y-8">
+    <form onSubmit={onSubmit} className="space-y-8" noValidate>
       <fieldset className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <legend className="sr-only">Hero section</legend>
         <p className="mb-4 w-full border-b border-slate-200 pb-3 text-[13px] font-bold uppercase tracking-wider text-slate-700">
@@ -99,10 +79,16 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         {text("heroTitle", "Hero title")}
         {text("heroSubtitle", "Hero subtitle", true)}
         {text("heroNote", "Hero note (e.g. course durations line)")}
-        <ImageUpload
-          value={form.heroImageUrl}
-          onChange={(url) => set("heroImageUrl", url)}
-          label="Hero background image (landscape, ~1920×1080px recommended)"
+        <Controller
+          control={control}
+          name="heroImageUrl"
+          render={({ field }) => (
+            <ImageUpload
+              value={field.value}
+              onChange={field.onChange}
+              label="Hero background image (landscape, ~1920×1080px recommended)"
+            />
+          )}
         />
         <p className="text-xs text-slate-400">
           Leave empty to keep the default background. A dark overlay is applied automatically for
@@ -115,27 +101,17 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         <p className="mb-4 w-full border-b border-slate-200 pb-3 text-[13px] font-bold uppercase tracking-wider text-slate-700">
           Marquee (top announcements bar)
         </p>
-        <div>
-          <label className={labelCls}>Announcements (one per line)</label>
-          <textarea
+        <Field
+          label="Announcements (one per line)"
+          hint="Leave empty to keep the current announcements."
+          error={errors.marqueeText?.message}
+        >
+          <Textarea
             rows={4}
-            className={inputCls}
-            value={form.marqueeItems.join("\n")}
+            {...register("marqueeText")}
             placeholder={"বাংলাদেশ কারিগরি শিক্ষাবোর্ড কর্তৃক অনুমোদিত প্রতিষ্ঠান...\n...next announcement"}
-            onChange={(e) =>
-              set(
-                "marqueeItems",
-                e.target.value
-                  .split("\n")
-                  .map((s) => s.trim())
-                  .filter(Boolean),
-              )
-            }
           />
-          <p className="mt-1 text-xs text-slate-400">
-            Leave empty to keep the current announcements.
-          </p>
-        </div>
+        </Field>
       </fieldset>
 
       <fieldset className="space-y-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -145,40 +121,40 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         </p>
         {text("whyTitle", "Section title")}
         {text("whySubtitle", "Section subtitle")}
-        {form.whyFeatures.map((feat, i) => (
-          <div key={i} className="flex flex-wrap items-end gap-3">
-            <div className="min-w-[200px] flex-[1]">
-              <label className={labelCls}>Feature title</label>
-              <input
-                className={inputCls}
-                value={feat.title}
-                onChange={(e) => setFeature(i, "title", e.target.value)}
-              />
-            </div>
-            <div className="min-w-[280px] flex-[2]">
-              <label className={labelCls}>Feature text</label>
-              <input
-                className={inputCls}
-                value={feat.text}
-                onChange={(e) => setFeature(i, "text", e.target.value)}
-              />
-            </div>
-            <button
+        {features.fields.map((feat, i) => (
+          <div key={feat.id} className="flex flex-wrap items-end gap-3">
+            <Field
+              label="Feature title"
+              className="min-w-[200px] flex-[1]"
+              error={errors.whyFeatures?.[i]?.title?.message}
+            >
+              <Input {...register(`whyFeatures.${i}.title`)} />
+            </Field>
+            <Field
+              label="Feature text"
+              className="min-w-[280px] flex-[2]"
+              error={errors.whyFeatures?.[i]?.text?.message}
+            >
+              <Input {...register(`whyFeatures.${i}.text`)} />
+            </Field>
+            <Button
               type="button"
-              onClick={() => set("whyFeatures", form.whyFeatures.filter((_, j) => j !== i))}
-              className={btn("danger", "sm")}
+              variant="danger"
+              size="sm"
+              onClick={() => features.remove(i)}
             >
               Remove
-            </button>
+            </Button>
           </div>
         ))}
-        <button
+        <Button
           type="button"
-          onClick={() => set("whyFeatures", [...form.whyFeatures, { title: "", text: "" }])}
-          className={btn("secondary", "sm")}
+          variant="secondary"
+          size="sm"
+          onClick={() => features.append({ title: "", text: "" })}
         >
           + Add feature
-        </button>
+        </Button>
         <p className="text-xs text-slate-400">
           Icons are assigned automatically (in order). Leave everything empty to keep the current
           section content.
@@ -214,10 +190,16 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         </p>
         {text("aboutTitle", "About title")}
         {text("aboutText", "About text", true)}
-        <ImageUpload
-          value={form.aboutImageUrl}
-          onChange={(url) => set("aboutImageUrl", url)}
-          label="About image (shown beside the About text)"
+        <Controller
+          control={control}
+          name="aboutImageUrl"
+          render={({ field }) => (
+            <ImageUpload
+              value={field.value}
+              onChange={field.onChange}
+              label="About image (shown beside the About text)"
+            />
+          )}
         />
         <p className="text-xs text-slate-400">
           Leave empty to keep the default image. Recommended: landscape, ~1200×900px.
@@ -231,10 +213,16 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         </p>
         {text("ceoTitle", "CEO section title")}
         {text("ceoText", "CEO message (blank line = new paragraph)", true)}
-        <ImageUpload
-          value={form.ceoImageUrl}
-          onChange={(url) => set("ceoImageUrl", url)}
-          label="CEO & Founder image (shown beside the CEO message)"
+        <Controller
+          control={control}
+          name="ceoImageUrl"
+          render={({ field }) => (
+            <ImageUpload
+              value={field.value}
+              onChange={field.onChange}
+              label="CEO & Founder image (shown beside the CEO message)"
+            />
+          )}
         />
         <p className="text-xs text-slate-400">
           Leave empty to keep the default image. Recommended: portrait, ~900×1100px.
@@ -260,55 +248,54 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         <p className="mb-4 w-full border-b border-slate-200 pb-3 text-[13px] font-bold uppercase tracking-wider text-slate-700">
           Stats (one glance section)
         </p>
-        {form.stats.map((stat, i) => (
-          <div key={i} className="flex flex-wrap items-end gap-3">
-            <div className="min-w-[200px] flex-[2]">
-              <label className={labelCls}>Title</label>
-              <input
-                className={inputCls}
-                value={stat.title}
-                onChange={(e) => setStat(i, "title", e.target.value)}
-              />
-            </div>
-            <div className="min-w-[130px] flex-[1]">
-              <label className={labelCls}>Value</label>
-              <input
-                className={inputCls}
-                value={stat.value}
-                onChange={(e) => setStat(i, "value", e.target.value)}
-              />
-            </div>
-            <div className="min-w-[170px] flex-[1]">
-              <label className={labelCls}>BG class</label>
-              <input
-                className={inputCls}
-                value={stat.class}
-                onChange={(e) => setStat(i, "class", e.target.value)}
-              />
-            </div>
-            <button
+        {stats.fields.map((stat, i) => (
+          <div key={stat._key} className="flex flex-wrap items-end gap-3">
+            <Field
+              label="Title"
+              className="min-w-[200px] flex-[2]"
+              error={errors.stats?.[i]?.title?.message}
+            >
+              <Input {...register(`stats.${i}.title`)} />
+            </Field>
+            <Field
+              label="Value"
+              className="min-w-[130px] flex-[1]"
+              error={errors.stats?.[i]?.value?.message}
+            >
+              <Input {...register(`stats.${i}.value`)} />
+            </Field>
+            <Field
+              label="BG class"
+              className="min-w-[170px] flex-[1]"
+              error={errors.stats?.[i]?.class?.message}
+            >
+              <Input {...register(`stats.${i}.class`)} />
+            </Field>
+            <Button
               type="button"
-              onClick={() => set("stats", form.stats.filter((_, j) => j !== i))}
-              className={btn("danger", "sm")}
+              variant="danger"
+              size="sm"
+              onClick={() => stats.remove(i)}
             >
               Remove
-            </button>
+            </Button>
           </div>
         ))}
-        <button
+        <Button
           type="button"
-          onClick={() => set("stats", [...form.stats, { ...emptyStat }])}
-          className={btn("secondary", "sm")}
+          variant="secondary"
+          size="sm"
+          onClick={() => stats.append({ ...emptyStat })}
         >
           + Add stat
-        </button>
+        </Button>
       </fieldset>
 
-      {error && <p className="text-sm text-rose-600">{error}</p>}
+      {errors.root?.message && (
+        <p className="text-sm text-rose-600">{errors.root.message}</p>
+      )}
       <div className="flex items-center gap-3">
-        <button type="submit" disabled={busy} className={submitCls}>
-          {busy ? "Saving…" : "Save settings"}
-        </button>
+        <SubmitButton busy={isSubmitting}>Save settings</SubmitButton>
       </div>
     </form>
   );

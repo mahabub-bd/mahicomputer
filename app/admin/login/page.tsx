@@ -1,6 +1,9 @@
 "use client";
 
 import styles from "@/app/styles/style";
+import { Input, SubmitButton } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
+import { loginSchema, type LoginInput } from "@/lib/validators";
 import { logo } from "@/public";
 import {
   AlertCircle,
@@ -8,7 +11,6 @@ import {
   Check,
   Eye,
   EyeOff,
-  Loader2,
   Lock,
   LogIn,
   Mail,
@@ -22,68 +24,52 @@ import { useState } from "react";
 import { Toaster, toast } from "sonner";
 import { apiPost } from "../_components/api";
 
-/* Local field styles — the shared inputCls in _components/inputs.ts is used
-   by every admin form, so the login page keeps its own refined set. The
-   `login-field` hook lets globals.css keep autofill on-brand. */
-const fieldCls =
-  "login-field w-full rounded-xl border border-slate-200 bg-white/85 py-3 pl-11 pr-4 text-[15px] text-slate-900 placeholder:text-slate-400 transition duration-200 outline-none hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/12";
+/* The card keeps its own labels/hint spacing; the frosted, icon-prefixed
+   fields come from the shared Input's `login` variant (the `login-field`
+   hook lets globals.css keep autofill on-brand). Field-level validation
+   errors come from the shared login schema via React Hook Form. */
 const labelCls = "mb-1.5 block text-sm font-semibold text-slate-700";
 const hintBoxCls = "mt-1.5 min-h-[16px]";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-type FieldErrors = { email?: string; password?: string };
-
 const LoginPage = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [capsLock, setCapsLock] = useState(false);
   const [shake, setShake] = useState(false);
 
-  const clearFieldError = (field: keyof FieldErrors) =>
-    setFieldErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useZodForm<LoginInput>(loginSchema, {
+    defaultValues: { email: "", password: "" },
+  });
+  // Register once so the composed onBlur (caps-lock hint) can still delegate
+  // to React Hook Form's own blur handler.
+  const passwordField = register("password");
 
-  const validate = (): FieldErrors => {
-    const errs: FieldErrors = {};
-    const trimmed = email.trim();
-    if (!trimmed) errs.email = "Email is required";
-    else if (!EMAIL_RE.test(trimmed)) errs.email = "Enter a valid email address";
-    if (!password) errs.password = "Password is required";
-    return errs;
-  };
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (busy) return;
-
-    const errs = validate();
-    if (errs.email || errs.password) {
-      setFieldErrors(errs);
-      setShake(true);
-      return;
-    }
-    setFieldErrors({});
-
-    setBusy(true);
-    setError(null);
-    try {
-      await apiPost("/api/auth/login", { email: email.trim(), password });
-      toast.success("Signed in successfully");
-      router.push("/admin");
-      router.refresh();
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Login failed";
-      setError(msg);
-      toast.error(msg);
-      setBusy(false);
-      setShake(true);
-    }
-  };
+  const onSubmit = handleSubmit(
+    async (data) => {
+      setError(null);
+      try {
+        await apiPost("/api/auth/login", {
+          email: data.email.trim(),
+          password: data.password,
+        });
+        toast.success("Signed in successfully");
+        router.push("/admin");
+        router.refresh();
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : "Login failed";
+        setError(msg);
+        toast.error(msg);
+        setShake(true);
+      }
+    },
+    // Invalid submission — nudge the card so the field errors are noticed.
+    () => setShake(true)
+  );
 
   return (
     <div className="relative flex min-h-screen overflow-hidden bg-slate-50">
@@ -212,30 +198,25 @@ const LoginPage = () => {
                     <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-slate-400">
                       <Mail size={17} />
                     </span>
-                    <input
+                    <Input
+                      variant="login"
                       id="email"
-                      name="email"
                       type="email"
                       autoComplete="email"
                       inputMode="email"
                       placeholder="admin@example.com"
-                      className={`${fieldCls} ${fieldErrors.email ? "border-rose-400" : ""
-                        }`}
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                        clearFieldError("email");
-                      }}
+                      className={errors.email ? "border-rose-400" : undefined}
                       required
                       autoFocus
-                      aria-invalid={!!fieldErrors.email}
+                      aria-invalid={!!errors.email}
                       aria-describedby="email-hint"
+                      {...register("email")}
                     />
                   </div>
                   <div id="email-hint" className={hintBoxCls} aria-live="polite">
-                    {fieldErrors.email && (
+                    {errors.email?.message && (
                       <p className="text-xs font-medium text-rose-600">
-                        {fieldErrors.email}
+                        {errors.email.message}
                       </p>
                     )}
                   </div>
@@ -249,25 +230,23 @@ const LoginPage = () => {
                     <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-slate-400">
                       <Lock size={17} />
                     </span>
-                    <input
+                    <Input
+                      variant="login"
                       id="password"
-                      name="password"
                       type={showPassword ? "text" : "password"}
                       autoComplete="current-password"
                       placeholder="Enter your password"
-                      className={`${fieldCls} pr-12 ${fieldErrors.password ? "border-rose-400" : ""
-                        }`}
-                      value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                        clearFieldError("password");
-                      }}
+                      className={`pr-12 ${errors.password ? "border-rose-400" : ""}`}
                       onKeyUp={(e) => setCapsLock(e.getModifierState("CapsLock"))}
                       onKeyDown={(e) => setCapsLock(e.getModifierState("CapsLock"))}
-                      onBlur={() => setCapsLock(false)}
                       required
-                      aria-invalid={!!fieldErrors.password}
+                      aria-invalid={!!errors.password}
                       aria-describedby="password-hint"
+                      {...passwordField}
+                      onBlur={(e) => {
+                        passwordField.onBlur(e);
+                        setCapsLock(false);
+                      }}
                     />
                     <button
                       type="button"
@@ -281,9 +260,9 @@ const LoginPage = () => {
                     </button>
                   </div>
                   <div id="password-hint" className={hintBoxCls} aria-live="polite">
-                    {fieldErrors.password ? (
+                    {errors.password?.message ? (
                       <p className="text-xs font-medium text-rose-600">
-                        {fieldErrors.password}
+                        {errors.password.message}
                       </p>
                     ) : capsLock ? (
                       <p className="flex items-center gap-1.5 text-xs font-medium text-amber-600">
@@ -304,23 +283,14 @@ const LoginPage = () => {
                   </p>
                 )}
 
-                <button
-                  type="submit"
-                  disabled={busy}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-sky-500 py-3.5 text-[15px] font-semibold text-white shadow-lg shadow-blue-600/25 transition duration-200 hover:from-blue-500 hover:to-sky-400 hover:shadow-xl hover:shadow-blue-500/30 active:translate-y-px disabled:pointer-events-none disabled:opacity-60"
+                <SubmitButton
+                  variant="login"
+                  busy={isSubmitting}
+                  busyLabel="Signing in…"
                 >
-                  {busy ? (
-                    <>
-                      <Loader2 size={17} className="animate-spin" />
-                      Signing in…
-                    </>
-                  ) : (
-                    <>
-                      <LogIn size={17} />
-                      Sign in
-                    </>
-                  )}
-                </button>
+                  <LogIn size={17} />
+                  Sign in
+                </SubmitButton>
               </form>
 
               <div className="mt-6 flex items-center justify-center gap-1.5 text-xs text-slate-500">

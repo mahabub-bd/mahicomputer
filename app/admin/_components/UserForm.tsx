@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import type { UserView } from "@/lib/types";
+import {
+  userCreateSchema,
+  userUpdateSchema,
+  type UserFormInput,
+} from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
 import ImageUpload from "./ImageUpload";
-import { inputCls, labelCls, submitCls } from "./inputs";
+import { Field, Input, SubmitButton } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface UserFormProps {
   user?: UserView;
@@ -15,80 +21,83 @@ interface UserFormProps {
 
 const UserForm = ({ user, onSuccess }: UserFormProps) => {
   const router = useRouter();
-  const [form, setForm] = useState({
-    name: user?.name ?? "",
-    email: user?.email ?? "",
-    imageUrl: user?.imageUrl ?? "",
-    password: "",
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useZodForm<UserFormInput>(user ? userUpdateSchema : userCreateSchema, {
+    defaultValues: {
+      name: user?.name ?? "",
+      email: user?.email ?? "",
+      imageUrl: user?.imageUrl ?? "",
+      password: "",
+    },
   });
-  const [busy, setBusy] = useState(false);
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
+  const onSubmit = handleSubmit(async (data) => {
     try {
       if (user) {
-        await apiPut(`/api/admin/users/${user.id}`, form);
+        await apiPut(`/api/admin/users/${user.id}`, data);
         toast.success("Admin account updated");
       } else {
-        await apiPost("/api/admin/users", form);
+        await apiPost("/api/admin/users", data);
         toast.success("Admin account created");
       }
       onSuccess?.();
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Save failed");
-    } finally {
-      setBusy(false);
     }
-  };
+  });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div>
-        <label className={labelCls}>Name *</label>
-        <input
-          className={inputCls}
-          value={form.name}
-          onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+    <form onSubmit={onSubmit} className="space-y-4" noValidate>
+      <Field label="Name" required error={errors.name?.message}>
+        <Input
+          {...register("name")}
+          aria-invalid={!!errors.name}
           placeholder="e.g. Mahabub Hossain"
-          required
         />
-      </div>
-      <div>
-        <label className={labelCls}>Email *</label>
-        <input
+      </Field>
+      <Field label="Email" required error={errors.email?.message}>
+        <Input
           type="email"
-          className={inputCls}
-          value={form.email}
-          onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+          {...register("email")}
+          aria-invalid={!!errors.email}
           placeholder="name@example.com"
-          required
         />
-      </div>
-      <ImageUpload
-        label="Profile photo"
-        value={form.imageUrl}
-        onChange={(url) => setForm((f) => ({ ...f, imageUrl: url }))}
+      </Field>
+      <Controller
+        control={control}
+        name="imageUrl"
+        render={({ field }) => (
+          <ImageUpload
+            label="Profile photo"
+            value={field.value}
+            onChange={field.onChange}
+          />
+        )}
       />
-      <div>
-        <label className={labelCls}>
-          Password {user ? "(leave blank to keep current)" : "*"}
-        </label>
-        <input
+      <Field
+        label={user ? "Password (leave blank to keep current)" : "Password"}
+        required={!user}
+        error={errors.password?.message}
+      >
+        <Input
           type="password"
-          className={inputCls}
-          value={form.password}
-          onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+          {...register("password")}
+          aria-invalid={!!errors.password}
           placeholder={user ? "••••••••" : "Min 8 characters"}
-          required={!user}
-          minLength={user ? 0 : 8}
           autoComplete="new-password"
         />
-      </div>
-      <button type="submit" disabled={busy} className={submitCls}>
-        {busy ? "Saving…" : user ? "Update account" : "Create account"}
-      </button>
+      </Field>
+      {errors.imageUrl?.message && (
+        <p className="text-sm text-rose-600">{errors.imageUrl.message}</p>
+      )}
+      <SubmitButton busy={isSubmitting}>
+        {user ? "Update account" : "Create account"}
+      </SubmitButton>
     </form>
   );
 };

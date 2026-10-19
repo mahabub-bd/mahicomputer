@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { CheckCheck, Clock, Mail, MailOpen, MessageSquare, Phone, Trash2 } from "lucide-react";
 import type { ContactMessage } from "@/lib/types";
 import { apiDelete, apiPatch } from "./api";
-import { btn, btnIcon } from "./buttonStyles";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 
 interface MessagesListProps {
   messages: ContactMessage[];

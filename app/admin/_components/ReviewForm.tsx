@@ -1,12 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import type { Course, Review } from "@/lib/types";
+import { reviewSchema, type ReviewInput } from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
 import ImageUpload from "./ImageUpload";
-import { inputCls, labelCls, submitCls } from "./inputs";
+import { Field, Input, Select, SubmitButton, Textarea } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface ReviewFormProps {
   review?: Review;
@@ -29,8 +31,14 @@ const empty = {
 const ReviewForm = ({ review, courses, onSuccess }: ReviewFormProps) => {
   const router = useRouter();
   const editing = Boolean(review);
-  const [form, setForm] = useState(
-    review
+  const {
+    register,
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useZodForm<ReviewInput>(reviewSchema, {
+    defaultValues: review
       ? {
           name: review.name,
           title: review.title,
@@ -40,24 +48,16 @@ const ReviewForm = ({ review, courses, onSuccess }: ReviewFormProps) => {
           imageUrl: review.imageUrl,
           order: review.order,
         }
-      : empty
-  );
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+      : empty,
+  });
 
-  const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) =>
-    setForm((f) => ({ ...f, [key]: value }));
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
-    setError(null);
+  const onSubmit = handleSubmit(async (data) => {
     try {
-      if (editing) {
-        await apiPut(`/api/admin/reviews/${review!.id}`, form);
+      if (review) {
+        await apiPut(`/api/admin/reviews/${review.id}`, data);
         toast.success("Review updated");
       } else {
-        await apiPost("/api/admin/reviews", form);
+        await apiPost("/api/admin/reviews", data);
         toast.success("Review created");
       }
       if (onSuccess) {
@@ -68,40 +68,22 @@ const ReviewForm = ({ review, courses, onSuccess }: ReviewFormProps) => {
       router.refresh();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Save failed";
-      setError(msg);
+      setError("root", { message: msg });
       toast.error(msg);
-      setBusy(false);
     }
-  };
+  });
 
   return (
-    <form onSubmit={onSubmit} className="max-w-2xl space-y-4">
+    <form onSubmit={onSubmit} className="max-w-2xl space-y-4" noValidate>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label className={labelCls}>Name *</label>
-          <input
-            className={inputCls}
-            value={form.name}
-            onChange={(e) => set("name", e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Designation</label>
-          <input
-            className={inputCls}
-            value={form.title}
-            onChange={(e) => set("title", e.target.value)}
-            placeholder="Student"
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Course</label>
-          <select
-            className={inputCls}
-            value={form.course}
-            onChange={(e) => set("course", e.target.value)}
-          >
+        <Field label="Name" required error={errors.name?.message}>
+          <Input {...register("name")} aria-invalid={!!errors.name} />
+        </Field>
+        <Field label="Designation" error={errors.title?.message}>
+          <Input {...register("title")} placeholder="Student" />
+        </Field>
+        <Field label="Course" error={errors.course?.message}>
+          <Select {...register("course")}>
             <option value="">No course</option>
             {courses.map((c) => (
               <option key={c.id} value={c.title}>
@@ -113,53 +95,54 @@ const ReviewForm = ({ review, courses, onSuccess }: ReviewFormProps) => {
               !courses.some((c) => c.title === review.course) && (
                 <option value={review.course}>{review.course}</option>
               )}
-          </select>
-        </div>
-        <div>
-          <label className={labelCls}>Rating (0–5)</label>
-          <input
+          </Select>
+        </Field>
+        <Field label="Rating (0–5)" error={errors.rating?.message}>
+          <Input
             type="number"
             min={0}
             max={5}
             step={0.1}
-            className={inputCls}
-            value={form.rating}
-            onChange={(e) => set("rating", Number(e.target.value))}
+            {...register("rating")}
           />
-        </div>
+        </Field>
       </div>
 
-      <div>
-        <label className={labelCls}>Review content *</label>
-        <textarea
-          className={inputCls}
+      <Field label="Review content" required error={errors.content?.message}>
+        <Textarea
           rows={4}
-          value={form.content}
-          onChange={(e) => set("content", e.target.value)}
-          required
+          {...register("content")}
+          aria-invalid={!!errors.content}
         />
-      </div>
+      </Field>
 
       <div className="max-w-xs">
-        <label className={labelCls}>Display order</label>
-        <input
-          type="number"
-          className={inputCls}
-          value={form.order}
-          onChange={(e) => set("order", Number(e.target.value))}
-        />
+        <Field label="Display order" error={errors.order?.message}>
+          <Input type="number" {...register("order")} />
+        </Field>
       </div>
 
-      <ImageUpload
-        label="Student photo"
-        value={form.imageUrl}
-        onChange={(url) => set("imageUrl", url)}
+      <Controller
+        control={control}
+        name="imageUrl"
+        render={({ field }) => (
+          <ImageUpload
+            label="Student photo"
+            value={field.value}
+            onChange={field.onChange}
+          />
+        )}
       />
 
-      {error && <p className="text-sm text-rose-600">{error}</p>}
-      <button type="submit" disabled={busy} className={submitCls}>
-        {busy ? "Saving…" : editing ? "Update review" : "Create review"}
-      </button>
+      {errors.imageUrl?.message && (
+        <p className="text-sm text-rose-600">{errors.imageUrl.message}</p>
+      )}
+      {errors.root?.message && (
+        <p className="text-sm text-rose-600">{errors.root.message}</p>
+      )}
+      <SubmitButton busy={isSubmitting}>
+        {editing ? "Update review" : "Create review"}
+      </SubmitButton>
     </form>
   );
 };

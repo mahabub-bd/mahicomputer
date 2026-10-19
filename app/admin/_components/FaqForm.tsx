@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import type { Faq } from "@/lib/types";
+import { faqSchema, type FaqInput } from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
-import { inputCls, labelCls, submitCls } from "./inputs";
+import { Checkbox, Field, Input, SubmitButton, Textarea } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface FaqFormProps {
   faq?: Faq;
@@ -12,81 +14,73 @@ interface FaqFormProps {
 }
 
 const FaqForm = ({ faq, onSuccess }: FaqFormProps) => {
-  const [form, setForm] = useState({
-    question: faq?.question ?? "",
-    answer: faq?.answer ?? "",
-    published: faq?.published ?? true,
-    order: faq?.order ?? 0,
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useZodForm<FaqInput>(faqSchema, {
+    defaultValues: {
+      question: faq?.question ?? "",
+      answer: faq?.answer ?? "",
+      published: faq?.published ?? true,
+      order: faq?.order ?? 0,
+    },
   });
-  const [busy, setBusy] = useState(false);
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
+  const onSubmit = handleSubmit(async (data) => {
     try {
       if (faq) {
-        await apiPut(`/api/admin/faqs/${faq.id}`, form);
+        await apiPut(`/api/admin/faqs/${faq.id}`, data);
         toast.success("FAQ updated");
       } else {
-        await apiPost("/api/admin/faqs", form);
+        await apiPost("/api/admin/faqs", data);
         toast.success("FAQ added");
       }
       onSuccess?.();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Save failed");
-    } finally {
-      setBusy(false);
     }
-  };
+  });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div>
-        <label className={labelCls}>Question *</label>
-        <input
-          className={inputCls}
-          value={form.question}
-          onChange={(e) => setForm((f) => ({ ...f, question: e.target.value }))}
+    <form onSubmit={onSubmit} className="space-y-4" noValidate>
+      <Field label="Question" required error={errors.question?.message}>
+        <Input
+          {...register("question")}
+          aria-invalid={!!errors.question}
           placeholder="ভর্তির জন্য কী কী লাগবে?"
-          required
         />
-      </div>
-      <div>
-        <label className={labelCls}>Answer *</label>
-        <textarea
+      </Field>
+      <Field label="Answer" required error={errors.answer?.message}>
+        <Textarea
           rows={5}
-          className={inputCls}
-          value={form.answer}
-          onChange={(e) => setForm((f) => ({ ...f, answer: e.target.value }))
-          }
+          {...register("answer")}
+          aria-invalid={!!errors.answer}
           placeholder="উত্তর লিখুন…"
-          required
         />
-      </div>
+      </Field>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="flex items-end">
-          <label className="flex items-center gap-2 text-sm text-slate-700">
-            <input
-              type="checkbox"
-              checked={form.published}
-              onChange={(e) => setForm((f) => ({ ...f, published: e.target.checked }))}
-            />
-            Published (visible on the site)
-          </label>
-        </div>
-        <div>
-          <label className={labelCls}>Display order</label>
-          <input
-            type="number"
-            className={inputCls}
-            value={form.order}
-            onChange={(e) => setForm((f) => ({ ...f, order: Number(e.target.value) }))}
+          <Controller
+            control={control}
+            name="published"
+            render={({ field }) => (
+              <Checkbox
+                label="Published (visible on the site)"
+                checked={field.value}
+                onChange={field.onChange}
+              />
+            )}
           />
         </div>
+        <Field label="Display order" error={errors.order?.message}>
+          <Input type="number" {...register("order")} />
+        </Field>
       </div>
-      <button type="submit" disabled={busy} className={submitCls}>
-        {busy ? "Saving…" : faq ? "Update FAQ" : "Add FAQ"}
-      </button>
+      <SubmitButton busy={isSubmitting}>
+        {faq ? "Update FAQ" : "Add FAQ"}
+      </SubmitButton>
     </form>
   );
 };

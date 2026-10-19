@@ -1,65 +1,133 @@
 "use client";
 
 import { useState } from "react";
+import { useFieldArray } from "react-hook-form";
 import { toast } from "sonner";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { FooterLinkGroupWithLinks } from "@/lib/data";
+import { footerGroupSchema, type FooterGroupInput } from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
-import { inputCls, labelCls, submitCls } from "./inputs";
-import { btn, btnIcon } from "./buttonStyles";
+import { Button, Field, Input, SubmitButton } from "@/components/form/FormControls";
+import { btnIcon } from "@/components/form/buttonStyles";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface FooterLinksListProps {
   groups: FooterLinkGroupWithLinks[];
 }
 
-interface LinkRow {
-  name: string;
-  href: string;
-  order: number;
+interface FooterGroupFormProps {
+  group?: FooterLinkGroupWithLinks;
+  /** Called after a successful save so the parent can close the modal. */
+  onDone: () => void;
 }
+
+const FooterGroupForm = ({ group, onDone }: FooterGroupFormProps) => {
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useZodForm<FooterGroupInput>(footerGroupSchema, {
+    defaultValues: group
+      ? {
+          title: group.title,
+          order: group.order ?? 0,
+          links: group.links.map((l, i) => ({
+            name: l.name,
+            href: l.href,
+            order: l.order ?? i,
+          })),
+        }
+      : { title: "", order: 0, links: [] },
+  });
+  const rows = useFieldArray({ control, name: "links" });
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      if (group) {
+        await apiPut(`/api/admin/footer-links/${group.id}`, data);
+        toast.success("Footer group updated");
+      } else {
+        await apiPost("/api/admin/footer-links", data);
+        toast.success("Footer group added");
+      }
+      onDone();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Save failed");
+    }
+  });
+
+  return (
+    <form onSubmit={onSubmit} className="space-y-4" noValidate>
+      <Field label="Group title" required error={errors.title?.message}>
+        <Input {...register("title")} aria-invalid={!!errors.title} />
+      </Field>
+
+      <div className="space-y-2">
+        <p className="text-sm font-medium text-slate-700">Links</p>
+        {rows.fields.map((row, i) => (
+          <div key={row.id} className="flex items-start gap-2">
+            <div className="min-w-0 flex-1 space-y-1">
+              <Input
+                {...register(`links.${i}.name`)}
+                placeholder="Name"
+                aria-label="Link name"
+                aria-invalid={!!errors.links?.[i]?.name}
+              />
+              {errors.links?.[i]?.name?.message && (
+                <p className="text-xs text-rose-600">
+                  {errors.links[i]?.name?.message}
+                </p>
+              )}
+            </div>
+            <div className="min-w-0 flex-1 space-y-1">
+              <Input
+                {...register(`links.${i}.href`)}
+                placeholder="#about"
+                aria-label="Link href"
+                aria-invalid={!!errors.links?.[i]?.href}
+              />
+              {errors.links?.[i]?.href?.message && (
+                <p className="text-xs text-rose-600">
+                  {errors.links[i]?.href?.message}
+                </p>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => rows.remove(i)}
+              className={`shrink-0 ${btnIcon("danger", "md")}`}
+              aria-label="Remove link"
+            >
+              <Trash2 size={15} />
+            </button>
+          </div>
+        ))}
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() =>
+            rows.append({ name: "", href: "", order: rows.fields.length })
+          }
+        >
+          + Add link row
+        </Button>
+      </div>
+
+      <SubmitButton busy={isSubmitting}>
+        {group ? "Update group" : "Add group"}
+      </SubmitButton>
+    </form>
+  );
+};
 
 const FooterLinksList = ({ groups }: FooterLinksListProps) => {
   const [modal, setModal] = useState<{ group?: FooterLinkGroupWithLinks } | null>(null);
-  const [title, setTitle] = useState("");
-  const [rows, setRows] = useState<LinkRow[]>([]);
-  const [busy, setBusy] = useState(false);
 
-  const openModal = (group?: FooterLinkGroupWithLinks) => {
-    setTitle(group?.title ?? "");
-    setRows(
-      group?.links.map((l, i) => ({ name: l.name, href: l.href, order: l.order ?? i })) ?? []
-    );
-    setModal({ group });
-  };
-
-  const setRow = (index: number, key: keyof LinkRow, value: string | number) =>
-    setRows((r) => r.map((row, i) => (i === index ? { ...row, [key]: value } : row)));
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
-    try {
-      const payload = {
-        title,
-        order: modal?.group?.order ?? 0,
-        links: rows,
-      };
-      if (modal?.group) {
-        await apiPut(`/api/admin/footer-links/${modal.group.id}`, payload);
-        toast.success("Footer group updated");
-      } else {
-        await apiPost("/api/admin/footer-links", payload);
-        toast.success("Footer group added");
-      }
-      setModal(null);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Save failed");
-    } finally {
-      setBusy(false);
-    }
-  };
+  const openModal = (group?: FooterLinkGroupWithLinks) => setModal({ group });
 
   return (
     <div>
@@ -70,13 +138,10 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
             Link groups shown in the site footer
           </p>
         </div>
-        <button
-          onClick={() => openModal()}
-          className={btn("primary")}
-        >
+        <Button onClick={() => openModal()}>
           <Plus size={16} />
           Add group
-        </button>
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -90,14 +155,15 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
                 {g.title}
               </h2>
               <div className="flex shrink-0 gap-2">
-                <button
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={() => openModal(g)}
                   title="Edit"
-                  className={btn("secondary", "sm")}
                 >
                   <Pencil size={14} />
                   Edit
-                </button>
+                </Button>
                 <DeleteButton
                   url={`/api/admin/footer-links/${g.id}`}
                   confirmText={`Delete group "${g.title}" and all its links?`}
@@ -131,58 +197,11 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
         wide
       >
         {modal !== null && (
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div>
-              <label className={labelCls}>Group title *</label>
-              <input
-                className={inputCls}
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-slate-700">Links</p>
-              {rows.map((row, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <input
-                    className={inputCls}
-                    value={row.name}
-                    placeholder="Name"
-                    onChange={(e) => setRow(i, "name", e.target.value)}
-                    required
-                  />
-                  <input
-                    className={inputCls}
-                    value={row.href}
-                    placeholder="#about"
-                    onChange={(e) => setRow(i, "href", e.target.value)}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setRows((r) => r.filter((_, j) => j !== i))}
-                    className={`shrink-0 ${btnIcon("danger", "md")}`}
-                    aria-label="Remove link"
-                  >
-                    <Trash2 size={15} />
-                  </button>
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() => setRows((r) => [...r, { name: "", href: "", order: r.length }])}
-                className={btn("secondary", "sm")}
-              >
-                + Add link row
-              </button>
-            </div>
-
-            <button type="submit" disabled={busy} className={submitCls}>
-              {busy ? "Saving…" : modal?.group ? "Update group" : "Add group"}
-            </button>
-          </form>
+          <FooterGroupForm
+            key={modal.group?.id ?? "new"}
+            group={modal.group}
+            onDone={() => setModal(null)}
+          />
         )}
       </Modal>
     </div>

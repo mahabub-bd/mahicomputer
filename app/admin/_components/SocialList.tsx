@@ -6,7 +6,7 @@ import type { SocialLink } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import SocialForm from "./SocialForm";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 
 interface SocialListProps {
   links: SocialLink[];

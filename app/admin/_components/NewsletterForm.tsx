@@ -1,10 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import type { Newsletter } from "@/lib/types";
+import {
+  newsletterIssueFormSchema,
+  type NewsletterIssueFormInput,
+} from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
-import { inputCls, labelCls, submitCls } from "./inputs";
+import { Checkbox, Field, Input, SubmitButton, Textarea } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface NewsletterFormProps {
   newsletter?: Newsletter;
@@ -17,93 +22,78 @@ const toDateInput = (value?: Date | string) => {
 };
 
 const NewsletterForm = ({ newsletter, onSuccess }: NewsletterFormProps) => {
-  const [form, setForm] = useState({
-    title: newsletter?.title ?? "",
-    body: newsletter?.body ?? "",
-    date: toDateInput(newsletter?.date),
-    published: newsletter?.published ?? true,
-    order: newsletter?.order ?? 0,
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useZodForm<NewsletterIssueFormInput>(newsletterIssueFormSchema, {
+    defaultValues: {
+      title: newsletter?.title ?? "",
+      body: newsletter?.body ?? "",
+      date: toDateInput(newsletter?.date),
+      published: newsletter?.published ?? true,
+      order: newsletter?.order ?? 0,
+    },
   });
-  const [busy, setBusy] = useState(false);
 
-  const set = (key: keyof typeof form, value: string | number | boolean) =>
-    setForm((f) => ({ ...f, [key]: value }));
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
+  const onSubmit = handleSubmit(async (data) => {
     try {
       if (newsletter) {
-        await apiPut(`/api/admin/newsletters/${newsletter.id}`, form);
+        await apiPut(`/api/admin/newsletters/${newsletter.id}`, data);
         toast.success("Newsletter updated");
       } else {
-        await apiPost("/api/admin/newsletters", form);
+        await apiPost("/api/admin/newsletters", data);
         toast.success("Newsletter added");
       }
       onSuccess?.();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Save failed");
-    } finally {
-      setBusy(false);
     }
-  };
+  });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div>
-        <label className={labelCls}>Title *</label>
-        <input
-          className={inputCls}
-          value={form.title}
-          onChange={(e) => set("title", e.target.value)}
+    <form onSubmit={onSubmit} className="space-y-4" noValidate>
+      <Field label="Title" required error={errors.title?.message}>
+        <Input
+          {...register("title")}
+          aria-invalid={!!errors.title}
           placeholder="October newsletter — new batches, offers and updates"
-          required
         />
-      </div>
-      <div>
-        <label className={labelCls}>Body</label>
-        <textarea
+      </Field>
+      <Field
+        label="Body"
+        hint="Blank lines separate paragraphs on the public page."
+        error={errors.body?.message}
+      >
+        <Textarea
           rows={6}
-          className={inputCls}
-          value={form.body}
-          onChange={(e) => set("body", e.target.value)}
+          {...register("body")}
           placeholder="বিস্তারিত লিখুন…"
         />
-        <p className="mt-1 text-xs text-slate-400">
-          Blank lines separate paragraphs on the public page.
-        </p>
-      </div>
+      </Field>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label className={labelCls}>Issue date</label>
-          <input
-            type="date"
-            className={inputCls}
-            value={form.date}
-            onChange={(e) => set("date", e.target.value)}
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Display order</label>
-          <input
-            type="number"
-            className={inputCls}
-            value={form.order}
-            onChange={(e) => set("order", Number(e.target.value))}
-          />
-        </div>
+        <Field label="Issue date" error={errors.date?.message}>
+          <Input type="date" {...register("date")} aria-invalid={!!errors.date} />
+        </Field>
+        <Field label="Display order" error={errors.order?.message}>
+          <Input type="number" {...register("order")} />
+        </Field>
       </div>
-      <label className="flex items-center gap-2 text-sm text-slate-700">
-        <input
-          type="checkbox"
-          checked={form.published}
-          onChange={(e) => set("published", e.target.checked)}
-        />
-        Published (visible on the site)
-      </label>
-      <button type="submit" disabled={busy} className={submitCls}>
-        {busy ? "Saving…" : newsletter ? "Update newsletter" : "Add newsletter"}
-      </button>
+      <Controller
+        control={control}
+        name="published"
+        render={({ field }) => (
+          <Checkbox
+            label="Published (visible on the site)"
+            checked={field.value}
+            onChange={field.onChange}
+          />
+        )}
+      />
+      <SubmitButton busy={isSubmitting}>
+        {newsletter ? "Update newsletter" : "Add newsletter"}
+      </SubmitButton>
     </form>
   );
 };

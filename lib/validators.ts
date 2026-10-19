@@ -15,8 +15,12 @@ const imageField = z
   });
 
 export const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1),
+  email: z
+    .string()
+    .trim()
+    .min(1, "Email is required")
+    .email("Enter a valid email address"),
+  password: z.string().min(1, "Password is required"),
 });
 
 export const userCreateSchema = z.object({
@@ -69,6 +73,24 @@ export const courseSchema = z.object({
   order: z.coerce.number().int().default(0),
 });
 
+/**
+ * Client variant of {@link courseSchema} for the admin form: the UI edits the
+ * description/modules as newline-separated text and never touches the
+ * denormalized instructor columns (the API syncs those from `instructorId`).
+ * The payload is reshaped back to the API shape on submit.
+ */
+export const courseFormSchema = courseSchema
+  .omit({
+    description: true,
+    modules: true,
+    instructorName: true,
+    instructorPhotoUrl: true,
+  })
+  .extend({
+    descriptionText: z.string().max(50000).default(""),
+    modulesText: z.string().max(20000).default(""),
+  });
+
 export const categorySchema = z.object({
   title: z.string().min(1, "Title is required").max(200),
   imageUrl: imageField,
@@ -119,6 +141,11 @@ export const noticeSchema = z.object({
   order: z.coerce.number().int().default(0),
 });
 
+/** Client variant: the date picker deals in "YYYY-MM-DD" strings. */
+export const noticeFormSchema = noticeSchema.extend({
+  date: z.string().min(1, "Date is required"),
+});
+
 /** A newsletter issue (announcement content), not the email signup. */
 export const newsletterIssueSchema = z.object({
   title: z.string().min(1, "Title is required").max(300),
@@ -126,6 +153,11 @@ export const newsletterIssueSchema = z.object({
   date: z.coerce.date().default(new Date()),
   published: z.coerce.boolean().default(true),
   order: z.coerce.number().int().default(0),
+});
+
+/** Client variant: the date picker deals in "YYYY-MM-DD" strings. */
+export const newsletterIssueFormSchema = newsletterIssueSchema.extend({
+  date: z.string().min(1, "Date is required"),
 });
 
 export const postSchema = z.object({
@@ -232,7 +264,27 @@ export const siteSettingSchema = z.object({
   stats: z.array(statItemSchema).default([]),
 });
 
+/**
+ * Client variant of {@link siteSettingSchema} for the admin form: the marquee
+ * is edited as newline-separated text and split back into items on submit.
+ */
+export const settingsFormSchema = siteSettingSchema
+  .omit({ marqueeItems: true })
+  .extend({
+    marqueeText: z.string().max(20000).default(""),
+  });
+
 export type CourseInput = z.infer<typeof courseSchema>;
+export type CourseFormInput = z.infer<typeof courseFormSchema>;
+export type NoticeFormInput = z.infer<typeof noticeFormSchema>;
+export type NewsletterIssueFormInput = z.infer<typeof newsletterIssueFormSchema>;
+export type SettingsFormInput = z.infer<typeof settingsFormSchema>;
+export type ContactMessageInput = z.infer<typeof contactMessageSchema>;
+export type NewsletterInput = z.infer<typeof newsletterSchema>;
+export type EnrollmentInput = z.infer<typeof enrollmentSchema>;
+export type LoginInput = z.infer<typeof loginSchema>;
+export type UserFormInput = z.infer<typeof userCreateSchema>;
+export type PostFormInput = z.infer<typeof postSchema>;
 export type CategoryInput = z.infer<typeof categorySchema>;
 export type InstructorInput = z.infer<typeof instructorSchema>;
 export type ReviewInput = z.infer<typeof reviewSchema>;

@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import type { Notice } from "@/lib/types";
+import { noticeFormSchema, type NoticeFormInput } from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
-import { inputCls, labelCls, submitCls } from "./inputs";
+import { Checkbox, Field, Input, SubmitButton, Textarea } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface NoticeFormProps {
   notice?: Notice;
@@ -17,87 +19,74 @@ const toDateInput = (value?: Date | string) => {
 };
 
 const NoticeForm = ({ notice, onSuccess }: NoticeFormProps) => {
-  const [form, setForm] = useState({
-    title: notice?.title ?? "",
-    body: notice?.body ?? "",
-    date: toDateInput(notice?.date),
-    published: notice?.published ?? true,
-    order: notice?.order ?? 0,
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useZodForm<NoticeFormInput>(noticeFormSchema, {
+    defaultValues: {
+      title: notice?.title ?? "",
+      body: notice?.body ?? "",
+      date: toDateInput(notice?.date),
+      published: notice?.published ?? true,
+      order: notice?.order ?? 0,
+    },
   });
-  const [busy, setBusy] = useState(false);
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
+  const onSubmit = handleSubmit(async (data) => {
     try {
       if (notice) {
-        await apiPut(`/api/admin/notices/${notice.id}`, form);
+        await apiPut(`/api/admin/notices/${notice.id}`, data);
         toast.success("Notice updated");
       } else {
-        await apiPost("/api/admin/notices", form);
+        await apiPost("/api/admin/notices", data);
         toast.success("Notice added");
       }
       onSuccess?.();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Save failed");
-    } finally {
-      setBusy(false);
     }
-  };
+  });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div>
-        <label className={labelCls}>Title *</label>
-        <input
-          className={inputCls}
-          value={form.title}
-          onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
+    <form onSubmit={onSubmit} className="space-y-4" noValidate>
+      <Field label="Title" required error={errors.title?.message}>
+        <Input
+          {...register("title")}
+          aria-invalid={!!errors.title}
           placeholder="ছুটির নোটিশ / Admission going on"
-          required
         />
-      </div>
-      <div>
-        <label className={labelCls}>Details</label>
-        <textarea
+      </Field>
+      <Field label="Details" error={errors.body?.message}>
+        <Textarea
           rows={5}
-          className={inputCls}
-          value={form.body}
-          onChange={(e) => setForm((f) => ({ ...f, body: e.target.value }))}
+          {...register("body")}
           placeholder="বিস্তারিত লিখুন…"
         />
-      </div>
+      </Field>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label className={labelCls}>Notice date</label>
-          <input
-            type="date"
-            className={inputCls}
-            value={form.date}
-            onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Display order</label>
-          <input
-            type="number"
-            className={inputCls}
-            value={form.order}
-            onChange={(e) => setForm((f) => ({ ...f, order: Number(e.target.value) }))}
-          />
-        </div>
+        <Field label="Notice date" error={errors.date?.message}>
+          <Input type="date" {...register("date")} aria-invalid={!!errors.date} />
+        </Field>
+        <Field label="Display order" error={errors.order?.message}>
+          <Input type="number" {...register("order")} />
+        </Field>
       </div>
-      <label className="flex items-center gap-2 text-sm text-slate-700">
-        <input
-          type="checkbox"
-          checked={form.published}
-          onChange={(e) => setForm((f) => ({ ...f, published: e.target.checked }))}
-        />
-        Published (visible on the site)
-      </label>
-      <button type="submit" disabled={busy} className={submitCls}>
-        {busy ? "Saving…" : notice ? "Update notice" : "Add notice"}
-      </button>
+      <Controller
+        control={control}
+        name="published"
+        render={({ field }) => (
+          <Checkbox
+            label="Published (visible on the site)"
+            checked={field.value}
+            onChange={field.onChange}
+          />
+        )}
+      />
+      <SubmitButton busy={isSubmitting}>
+        {notice ? "Update notice" : "Add notice"}
+      </SubmitButton>
     </form>
   );
 };

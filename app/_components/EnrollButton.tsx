@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ArrowRight, X } from "lucide-react";
+import { enrollmentSchema, type EnrollmentInput } from "@/lib/validators";
+import { Field, Input, Select, SubmitButton, Textarea } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface EnrollButtonProps {
   /** Pre-selected course title — locks the course picker in the modal. */
@@ -27,6 +30,20 @@ const EnrollButton = ({
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useZodForm<EnrollmentInput>(enrollmentSchema, {
+    defaultValues: {
+      name: "",
+      phone: "",
+      email: "",
+      course: course ?? "",
+      message: "",
+    },
+  });
 
   // Lock page scroll and close on Escape while the modal is open.
   useEffect(() => {
@@ -47,41 +64,29 @@ const EnrollButton = ({
     setOpen(false);
     setStatus("idle");
     setError(null);
+    reset();
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const data = new FormData(form);
+  const onSubmit = handleSubmit(async (data) => {
     setStatus("sending");
     setError(null);
     try {
       const res = await fetch("/api/enroll", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: String(data.get("name") || ""),
-          phone: String(data.get("phone") || ""),
-          email: String(data.get("email") || ""),
-          course: String(data.get("course") || ""),
-          message: String(data.get("message") || ""),
-        }),
+        body: JSON.stringify(data),
       });
       if (!res.ok) {
         const json = await res.json().catch(() => null);
         throw new Error(json?.issues?.[0] || "ফরম জমা দিতে ব্যর্থ হয়েছে, আবার চেষ্টা করুন।");
       }
       setStatus("sent");
-      form.reset();
+      reset();
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "ফরম জমা দিতে ব্যর্থ হয়েছে, আবার চেষ্টা করুন।");
     }
-  };
-
-  const inputCls =
-    "w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
-  const labelCls = "mb-1 block text-sm font-medium text-slate-700";
+  });
 
   return (
     <>
@@ -126,90 +131,75 @@ const EnrollButton = ({
                 ধন্যবাদ! আপনার তথ্য পৌঁছে গেছে — আমরা শীঘ্রই যোগাযোগ করব।
               </div>
             ) : (
-              <form onSubmit={onSubmit} className="space-y-3">
-                <div>
-                  <label className={labelCls} htmlFor="enroll-name">
-                    নাম *
-                  </label>
-                  <input
+              <form onSubmit={onSubmit} className="space-y-3" noValidate>
+                <Field label="নাম" htmlFor="enroll-name" required error={errors.name?.message}>
+                  <Input
                     id="enroll-name"
-                    name="name"
-                    required
-                    className={inputCls}
+                    {...register("name")}
+                    aria-invalid={!!errors.name}
                     placeholder="আপনার নাম"
                   />
-                </div>
-                <div>
-                  <label className={labelCls} htmlFor="enroll-phone">
-                    ফোন *
-                  </label>
-                  <input
+                </Field>
+                <Field label="ফোন" htmlFor="enroll-phone" required error={errors.phone?.message}>
+                  <Input
                     id="enroll-phone"
-                    name="phone"
-                    required
-                    className={inputCls}
+                    {...register("phone")}
+                    aria-invalid={!!errors.phone}
                     placeholder="01XXXXXXXXX"
                   />
-                </div>
-                <div>
-                  <label className={labelCls} htmlFor="enroll-email">
-                    ইমেইল (ঐচ্ছিক)
-                  </label>
-                  <input
+                </Field>
+                <Field label="ইমেইল (ঐচ্ছিক)" htmlFor="enroll-email" error={errors.email?.message}>
+                  <Input
                     id="enroll-email"
-                    name="email"
                     type="email"
-                    className={inputCls}
+                    {...register("email")}
+                    aria-invalid={!!errors.email}
                     placeholder="you@example.com"
                   />
-                </div>
-                <div>
-                  <label className={labelCls} htmlFor="enroll-course">
-                    কোর্স
-                  </label>
+                </Field>
+                <Field label="কোর্স" htmlFor="enroll-course" error={errors.course?.message}>
                   {course ? (
-                    <input
+                    <Input
                       id="enroll-course"
-                      name="course"
-                      value={course}
+                      {...register("course")}
                       readOnly
-                      className={`${inputCls} bg-slate-50 text-slate-500`}
+                      className="text-slate-500"
                     />
                   ) : courses && courses.length > 0 ? (
-                    <select id="enroll-course" name="course" className={inputCls} defaultValue="">
+                    <Select id="enroll-course" {...register("course")}>
                       <option value="">কোর্স নির্বাচন করুন</option>
                       {courses.map((title) => (
                         <option key={title} value={title}>
                           {title}
                         </option>
                       ))}
-                    </select>
-                    ) : (
-                    <input id="enroll-course" name="course" className={inputCls} />
+                    </Select>
+                  ) : (
+                    <Input id="enroll-course" {...register("course")} />
                   )}
-                </div>
-                <div>
-                  <label className={labelCls} htmlFor="enroll-message">
-                    বার্তা (ঐচ্ছিক)
-                  </label>
-                  <textarea
+                </Field>
+                <Field
+                  label="বার্তা (ঐচ্ছিক)"
+                  htmlFor="enroll-message"
+                  error={errors.message?.message}
+                >
+                  <Textarea
                     id="enroll-message"
-                    name="message"
                     rows={3}
-                    className={inputCls}
+                    {...register("message")}
                     placeholder="কোনো প্রশ্ন থাকলে লিখুন…"
                   />
-                </div>
+                </Field>
 
                 {error && <p className="text-sm text-rose-600">{error}</p>}
 
-                <button
-                  type="submit"
-                  disabled={status === "sending"}
-                  className="w-full rounded-md bg-blue-700 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 disabled:opacity-50"
+                <SubmitButton
+                  busy={isSubmitting || status === "sending"}
+                  busyLabel="পাঠানো হচ্ছে…"
+                  className="w-full"
                 >
-                  {status === "sending" ? "পাঠানো হচ্ছে…" : "সাবমিট করুন"}
-                </button>
+                  সাবমিট করুন
+                </SubmitButton>
               </form>
             )}
           </div>

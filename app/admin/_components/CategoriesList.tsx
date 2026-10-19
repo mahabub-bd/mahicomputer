@@ -8,7 +8,7 @@ import CategoryForm from "./CategoryForm";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import useEditDeepLink from "./useEditDeepLink";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 
 interface CategoriesListProps {
   categories: CategoryWithCourseCount[];

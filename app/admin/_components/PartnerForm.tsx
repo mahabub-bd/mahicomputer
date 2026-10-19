@@ -1,12 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import type { Partner } from "@/lib/types";
+import { partnerSchema, type PartnerInput } from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
 import ImageUpload from "./ImageUpload";
-import { inputCls, labelCls, submitCls } from "./inputs";
+import { Field, Input, SubmitButton } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface PartnerFormProps {
   partner?: Partner;
@@ -17,27 +19,27 @@ interface PartnerFormProps {
 const PartnerForm = ({ partner, onSuccess }: PartnerFormProps) => {
   const router = useRouter();
   const editing = Boolean(partner);
-  const [form, setForm] = useState({
-    imageUrl: partner?.imageUrl ?? "",
-    alt: partner?.alt ?? "",
-    order: partner?.order ?? 0,
+  const {
+    register,
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useZodForm<PartnerInput>(partnerSchema, {
+    defaultValues: {
+      imageUrl: partner?.imageUrl ?? "",
+      alt: partner?.alt ?? "",
+      order: partner?.order ?? 0,
+    },
   });
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) =>
-    setForm((f) => ({ ...f, [key]: value }));
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
-    setError(null);
+  const onSubmit = handleSubmit(async (data) => {
     try {
-      if (editing) {
-        await apiPut(`/api/admin/partners/${partner!.id}`, form);
+      if (partner) {
+        await apiPut(`/api/admin/partners/${partner.id}`, data);
         toast.success("Partner updated");
       } else {
-        await apiPost("/api/admin/partners", form);
+        await apiPost("/api/admin/partners", data);
         toast.success("Partner created");
       }
       if (onSuccess) {
@@ -48,42 +50,36 @@ const PartnerForm = ({ partner, onSuccess }: PartnerFormProps) => {
       router.refresh();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Save failed";
-      setError(msg);
+      setError("root", { message: msg });
       toast.error(msg);
-      setBusy(false);
     }
-  };
+  });
 
   return (
-    <form onSubmit={onSubmit} className="max-w-xl space-y-4">
-      <div>
-        <label className={labelCls}>Name / alt text</label>
-        <input
-          className={inputCls}
-          value={form.alt}
-          onChange={(e) => set("alt", e.target.value)}
-          placeholder="nrb"
-        />
-      </div>
-      <div>
-        <label className={labelCls}>Display order</label>
-        <input
-          type="number"
-          className={inputCls}
-          value={form.order}
-          onChange={(e) => set("order", Number(e.target.value))}
-        />
-      </div>
-      <ImageUpload
-        label="Logo"
-        value={form.imageUrl}
-        onChange={(url) => set("imageUrl", url)}
+    <form onSubmit={onSubmit} className="max-w-xl space-y-4" noValidate>
+      <Field label="Name / alt text" error={errors.alt?.message}>
+        <Input {...register("alt")} placeholder="nrb" />
+      </Field>
+      <Field label="Display order" error={errors.order?.message}>
+        <Input type="number" {...register("order")} />
+      </Field>
+      <Controller
+        control={control}
+        name="imageUrl"
+        render={({ field }) => (
+          <ImageUpload label="Logo" value={field.value} onChange={field.onChange} />
+        )}
       />
 
-      {error && <p className="text-sm text-rose-600">{error}</p>}
-      <button type="submit" disabled={busy} className={submitCls}>
-        {busy ? "Saving…" : editing ? "Update partner" : "Create partner"}
-      </button>
+      {errors.imageUrl?.message && (
+        <p className="text-sm text-rose-600">{errors.imageUrl.message}</p>
+      )}
+      {errors.root?.message && (
+        <p className="text-sm text-rose-600">{errors.root.message}</p>
+      )}
+      <SubmitButton busy={isSubmitting}>
+        {editing ? "Update partner" : "Create partner"}
+      </SubmitButton>
     </form>
   );
 };

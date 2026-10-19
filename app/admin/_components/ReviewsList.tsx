@@ -8,7 +8,7 @@ import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import ReviewForm from "./ReviewForm";
 import useEditDeepLink from "./useEditDeepLink";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 
 interface ReviewsListProps {
   reviews: Review[];

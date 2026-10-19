@@ -6,7 +6,7 @@ import { useState } from "react";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import NewsletterForm from "./NewsletterForm";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 
 interface NewslettersListProps {
   newsletters: (Newsletter & { publishedBy: { name: string } | null })[];

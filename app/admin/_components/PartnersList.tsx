@@ -6,7 +6,7 @@ import type { Partner } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import PartnerForm from "./PartnerForm";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 
 interface PartnersListProps {
   partners: Partner[];

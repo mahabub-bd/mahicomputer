@@ -1,12 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import type { Category } from "@/lib/types";
+import { categorySchema, type CategoryInput } from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
 import ImageUpload from "./ImageUpload";
-import { inputCls, labelCls, submitCls } from "./inputs";
+import { Field, Input, SubmitButton } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface CategoryFormProps {
   category?: Category;
@@ -17,28 +19,28 @@ interface CategoryFormProps {
 const CategoryForm = ({ category, onSuccess }: CategoryFormProps) => {
   const router = useRouter();
   const editing = Boolean(category);
-  const [form, setForm] = useState({
-    title: category?.title ?? "",
-    imageUrl: category?.imageUrl ?? "",
-    alt: category?.alt ?? "",
-    order: category?.order ?? 0,
+  const {
+    register,
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useZodForm<CategoryInput>(categorySchema, {
+    defaultValues: {
+      title: category?.title ?? "",
+      imageUrl: category?.imageUrl ?? "",
+      alt: category?.alt ?? "",
+      order: category?.order ?? 0,
+    },
   });
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) =>
-    setForm((f) => ({ ...f, [key]: value }));
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
-    setError(null);
+  const onSubmit = handleSubmit(async (data) => {
     try {
-      if (editing) {
-        await apiPut(`/api/admin/categories/${category!.id}`, form);
+      if (category) {
+        await apiPut(`/api/admin/categories/${category.id}`, data);
         toast.success("Category updated");
       } else {
-        await apiPost("/api/admin/categories", form);
+        await apiPost("/api/admin/categories", data);
         toast.success("Category created");
       }
       if (onSuccess) {
@@ -49,50 +51,43 @@ const CategoryForm = ({ category, onSuccess }: CategoryFormProps) => {
       router.refresh();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Save failed";
-      setError(msg);
+      setError("root", { message: msg });
       toast.error(msg);
-      setBusy(false);
     }
-  };
+  });
 
   return (
-    <form onSubmit={onSubmit} className="max-w-xl space-y-4">
-      <div>
-        <label className={labelCls}>Title *</label>
-        <input
-          className={inputCls}
-          value={form.title}
-          onChange={(e) => set("title", e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label className={labelCls}>Alt text</label>
-        <input
-          className={inputCls}
-          value={form.alt}
-          onChange={(e) => set("alt", e.target.value)}
-        />
-      </div>
-      <div>
-        <label className={labelCls}>Display order</label>
-        <input
-          type="number"
-          className={inputCls}
-          value={form.order}
-          onChange={(e) => set("order", Number(e.target.value))}
-        />
-      </div>
-      <ImageUpload
-        label="Icon / image"
-        value={form.imageUrl}
-        onChange={(url) => set("imageUrl", url)}
+    <form onSubmit={onSubmit} className="max-w-xl space-y-4" noValidate>
+      <Field label="Title" required error={errors.title?.message}>
+        <Input {...register("title")} aria-invalid={!!errors.title} />
+      </Field>
+      <Field label="Alt text" error={errors.alt?.message}>
+        <Input {...register("alt")} />
+      </Field>
+      <Field label="Display order" error={errors.order?.message}>
+        <Input type="number" {...register("order")} />
+      </Field>
+      <Controller
+        control={control}
+        name="imageUrl"
+        render={({ field }) => (
+          <ImageUpload
+            label="Icon / image"
+            value={field.value}
+            onChange={field.onChange}
+          />
+        )}
       />
 
-      {error && <p className="text-sm text-rose-600">{error}</p>}
-      <button type="submit" disabled={busy} className={submitCls}>
-        {busy ? "Saving…" : editing ? "Update category" : "Create category"}
-      </button>
+      {errors.imageUrl?.message && (
+        <p className="text-sm text-rose-600">{errors.imageUrl.message}</p>
+      )}
+      {errors.root?.message && (
+        <p className="text-sm text-rose-600">{errors.root.message}</p>
+      )}
+      <SubmitButton busy={isSubmitting}>
+        {editing ? "Update category" : "Create category"}
+      </SubmitButton>
     </form>
   );
 };

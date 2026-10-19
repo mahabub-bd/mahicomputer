@@ -6,7 +6,7 @@ import type { Faq } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import FaqForm from "./FaqForm";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 
 interface FaqsListProps {
   faqs: Faq[];

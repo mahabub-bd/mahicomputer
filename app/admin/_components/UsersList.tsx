@@ -6,7 +6,7 @@ import type { UserView } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import UserForm from "./UserForm";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 
 interface UsersListProps {
   users: UserView[];

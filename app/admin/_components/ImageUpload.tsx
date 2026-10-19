@@ -3,7 +3,8 @@
 import { useRef, useState } from "react";
 import { ImageUp, Link2, Trash2 } from "lucide-react";
 import { apiUpload } from "./api";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
+import { Input } from "@/components/form/FormControls";
 
 interface ImageUploadProps {
   value: string;
@@ -89,12 +90,12 @@ const ImageUpload = ({ value, onChange, label }: ImageUploadProps) => {
               size={14}
               className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
             />
-            <input
+            <Input
               type="text"
               value={value}
               onChange={(e) => onChange(e.target.value)}
               placeholder="/images/... or /uploads/..."
-              className="w-full truncate rounded-lg border border-slate-300 py-2 pl-8 pr-3 text-sm placeholder:text-slate-300 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="truncate pl-8"
             />
           </div>
 

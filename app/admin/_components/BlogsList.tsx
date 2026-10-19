@@ -5,7 +5,7 @@ import { Eye, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import BlogForm from "./BlogForm";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import useEditDeepLink from "./useEditDeepLink";

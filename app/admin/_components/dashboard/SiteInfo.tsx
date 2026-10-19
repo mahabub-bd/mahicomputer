@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Settings } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { btn } from "../buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 
 export interface ContactInfoItem {
   label: string;

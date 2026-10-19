@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2, Trash2 } from "lucide-react";
 import { apiDelete } from "./api";
-import { btn } from "./buttonStyles";
+import { btn } from "@/components/form/buttonStyles";
 
 interface DeleteButtonProps {
   url: string;

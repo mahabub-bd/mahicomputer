@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import type { Post } from "@/lib/types";
+import { postSchema, type PostFormInput } from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
 import ImageUpload from "./ImageUpload";
-import { inputCls, labelCls, submitCls } from "./inputs";
+import { Checkbox, Field, Input, Select, SubmitButton, Textarea } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
 
 interface BlogFormProps {
   post?: Post;
@@ -25,8 +28,14 @@ const empty = {
 
 const BlogForm = ({ post, onSuccess }: BlogFormProps) => {
   const editing = Boolean(post);
-  const [form, setForm] = useState(
-    post
+  const {
+    register,
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useZodForm<PostFormInput>(postSchema, {
+    defaultValues: post
       ? {
           slug: post.slug,
           title: post.title,
@@ -37,8 +46,8 @@ const BlogForm = ({ post, onSuccess }: BlogFormProps) => {
           authorId: post.authorId ?? "",
           published: post.published,
         }
-      : empty
-  );
+      : empty,
+  });
   const [authors, setAuthors] = useState<{ id: string; name: string }[]>([]);
 
   // Author picker options come from the existing Instructor rows.
@@ -61,128 +70,127 @@ const BlogForm = ({ post, onSuccess }: BlogFormProps) => {
       cancelled = true;
     };
   }, []);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) =>
-    setForm((f) => ({ ...f, [key]: value }));
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
-    setError(null);
-    const payload = { ...form, authorId: form.authorId || null };
+  const onSubmit = handleSubmit(async (data) => {
+    const payload = { ...data, authorId: data.authorId || null };
     try {
-      if (editing) {
-        await apiPut(`/api/admin/blogs/${post!.id}`, payload);
+      if (post) {
+        await apiPut(`/api/admin/blogs/${post.id}`, payload);
         toast.success("Blog updated");
       } else {
-        await apiPost("/api/admin/blogs", form);
+        await apiPost("/api/admin/blogs", payload);
         toast.success("Blog created");
       }
       onSuccess?.();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Save failed";
-      setError(msg);
+      setError("root", { message: msg });
       toast.error(msg);
-    } finally {
-      setBusy(false);
     }
-  };
+  });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-4" noValidate>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label className={labelCls}>Title *</label>
-          <input
-            className={inputCls}
-            value={form.title}
-            onChange={(e) => set("title", e.target.value)}
-            required
+        <Field label="Title" required error={errors.title?.message}>
+          <Input {...register("title")} aria-invalid={!!errors.title} />
+        </Field>
+        <Field
+          label="Slug"
+          required
+          hint="URL: /blogs/this-slug"
+          error={errors.slug?.message}
+        >
+          <Input
+            {...register("slug", {
+              setValueAs: (value) => String(value ?? "").toLowerCase(),
+            })}
+            aria-invalid={!!errors.slug}
           />
-        </div>
-        <div>
-          <label className={labelCls}>Slug * (URL: /blogs/this-slug)</label>
-          <input
-            className={inputCls}
-            value={form.slug}
-            onChange={(e) => set("slug", e.target.value.toLowerCase())}
-            required
-            pattern="[a-z0-9]+(-[a-z0-9]+)*"
-            title="lowercase letters, numbers and dashes"
-          />
-        </div>
+        </Field>
       </div>
 
-      <div>
-        <label className={labelCls}>
-          Excerpt (short summary shown on cards)
-        </label>
-        <textarea
-          rows={2}
-          className={inputCls}
-          value={form.excerpt}
-          onChange={(e) => set("excerpt", e.target.value)}
-        />
-      </div>
+      <Field
+        label="Excerpt (short summary shown on cards)"
+        error={errors.excerpt?.message}
+      >
+        <Textarea rows={2} {...register("excerpt")} />
+      </Field>
 
-      <div>
-        <label className={labelCls}>
-          Content (separate paragraphs with a blank line)
-        </label>
-        <textarea
+      <Field
+        label="Content (separate paragraphs with a blank line)"
+        error={errors.content?.message}
+      >
+        <Textarea
           rows={10}
-          className={inputCls}
-          value={form.content}
-          onChange={(e) => set("content", e.target.value)}
+          {...register("content")}
           placeholder="Paragraph 1…&#10;&#10;Paragraph 2…"
         />
-      </div>
+      </Field>
 
-      <ImageUpload
-        label="Cover image"
-        value={form.imageUrl}
-        onChange={(url) => set("imageUrl", url)}
+      <Controller
+        control={control}
+        name="imageUrl"
+        render={({ field }) => (
+          <ImageUpload
+            label="Cover image"
+            value={field.value}
+            onChange={field.onChange}
+          />
+        )}
       />
       <div className="max-w-xs">
-        <label className={labelCls}>Image alt text</label>
-        <input
-          className={inputCls}
-          value={form.imageAlt}
-          onChange={(e) => set("imageAlt", e.target.value)}
-        />
+        <Field label="Image alt text" error={errors.imageAlt?.message}>
+          <Input {...register("imageAlt")} />
+        </Field>
       </div>
 
       <div className="max-w-xs">
-        <label className={labelCls}>Author (Instructor)</label>
-        <select
-          className={inputCls}
-          value={form.authorId}
-          onChange={(e) => set("authorId", e.target.value)}
-        >
-          <option value="">— None —</option>
-          {authors.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.name}
-            </option>
-          ))}
-        </select>
+        <Field label="Author (Instructor)" error={errors.authorId?.message}>
+          <Controller
+            control={control}
+            name="authorId"
+            render={({ field }) => (
+              <Select
+                name={field.name}
+                ref={field.ref}
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+              >
+                <option value="">— None —</option>
+                {authors.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+              </Select>
+            )}
+          />
+        </Field>
       </div>
 
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={form.published}
-          onChange={(e) => set("published", e.target.checked)}
-        />
-        Published
-      </label>
+      <Controller
+        control={control}
+        name="published"
+        render={({ field }) => (
+          <Checkbox
+            label="Published"
+            checked={field.value}
+            onChange={field.onChange}
+          />
+        )}
+      />
 
-      {error && <p className="text-sm text-rose-600">{error}</p>}
-      <button type="submit" disabled={busy} className={submitCls}>
-        {busy ? "Saving…" : editing ? "Update blog" : "Create blog"}
-      </button>
+      {errors.imageUrl?.message && (
+        <p className="text-sm text-rose-600">{errors.imageUrl.message}</p>
+      )}
+      {errors.root?.message && (
+        <p className="text-sm text-rose-600">{errors.root.message}</p>
+      )}
+      <SubmitButton busy={isSubmitting}>
+        {editing ? "Update blog" : "Create blog"}
+      </SubmitButton>
     </form>
   );
 };

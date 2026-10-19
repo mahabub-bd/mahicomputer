@@ -10,7 +10,7 @@ import {
 import type { ReactNode } from "react";
 import { Footer, Navbar } from "../components";
 
-// Content is DB-driven and editable from the admin panel — never prerender at build time.
+
 export const revalidate = 60;
 
 const SiteLayout = async ({ children }: { children: ReactNode }) => {

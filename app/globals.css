@@ -533,3 +533,84 @@ html { scroll-behavior: smooth; }
   }
 }
 /* ---------- End Why-Us ambient motion ---------- */
+
+/* ---------- Admin login page (glassmorphic) ---------- */
+
+/* Staggered entrance for the branding column and the glass card.
+   `both` keeps each block hidden until its delay elapses. */
+@keyframes login-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.login-rise {
+  animation: login-fade-up 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Brief nudge when sign-in is blocked by validation or the server rejects
+   the credentials. No fill mode, so it snaps back to rest. */
+@keyframes login-shake {
+  10%,
+  90% {
+    transform: translateX(-2px);
+  }
+  20%,
+  80% {
+    transform: translateX(4px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-6px);
+  }
+  40%,
+  60% {
+    transform: translateX(6px);
+  }
+}
+.login-shake {
+  animation: login-shake 0.45s ease;
+}
+
+/* Slow ambient drift behind the glass so the backdrop feels alive */
+@keyframes login-blob-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(36px, -26px, 0) scale(1.12);
+  }
+}
+.login-blob-a {
+  animation: login-blob-drift 18s ease-in-out infinite alternate;
+}
+.login-blob-b {
+  animation: login-blob-drift 14s ease-in-out infinite alternate-reverse;
+}
+
+/* Chrome's autofill tint can clash with the glass inputs. Pin it to the same
+   near-white surface and dark text the fields use at rest. */
+.login-field:-webkit-autofill,
+.login-field:-webkit-autofill:hover,
+.login-field:-webkit-autofill:focus {
+  -webkit-text-fill-color: #0f172a;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  caret-color: #0f172a;
+  border-color: var(--color-blue-500);
+  transition: background-color 99999s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-rise,
+  .login-shake,
+  .login-blob-a,
+  .login-blob-b {
+    animation: none;
+  }
+}
+/* ---------- End Admin login page ---------- */

@@ -69,7 +69,7 @@ const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className={`w-full sm:w-auto ${btn("primary")}`}
+          className={btn("primary")}
         >
           <Plus size={16} />
           Add category

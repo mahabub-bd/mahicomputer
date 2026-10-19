@@ -1,14 +1,14 @@
 "use client";
 
+import type { Course, CourseWithCategory } from "@/lib/types";
+import { Info, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { Info, Pencil, Plus } from "lucide-react";
-import type { Course, CourseWithCategory } from "@/lib/types";
+import { btn } from "./buttonStyles";
 import CourseForm from "./CourseForm";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import useEditDeepLink from "./useEditDeepLink";
-import { btn } from "./buttonStyles";
 
 interface CoursesListProps {
   courses: CourseWithCategory[];
@@ -73,7 +73,7 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className={`w-full sm:w-auto ${btn("primary")}`}
+          className={btn("primary")}
         >
           <Plus size={16} />
           Add course
@@ -84,7 +84,7 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
           min-w + the thin scrollbar keep the seven columns readable —
           they scroll inside the card instead of squeezing on tablet. */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-[1040px] text-left text-sm">
+        <table className="w-full min-w-260 text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Course</th>

@@ -72,7 +72,7 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
         </div>
         <button
           onClick={() => openModal()}
-          className={`w-full sm:w-auto ${btn("primary")}`}
+          className={btn("primary")}
         >
           <Plus size={16} />
           Add group

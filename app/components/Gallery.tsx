@@ -82,6 +82,7 @@ const Gallery = ({ items = [] }: { items?: GalleryView[] }) => {
               src={item.img}
               alt={item.alt}
               fill
+              priority={index === 0}
               sizes={GRID_SIZES}
             />
 

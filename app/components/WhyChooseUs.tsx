@@ -9,7 +9,7 @@ import {
   Wifi,
 } from "lucide-react";
 
-/** Icons cycle through this pool for admin-defined features. */
+
 const FEATURE_ICONS: LucideIcon[] = [
   MonitorCheck,
   Users,
@@ -19,11 +19,7 @@ const FEATURE_ICONS: LucideIcon[] = [
   Wifi,
 ];
 
-/**
- * Per-card accent, rotating in lockstep with FEATURE_ICONS so each position
- * always gets the same icon + color pairing. Idle chip + hover fill classes
- * live here as literals so Tailwind can see them.
- */
+
 const ACCENTS: { chip: string; hover: string }[] = [
   { chip: "bg-blue-50 text-blue-600", hover: "group-hover:bg-blue-600" },
   { chip: "bg-teal-50 text-teal-600", hover: "group-hover:bg-teal-600" },
@@ -57,14 +53,15 @@ const WhyChooseUs = ({ settings }: WhyChooseUsProps) => {
       id="why-us"
       className="section-shell relative scroll-mt-24 overflow-hidden bg-slate-50"
     >
-      {/* Soft decorative blobs — pointer-events-none so they never block taps */}
+      {/* Soft decorative blobs — pointer-events-none so they never block taps;
+          .why-blob-* adds a slow GPU-only drift loop. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-24 -top-16 h-72 w-72 rounded-full bg-blue-100/50 blur-3xl"
+        className="why-blob-a pointer-events-none absolute -left-24 -top-16 h-72 w-72 rounded-full bg-blue-100/50 blur-3xl"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-teal-100/40 blur-3xl"
+        className="why-blob-b pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-teal-100/40 blur-3xl"
       />
 
       <div className="relative mx-auto max-w-350 px-4 sm:px-6">
@@ -75,6 +72,8 @@ const WhyChooseUs = ({ settings }: WhyChooseUsProps) => {
         <div
           aria-hidden
           className="mx-auto mt-4 h-1 w-16 rounded-full bg-linear-to-r from-blue-600 to-teal-400"
+          data-aos="zoom-in"
+          data-aos-delay="150"
         />
         <p
           className="mx-auto mt-4 max-w-2xl text-center font-bangla text-[15px] leading-7 text-slate-500 sm:text-[16px]"
@@ -97,19 +96,24 @@ const WhyChooseUs = ({ settings }: WhyChooseUsProps) => {
                   {/* Brand-gradient hairline, sweeps in from the left on hover */}
                   <span
                     aria-hidden
-                    className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-linear-to-r from-blue-600 to-teal-400 transition-transform duration-500 ease-out group-hover:scale-x-100"
+                    className="absolute inset-x-0 top-0 h-0.75 origin-left scale-x-0 bg-linear-to-r from-blue-600 to-teal-400 transition-transform duration-500 ease-out group-hover:scale-x-100"
                   />
 
-                  {/* Icon chip + ghost index */}
+                  {/* Icon chip: breathing halo (CSS), pop on hover (transform) */}
                   <div className="flex items-start justify-between gap-3">
                     <span
-                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-300 ${accent.chip} ${accent.hover} group-hover:text-white`}
+                      style={{ "--halo-delay": i * 0.4 } as React.CSSProperties}
+                      className={`why-halo relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-all duration-300 ${accent.chip} ${accent.hover} group-hover:text-white group-hover:-rotate-3 group-hover:scale-110`}
                     >
-                      <Icon size={22} aria-hidden />
+                      <Icon
+                        size={22}
+                        aria-hidden
+                        className="transition-transform duration-500 ease-out group-hover:-translate-y-1"
+                      />
                     </span>
                     <span
                       aria-hidden
-                      className="font-bangla text-2xl font-bold leading-none text-slate-100 transition-colors duration-300 group-hover:text-blue-600/20"
+                      className="font-bangla text-2xl font-bold leading-none text-slate-100 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:text-blue-600/20"
                     >
                       {toBangla(i + 1)}
                     </span>

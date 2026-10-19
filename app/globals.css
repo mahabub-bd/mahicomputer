@@ -472,3 +472,64 @@ html { scroll-behavior: smooth; }
 .course-page {
   min-height: 60vh;
 }
+
+/* ---------- Why-Us section ambient motion ----------
+   Entrance reveals stay on AOS (markup). These keyframes only add slow,
+   transform-only ambient motion so they never fight AOS's transitions. */
+
+@keyframes why-blob-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(22px, 18px, 0) scale(1.07);
+  }
+}
+
+.why-blob-a {
+  animation: why-blob-drift 16s ease-in-out infinite alternate;
+}
+
+/* Reversed phase keeps the two blobs visually out of sync */
+.why-blob-b {
+  animation: why-blob-drift 13s ease-in-out infinite alternate-reverse;
+}
+
+/* Soft ring that periodically ripples out from an icon chip.
+   Custom-prop stagger (set inline per card) keeps the pulses off-beat. */
+@keyframes why-halo-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(1.28);
+    opacity: 0;
+  }
+}
+
+.why-halo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid currentcolor;
+  opacity: 0;
+  animation: why-halo-pulse 3.2s ease-out infinite;
+  animation-delay: calc(var(--halo-delay, 0) * 1s);
+  pointer-events: none;
+}
+
+/* Reduced motion: keep the layout, drop the ambient loops */
+@media (prefers-reduced-motion: reduce) {
+  .why-blob-a,
+  .why-blob-b,
+  .why-halo::before {
+    animation: none;
+  }
+  .why-halo::before {
+    opacity: 0;
+  }
+}
+/* ---------- End Why-Us ambient motion ---------- */

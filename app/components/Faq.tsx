@@ -14,7 +14,7 @@ const Faq = ({ faqs }: FaqProps) => {
 
   return (
     <section className="section-shell">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 md:max-w-5xl">
         <h2 className="section-title text-center font-bangla" data-aos="fade-up">
           সাধারণ জিজ্ঞাসা
         </h2>
@@ -26,7 +26,7 @@ const Faq = ({ faqs }: FaqProps) => {
           আপনার প্রশ্নের উত্তর এখানে না পেলে কল করুন — আমরা সবসময় পাশে আছি
         </p>
 
-        <div className="mt-8 space-y-3">
+        <div className="mt-8 grid items-start grid-cols-1 gap-3 md:grid-cols-2">
           {faqs.map(({ id, question, answer }, i) => (
             <FaqItem key={id} question={question} answer={answer} defaultOpen={i === 0} />
           ))}

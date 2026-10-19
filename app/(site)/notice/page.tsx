@@ -21,6 +21,9 @@ const NoticeBoardPage = async () => {
   return (
     <div className={`${styles.boxWidth} px-4 py-5 sm:px-6 sm:py-10`}>
       <h2 className={`text-center ${styles.heading2} font-bangla`}>নোটিশ বোর্ড</h2>
+      <p className="mx-auto mt-3 max-w-2xl text-center font-bangla text-[16px] leading-7 text-slate-500">
+        ভর্তি, পরীক্ষা ও অন্যান্য সাম্প্রতিক সব ঘোষণা একসাথে এখানে দেখুন
+      </p>
 
       <div className="mx-auto mt-8 max-w-350 space-y-4">
         {notices.map((notice) => (

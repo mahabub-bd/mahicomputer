@@ -59,6 +59,12 @@ const Gallery = ({ items = [] }: { items?: GalleryView[] }) => {
       >
         ইমেজ গ্যালারী
       </h2>
+      <p
+        className="mx-auto -mt-1 mb-4 max-w-2xl text-center font-bangla text-[16px] leading-7 text-slate-500"
+        data-aos="fade-up"
+      >
+        ক্লাসরুম, ল্যাব, ইভেন্ট ও ছাত্রছাত্রীদের স্মরণীয় মুহূর্ত একনজরে
+      </p>
 
       <div className="grid grid-cols-1 gap-4 py-6 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3">
         {items.map((item, index) => (

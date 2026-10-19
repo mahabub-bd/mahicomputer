@@ -1,7 +1,4 @@
-/**
- * Central site identity + URL helpers used by SEO surfaces
- * (metadata, Open Graph, robots.ts, sitemap.ts, JSON-LD).
- */
+
 
 export const SITE_NAME = "Mahi Computer Training Center";
 export const SITE_SHORT_NAME = "Mahi Computer";

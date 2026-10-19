@@ -1,6 +1,4 @@
-/** Compact date/time helpers shared by admin detail pages and lists. */
 
-/** "18 Oct 2026, 14:30" — timestamp for summaries and record cards. */
 export function formatDateTime(value: Date | string): string {
   return new Date(value).toLocaleString("en-GB", {
     day: "2-digit",

@@ -175,7 +175,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "sm" | "md";
 }
 
-/** Non-submit button (add/remove rows, etc.) sharing the button system. */
+
 export const Button = ({
   variant = "primary",
   size = "md",

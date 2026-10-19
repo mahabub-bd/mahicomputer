@@ -1,11 +1,4 @@
-/**
- * Shared class strings for admin form controls.
- *
- * Prefer the typed components in ./FormControls (Input, Textarea, Select,
- * Checkbox, SubmitButton, Field) in new markup — they wrap these exact
- * classes so the look stays in one place. These strings remain for the
- * rare control the components don't cover yet.
- */
+
 
 export const inputCls =
   "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none transition duration-150 placeholder:text-slate-400 hover:border-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/12 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400";

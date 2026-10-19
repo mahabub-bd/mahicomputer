@@ -1,12 +1,3 @@
-/**
- * Admin button system — modern squared (rounded-lg) buttons.
- *
- * Three surface variants (primary / secondary / danger) plus ghost and
- * dark for colored backgrounds, in two sizes. Prefer btn() in new
- * markup; the exported constants are the md-size variants used by
- * page headers, toolbars and detail actions.
- */
-
 const focusCls = "focus-visible:outline-2 focus-visible:outline-offset-2";
 
 const variants = {

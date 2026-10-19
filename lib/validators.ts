@@ -73,12 +73,7 @@ export const courseSchema = z.object({
   order: z.coerce.number().int().default(0),
 });
 
-/**
- * Client variant of {@link courseSchema} for the admin form: the UI edits the
- * description/modules as newline-separated text and never touches the
- * denormalized instructor columns (the API syncs those from `instructorId`).
- * The payload is reshaped back to the API shape on submit.
- */
+
 export const courseFormSchema = courseSchema
   .omit({
     description: true,
@@ -141,12 +136,12 @@ export const noticeSchema = z.object({
   order: z.coerce.number().int().default(0),
 });
 
-/** Client variant: the date picker deals in "YYYY-MM-DD" strings. */
+
 export const noticeFormSchema = noticeSchema.extend({
   date: z.string().min(1, "Date is required"),
 });
 
-/** A newsletter issue (announcement content), not the email signup. */
+
 export const newsletterIssueSchema = z.object({
   title: z.string().min(1, "Title is required").max(300),
   body: z.string().max(10000).default(""),
@@ -155,7 +150,7 @@ export const newsletterIssueSchema = z.object({
   order: z.coerce.number().int().default(0),
 });
 
-/** Client variant: the date picker deals in "YYYY-MM-DD" strings. */
+
 export const newsletterIssueFormSchema = newsletterIssueSchema.extend({
   date: z.string().min(1, "Date is required"),
 });
@@ -264,10 +259,7 @@ export const siteSettingSchema = z.object({
   stats: z.array(statItemSchema).default([]),
 });
 
-/**
- * Client variant of {@link siteSettingSchema} for the admin form: the marquee
- * is edited as newline-separated text and split back into items on submit.
- */
+
 export const settingsFormSchema = siteSettingSchema
   .omit({ marqueeItems: true })
   .extend({

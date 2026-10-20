@@ -18,8 +18,15 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <Suspense fallback={<SidebarFallback />}>
         <PanelSidebar />
       </Suspense>
-      <div className="lg:pl-72">
-        <div className="mx-auto max-w-[1600px] p-4 pt-20 sm:p-6 lg:p-8 lg:pt-8">
+      {/* min-w-0 lets the grid/flex children below shrink to the content
+          column instead of forcing a sideways page scroll.
+          The left padding tracks the sidebar width: narrower on laptops
+          (lg, 224px), full width again on large desktops (xl, 288px). */}
+      <div className="min-w-0 lg:pl-56 xl:pl-72">
+        {/* Padding is set per side on purpose: the `p-*` shorthand at sm/lg
+            would reset padding-top and slide the content under the fixed
+            mobile top bar (visible between the sm and lg breakpoints). */}
+        <div className="mx-auto max-w-[1600px] px-4 pb-4 pt-20 sm:px-6 sm:pb-6 sm:pt-20 lg:px-8 lg:pb-8 lg:pt-8">
           {children}
         </div>
       </div>

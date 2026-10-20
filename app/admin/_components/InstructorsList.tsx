@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { Info, Pencil, Plus } from "lucide-react";
+import { btnIcon } from "@/components/form/buttonStyles";
 import type { Instructor, InstructorWithCourseCount } from "@/lib/types";
+import { Info, Pencil, Plus } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import DeleteButton from "./DeleteButton";
 import InstructorForm from "./InstructorForm";
 import Modal from "./Modal";
 import useEditDeepLink from "./useEditDeepLink";
-import { btn } from "@/components/form/buttonStyles";
 
 interface InstructorsListProps {
   instructors: InstructorWithCourseCount[];
@@ -34,26 +34,27 @@ const InstructorsList = ({ instructors, editId }: InstructorsListProps) => {
   );
 
   const actions = (i: InstructorWithCourseCount) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       <Link
         href={`/admin/instructors/${i.id}`}
         title="Details"
-        className={btn("secondary", "sm")}
+        aria-label="Details"
+        className={btnIcon("secondary")}
       >
         <Info size={15} />
-        Details
       </Link>
       <button
         onClick={() => setModal({ instructor: i })}
         title="Edit"
-        className={btn("secondary", "sm")}
+        aria-label="Edit"
+        className={btnIcon("secondary")}
       >
         <Pencil size={15} />
-        Edit
       </button>
       <DeleteButton
         url={`/api/admin/instructors/${i.id}`}
         confirmText={`Delete "${i.name}"? This cannot be undone.`}
+        iconOnly
       />
     </div>
   );
@@ -69,16 +70,17 @@ const InstructorsList = ({ instructors, editId }: InstructorsListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className={btn("primary")}
+          title="Add instructor"
+          aria-label="Add instructor"
+          className={btnIcon("primary", "md")}
         >
           <Plus size={16} />
-          Add instructor
         </button>
       </div>
 
       {/* ---------- md and up: table ---------- */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-[760px] text-left text-sm">
+        <table className="w-full min-w-190 text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Instructor</th>

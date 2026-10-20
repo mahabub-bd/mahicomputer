@@ -1,12 +1,12 @@
 "use client";
 
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 import type { Notice } from "@/lib/types";
 import { Pencil, Plus } from "lucide-react";
 import { useState } from "react";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import NoticeForm from "./NoticeForm";
-import { btn } from "@/components/form/buttonStyles";
 
 interface NoticesListProps {
   notices: (Notice & { publishedBy: { name: string } | null })[];
@@ -32,18 +32,19 @@ const NoticesList = ({ notices }: NoticesListProps) => {
     );
 
   const actions = (n: Notice) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       <button
         onClick={() => setModal({ notice: n })}
         title="Edit"
-        className={btn("secondary", "sm")}
+        aria-label="Edit"
+        className={btnIcon("secondary")}
       >
         <Pencil size={15} />
-        Edit
       </button>
       <DeleteButton
         url={`/api/admin/notices/${n.id}`}
         confirmText="Delete this notice?"
+        iconOnly
       />
     </div>
   );
@@ -70,7 +71,7 @@ const NoticesList = ({ notices }: NoticesListProps) => {
           Six columns scroll inside the card instead of squeezing
           on tablet. */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-[880px] text-left text-sm">
+        <table className="w-full min-w-220 text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Date</th>

@@ -9,7 +9,7 @@ export type GalleryPreviewItem = {
 
 /** First eight home-page gallery images as a visual preview. */
 const GalleryPreview = ({ items }: { items: GalleryPreviewItem[] }) => (
-  <div className="lg:col-span-2">
+  <div className="min-w-0">
     <SectionHeading title="Gallery" href="/admin/gallery" />
     <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm">
       {items.length === 0 ? (

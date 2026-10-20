@@ -4,7 +4,7 @@ import type { Course, CourseWithCategory } from "@/lib/types";
 import { Info, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { btn } from "@/components/form/buttonStyles";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 import CourseForm from "./CourseForm";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
@@ -37,25 +37,29 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
       </span>
     );
 
+  // Icon-only actions keep the row compact — labels live in tooltips.
   const actions = (c: CourseWithCategory) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       <Link
         href={`/admin/courses/${c.id}`}
-        className={btn("secondary", "sm")}
+        title="Details"
+        aria-label="Details"
+        className={btnIcon("secondary")}
       >
         <Info size={15} />
-        Details
       </Link>
       <button
         onClick={() => setModal({ course: c })}
-        className={btn("secondary", "sm")}
+        title="Edit"
+        aria-label="Edit"
+        className={btnIcon("secondary")}
       >
         <Pencil size={15} />
-        Edit
       </button>
       <DeleteButton
         url={`/api/admin/courses/${c.id}`}
         confirmText={`Delete "${c.title}"? This cannot be undone.`}
+        iconOnly
       />
     </div>
   );
@@ -84,22 +88,24 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
           min-w + the thin scrollbar keep the seven columns readable —
           they scroll inside the card instead of squeezing on tablet. */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-260 text-left text-sm">
+        {/* min-w tuned to fit a ~1024px content area (laptop minus sidebar)
+            now that actions are icon-only. */}
+        <table className="w-full min-w-4xl text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
-              <th className="px-4 py-3">Course</th>
-              <th className="px-4 py-3">Category</th>
-              <th className="px-4 py-3">Instructor</th>
-              <th className="px-4 py-3">Price</th>
-              <th className="px-4 py-3">Order</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3 text-right">Actions</th>
+              <th className="px-3 py-3">Course</th>
+              <th className="px-3 py-3">Category</th>
+              <th className="px-3 py-3">Instructor</th>
+              <th className="px-3 py-3">Price</th>
+              <th className="px-3 py-3">Order</th>
+              <th className="px-3 py-3">Status</th>
+              <th className="px-3 py-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
             {courses.map((c) => (
               <tr key={c.id} className="hover:bg-slate-50">
-                <td className="px-4 py-3">
+                <td className="px-3 py-3">
                   <div className="flex items-center gap-3">
                     {c.imageUrl && (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -118,7 +124,7 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-3 py-3">
                   {c.category ? (
                     <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
                       {c.category.title}
@@ -127,7 +133,7 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
                     <span className="text-xs text-slate-400">—</span>
                   )}
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-3 py-3">
                   {c.instructor ? (
                     <div className="flex items-center gap-2">
                       {c.instructor.imageUrl && (
@@ -147,10 +153,10 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
                     <span className="text-xs text-slate-400">—</span>
                   )}
                 </td>
-                <td className="px-4 py-3">{c.price}</td>
-                <td className="px-4 py-3">{c.order}</td>
-                <td className="px-4 py-3">{statusPill(c.published)}</td>
-                <td className="px-4 py-3">
+                <td className="px-3 py-3">{c.price}</td>
+                <td className="px-3 py-3">{c.order}</td>
+                <td className="px-3 py-3">{statusPill(c.published)}</td>
+                <td className="px-3 py-3">
                   <div className="flex justify-end">{actions(c)}</div>
                 </td>
               </tr>

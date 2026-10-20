@@ -5,7 +5,7 @@ import { Eye, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import BlogForm from "./BlogForm";
-import { btn } from "@/components/form/buttonStyles";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import useEditDeepLink from "./useEditDeepLink";
@@ -41,26 +41,27 @@ const BlogsList = ({ posts, editId }: BlogsListProps) => {
     );
 
   const actions = (n: Post) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       <Link
         href={`/admin/blogs/${n.id}`}
         title="Details"
-        className={btn("secondary", "sm")}
+        aria-label="Details"
+        className={btnIcon("secondary")}
       >
         <Eye size={15} />
-        View
       </Link>
       <button
         onClick={() => setModal({ post: n })}
         title="Edit"
-        className={btn("secondary", "sm")}
+        aria-label="Edit"
+        className={btnIcon("secondary")}
       >
         <Pencil size={15} />
-        Edit
       </button>
       <DeleteButton
         url={`/api/admin/blogs/${n.id}`}
         confirmText={`Delete "${n.title}"? This cannot be undone.`}
+        iconOnly
       />
     </div>
   );

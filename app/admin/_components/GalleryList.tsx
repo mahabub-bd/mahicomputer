@@ -61,7 +61,7 @@ const GalleryList = ({ items }: GalleryListProps) => {
                 >
                   <Pencil size={14} />
                 </button>
-                <DeleteButton url={`/api/admin/gallery/${g.id}`} label=" " />
+                <DeleteButton url={`/api/admin/gallery/${g.id}`} iconOnly />
               </div>
             </div>
           </div>

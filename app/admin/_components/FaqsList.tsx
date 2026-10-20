@@ -6,7 +6,7 @@ import type { Faq } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import FaqForm from "./FaqForm";
-import { btn } from "@/components/form/buttonStyles";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 
 interface FaqsListProps {
   faqs: Faq[];
@@ -53,18 +53,19 @@ const FaqsList = ({ faqs }: FaqsListProps) => {
                 </p>
                 <p className="mt-1 line-clamp-2 text-sm text-slate-500">{faq.answer}</p>
               </div>
-              <div className="flex shrink-0 gap-2">
+              <div className="flex shrink-0 gap-1">
                 <button
                   onClick={() => setModal({ faq })}
                   title="Edit"
-                  className={btn("secondary", "sm")}
+                  aria-label="Edit"
+                  className={btnIcon("secondary")}
                 >
                   <Pencil size={15} />
-                  Edit
                 </button>
                 <DeleteButton
                   url={`/api/admin/faqs/${faq.id}`}
                   confirmText="Delete this FAQ?"
+                  iconOnly
                 />
               </div>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { btn } from "@/components/form/buttonStyles";
+import { btnIcon } from "@/components/form/buttonStyles";
 import type { Category, CategoryWithCourseCount } from "@/lib/types";
 import { Info, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
@@ -34,26 +34,27 @@ const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
   );
 
   const actions = (c: CategoryWithCourseCount) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       <Link
         href={`/admin/categories/${c.id}`}
         title="Details"
-        className={btn("secondary", "sm")}
+        aria-label="Details"
+        className={btnIcon("secondary")}
       >
         <Info size={15} />
-        Details
       </Link>
       <button
         onClick={() => setModal({ category: c })}
         title="Edit"
-        className={btn("secondary", "sm")}
+        aria-label="Edit"
+        className={btnIcon("secondary")}
       >
         <Pencil size={15} />
-        Edit
       </button>
       <DeleteButton
         url={`/api/admin/categories/${c.id}`}
         confirmText={`Delete "${c.title}"? This cannot be undone.`}
+        iconOnly
       />
     </div>
   );
@@ -69,10 +70,11 @@ const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
         </div>
         <button
           onClick={() => setModal({})}
-          className={btn("primary")}
+          title="Add category"
+          aria-label="Add category"
+          className={btnIcon("primary", "md")}
         >
           <Plus size={16} />
-          Add category
         </button>
       </div>
 

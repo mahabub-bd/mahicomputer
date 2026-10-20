@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { Info, Pencil, Plus, Star } from "lucide-react";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 import type { Course, Review } from "@/lib/types";
+import { Info, Pencil, Plus, Star } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import ReviewForm from "./ReviewForm";
 import useEditDeepLink from "./useEditDeepLink";
-import { btn } from "@/components/form/buttonStyles";
 
 interface ReviewsListProps {
   reviews: Review[];
@@ -35,26 +35,27 @@ const ReviewsList = ({ reviews, courses, editId }: ReviewsListProps) => {
   );
 
   const actions = (r: Review) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       <Link
         href={`/admin/reviews/${r.id}`}
         title="Details"
-        className={btn("secondary", "sm")}
+        aria-label="Details"
+        className={btnIcon("secondary")}
       >
         <Info size={15} />
-        Details
       </Link>
       <button
         onClick={() => setModal({ review: r })}
         title="Edit"
-        className={btn("secondary", "sm")}
+        aria-label="Edit"
+        className={btnIcon("secondary")}
       >
         <Pencil size={15} />
-        Edit
       </button>
       <DeleteButton
         url={`/api/admin/reviews/${r.id}`}
         confirmText={`Delete the review by "${r.name}"? This cannot be undone.`}
+        iconOnly
       />
     </div>
   );
@@ -79,7 +80,7 @@ const ReviewsList = ({ reviews, courses, editId }: ReviewsListProps) => {
 
       {/* ---------- md and up: table ---------- */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-[800px] text-left text-sm">
+        <table className="w-full min-w-200 text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Student</th>

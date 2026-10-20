@@ -5,18 +5,21 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2, Trash2 } from "lucide-react";
 import { apiDelete } from "./api";
-import { btn } from "@/components/form/buttonStyles";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 
 interface DeleteButtonProps {
   url: string;
   label?: string;
   confirmText?: string;
+  /** Icon-only square button (with tooltip) for tight table rows. */
+  iconOnly?: boolean;
 }
 
 const DeleteButton = ({
   url,
   label = "Delete",
   confirmText = "Are you sure? This cannot be undone.",
+  iconOnly = false,
 }: DeleteButtonProps) => {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -45,10 +48,11 @@ const DeleteButton = ({
         onClick={onDelete}
         disabled={busy}
         title={label}
-        className={btn("danger", "sm")}
+        aria-label={label}
+        className={iconOnly ? btnIcon("danger") : btn("danger", "sm")}
       >
         {busy ? <Loader2 size={15} className="animate-spin" /> : <Trash2 size={15} />}
-        {busy ? "Deleting…" : label}
+        {!iconOnly && (busy ? "Deleting…" : label)}
       </button>
       {error && <span className="ml-2 text-xs text-rose-600">{error}</span>}
     </span>

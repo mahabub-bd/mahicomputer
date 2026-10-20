@@ -1,12 +1,12 @@
 "use client";
 
+import { btnIcon } from "@/components/form/buttonStyles";
+import type { ContactMessage } from "@/lib/types";
+import { CheckCheck, Clock, Mail, MailOpen, MessageSquare, Phone, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { CheckCheck, Clock, Mail, MailOpen, MessageSquare, Phone, Trash2 } from "lucide-react";
-import type { ContactMessage } from "@/lib/types";
 import { apiDelete, apiPatch } from "./api";
-import { btn, btnIcon } from "@/components/form/buttonStyles";
 
 interface MessagesListProps {
   messages: ContactMessage[];
@@ -74,7 +74,7 @@ const MessagesList = ({ messages }: MessagesListProps) => {
               <div className="min-w-0 flex-1">
                 {/* Line 1 — name · badges · date */}
                 <div className="flex flex-wrap items-center gap-2">
-                  <p className="min-w-0 break-words text-[15px] font-semibold text-slate-900">
+                  <p className="min-w-0 wrap-break-word text-[15px] font-semibold text-slate-900">
                     {m.name}
                   </p>
                   {!m.read && (
@@ -108,7 +108,7 @@ const MessagesList = ({ messages }: MessagesListProps) => {
                 {/* Line 3 — message body */}
                 <p className="mt-1.5 flex items-start gap-1 whitespace-pre-wrap text-sm text-slate-700">
                   <MessageSquare size={13} className="mt-1 shrink-0 text-slate-400" />
-                  <span className="min-w-0 break-words">{m.message}</span>
+                  <span className="min-w-0 wrap-break-word">{m.message}</span>
                 </p>
               </div>
             </div>
@@ -118,10 +118,11 @@ const MessagesList = ({ messages }: MessagesListProps) => {
               <button
                 onClick={() => markRead(m)}
                 disabled={busyId === m.id}
-                className={btn("secondary", "sm")}
+                title={`Mark as ${m.read ? "unread" : "read"}`}
+                aria-label={`Mark as ${m.read ? "unread" : "read"}`}
+                className={btnIcon("secondary")}
               >
                 {m.read ? <MailOpen size={15} /> : <CheckCheck size={15} />}
-                Mark as {m.read ? "unread" : "read"}
               </button>
               <button
                 onClick={() => remove(m)}

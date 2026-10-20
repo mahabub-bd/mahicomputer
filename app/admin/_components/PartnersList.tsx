@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Pencil, Plus } from "lucide-react";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 import type { Partner } from "@/lib/types";
+import { Pencil, Plus } from "lucide-react";
+import { useState } from "react";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import PartnerForm from "./PartnerForm";
-import { btn } from "@/components/form/buttonStyles";
 
 interface PartnersListProps {
   partners: Partner[];
@@ -16,18 +16,19 @@ const PartnersList = ({ partners }: PartnersListProps) => {
   const [modal, setModal] = useState<{ partner?: Partner } | null>(null);
 
   const actions = (p: Partner) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       <button
         onClick={() => setModal({ partner: p })}
         title="Edit"
-        className={btn("secondary", "sm")}
+        aria-label="Edit"
+        className={btnIcon("secondary")}
       >
         <Pencil size={15} />
-        Edit
       </button>
       <DeleteButton
         url={`/api/admin/partners/${p.id}`}
         confirmText={`Delete partner "${p.alt}"? This cannot be undone.`}
+        iconOnly
       />
     </div>
   );
@@ -52,7 +53,7 @@ const PartnersList = ({ partners }: PartnersListProps) => {
 
       {/* ---------- md and up: table ----------} */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-[640px] text-left text-sm">
+        <table className="w-full min-w-160 text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Partner</th>

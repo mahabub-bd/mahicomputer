@@ -10,7 +10,7 @@ export type SocialLinkItem = {
 
 /** Footer social icons with their target links. */
 const SocialLinksPanel = ({ links }: { links: SocialLinkItem[] }) => (
-  <div>
+  <div className="min-w-0">
     <SectionHeading title="Social links" href="/admin/social" />
     <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
       {links.length === 0 ? (

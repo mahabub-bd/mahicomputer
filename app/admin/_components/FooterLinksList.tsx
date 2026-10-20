@@ -160,13 +160,14 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
                   size="sm"
                   onClick={() => openModal(g)}
                   title="Edit"
+                  aria-label="Edit"
                 >
                   <Pencil size={14} />
-                  Edit
                 </Button>
                 <DeleteButton
                   url={`/api/admin/footer-links/${g.id}`}
                   confirmText={`Delete group "${g.title}" and all its links?`}
+                  iconOnly
                 />
               </div>
             </div>

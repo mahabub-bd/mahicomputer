@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { toast } from "sonner";
-import { Pencil, Plus } from "lucide-react";
+import { Field, Input, SubmitButton } from "@/components/form/FormControls";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
+import { useZodForm } from "@/components/form/useZodForm";
 import type { NavLink } from "@/lib/types";
 import { navLinkSchema, type NavLinkInput } from "@/lib/validators";
+import { Pencil, Plus } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import { apiPost, apiPut } from "./api";
-import { Field, Input, SubmitButton } from "@/components/form/FormControls";
-import { btn } from "@/components/form/buttonStyles";
-import { useZodForm } from "@/components/form/useZodForm";
 
 interface NavLinksListProps {
   links: NavLink[];
@@ -81,18 +81,19 @@ const NavLinksList = ({ links }: NavLinksListProps) => {
 
   // Shared with the mobile card list below so the two views cannot drift.
   const actions = (l: NavLink) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       <button
         onClick={() => openModal(l)}
         title="Edit"
-        className={btn("secondary", "sm")}
+        aria-label="Edit"
+        className={btnIcon("secondary")}
       >
         <Pencil size={15} />
-        Edit
       </button>
       <DeleteButton
         url={`/api/admin/nav-links/${l.id}`}
         confirmText={`Delete "${l.title}"?`}
+        iconOnly
       />
     </div>
   );
@@ -117,7 +118,7 @@ const NavLinksList = ({ links }: NavLinksListProps) => {
 
       {/* ---------- md and up: table ---------- */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-[800px] text-left text-sm">
+        <table className="w-full min-w-200 text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Title</th>

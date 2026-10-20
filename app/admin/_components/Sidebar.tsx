@@ -161,52 +161,63 @@ const Sidebar = ({ user }: SidebarProps) => {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col bg-slate-900 text-slate-100 transition-transform duration-200 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col bg-slate-900 text-slate-100 transition-transform duration-200 lg:w-56 lg:translate-x-0 xl:w-72 ${
           drawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center gap-3 border-b border-slate-700 px-6 py-4">
+        <div className="flex items-center gap-3 border-b border-slate-700 px-6 py-4 lg:px-4 xl:px-6">
         <Image
           src={logo}
           alt="Mahi Computer logo"
           width={44}
           height={44}
-          className="h-11 w-11 shrink-0 rounded-lg bg-white object-contain p-1"
+          className="h-11 w-11 shrink-0 rounded-lg bg-white object-contain p-1 lg:h-10 lg:w-10 xl:h-11 xl:w-11"
           priority
         />
         <div className="min-w-0">
-          <p className="truncate text-lg font-semibold leading-tight">Mahi Computer</p>
+          <p className="truncate text-lg font-semibold leading-tight lg:text-base xl:text-lg">
+            Mahi Computer
+          </p>
           <p className="text-xs text-slate-400">Admin Panel</p>
         </div>
       </div>
-      <nav className="admin-sidebar-scroll flex-1 overflow-y-auto p-3">
-        {sections.map(({ label, links }) => (
-          <div key={label ?? "main"} className="mb-1">
-            {label && (
-              <p className="px-3 pb-0.5 pt-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                {label}
-              </p>
-            )}
-            <div className="space-y-1">
-              {links.map(({ href, label, exact, Icon }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={() => setDrawerOpen(false)}
-                  className={`flex items-center gap-3 rounded-md px-3 py-1.5 text-sm transition ${
-                    isActive(href, exact)
-                      ? "bg-blue-600 text-white"
-                      : "text-slate-300 hover:bg-slate-800"
-                  }`}
-                >
-                  <Icon size={17} className="shrink-0" />
+      {/* The nav scrolls when the viewport is too short. min-h-0 lets the
+          flex child shrink, and the fade below hints that there is more
+          below the fold instead of cutting a link in half. */}
+      <div className="relative min-h-0 flex-1">
+        <nav className="admin-sidebar-scroll h-full overflow-y-auto p-3">
+          {sections.map(({ label, links }) => (
+            <div key={label ?? "main"} className="mb-1">
+              {label && (
+                <p className="px-3 pb-0.5 pt-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                   {label}
-                </Link>
-              ))}
+                </p>
+              )}
+              <div className="space-y-1">
+                {links.map(({ href, label, exact, Icon }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setDrawerOpen(false)}
+                    className={`flex items-center gap-3 rounded-md px-3 py-1.5 text-sm transition ${
+                      isActive(href, exact)
+                        ? "bg-blue-600 text-white"
+                        : "text-slate-300 hover:bg-slate-800"
+                    }`}
+                  >
+                    <Icon size={17} className="shrink-0" />
+                    {label}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </nav>
+          ))}
+        </nav>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-linear-to-t from-slate-900 via-slate-900/85 to-transparent"
+        />
+      </div>
 
       <div className="relative border-t border-slate-700 p-3" ref={menuRef}>
         {menuOpen && (

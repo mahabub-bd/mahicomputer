@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Pencil, Plus, ShieldCheck } from "lucide-react";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 import type { UserView } from "@/lib/types";
+import { Pencil, Plus, ShieldCheck } from "lucide-react";
+import { useState } from "react";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import UserForm from "./UserForm";
-import { btn } from "@/components/form/buttonStyles";
 
 interface UsersListProps {
   users: UserView[];
@@ -39,18 +39,19 @@ const UsersList = ({ users }: UsersListProps) => {
     );
 
   const actions = (u: UserView) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       <button
         onClick={() => setModal({ user: u })}
         title="Edit"
-        className={btn("secondary", "sm")}
+        aria-label="Edit"
+        className={btnIcon("secondary")}
       >
         <Pencil size={15} />
-        Edit
       </button>
       <DeleteButton
         url={`/api/admin/users/${u.id}`}
         confirmText={`Delete the admin account for ${u.email}?`}
+        iconOnly
       />
     </div>
   );
@@ -75,7 +76,7 @@ const UsersList = ({ users }: UsersListProps) => {
 
       {/* ---------- md and up: table ---------- */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-[600px] text-left text-sm">
+        <table className="w-full min-w-150 text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Account</th>

@@ -1,9 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
-import { btn, btnIcon } from "@/components/form/buttonStyles";
+import { btnIcon } from "@/components/form/buttonStyles";
+import type { Enrollment } from "@/lib/types";
 import {
   BookOpen,
   CheckCheck,
@@ -17,7 +15,9 @@ import {
   Undo2,
   XCircle,
 } from "lucide-react";
-import type { Enrollment } from "@/lib/types";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 import { apiDelete, apiPatch } from "./api";
 
 type StatusFilter = "ALL" | "PENDING" | "APPROVED" | "DECLINED";
@@ -220,7 +220,7 @@ const EnrollmentsList = ({ enrollments }: EnrollmentsListProps) => {
                         {en.course && (
                           <span className="flex min-w-0 shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700 ring-1 ring-emerald-100">
                             <BookOpen size={11} className="shrink-0" />
-                            <span className="max-w-[14rem] truncate">{en.course}</span>
+                            <span className="max-w-56 truncate">{en.course}</span>
                           </span>
                         )}
                         {en.message && (
@@ -240,28 +240,31 @@ const EnrollmentsList = ({ enrollments }: EnrollmentsListProps) => {
                         <button
                           onClick={() => setStatus(en, "APPROVED")}
                           disabled={busy}
-                          className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-[13px] font-semibold text-white shadow-sm transition duration-150 hover:bg-emerald-700 active:translate-y-px disabled:pointer-events-none disabled:opacity-50"
+                          title="Approve"
+                          aria-label="Approve"
+                          className="inline-flex items-center justify-center rounded-lg bg-emerald-600 p-1.5 text-white shadow-sm transition duration-150 hover:bg-emerald-700 active:translate-y-px disabled:pointer-events-none disabled:opacity-50"
                         >
                           <CheckCircle2 size={15} />
-                          Approve
                         </button>
                         <button
                           onClick={() => setStatus(en, "DECLINED")}
                           disabled={busy}
-                          className={btn("secondary", "sm")}
+                          title="Decline"
+                          aria-label="Decline"
+                          className={btnIcon("secondary")}
                         >
                           <XCircle size={15} />
-                          Decline
                         </button>
                       </>
                     ) : (
                       <button
                         onClick={() => setStatus(en, "PENDING")}
                         disabled={busy}
-                        className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100 disabled:opacity-50"
+                        title="Move to pending"
+                        aria-label="Move to pending"
+                        className="inline-flex items-center justify-center rounded-lg bg-white p-1.5 text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100 disabled:opacity-50"
                       >
                         <Undo2 size={15} />
-                        Move to pending
                       </button>
                     )}
 

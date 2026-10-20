@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Link2, Pencil, Plus } from "lucide-react";
+import { btn, btnIcon } from "@/components/form/buttonStyles";
 import type { SocialLink } from "@/lib/types";
+import { Link2, Pencil, Plus } from "lucide-react";
+import { useState } from "react";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import SocialForm from "./SocialForm";
-import { btn } from "@/components/form/buttonStyles";
 
 interface SocialListProps {
   links: SocialLink[];
@@ -29,18 +29,19 @@ const SocialList = ({ links }: SocialListProps) => {
   );
 
   const actions = (s: SocialLink) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1">
       <button
         onClick={() => setModal({ link: s })}
         title="Edit"
-        className={btn("secondary", "sm")}
+        aria-label="Edit"
+        className={btnIcon("secondary")}
       >
         <Pencil size={15} />
-        Edit
       </button>
       <DeleteButton
         url={`/api/admin/social/${s.id}`}
         confirmText="Delete this social link?"
+        iconOnly
       />
     </div>
   );
@@ -65,7 +66,7 @@ const SocialList = ({ links }: SocialListProps) => {
 
       {/* ---------- md and up: table ----------} */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-[680px] text-left text-sm">
+        <table className="w-full min-w-170 text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Icon</th>
@@ -84,7 +85,7 @@ const SocialList = ({ links }: SocialListProps) => {
                       className="h-8 w-8 object-contain" />
                   )}
                 </td>
-                <td className="max-w-[360px] px-4 py-3">{url(s)}</td>
+                <td className="max-w-90 px-4 py-3">{url(s)}</td>
                 <td className="px-4 py-3">{s.order}</td>
                 <td className="px-4 py-3">
                   <div className="flex justify-end">{actions(s)}</div>

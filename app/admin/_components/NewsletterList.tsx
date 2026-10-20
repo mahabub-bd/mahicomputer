@@ -15,6 +15,7 @@ const NewsletterList = ({ subscribers }: NewsletterListProps) => {
     <DeleteButton
       url={`/api/admin/newsletter/${s.id}`}
       confirmText={`Delete "${s.email}"? This cannot be undone.`}
+      iconOnly
     />
   );
 
@@ -30,7 +31,7 @@ const NewsletterList = ({ subscribers }: NewsletterListProps) => {
 
       {/* ---------- md and up: table ---------- */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-        <table className="w-full min-w-[520px] text-left text-sm">
+        <table className="w-full min-w-130 text-left text-sm">
           <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
             <tr>
               <th className="px-4 py-3">Email</th>

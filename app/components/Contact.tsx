@@ -41,7 +41,7 @@ const Contact = ({ settings }: ContactProps) => {
   return (
     <section
       id="contact"
-      className="section-shell relative bg-linear-to-br from-pink-50 via-blue-50 to-white"
+      className="section-shell relative scroll-mt-24 bg-linear-to-br from-pink-50 via-blue-50 to-white"
     >
       <div className={`${styles.boxWidth} mx-auto px-4 sm:px-6`}>
         <h2

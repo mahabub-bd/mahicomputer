@@ -13,6 +13,7 @@ import type {
   GalleryView,
   Instructor,
   InstructorView,
+  InstructorWithCourseCount,
   NavLink,
   NavLinkView,
   Newsletter,
@@ -131,6 +132,18 @@ export async function getInstructors(): Promise<Instructor[]> {
   return prisma.instructor.findMany({ orderBy: { order: "asc" } });
 }
 
+/**
+ * Instructors plus the number of *published* courses each one teaches.
+ * Unpublished (draft) courses are excluded so the public count never
+ * advertises a course that is not open for enrollment.
+ */
+export async function getInstructorsWithCourseCount(): Promise<InstructorWithCourseCount[]> {
+  return prisma.instructor.findMany({
+    orderBy: { order: "asc" },
+    include: { _count: { select: { courses: { where: { published: true } } } } },
+  });
+}
+
 export async function getReviews(): Promise<Review[]> {
   return prisma.review.findMany({ orderBy: { order: "asc" } });
 }
@@ -213,8 +226,16 @@ export function toCategoryView(c: Category): CategoryView {
   return { img: c.imageUrl, title: c.title, alt: c.alt };
 }
 
-export function toInstructorView(i: Instructor): InstructorView {
-  return { id: i.id, img: i.imageUrl, name: i.name, des: i.description };
+export function toInstructorView(
+  i: Instructor & { _count?: { courses: number } },
+): InstructorView {
+  return {
+    id: i.id,
+    img: i.imageUrl,
+    name: i.name,
+    des: i.description,
+    courseCount: i._count?.courses ?? 0,
+  };
 }
 
 export function toReviewView(r: Review): ReviewView {
@@ -242,6 +263,12 @@ export async function getReviewViews(): Promise<ReviewView[]> {
   const reviews = await getReviews();
   // Skip rows whose image was never uploaded — rendering an empty src is invalid.
   return reviews.filter((r) => r.imageUrl.trim()).map(toReviewView);
+}
+
+/** Instructor cards for the public site, with each teacher's course count. */
+export async function getInstructorViews(): Promise<InstructorView[]> {
+  const instructors = await getInstructorsWithCourseCount();
+  return instructors.map(toInstructorView);
 }
 
 export async function getPartnerViews(): Promise<PartnerView[]> {
@@ -372,6 +399,10 @@ export const getPublicCourses = cachedPublic("public:courses", getCourses);
 export const getPublicCourseViews = cachedPublic("public:courseViews", getCourseViews);
 export const getPublicCategories = cachedPublic("public:categories", getCategories);
 export const getPublicInstructors = cachedPublic("public:instructors", getInstructors);
+export const getPublicInstructorViews = cachedPublic(
+  "public:instructorViews",
+  getInstructorViews,
+);
 export const getPublicReviewViews = cachedPublic("public:reviewViews", getReviewViews);
 export const getPublicPartnerViews = cachedPublic("public:partnerViews", getPartnerViews);
 export const getPublicGalleryViews = cachedPublic("public:galleryViews", getGalleryViews);

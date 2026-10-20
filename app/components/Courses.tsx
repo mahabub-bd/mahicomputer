@@ -23,7 +23,7 @@ const Courses = ({ courses = [], variant = "section" }: CoursesProps) => {
       className={
         isPage
           ? "pt-8 pb-[clamp(3.5rem,7vw,6rem)] md:pt-12"
-          : "section-shell"
+          : "section-shell scroll-mt-24"
       }
     >
       <div className={`${styles.boxWidth} px-4 sm:px-6`}>

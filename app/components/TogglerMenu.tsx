@@ -70,14 +70,14 @@ const TogglerMenu = ({
   const close = () => setOpen(false);
 
   return (
-    <div className="sm:hidden ml-auto">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-label="Open menu"
         aria-expanded={open}
         aria-controls="mobile-menu"
         onClick={() => setOpen(true)}
-        className="flex h-11 w-11 items-center justify-center rounded-full text-slate-700 ring-1 ring-slate-200 transition-colors hover:bg-slate-50 hover:text-blue-700"
+        className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-700 ring-1 ring-slate-200 transition-colors hover:bg-slate-50 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
       >
         <Menu size={22} />
       </button>
@@ -117,14 +117,14 @@ const TogglerMenu = ({
                   <Image
                     src={logo}
                     alt="Mahi Computer"
-                    className="h-10 w-auto object-contain"
+                    className="h-9 w-auto object-contain"
                   />
                 </Link>
                 <button
                   type="button"
                   aria-label="Close menu"
                   onClick={close}
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 ring-1 ring-slate-200 transition-colors hover:bg-slate-50 hover:text-blue-700"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 ring-1 ring-slate-200 transition-colors hover:bg-slate-50 hover:text-blue-700"
                 >
                   <X size={20} />
                 </button>

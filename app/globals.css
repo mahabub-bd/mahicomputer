@@ -126,7 +126,7 @@ html { scroll-behavior: smooth; }
   left: 50%;
   top: 100%;
   padding-top: 12px; /* invisible bridge so the menu survives the trip down */
-  transform: translate(-50%, -10px) scale(0.985);
+  transform: translate(-50%, -8px) scale(0.98);
   transform-origin: top center;
   opacity: 0;
   visibility: hidden;
@@ -135,6 +135,7 @@ html { scroll-behavior: smooth; }
     opacity 0.18s ease,
     transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
     visibility 0.24s;
+  will-change: transform, opacity;
   z-index: 120;
 }
 
@@ -433,19 +434,12 @@ html { scroll-behavior: smooth; }
   }
 }
 
-/* Sticky Nav */
+/* Sticky Nav
 
-.sticky {
-  position: fixed;
-  width: 100%;
-
-  margin: auto;
-  left: 0;
-  top: 0;
-  right: 0;
-  z-index: 99;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
-}
+   The old global `.sticky { position: fixed }` rule was unlayered, so it
+   outranked Tailwind's own `sticky` utility everywhere and turned the
+   header into a fixed overlay that jumped the page when it appeared.
+   The navbar now uses Tailwind's `sticky top-0` directly. */
 
 .nav-font {
   font-family: var(--font-hind-siliguri), "Hind Siliguri", sans-serif !important;

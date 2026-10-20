@@ -92,6 +92,8 @@ export interface InstructorView {
   img: string;
   name: string;
   des: string;
+  /** How many published courses this instructor teaches (0 when unknown). */
+  courseCount?: number;
 }
 
 export interface ReviewView {

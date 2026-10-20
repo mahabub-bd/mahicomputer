@@ -3,7 +3,7 @@ import {
   getPublicCourses,
   getPublicFaqs,
   getPublicGalleryViews,
-  getPublicInstructors,
+  getPublicInstructorViews,
   getPublicNotices,
   getPublicPartnerViews,
   getPublicReviewViews,
@@ -11,7 +11,6 @@ import {
   getPublicSocialLinks,
   toCategoryView,
   toCourseView,
-  toInstructorView,
 } from "@/lib/data";
 import { buildHomeJsonLd } from "@/lib/seo";
 import { SITE_NAME, SITE_URL, truncate } from "@/lib/site";
@@ -74,7 +73,7 @@ const HomePage = async () => {
     await Promise.all([
       getPublicCourses(),
       getPublicCategories(),
-      getPublicInstructors(),
+      getPublicInstructorViews(),
       getPublicReviewViews(),
       getPublicPartnerViews(),
       getPublicGalleryViews(),
@@ -107,7 +106,7 @@ const HomePage = async () => {
         <Categories categories={categories.map(toCategoryView)} />
         <Courses courses={courses} />
         <AdmissionBanner courses={courseTitles} settings={settings} />
-        <Instractor instructors={instructors.map(toInstructorView)} />
+        <Instractor instructors={instructors} />
         <WhyChooseUs settings={settings} />
         <Review reviews={reviews} />
         <Stats stats={settings.stats} />

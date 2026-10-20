@@ -1,7 +1,6 @@
 import {
-  getPublicInstructors,
+  getPublicInstructorViews,
   getPublicSiteSettings,
-  toInstructorView,
 } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
 import AosProvider from "@/app/_components/AosProvider";
@@ -22,7 +21,7 @@ export const metadata: Metadata = {
 const AboutPage = async () => {
   const [settings, instructors] = await Promise.all([
     getPublicSiteSettings(),
-    getPublicInstructors(),
+    getPublicInstructorViews(),
   ]);
 
   return (
@@ -30,7 +29,7 @@ const AboutPage = async () => {
       <div className="w-full overflow-hidden scroll-smooth">
         <About settings={settings} />
         <CEO settings={settings} />
-        <Instractor instructors={instructors.map(toInstructorView)} />
+        <Instractor instructors={instructors} />
         <WhyChooseUs settings={settings} />
         <Stats stats={settings.stats} />
       </div>

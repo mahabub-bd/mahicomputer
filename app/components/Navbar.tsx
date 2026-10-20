@@ -114,7 +114,12 @@ const Navbar = ({
               return (
                 <li
                   key={nav.id}
-                  className={`${nav.class} nav-font relative flex items-center`}
+                  className={
+                    // Deliberately NOT "relative": the mega menu must anchor
+                    // to the sticky navbar bar (see .features-mega-menu in
+                    // globals.css), not to this off-center <li>.
+                    `${nav.class} nav-font flex items-center`
+                  }
                 >
                   <Link
                     href={href}

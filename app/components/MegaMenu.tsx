@@ -11,22 +11,18 @@ interface MegaMenuProps {
 const MegaMenu = ({ menuLink, menu }: MegaMenuProps) => {
   if (menuLink.length === 0) return null;
 
-  // Switch to a two-column layout once the list gets long.
+  // Switch to a multi-column layout once the list gets long.
   const wide = menuLink.length > 8;
 
   return (
     <div
       className={`features-mega-menu ${
-        wide ? "w-[min(90vw,660px)]" : "w-[min(90vw,390px)]"
+        wide
+          ? "w-[min(90vw,660px)] lg:w-[min(90vw,990px)]"
+          : "w-[min(90vw,390px)]"
       }`}
     >
       <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_24px_60px_-15px_rgba(15,35,75,0.30)]">
-        {/* Brand accent along the top edge */}
-        <div
-          aria-hidden
-          className="h-0.5 bg-linear-to-r from-blue-700 via-blue-500 to-cyan-400"
-        />
-
         <div className="flex items-center justify-between gap-3 border-b border-slate-100 bg-slate-50 px-5 py-3">
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
             কোর্স দেখুন
@@ -36,7 +32,13 @@ const MegaMenu = ({ menuLink, menu }: MegaMenuProps) => {
           </span>
         </div>
 
-        <ul className={`p-2 ${wide ? "grid grid-cols-2 gap-x-1" : "flex flex-col"}`}>
+        <ul
+          className={`p-2 ${
+            wide
+              ? "grid grid-cols-2 gap-x-1 lg:grid-cols-3"
+              : "flex flex-col"
+          }`}
+        >
           {menuLink.map((item) => (
             <li key={item.link}>
               <Link

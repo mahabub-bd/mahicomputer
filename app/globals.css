@@ -96,13 +96,12 @@ html { scroll-behavior: smooth; }
 }
 
 /* ---------- Navbar hover dropdown ----------
-   A nav <li> marked "feature-hoverable" (from the admin panel) anchors the
-   dropdown below itself. Opening keeps the transform intact (no jump) and
-   works with the keyboard via :focus-within. */
-
-.feature-hoverable {
-  position: relative;
-}
+   A nav <li> marked "feature-hoverable" (from the admin panel) triggers the
+   dropdown, which centers itself on the navbar: the li is deliberately NOT
+   position:relative, so the menu's absolute positioning resolves against the
+   sticky navbar bar and left:50% splits it 50% / 50% left-right. Opening
+   keeps the transform intact (no jump) and works with the keyboard via
+   :focus-within. */
 
 .feature-hoverable > a {
   gap: 6px;
@@ -155,6 +154,13 @@ html { scroll-behavior: smooth; }
 
 .hero {
   min-height: 620px;
+}
+
+/* Laptops (lg, below xl): tighter hero — desktop keeps the full height */
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  .hero {
+    min-height: 430px;
+  }
 }
 
 .shape-1 {

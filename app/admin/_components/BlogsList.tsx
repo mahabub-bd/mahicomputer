@@ -105,6 +105,7 @@ const BlogsList = ({ posts, editId }: BlogsListProps) => {
                     <img
                       src={n.imageUrl}
                       alt=""
+                      loading="lazy" decoding="async"
                       className="h-10 w-16 rounded object-cover"
                     />
                   ) : (
@@ -155,7 +156,8 @@ const BlogsList = ({ posts, editId }: BlogsListProps) => {
                 <img
                   src={n.imageUrl}
                   alt=""
-                  className="h-14 w-24 shrink-0 rounded object-cover"
+                  loading="lazy" decoding="async"
+                      className="h-14 w-24 shrink-0 rounded object-cover"
                 />
               ) : (
                 <span className="flex h-14 w-24 shrink-0 items-center justify-center rounded bg-slate-100 text-xs text-slate-400">

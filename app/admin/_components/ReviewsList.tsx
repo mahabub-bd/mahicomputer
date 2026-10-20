@@ -99,7 +99,8 @@ const ReviewsList = ({ reviews, courses, editId }: ReviewsListProps) => {
                       <img
                         src={r.imageUrl}
                         alt=""
-                        className="h-10 w-10 rounded-full object-cover"
+                        loading="lazy" decoding="async"
+                      className="h-10 w-10 rounded-full object-cover"
                       />
                     )}
                     <div className="min-w-0">
@@ -142,7 +143,8 @@ const ReviewsList = ({ reviews, courses, editId }: ReviewsListProps) => {
                 <img
                   src={r.imageUrl}
                   alt=""
-                  className="h-10 w-10 shrink-0 rounded-full object-cover"
+                  loading="lazy" decoding="async"
+                      className="h-10 w-10 shrink-0 rounded-full object-cover"
                 />
               )}
               <div className="min-w-0 flex-1">

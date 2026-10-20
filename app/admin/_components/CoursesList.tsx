@@ -106,7 +106,8 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
                       <img
                         src={c.imageUrl}
                         alt=""
-                        className="h-10 w-16 shrink-0 rounded object-cover"
+                        loading="lazy" decoding="async"
+                      className="h-10 w-16 shrink-0 rounded object-cover"
                       />
                     )}
                     <div className="min-w-0">
@@ -134,7 +135,8 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
                         <img
                           src={c.instructor.imageUrl}
                           alt=""
-                          className="h-7 w-7 shrink-0 rounded-full object-cover"
+                          loading="lazy" decoding="async"
+                      className="h-7 w-7 shrink-0 rounded-full object-cover"
                         />
                       )}
                       <span className="truncate text-slate-700">
@@ -177,7 +179,8 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
                 <img
                   src={c.imageUrl}
                   alt=""
-                  className="h-14 w-24 shrink-0 rounded object-cover"
+                  loading="lazy" decoding="async"
+                      className="h-14 w-24 shrink-0 rounded object-cover"
                 />
               )}
               <div className="min-w-0 flex-1">

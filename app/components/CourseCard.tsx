@@ -102,15 +102,13 @@ const CourseCard = ({
           </div>
 
           <div className="mt-4 flex items-end justify-between gap-3 border-t border-slate-100 pt-4">
-            <span className="flex flex-col">
-              <span className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
-                ফি
+            <span className="flex items-baseline gap-1">
+              <span className="text-[11px] font-medium tracking-wide text-slate-400">
+                কোর্স ফি
               </span>
-              <span className="flex items-baseline gap-1">
-                <span className="text-xs font-semibold text-slate-500">৳</span>
-                <span className="text-2xl font-bold leading-none text-qpayone">
-                  {price.toLocaleString("en-BD")}
-                </span>
+              <span className="text-xs font-semibold text-slate-500">৳</span>
+              <span className="text-2xl font-bold leading-none text-qpayone">
+                {price.toLocaleString("en-BD")}
               </span>
             </span>
 

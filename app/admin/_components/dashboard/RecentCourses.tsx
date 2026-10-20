@@ -49,6 +49,7 @@ const RecentCourses = ({ courses }: { courses: RecentCourse[] }) => (
                     <img
                       src={c.imageUrl}
                       alt=""
+                      loading="lazy" decoding="async"
                       className="h-10 w-16 shrink-0 rounded object-cover"
                     />
                   )}
@@ -80,7 +81,8 @@ const RecentCourses = ({ courses }: { courses: RecentCourse[] }) => (
                       <img
                         src={instructorPhoto(c)}
                         alt=""
-                        className="h-7 w-7 shrink-0 rounded-full object-cover"
+                        loading="lazy" decoding="async"
+                      className="h-7 w-7 shrink-0 rounded-full object-cover"
                       />
                     )}
                     <span className="truncate text-slate-700">{instructorName(c)}</span>

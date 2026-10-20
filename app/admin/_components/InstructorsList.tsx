@@ -98,7 +98,8 @@ const InstructorsList = ({ instructors, editId }: InstructorsListProps) => {
                       <img
                         src={i.imageUrl}
                         alt=""
-                        className="h-10 w-10 rounded-full object-cover"
+                        loading="lazy" decoding="async"
+                      className="h-10 w-10 rounded-full object-cover"
                       />
                     )}
                     <span className="font-medium text-slate-900">{i.name}</span>
@@ -136,7 +137,8 @@ const InstructorsList = ({ instructors, editId }: InstructorsListProps) => {
                 <img
                   src={i.imageUrl}
                   alt=""
-                  className="h-10 w-10 shrink-0 rounded-full object-cover"
+                  loading="lazy" decoding="async"
+                      className="h-10 w-10 shrink-0 rounded-full object-cover"
                 />
               )}
               <div className="min-w-0 flex-1">

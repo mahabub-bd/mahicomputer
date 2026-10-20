@@ -42,7 +42,13 @@ const GalleryList = ({ items }: GalleryListProps) => {
             <div className="relative aspect-video bg-slate-100">
               {g.imageUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={g.imageUrl} alt={g.alt} className="h-full w-full object-cover" />
+                <img
+                  src={g.imageUrl}
+                  alt={g.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
               )}
             </div>
             <div className="flex items-center justify-between gap-2 px-3 py-2">

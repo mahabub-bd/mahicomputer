@@ -29,7 +29,8 @@ const UsersList = ({ users }: UsersListProps) => {
       <img
         src={u.imageUrl}
         alt=""
-        className="h-9 w-9 shrink-0 rounded-full bg-slate-50 object-contain p-0.5"
+        loading="lazy" decoding="async"
+                      className="h-9 w-9 shrink-0 rounded-full bg-slate-50 object-contain p-0.5"
       />
     ) : (
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-600">

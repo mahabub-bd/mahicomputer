@@ -80,7 +80,8 @@ const SocialList = ({ links }: SocialListProps) => {
                 <td className="px-4 py-3">
                   {s.icon && (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={s.icon} alt="" className="h-8 w-8 object-contain" />
+                    <img src={s.icon} alt="" loading="lazy" decoding="async"
+                      className="h-8 w-8 object-contain" />
                   )}
                 </td>
                 <td className="max-w-[360px] px-4 py-3">{url(s)}</td>
@@ -113,7 +114,8 @@ const SocialList = ({ links }: SocialListProps) => {
                 <img
                   src={s.icon}
                   alt=""
-                  className="h-8 w-8 shrink-0 object-contain"
+                  loading="lazy" decoding="async"
+                      className="h-8 w-8 shrink-0 object-contain"
                 />
               )}
               <div className="min-w-0 flex-1">{url(s)}</div>

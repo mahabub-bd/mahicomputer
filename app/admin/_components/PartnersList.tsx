@@ -71,7 +71,8 @@ const PartnersList = ({ partners }: PartnersListProps) => {
                       <img
                         src={p.imageUrl}
                         alt={p.alt}
-                        className="max-h-full max-w-full object-contain"
+                        loading="lazy" decoding="async"
+                      className="max-h-full max-w-full object-contain"
                       />
                     )}
                   </div>
@@ -107,7 +108,8 @@ const PartnersList = ({ partners }: PartnersListProps) => {
                   <img
                     src={p.imageUrl}
                     alt={p.alt}
-                    className="max-h-full max-w-full object-contain"
+                    loading="lazy" decoding="async"
+                      className="max-h-full max-w-full object-contain"
                   />
                 )}
               </div>

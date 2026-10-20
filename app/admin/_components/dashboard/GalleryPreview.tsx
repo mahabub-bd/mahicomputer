@@ -33,7 +33,8 @@ const GalleryPreview = ({ items }: { items: GalleryPreviewItem[] }) => (
                   <img
                     src={g.imageUrl}
                     alt={g.alt}
-                    className="h-full w-full object-cover"
+                    loading="lazy" decoding="async"
+                      className="h-full w-full object-cover"
                   />
                 )}
               </div>

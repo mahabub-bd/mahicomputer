@@ -30,7 +30,8 @@ const SocialLinksPanel = ({ links }: { links: SocialLinkItem[] }) => (
                 <img
                   src={s.icon}
                   alt=""
-                  className="h-5 w-5 shrink-0 object-contain"
+                  loading="lazy" decoding="async"
+                      className="h-5 w-5 shrink-0 object-contain"
                 />
               )}
               <a

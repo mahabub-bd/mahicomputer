@@ -1,14 +1,14 @@
 "use client";
 
+import { btn } from "@/components/form/buttonStyles";
 import type { Category, CategoryWithCourseCount } from "@/lib/types";
-import Link from "next/link";
 import { Info, Pencil, Plus } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import CategoryForm from "./CategoryForm";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import useEditDeepLink from "./useEditDeepLink";
-import { btn } from "@/components/form/buttonStyles";
 
 interface CategoriesListProps {
   categories: CategoryWithCourseCount[];
@@ -81,7 +81,7 @@ const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
           on tablet. */}
       <div>
         <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
-          <table className="w-full min-w-[760px] text-left text-sm">
+          <table className="w-full min-w-190 text-left text-sm">
             <thead className="border-b border-slate-100 text-xs uppercase text-slate-400">
               <tr>
                 <th className="px-4 py-3">Category</th>
@@ -101,7 +101,8 @@ const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
                         <img
                           src={c.imageUrl}
                           alt=""
-                          className="h-10 w-10 rounded object-contain"
+                          loading="lazy" decoding="async"
+                      className="h-10 w-10 rounded object-contain"
                         />
                       )}
                       <span className="font-medium text-slate-900">{c.title}</span>
@@ -140,7 +141,8 @@ const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
                 <img
                   src={c.imageUrl}
                   alt=""
-                  className="h-10 w-10 shrink-0 rounded object-contain"
+                  loading="lazy" decoding="async"
+                      className="h-10 w-10 shrink-0 rounded object-contain"
                 />
               )}
               <div className="min-w-0 flex-1">

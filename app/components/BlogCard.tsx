@@ -1,3 +1,4 @@
+import BlurImage from "@/app/components/BlurImage";
 import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays } from "lucide-react";
@@ -12,7 +13,7 @@ const BlogCard = ({ post }: { post: PostWithAuthor }) => {
     >
       <div className="relative aspect-video overflow-hidden bg-slate-100">
         {post.imageUrl ? (
-          <Image
+          <BlurImage
             src={post.imageUrl}
             alt={post.imageAlt || post.title}
             fill

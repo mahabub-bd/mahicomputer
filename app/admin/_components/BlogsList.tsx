@@ -115,10 +115,10 @@ const BlogsList = ({ posts, editId }: BlogsListProps) => {
                     </span>
                   )}
                 </td>
-                <td className="max-w-105 px-4 py-3">
+                <td className="max-w-60 px-4 py-3">
                   <Link
                     href={`/admin/blogs/${n.id}`}
-                    className="font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                    className="wrap-break-word font-medium text-slate-900 hover:text-blue-700 hover:underline"
                   >
                     {n.title}
                   </Link>

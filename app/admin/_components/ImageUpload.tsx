@@ -12,6 +12,37 @@ interface ImageUploadProps {
   label: string;
 }
 
+/**
+ * Downscale + recompress raster images client-side so uploads stay small
+ * (a 4 MB phone photo becomes ~200–400 KB). SVGs are vector — pass through.
+ * Files already under the threshold are sent as-is to avoid double-encoding.
+ */
+const MAX_DIMENSION = 1600;
+const COMPRESS_THRESHOLD = 300 * 1024; // 300 KB
+
+async function compressImage(file: File): Promise<File> {
+  if (file.type === "image/svg+xml" || file.size <= COMPRESS_THRESHOLD) {
+    return file;
+  }
+  const bitmap = await createImageBitmap(file).catch(() => null);
+  if (!bitmap) return file; // undecodable — let the server reject it
+
+  const scale = Math.min(1, MAX_DIMENSION / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob(resolve, "image/webp", 0.85)
+  );
+  if (!blob || blob.size >= file.size) return file; // compression didn't help
+  return new File([blob], `${file.name.replace(/\.[^.]+$/, "")}.webp`, {
+    type: "image/webp",
+  });
+}
+
 const ImageUpload = ({ value, onChange, label }: ImageUploadProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
@@ -22,7 +53,7 @@ const ImageUpload = ({ value, onChange, label }: ImageUploadProps) => {
     setError(null);
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", await compressImage(file));
       const { url } = await apiUpload("/api/admin/upload", formData);
       onChange(url);
     } catch (e) {

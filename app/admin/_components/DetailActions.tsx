@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { apiDelete } from "./api";
-import { dangerBtnCls, primaryBtnCls, secondaryBtnCls } from "@/components/form/buttonStyles";
+import { btnIcon } from "@/components/form/buttonStyles";
 
 export interface DetailActionsProps {
   /** List page the back button returns to. */
@@ -64,15 +64,11 @@ const DetailActions = ({
     <div className="flex flex-wrap items-center justify-end gap-2.5">
       <Link
         href={backHref}
-        className={`group ${secondaryBtnCls}`}
+        aria-label={backLabel}
         title={backLabel}
+        className={btnIcon("secondary")}
       >
-        <ArrowLeft
-          size={16}
-          className="transition-transform duration-200 group-hover:-translate-x-0.5"
-          aria-hidden
-        />
-        {backLabel}
+        <ArrowLeft size={16} aria-hidden />
       </Link>
 
       {viewHref && (
@@ -80,11 +76,11 @@ const DetailActions = ({
           href={viewHref}
           target="_blank"
           rel="noopener noreferrer"
-          className={secondaryBtnCls}
+          className={btnIcon("secondary")}
+          aria-label={viewLabel}
           title={viewLabel}
         >
           <ExternalLink size={15} aria-hidden />
-          {viewLabel}
         </Link>
       )}
 
@@ -93,22 +89,26 @@ const DetailActions = ({
           type="button"
           onClick={onDelete}
           disabled={deleting}
-          title={deleteLabel}
-          className={dangerBtnCls}
+          aria-label={deleteLabel}
+          title={deleting ? "Deleting…" : deleteLabel}
+          className={btnIcon("danger")}
         >
           {deleting ? (
             <Loader2 size={15} className="animate-spin" aria-hidden />
           ) : (
             <Trash2 size={15} aria-hidden />
           )}
-          {deleting ? "Deleting…" : deleteLabel}
         </button>
       )}
 
       {editHref && (
-        <Link href={editHref} className={primaryBtnCls} title={editLabel}>
+        <Link
+          href={editHref}
+          className={btnIcon("primary")}
+          aria-label={editLabel}
+          title={editLabel}
+        >
           <Pencil size={15} aria-hidden />
-          {editLabel}
         </Link>
       )}
     </div>

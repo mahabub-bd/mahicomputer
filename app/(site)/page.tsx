@@ -115,7 +115,7 @@ const HomePage = async () => {
         <Faq faqs={faqs} />
         <Partners partners={partners} />
         <Newsletter />
-        <Contact settings={settings} />
+        <Contact settings={settings} social={socials} />
         <Map settings={settings} />
       </div>
     </AosProvider>

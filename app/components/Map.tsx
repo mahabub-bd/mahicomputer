@@ -75,7 +75,7 @@ const Map = ({ settings }: MapProps) => {
                 অবস্থান
               </span>
               <span className="block font-bangla text-[15px] font-bold text-slate-900">
-                মাহি কম্পিউটার ট্রেনিং সেন্টার, গুলশান, ঢাকা
+                {settings?.address?.trim() || "মাহি কম্পিউটার ট্রেনিং সেন্টার, গুলশান, ঢাকা"}
               </span>
             </span>
           </div>

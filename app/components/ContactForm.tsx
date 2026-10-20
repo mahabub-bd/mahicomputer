@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Input, SubmitButton, Textarea } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
+import { contactMessageSchema, type ContactMessageInput } from "@/lib/validators";
 import {
   AlertCircle,
   CheckCircle2,
@@ -10,9 +12,7 @@ import {
   Send,
   User,
 } from "lucide-react";
-import { contactMessageSchema, type ContactMessageInput } from "@/lib/validators";
-import { Input, SubmitButton, Textarea } from "@/components/form/FormControls";
-import { useZodForm } from "@/components/form/useZodForm";
+import { useState } from "react";
 
 const iconCls =
   "pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors peer-focus:text-blue-600";
@@ -175,10 +175,10 @@ const ContactForm = () => {
           <Textarea
             variant="site"
             id="message"
-            rows={5}
+            rows={4}
             disabled={sending}
             placeholder="আপনার বার্তা লিখুন…"
-            className="peer min-h-[120px] resize-y"
+            className="peer min-h-24 resize-y"
             {...register("message")}
             aria-invalid={!!errors.message}
           />
@@ -197,28 +197,29 @@ const ContactForm = () => {
           variant="site"
           busy={sending}
           busyLabel="পাঠানো হচ্ছে…"
+          className="self-start"
         >
           <Send size={18} />
           বার্তা পাঠান
         </SubmitButton>
+      </div>
 
-        <div aria-live="polite" className="min-w-0 flex-1">
-          {status === "sent" && (
-            <p className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-[14px] font-medium text-emerald-700">
-              <CheckCircle2 size={17} className="shrink-0" />
-              আপনার বার্তা পাঠানো হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।
-            </p>
-          )}
-          {status === "error" && (
-            <p
-              role="alert"
-              className="flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-[14px] font-medium text-rose-700"
-            >
-              <AlertCircle size={17} className="shrink-0" />
-              {errorMsg || "কিছু সমস্যা হয়েছে, আবার চেষ্টা করুন।"}
-            </p>
-          )}
-        </div>
+      <div aria-live="polite" className="min-w-0">
+        {status === "sent" && (
+          <p className="contact-pill flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-[14px] font-medium text-emerald-700">
+            <CheckCircle2 size={17} className="shrink-0" />
+            আপনার বার্তা পাঠানো হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।
+          </p>
+        )}
+        {status === "error" && (
+          <p
+            role="alert"
+            className="contact-pill flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-[14px] font-medium text-rose-700"
+          >
+            <AlertCircle size={17} className="shrink-0" />
+            {errorMsg || "কিছু সমস্যা হয়েছে, আবার চেষ্টা করুন।"}
+          </p>
+        )}
       </div>
     </form>
   );

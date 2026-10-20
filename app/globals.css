@@ -532,6 +532,29 @@ html { scroll-behavior: smooth; }
 }
 /* ---------- End Why-Us ambient motion ---------- */
 
+/* ---------- Contact section: status-pill entrance ---------- */
+@keyframes contact-pill-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.contact-pill {
+  animation: contact-pill-in 0.25s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-pill {
+    animation: none;
+  }
+}
+
+/* ---------- End Contact section ---------- */
+
 /* ---------- Admin login page (glassmorphic) ---------- */
 
 /* Staggered entrance for the branding column and the glass card.

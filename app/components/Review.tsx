@@ -18,7 +18,7 @@ const Review = ({ reviews = [] }: ReviewProps) => {
       id="review"
       className="section-shell bg-linear-to-b from-blue-50/50 to-white"
     >
-      <div className={`${styles.boxWidth} mx-auto px-4 sm:px-6`}>
+      <div className="w-full px-4 sm:px-6">
         <h2
           className={`${styles.heading2} section-title text-center font-bangla`}
           data-aos="fade-up"

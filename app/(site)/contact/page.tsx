@@ -1,4 +1,4 @@
-import { getPublicSiteSettings } from "@/lib/data";
+import { getPublicSiteSettings, getPublicSocialLinks } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
 import AosProvider from "@/app/_components/AosProvider";
 import { Contact, Map } from "@/app/components";
@@ -15,12 +15,15 @@ export const metadata: Metadata = {
 };
 
 const ContactPage = async () => {
-  const settings = await getPublicSiteSettings();
+  const [settings, socials] = await Promise.all([
+    getPublicSiteSettings(),
+    getPublicSocialLinks(),
+  ]);
 
   return (
     <AosProvider>
       <div className="w-full overflow-hidden scroll-smooth">
-        <Contact settings={settings} />
+        <Contact settings={settings} social={socials} />
         <Map settings={settings} />
       </div>
     </AosProvider>

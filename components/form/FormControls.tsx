@@ -55,7 +55,7 @@ export const Field = ({
 
 /** Icon-left, roomier control used by the public contact form. */
 const siteInputCls =
-  "w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-[15px] text-slate-800 transition placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:bg-slate-50";
+  "w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-11 pr-4 text-[15px] text-slate-800 transition placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:bg-slate-50";
 
 /** Frosted pill used on the admin login card (the `login-field` hook keeps autofill on-brand). */
 const loginInputCls =
@@ -125,7 +125,7 @@ const submitVariants = {
   onDark:
     "inline-flex shrink-0 items-center justify-center gap-1.5 bg-blue-600 px-4 py-2.5 text-[13px] font-semibold text-white transition duration-150 hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 disabled:opacity-60",
   /** Public contact-form button. */
-  site: "inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-8 py-3 text-[15px] font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60",
+  site: "inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-8 py-2.5 text-[15px] font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60",
   /** Full-width gradient button on the admin login card. */
   login:
     "flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-sky-500 py-3.5 text-[15px] font-semibold text-white shadow-lg shadow-blue-600/25 transition duration-200 hover:from-blue-500 hover:to-sky-400 hover:shadow-xl hover:shadow-blue-500/30 active:translate-y-px disabled:pointer-events-none disabled:opacity-60",

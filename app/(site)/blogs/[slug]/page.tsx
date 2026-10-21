@@ -1,9 +1,10 @@
-import { getPublicPostBySlug } from "@/lib/data";
 import { PageHead } from "@/app/_components/PageHead";
+import { getPublicPostBySlug } from "@/lib/data";
 import { SITE_NAME, truncate } from "@/lib/site";
 import { CalendarDays, User } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = { params: Promise<{ slug: string }> };

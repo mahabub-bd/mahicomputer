@@ -39,12 +39,10 @@ const Breadcrumb = ({
       হোম
     </Link>
 
-    {items.map((crumb) => {
-      const isLast = !crumb.href;
-      return (
-        <span key={crumb.label} className="inline-flex items-center gap-1.5">
-          <ChevronRight size={14} aria-hidden className="text-slate-300" />
-          {isLast ? (
+    {items.map((crumb) => (
+      <span key={crumb.label} className="inline-flex items-center gap-1.5">
+        <ChevronRight size={14} aria-hidden className="text-slate-300" />
+        {!crumb.href ? (
             <span className="rounded-full bg-blue-50 px-2.5 py-1 font-semibold text-blue-700">
               {crumb.label}
             </span>
@@ -56,9 +54,8 @@ const Breadcrumb = ({
               {crumb.label}
             </Link>
           )}
-        </span>
-      );
-    })}
+      </span>
+    ))}
   </nav>
 );
 

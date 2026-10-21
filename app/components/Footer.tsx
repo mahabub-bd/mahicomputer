@@ -1,9 +1,7 @@
-import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { logodark } from "@/public";
-import styles from "../styles/style";
-import EnrollButton from "../_components/EnrollButton";
 import BackToTop from "../_components/BackToTop";
 import type { FooterGroupView, SiteSettingsView, SocialView } from "@/lib/types";
 
@@ -62,7 +60,7 @@ const Footer = ({
         aria-hidden
       />
 
-      <div className={`${styles.boxWidth} relative px-4 pt-9 pb-5 sm:px-6 sm:pt-10`}>
+      <div className="relative mx-auto max-w-1500 px-4 pt-9 pb-5 sm:px-6 sm:pt-10">
         <div className="grid gap-8 lg:grid-cols-[1.1fr_2fr] lg:gap-12">
           {/* ---------- Brand + contact + social ---------- */}
           <div>
@@ -79,14 +77,6 @@ const Footer = ({
               মাহি কম্পিউটার ট্রেনিং সেন্টার, গুলশান — হাতে-কলমে প্রশিক্ষণ, অভিজ্ঞ
               প্রশিক্ষক ও ক্যারিয়ার-কেন্দ্রিক কম্পিউটার কোর্স।
             </p>
-
-            {/* Admission CTA */}
-            <EnrollButton
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-[15px] font-semibold text-white shadow-md shadow-blue-900/40 transition duration-300 hover:-translate-y-0.5 hover:bg-blue-500 hover:shadow-lg"
-            >
-              ভর্তির আবেদন করুন
-              <ArrowRight size={16} aria-hidden />
-            </EnrollButton>
 
             <ul className="mt-5 space-y-2.5">
               <li>
@@ -123,35 +113,6 @@ const Footer = ({
               </li>
             </ul>
 
-            {/* Social icons — moved under the brand so they read as "follow us" */}
-            {social.length > 0 && (
-              <div className="mt-5 flex items-center gap-2.5">
-                {social.map((item) => {
-                  // Derive a readable label ("facebook") from the icon filename.
-                  const platform =
-                    item.icon.split("/").pop()?.replace(/\.\w+$/, "") || item.id;
-                  return (
-                    <Link
-                      key={item.id}
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={platform}
-                      className="group flex h-8 w-8 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10 transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:ring-white/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-                    >
-                      <Image
-                        src={item.icon}
-                        alt=""
-                        aria-hidden
-                        width={16}
-                        height={16}
-                        className="h-4 w-4 object-contain transition-transform duration-300 group-hover:scale-110"
-                      />
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
           </div>
 
           {/* ---------- Link groups (admin-managed) ---------- */}
@@ -237,6 +198,37 @@ const Footer = ({
               · Gulshan, Dhaka
             </span>
           </p>
+
+          {/* Social icons — live in the copyright bar, right of the text */}
+          {social.length > 0 && (
+            <ul className="flex items-center gap-2.5">
+              {social.map((item) => {
+                // Derive a readable label ("facebook") from the icon filename.
+                const platform =
+                  item.icon.split("/").pop()?.replace(/\.\w+$/, "") || item.id;
+                return (
+                  <li key={item.id}>
+                    <Link
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={platform}
+                      className="group flex h-8 w-8 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10 transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:ring-white/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                    >
+                      <Image
+                        src={item.icon}
+                        alt=""
+                        aria-hidden
+                        width={16}
+                        height={16}
+                        className="h-4 w-4 object-contain transition-transform duration-300 group-hover:scale-110"
+                      />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
 
           <div className="flex items-center gap-3">
             <Link

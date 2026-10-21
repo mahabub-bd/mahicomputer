@@ -1,4 +1,5 @@
 import React from "react";
+import { PageHead } from "@/app/_components/PageHead";
 import { Courses } from "@/app/components";
 import { getPublicCourseViews } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
@@ -18,6 +19,7 @@ const CoursesPage = async () => {
 
   return (
     <div>
+      <PageHead items={[{ label: "কোর্সসমূহ" }]} />
       <Courses courses={courses} variant="page" />
     </div>
   );

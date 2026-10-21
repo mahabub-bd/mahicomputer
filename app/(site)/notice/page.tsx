@@ -1,5 +1,5 @@
+import { PageHead } from "@/app/_components/PageHead";
 import { Paperclip } from "lucide-react";
-import styles from "@/app/styles/style";
 import { getPublicNotices } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
 import type { Metadata } from "next";
@@ -20,13 +20,14 @@ const NoticeBoardPage = async () => {
   const notices = await getPublicNotices();
 
   return (
-    <div className={`${styles.boxWidth} px-4 py-5 sm:px-6 sm:py-10`}>
-      <h2 className={`text-center ${styles.heading2} font-bangla`}>নোটিশ বোর্ড</h2>
-      <p className="mx-auto mt-3 max-w-2xl text-center font-bangla text-[16px] leading-7 text-slate-500">
-        ভর্তি, পরীক্ষা ও অন্যান্য সাম্প্রতিক সব ঘোষণা একসাথে এখানে দেখুন
-      </p>
+    <>
+      <PageHead
+        items={[{ label: "নোটিশ বোর্ড" }]}
+        title="নোটিশ বোর্ড"
+        subtitle="ভর্তি, পরীক্ষা ও অন্যান্য সাম্প্রতিক সব ঘোষণা একসাথে এখানে দেখুন"
+      />
 
-      <div className="mx-auto mt-8 max-w-350 space-y-4">
+      <div className="mx-auto max-w-350 space-y-6 px-4 py-10 sm:px-6 lg:space-y-8">
         {notices.map((notice) => (
           <article
             key={notice.id}
@@ -68,7 +69,7 @@ const NoticeBoardPage = async () => {
           </p>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

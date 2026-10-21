@@ -1,3 +1,4 @@
+import { PageHead } from "@/app/_components/PageHead";
 import styles from "@/app/styles/style";
 import { getPublicNewsletters } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
@@ -16,13 +17,14 @@ const NewslettersPage = async () => {
   const newsletters = await getPublicNewsletters();
 
   return (
-    <div className={`${styles.boxWidth} px-4 py-5 sm:px-6 sm:py-10`}>
-      <h2 className={`text-center ${styles.heading2} font-bangla`}>নিউজলেটার</h2>
-      <p className="mx-auto mt-3 max-w-2xl text-center font-bangla text-[16px] leading-7 text-slate-500">
-        নতুন ব্যাচ, অফার ও ইভেন্টের খবর
-      </p>
+    <>
+      <PageHead
+        items={[{ label: "নিউজলেটার" }]}
+        title="নিউজলেটার"
+        subtitle="নতুন ব্যাচ, অফার ও ইভেন্টের খবর"
+      />
 
-      <div className="mx-auto mt-8 max-w-350 space-y-4">
+      <div className="mx-auto max-w-350 space-y-6 px-4 py-10 sm:px-6 lg:space-y-8">
         {newsletters.map((issue) => {
           const paragraphs = issue.body
             .split(/\n{2,}/)
@@ -63,7 +65,7 @@ const NewslettersPage = async () => {
           </p>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

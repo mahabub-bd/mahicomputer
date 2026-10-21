@@ -1,3 +1,4 @@
+import { PageHead } from "@/app/_components/PageHead";
 import { getPublicReviewViews } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
 import AosProvider from "@/app/_components/AosProvider";
@@ -20,6 +21,7 @@ const FeedbackPage = async () => {
   return (
     <AosProvider>
       <div className="w-full overflow-hidden scroll-smooth">
+        <PageHead items={[{ label: "স্টুডেন্ট রিভিউ" }]} />
         <Review reviews={reviews} />
       </div>
     </AosProvider>

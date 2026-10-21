@@ -1,5 +1,5 @@
 import EnrollButton from "@/app/_components/EnrollButton";
-import styles from "@/app/styles/style";
+import { Breadcrumb } from "@/app/_components/PageHead";
 import type { Course } from "@/lib/types";
 import {
   Award,
@@ -68,27 +68,17 @@ const CourseDetail = ({
           className="pointer-events-none absolute -bottom-32 -left-24 h-56 w-56 rounded-full bg-pink-200/40 blur-3xl sm:h-80 sm:w-80"
         />
 
-        <div className={`${styles.boxWidth} relative mx-auto px-4 pb-16 pt-6 sm:px-6 sm:pt-8`}>
-          <nav
-            className="flex flex-wrap items-center gap-2 text-[13px] text-slate-500"
-            aria-label="Breadcrumb"
-          >
-            <Link href="/" className="transition-colors hover:text-blue-700">
-              হোম
-            </Link>
-            <span aria-hidden>/</span>
-            <Link href="/courses" className="transition-colors hover:text-blue-700">
-              কোর্স
-            </Link>
-            {category && (
-              <>
-                <span aria-hidden>/</span>
-                <span className="font-semibold text-slate-800">{category}</span>
-              </>
-            )}
-            <span aria-hidden>/</span>
-            <span className="font-semibold text-slate-800">{course.title}</span>
-          </nav>
+        <div className={`relative mx-auto max-w-350 px-4 pb-16 pt-6 sm:px-6 sm:pt-8`}>
+          <div className="mt-1">
+            <Breadcrumb
+              align="left"
+              items={[
+                { label: "কোর্স", href: "/courses" },
+                ...(category ? [{ label: category, href: "/courses" }] : []),
+                { label: course.title },
+              ]}
+            />
+          </div>
 
           <div className="mt-5 grid items-center gap-8 sm:gap-10 lg:mt-6 lg:grid-cols-[1.15fr_1fr] xl:gap-14">
             {/* Left — course identity */}
@@ -196,7 +186,7 @@ const CourseDetail = ({
       </header>
 
       {/* ---------- Body ---------- */}
-      <div className={`${styles.boxWidth} mx-auto px-4 pb-28 pt-10 sm:px-6 sm:pt-12 lg:pb-12`}>
+      <div className={`mx-auto max-w-350 px-4 pb-28 pt-10 sm:px-6 sm:pt-12 lg:pb-12`}>
         <div className="grid items-start gap-8 lg:grid-cols-[1.6fr_1fr] xl:gap-12">
           {/* Main column */}
           <div>

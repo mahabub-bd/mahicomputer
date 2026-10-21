@@ -29,7 +29,7 @@ import {
   Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { logo } from "../../../public";
+import { logodark } from "../../../public";
 
 interface SidebarLink {
   href: string;
@@ -143,11 +143,11 @@ const Sidebar = ({ user }: SidebarProps) => {
           <Menu size={22} />
         </button>
         <Image
-          src={logo}
+          src={logodark}
           alt="Mahi Computer logo"
           width={32}
           height={32}
-          className="h-8 w-8 rounded-md bg-white object-contain p-0.5"
+          className="h-10 w-10 rounded-md object-contain"
         />
         <p className="text-base font-semibold">Admin Panel</p>
       </div>
@@ -165,22 +165,16 @@ const Sidebar = ({ user }: SidebarProps) => {
           drawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center gap-3 border-b border-slate-700 px-6 py-4 lg:px-4 xl:px-6">
-        <Image
-          src={logo}
-          alt="Mahi Computer logo"
-          width={44}
-          height={44}
-          className="h-11 w-11 shrink-0 rounded-lg bg-white object-contain p-1 lg:h-10 lg:w-10 xl:h-11 xl:w-11"
-          priority
-        />
-        <div className="min-w-0">
-          <p className="truncate text-lg font-semibold leading-tight lg:text-base xl:text-lg">
-            Mahi Computer
-          </p>
-          <p className="text-xs text-slate-400">Admin Panel</p>
+        <div className="border-b border-slate-700 px-6 py-4 lg:px-4 xl:px-6">
+          <Image
+            src={logodark}
+            alt="Mahi Computer logo"
+            width={160}
+            height={56}
+            className="mx-auto h-14 w-auto max-w-44 shrink-0 object-contain object-left lg:h-12 xl:h-14"
+            priority
+          />
         </div>
-      </div>
       {/* The nav scrolls when the viewport is too short. min-h-0 lets the
           flex child shrink, and the fade below hints that there is more
           below the fold instead of cutting a link in half. */}

@@ -76,7 +76,7 @@ const MegaMenu = ({ menuLink, menu }: MegaMenuProps) => {
         <div className="border-t border-slate-100 p-2">
           <Link
             href={`/${menu}`}
-            className="group/all flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-[#0b3a6d] to-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+            className="group/all mx-auto inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-[#0b3a6d] to-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 sm:px-7"
           >
             সব কোর্স দেখুন
             <ArrowRight

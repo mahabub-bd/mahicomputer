@@ -1,3 +1,4 @@
+import { PageHead } from "@/app/_components/PageHead";
 import { getPublicSiteSettings, getPublicSocialLinks } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
 import AosProvider from "@/app/_components/AosProvider";
@@ -23,6 +24,7 @@ const ContactPage = async () => {
   return (
     <AosProvider>
       <div className="w-full overflow-hidden scroll-smooth">
+        <PageHead items={[{ label: "যোগাযোগ" }]} />
         <Contact settings={settings} social={socials} />
         <Map settings={settings} />
       </div>

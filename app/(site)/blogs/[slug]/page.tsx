@@ -1,9 +1,9 @@
 import { getPublicPostBySlug } from "@/lib/data";
+import { PageHead } from "@/app/_components/PageHead";
 import { SITE_NAME, truncate } from "@/lib/site";
 import { CalendarDays, User } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -57,20 +57,12 @@ const BlogDetailPage = async ({ params }: Props) => {
 
   return (
     <article className="mx-auto max-w-350 px-4 py-5 sm:py-10 sm:px-6">
-      <nav
-        className="flex flex-wrap items-center gap-2 text-[13px] text-slate-500"
-        aria-label="Breadcrumb"
-      >
-        <Link href="/" className="transition-colors hover:text-blue-700">
-          হোম
-        </Link>
-        <span aria-hidden>/</span>
-        <Link href="/blogs" className="transition-colors hover:text-blue-700">
-          ব্লগ
-        </Link>
-        <span aria-hidden>/</span>
-        <span className="font-semibold text-slate-800">{post.title}</span>
-      </nav>
+      <PageHead
+        items={[
+          { label: "ব্লগ", href: "/blogs" },
+          { label: post.title },
+        ]}
+      />
 
       <header className="title-header mt-8">
         <h1 className="font-bangla text-[clamp(1.7rem,3.5vw,2.6rem)] font-bold leading-tight text-slate-900">

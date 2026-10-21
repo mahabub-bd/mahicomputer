@@ -1,3 +1,4 @@
+import { PageHead } from "@/app/_components/PageHead";
 import { getPublicCategories, toCategoryView } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
 import AosProvider from "@/app/_components/AosProvider";
@@ -20,6 +21,7 @@ const ServicesPage = async () => {
   return (
     <AosProvider>
       <div className="w-full overflow-hidden scroll-smooth">
+        <PageHead items={[{ label: "সার্ভিস" }]} />
         <Categories categories={categories.map(toCategoryView)} />
       </div>
     </AosProvider>

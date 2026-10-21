@@ -1,3 +1,4 @@
+import { PageHead } from "@/app/_components/PageHead";
 import BlogCard from "@/app/components/BlogCard";
 import styles from "@/app/styles/style";
 import { getPublicPosts } from "@/lib/data";
@@ -17,15 +18,15 @@ const BlogsPage = async () => {
   const posts = await getPublicPosts();
 
   return (
-    <div className="mx-auto max-w-350 px-4 py-5 sm:py-10 sm:px-6">
-      <h1 className={`text-center ${styles.heading2} font-bangla`}>
-        ব্লগ
-      </h1>
-      <p className="mx-auto mt-3 max-w-2xl text-center font-bangla text-[16px] leading-7 text-slate-500">
-        কম্পিউটার শেখার টিপস, কোর্স গাইড ও আপডেট নিউজ
-      </p>
+    <>
+      <PageHead
+        items={[{ label: "ব্লগ" }]}
+        title="ব্লগ"
+        subtitle="কম্পিউটার শেখার টিপস, কোর্স গাইড ও আপডেট নিউজ"
+      />
 
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto max-w-350 px-4 py-10 sm:px-6">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <BlogCard key={post.id} post={post} />
         ))}
@@ -36,7 +37,8 @@ const BlogsPage = async () => {
           বর্তমানে কোনো ব্লগ নেই।
         </p>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 

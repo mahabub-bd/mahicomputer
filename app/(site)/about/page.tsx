@@ -1,5 +1,5 @@
-import {
-  getPublicInstructorViews,
+import { PageHead } from "@/app/_components/PageHead";
+import { getPublicInstructorViews,
   getPublicSiteSettings,
 } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
@@ -27,6 +27,7 @@ const AboutPage = async () => {
   return (
     <AosProvider>
       <div className="w-full overflow-hidden scroll-smooth">
+        <PageHead items={[{ label: "আমাদের সম্পর্কে" }]} />
         <About settings={settings} />
         <CEO settings={settings} />
         <Instractor instructors={instructors} />

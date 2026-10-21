@@ -107,7 +107,12 @@ const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
                       className="h-10 w-10 rounded object-contain"
                         />
                       )}
-                      <span className="font-medium text-slate-900">{c.title}</span>
+                      <Link
+                        href={`/admin/categories/${c.id}`}
+                        className="font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                      >
+                        {c.title}
+                      </Link>
                     </div>
                   </td>
                   <td className="px-4 py-3">{countPill(c._count.courses)}</td>
@@ -148,7 +153,12 @@ const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
                 />
               )}
               <div className="min-w-0 flex-1">
-                <p className="truncate font-medium text-slate-900">{c.title}</p>
+                <Link
+                  href={`/admin/categories/${c.id}`}
+                  className="block truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                >
+                  {c.title}
+                </Link>
                 {c.alt && (
                   <p className="truncate text-xs text-slate-400">{c.alt}</p>
                 )}

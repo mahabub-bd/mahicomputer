@@ -1,3 +1,4 @@
+import { Paperclip } from "lucide-react";
 import styles from "@/app/styles/style";
 import { getPublicNotices } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
@@ -46,6 +47,17 @@ const NoticeBoardPage = async () => {
               <p className="mt-3 whitespace-pre-wrap font-bangla leading-7 text-slate-600">
                 {notice.body}
               </p>
+            )}
+            {notice.attachmentUrl && (
+              <a
+                href={notice.attachmentUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200 hover:text-blue-700"
+              >
+                <Paperclip size={14} aria-hidden />
+                {notice.attachmentName || "Attachment"}
+              </a>
             )}
           </article>
         ))}

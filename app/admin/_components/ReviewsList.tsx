@@ -105,7 +105,12 @@ const ReviewsList = ({ reviews, courses, editId }: ReviewsListProps) => {
                       />
                     )}
                     <div className="min-w-0">
-                      <p className="truncate font-medium text-slate-900">{r.name}</p>
+                      <Link
+                        href={`/admin/reviews/${r.id}`}
+                        className="block truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                      >
+                        {r.name}
+                      </Link>
                       <p className="max-w-xs truncate text-xs text-slate-400">
                         {r.content}
                       </p>
@@ -150,9 +155,12 @@ const ReviewsList = ({ reviews, courses, editId }: ReviewsListProps) => {
               )}
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="min-w-0 flex-1 truncate font-medium text-slate-900">
+                  <Link
+                    href={`/admin/reviews/${r.id}`}
+                    className="min-w-0 flex-1 truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                  >
                     {r.name}
-                  </p>
+                  </Link>
                   <span className="shrink-0">{rating(r.rating)}</span>
                 </div>
                 <p className="truncate text-xs text-slate-400">{r.content}</p>

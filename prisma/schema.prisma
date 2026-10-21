@@ -193,12 +193,14 @@ model Enrollment {
 }
 
 model Notice {
-  id           String   @id @default(cuid())
-  title        String
-  body         String   @default("")
-  date         DateTime @default(now())
-  published    Boolean  @default(true)
-  order        Int      @default(0)
+  id            String   @id @default(cuid())
+  title         String
+  body          String   @default("")
+  attachmentUrl String   @default("")
+  attachmentName String  @default("")
+  date          DateTime @default(now())
+  published     Boolean  @default(true)
+  order         Int      @default(0)
   publishedById String?
   publishedBy  User?    @relation(fields: [publishedById], references: [id], onDelete: SetNull, onUpdate: Cascade)
   createdAt    DateTime @default(now())

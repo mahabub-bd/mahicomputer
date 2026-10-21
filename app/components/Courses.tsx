@@ -23,20 +23,28 @@ const Courses = ({ courses = [], variant = "section" }: CoursesProps) => {
       className={
         isPage
           ? "pt-8 pb-[clamp(3.5rem,7vw,6rem)] md:pt-12"
-          : "section-shell scroll-mt-24"
+          : "scroll-mt-24 pb-[clamp(3.5rem,7vw,6rem)]"
       }
     >
-      <div className={`${styles.boxWidth} px-4 sm:px-6`}>
+      <div className="mx-auto max-w-350 px-4 sm:px-6">
         <h2
           className={`${styles.heading2} section-title ${
-            isPage ? "mb-6 md:mb-8" : "my-6 md:my-8"
+            isPage ? "mb-6 md:mb-8" : "mb-6 md:mb-8"
           } text-center font-bangla`}
           data-aos="fade-up"
         >
           আমাদের কোর্সসমূহ
         </h2>
+        <p
+          className="mx-auto mt-3 max-w-2xl text-center font-bangla text-[16px] leading-7 text-slate-500"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          হাতে-কলমে প্রশিক্ষণের মাধ্যমে ক্যারিয়ার গড়ুন — জনপ্রিয় সব কম্পিউটার
+          কোর্স একসাথে
+        </p>
 
-        <div className="my-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8 xl:grid-cols-3">
+        <div className="my-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {courses.map((card) => (
             <CourseCard key={card.title} {...card} />
           ))}

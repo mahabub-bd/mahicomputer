@@ -31,7 +31,7 @@ const Hero = ({ settings }: HeroProps) => {
           src={heroImage}
           alt=""
           fill
-          priority
+          preload
           sizes="100vw"
           className="object-cover object-center"
         />

@@ -17,7 +17,7 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
   const { id } = await params;
   const course = await prisma.course.findUnique({
     where: { id },
-    include: { category: true },
+    include: { category: true, instructor: true },
   });
   if (!course) notFound();
 
@@ -106,7 +106,19 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
           </SectionCard>
 
           <SectionCard title="Instructor">
-            {course.instructorName ? (
+            {course.instructor ? (
+              <div>
+                <p className="font-medium text-slate-900">{course.instructor.name}</p>
+                {course.instructor.imageUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={course.instructor.imageUrl}
+                    alt={course.instructor.name}
+                    className="mt-3 h-16 w-16 rounded-full object-cover ring-4 ring-blue-50"
+                  />
+                )}
+              </div>
+            ) : course.instructorName ? (
               <div>
                 <p className="font-medium text-slate-900">{course.instructorName}</p>
                 {course.instructorPhotoUrl && (

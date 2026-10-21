@@ -51,7 +51,7 @@ const Gallery = ({ items = [] }: { items?: GalleryView[] }) => {
   return (
     <section
       id="gallery"
-      className={`${styles.boxWidth} scroll-mt-24 px-4 sm:px-6`}
+      className="mx-auto max-w-350 scroll-mt-24 px-4 sm:px-6"
     >
       <h2
         className={`${styles.heading2} text-center my-4 font-bangla`}
@@ -66,7 +66,7 @@ const Gallery = ({ items = [] }: { items?: GalleryView[] }) => {
         ক্লাসরুম, ল্যাব, ইভেন্ট ও ছাত্রছাত্রীদের স্মরণীয় মুহূর্ত একনজরে
       </p>
 
-      <div className="grid grid-cols-1 gap-4 py-6 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 py-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         {items.map((item, index) => (
           <button
             key={item.alt}

@@ -131,6 +131,8 @@ export const socialLinkSchema = z.object({
 export const noticeSchema = z.object({
   title: z.string().min(1, "Title is required").max(300),
   body: z.string().max(10000).default(""),
+  attachmentUrl: z.string().max(1000).default(""),
+  attachmentName: z.string().max(300).default(""),
   date: z.coerce.date().default(new Date()),
   published: z.coerce.boolean().default(true),
   order: z.coerce.number().int().default(0),

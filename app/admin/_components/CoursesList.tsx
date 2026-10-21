@@ -117,9 +117,12 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
                       />
                     )}
                     <div className="min-w-0">
-                      <p className="truncate font-medium text-slate-900">
+                      <Link
+                        href={`/admin/courses/${c.id}`}
+                        className="block truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                      >
                         {c.title}
-                      </p>
+                      </Link>
                       <p className="truncate text-xs text-slate-400">{c.tag}</p>
                     </div>
                   </div>
@@ -191,9 +194,12 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
               )}
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="min-w-0 flex-1 truncate font-medium text-slate-900">
+                  <Link
+                    href={`/admin/courses/${c.id}`}
+                    className="min-w-0 flex-1 truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                  >
                     {c.title}
-                  </p>
+                  </Link>
                   <span className="shrink-0">{statusPill(c.published)}</span>
                 </div>
                 <p className="truncate text-xs text-slate-400">{c.tag}</p>

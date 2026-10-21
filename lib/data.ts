@@ -70,6 +70,13 @@ export async function getCourseDetail(slug: string) {
     include: { instructor: true, category: true },
   });
   if (!course) return null;
+  // The course row snapshots instructorName/instructorPhotoUrl at save time;
+  // prefer the live Instructor record so photo/name updates propagate
+  // without re-saving every course.
+  if (course.instructor) {
+    course.instructorName = course.instructor.name;
+    course.instructorPhotoUrl = course.instructor.imageUrl;
+  }
   return {
     course,
     instructorDescription: course.instructor?.description ?? "",

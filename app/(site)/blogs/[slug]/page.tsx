@@ -1,4 +1,3 @@
-import BlurImage from "@/app/components/BlurImage";
 import { getPublicPostBySlug } from "@/lib/data";
 import { SITE_NAME, truncate } from "@/lib/site";
 import { CalendarDays, User } from "lucide-react";
@@ -124,11 +123,11 @@ const BlogDetailPage = async ({ params }: Props) => {
 
       {post.imageUrl && (
         <div className="relative mt-6 aspect-video overflow-hidden rounded-2xl border border-slate-100 shadow-lg">
-          <BlurImage
+          <Image
             src={post.imageUrl}
             alt={post.imageAlt || post.title}
             fill
-            preload
+            priority
             sizes="(min-width: 768px) 768px, 92vw"
             className="object-cover"
           />

@@ -104,7 +104,12 @@ const InstructorsList = ({ instructors, editId }: InstructorsListProps) => {
                       className="h-10 w-10 rounded-full object-cover"
                       />
                     )}
-                    <span className="font-medium text-slate-900">{i.name}</span>
+                    <Link
+                      href={`/admin/instructors/${i.id}`}
+                      className="font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                    >
+                      {i.name}
+                    </Link>
                   </div>
                 </td>
                 <td className="px-4 py-3 text-slate-500">{i.description}</td>
@@ -144,7 +149,12 @@ const InstructorsList = ({ instructors, editId }: InstructorsListProps) => {
                 />
               )}
               <div className="min-w-0 flex-1">
-                <p className="truncate font-medium text-slate-900">{i.name}</p>
+                <Link
+                  href={`/admin/instructors/${i.id}`}
+                  className="block truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
+                >
+                  {i.name}
+                </Link>
                 {i.description && (
                   <p className="truncate text-xs text-slate-400">
                     {i.description}

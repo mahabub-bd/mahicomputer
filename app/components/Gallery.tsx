@@ -51,7 +51,7 @@ const Gallery = ({ items = [] }: { items?: GalleryView[] }) => {
   return (
     <section
       id="gallery"
-      className="mx-auto max-w-350 scroll-mt-24 px-4 sm:px-6"
+      className="mx-auto max-w-350 2xl:max-w-[1536px] scroll-mt-24 px-4 sm:px-6"
     >
       <h2
         className={`${styles.heading2} text-center my-4 font-bangla`}

@@ -8,7 +8,7 @@ interface PartnersProps {
 
 const Partners = ({ partners = [] }: PartnersProps) => (
   <section className="section-shell bg-linear-to-b from-blue-50/50 to-white">
-    <div className={`${styles.boxWidth} mx-auto px-4 sm:px-6`}>
+    <div className="mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
       <h2
         className={`${styles.heading2} section-title text-center font-bangla`}
         data-aos="fade-up"

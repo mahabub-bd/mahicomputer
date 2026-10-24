@@ -116,7 +116,7 @@ const Stats = ({ stats = [] }: StatsProps) => (
       className="pointer-events-none absolute -bottom-32 right-1/5 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl"
     />
 
-    <div className="relative mx-auto max-w-350 px-4 sm:px-6">
+    <div className="relative mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
       {/* Section header */}
       <p
         className="text-center font-bangla text-[13px] font-bold uppercase tracking-[0.2em] text-cyan-300"

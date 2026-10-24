@@ -57,7 +57,7 @@ const Hero = ({ settings }: HeroProps) => {
       />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto w-full max-w-350 px-4 py-20 sm:px-6 sm:py-28 lg:py-10 xl:py-28">
+      <div className="relative z-10 mx-auto w-full max-w-350 2xl:max-w-[1536px] px-4 py-20 sm:px-6 sm:py-28 lg:py-10 xl:py-28">
         <div className="flex flex-col items-center gap-6 text-center">
           {/* Eyebrow badge */}
           <p

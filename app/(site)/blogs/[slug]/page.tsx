@@ -57,7 +57,7 @@ const BlogDetailPage = async ({ params }: Props) => {
   const [lead, ...rest] = paragraphs;
 
   return (
-    <article className="mx-auto max-w-350 px-4 py-5 sm:py-10 sm:px-6">
+    <article className="mx-auto max-w-350 2xl:max-w-[1536px] px-4 py-5 sm:py-10 sm:px-6">
       <PageHead
         items={[
           { label: "ব্লগ", href: "/blogs" },

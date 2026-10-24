@@ -82,7 +82,7 @@ const PageHead = ({
     />
 
     <div
-      className={`relative mx-auto max-w-350 px-4 sm:px-6 ${
+      className={`relative mx-auto max-w-350 2xl:max-w-384 px-4 sm:px-6 ${
         title ? "pt-5 pb-7 sm:pt-6 sm:pb-9" : "py-3 sm:py-3.5"
       }`}
     >

@@ -36,7 +36,7 @@ const CEO = ({ settings }: CeoProps) => {
         className="pointer-events-none absolute -right-20 -bottom-16 h-64 w-64 rounded-full bg-rose-100/30 blur-3xl"
       />
 
-      <div className="mx-auto max-w-350 px-4 sm:px-6">
+      <div className="mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
         {/* Section header */}
         <p
           className="text-center font-bangla text-[13px] font-bold uppercase tracking-[0.2em] text-blue-600"

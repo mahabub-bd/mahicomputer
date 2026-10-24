@@ -25,7 +25,7 @@ const BlogsPage = async () => {
         subtitle="কম্পিউটার শেখার টিপস, কোর্স গাইড ও আপডেট নিউজ"
       />
 
-      <div className="mx-auto max-w-350 px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-350 2xl:max-w-[1536px] px-4 py-10 sm:px-6">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <BlogCard key={post.id} post={post} />

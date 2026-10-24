@@ -11,7 +11,7 @@ interface AdmissionBannerProps {
 const AdmissionBanner = ({ courses = [], settings }: AdmissionBannerProps) => {
   const phone = settings?.phone?.trim() || "";
   return (
-    <section className="mx-auto max-w-350 px-4 py-6 sm:px-6">
+    <section className="mx-auto max-w-350 2xl:max-w-[1536px] px-4 py-6 sm:px-6">
       <div
         className="relative overflow-hidden rounded-3xl bg-linear-to-r from-blue-800 via-blue-700 to-blue-600 px-6 py-10 text-center shadow-xl sm:px-12"
         data-aos="zoom-in"

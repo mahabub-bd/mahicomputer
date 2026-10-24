@@ -12,7 +12,7 @@ const NoticePreview = ({ notices }: NoticePreviewProps) => {
 
   return (
     <section className="section-shell bg-slate-50">
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+      <div className="mx-auto max-w-[1400px] 2xl:max-w-[1536px] px-4 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h2
             className="flex items-center gap-2 font-bangla text-[clamp(1.4rem,2.5vw,2rem)] font-bold text-[#112244]"

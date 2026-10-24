@@ -68,7 +68,7 @@ const CourseDetail = ({
           className="pointer-events-none absolute -bottom-32 -left-24 h-56 w-56 rounded-full bg-pink-200/40 blur-3xl sm:h-80 sm:w-80"
         />
 
-        <div className={`relative mx-auto max-w-350 px-4 pb-16 pt-6 sm:px-6 sm:pt-8`}>
+        <div className={`relative mx-auto max-w-350 2xl:max-w-[1536px] px-4 pb-16 pt-6 sm:px-6 sm:pt-8`}>
           <div className="mt-1">
             <Breadcrumb
               align="left"
@@ -186,7 +186,7 @@ const CourseDetail = ({
       </header>
 
       {/* ---------- Body ---------- */}
-      <div className={`mx-auto max-w-350 px-4 pb-28 pt-10 sm:px-6 sm:pt-12 lg:pb-12`}>
+      <div className={`mx-auto max-w-350 2xl:max-w-[1536px] px-4 pb-28 pt-10 sm:px-6 sm:pt-12 lg:pb-12`}>
         <div className="grid items-start gap-8 lg:grid-cols-[1.6fr_1fr] xl:gap-12">
           {/* Main column */}
           <div>

@@ -169,8 +169,8 @@ const Sidebar = ({ user }: SidebarProps) => {
           <Image
             src={logodark}
             alt="Mahi Computer logo"
-            width={160}
-            height={56}
+            width={134}
+            height={67}
             className="mx-auto h-14 w-auto max-w-44 shrink-0 object-contain object-left lg:h-12 xl:h-14"
             priority
           />

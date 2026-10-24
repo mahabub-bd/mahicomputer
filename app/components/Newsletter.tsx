@@ -1,5 +1,4 @@
 import NewsletterSignup from "../_components/NewsletterSignup";
-import styles from "../styles/style";
 
 /**
  * Closing "stay updated" band on the home page.
@@ -11,7 +10,7 @@ import styles from "../styles/style";
 const Newsletter = () => (
   <section
     id="newsletter"
-    className={`${styles.boxWidth} px-4 pb-16 sm:px-6 sm:pb-24`}
+    className="mx-auto max-w-350 2xl:max-w-[1536px] px-4 pb-16 sm:px-6 sm:pb-24"
   >
     <div
       className="relative overflow-hidden rounded-3xl bg-slate-900 px-6 py-12 text-center shadow-lg sm:px-10 sm:py-14"

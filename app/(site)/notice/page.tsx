@@ -27,7 +27,7 @@ const NoticeBoardPage = async () => {
         subtitle="ভর্তি, পরীক্ষা ও অন্যান্য সাম্প্রতিক সব ঘোষণা একসাথে এখানে দেখুন"
       />
 
-      <div className="mx-auto max-w-350 space-y-6 px-4 py-10 sm:px-6 lg:space-y-8">
+      <div className="mx-auto max-w-350 2xl:max-w-[1536px] space-y-6 px-4 py-10 sm:px-6 lg:space-y-8">
         {notices.map((notice) => (
           <article
             key={notice.id}

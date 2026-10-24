@@ -24,7 +24,7 @@ const NewslettersPage = async () => {
         subtitle="নতুন ব্যাচ, অফার ও ইভেন্টের খবর"
       />
 
-      <div className="mx-auto max-w-350 space-y-6 px-4 py-10 sm:px-6 lg:space-y-8">
+      <div className="mx-auto max-w-350 2xl:max-w-[1536px] space-y-6 px-4 py-10 sm:px-6 lg:space-y-8">
         {newsletters.map((issue) => {
           const paragraphs = issue.body
             .split(/\n{2,}/)

@@ -14,7 +14,7 @@ const Faq = ({ faqs }: FaqProps) => {
 
   return (
     <section className="section-shell">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 md:max-w-5xl">
+      <div className="mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
         <h2 className="section-title text-center font-bangla" data-aos="fade-up">
           সাধারণ জিজ্ঞাসা
         </h2>

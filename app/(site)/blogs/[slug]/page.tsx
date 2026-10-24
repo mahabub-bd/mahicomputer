@@ -65,67 +65,68 @@ const BlogDetailPage = async ({ params }: Props) => {
         ]}
       />
 
-      <header className="title-header mt-8">
-        <h1 className="font-bangla text-[clamp(1.7rem,3.5vw,2.6rem)] font-bold leading-tight text-slate-900">
-          {post.title}
-        </h1>
+      <header className="title-header mt-8 grid items-center gap-8 lg:grid-cols-2">
+        <div>
+          <h1 className="font-bangla text-[clamp(1.7rem,3.5vw,2.6rem)] font-bold leading-tight text-slate-900">
+            {post.title}
+          </h1>
 
-        <div className="mt-4 flex flex-wrap items-center gap-4 text-[13px] text-slate-500">
-          <time
-            dateTime={new Date(post.createdAt).toISOString()}
-            className="flex items-center gap-1.5"
-          >
-            <CalendarDays size={14} aria-hidden />
-            {new Date(post.createdAt).toLocaleDateString("bn-BD", {
-              dateStyle: "long",
-            })}
-          </time>
-          {post.author?.name ? (
-            <span className="flex items-center gap-2">
-              {post.author.imageUrl ? (
-                <Image
-                  src={post.author.imageUrl}
-                  alt={post.author.name}
-                  width={24}
-                  height={24}
-                  className="h-6 w-6 rounded-full object-cover"
-                />
-              ) : (
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-[11px] font-semibold text-blue-700">
-                  {post.author.name.trim().charAt(0)}
-                </span>
-              )}
-              <span className="font-medium text-slate-600">{post.author.name}</span>
-            </span>
-          ) : (
-            post.publishedBy?.name && (
-              <span className="flex items-center gap-1.5">
-                <User size={14} aria-hidden />
-                {post.publishedBy.name}
+          <div className="mt-4 flex flex-wrap items-center gap-4 text-[13px] text-slate-500">
+            <time
+              dateTime={new Date(post.createdAt).toISOString()}
+              className="flex items-center gap-1.5"
+            >
+              <CalendarDays size={14} aria-hidden />
+              {new Date(post.createdAt).toLocaleDateString("bn-BD", {
+                dateStyle: "long",
+              })}
+            </time>
+            {post.author?.name ? (
+              <span className="flex items-center gap-2">
+                {post.author.imageUrl ? (
+                  <Image
+                    src={post.author.imageUrl}
+                    alt={post.author.name}
+                    width={24}
+                    height={24}
+                    className="h-6 w-6 rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-[11px] font-semibold text-blue-700">
+                    {post.author.name.trim().charAt(0)}
+                  </span>
+                )}
+                <span className="font-medium text-slate-600">{post.author.name}</span>
               </span>
-            )
+            ) : (
+              post.publishedBy?.name && (
+                <span className="flex items-center gap-1.5">
+                  <User size={14} aria-hidden />
+                  {post.publishedBy.name}
+                </span>
+              )
+            )}
+          </div>
+
+          {post.excerpt && (
+            <p className="mt-4 font-bangla text-[16px] leading-7 text-slate-500">
+              {post.excerpt}
+            </p>
           )}
         </div>
 
-        {post.excerpt && (
-          <p className="mt-4 font-bangla text-[16px] leading-7 text-slate-500">
-            {post.excerpt}
-          </p>
-        )}
-      </header>
-
-      {post.imageUrl && (
-        <div className="relative mt-6 aspect-video overflow-hidden rounded-2xl border border-slate-100 shadow-lg">
+        {post.imageUrl && (
           <Image
             src={post.imageUrl}
             alt={post.imageAlt || post.title}
-            fill
+            width={768}
+            height={576}
             priority
-            sizes="(min-width: 768px) 768px, 92vw"
-            className="object-cover"
+            sizes="(min-width: 1024px) 46vw, 92vw"
+            className="h-auto w-full rounded-2xl border border-slate-100 shadow-lg"
           />
-        </div>
-      )}
+        )}
+      </header>
 
       <div className="mt-8 space-y-5">
         {lead && (

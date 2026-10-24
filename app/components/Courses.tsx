@@ -26,7 +26,7 @@ const Courses = ({ courses = [], variant = "section" }: CoursesProps) => {
           : "scroll-mt-24 pb-[clamp(3.5rem,7vw,6rem)]"
       }
     >
-      <div className="mx-auto max-w-350 px-4 sm:px-6">
+      <div className="mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
         <h2
           className={`${styles.heading2} section-title ${
             isPage ? "mb-6 md:mb-8" : "mb-6 md:mb-8"

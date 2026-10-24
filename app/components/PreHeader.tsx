@@ -21,7 +21,7 @@ const PreHeader = ({ social = [], settings }: PreHeaderProps) => {
 
   return (
     <div className="hidden border-b border-white/10 bg-[#07294D] sm:block">
-      <div className="mx-auto flex h-10 max-w-350 items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="mx-auto flex h-10 max-w-350 2xl:max-w-[1536px] items-center justify-between gap-4 px-4 sm:px-6">
         {/* Contact details — each extra item needs more room, so they drop
             out one by one on narrow screens instead of overflowing. */}
         <div className="flex min-w-0 items-center gap-4 font-bangla text-[13px] text-blue-100/80 lg:gap-5">

@@ -11,7 +11,7 @@ interface CategoriesProps {
 const Categories = ({ categories = [] }: CategoriesProps) => {
   return (
     <section className="relative overflow-hidden" id="categories">
-      <div className="section-shell mx-auto max-w-350 px-4 sm:px-6">
+      <div className="section-shell mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
         <h2
           className={`${styles.heading2} section-title text-center font-bangla`}
           data-aos="fade-up"

@@ -59,7 +59,7 @@ const Contact = ({ settings, social = [] }: ContactProps) => {
         aria-hidden
       />
 
-      <div className="w-full px-4 sm:px-6">
+      <div className="w-full px-4 sm:px-6 2xl:max-w-[1536px] 2xl:mx-auto">
         {/* Section header */}
         <p
           className="text-center font-bangla text-[13px] font-bold uppercase tracking-[0.2em] text-blue-600"

@@ -64,7 +64,7 @@ const WhyChooseUs = ({ settings }: WhyChooseUsProps) => {
         className="why-blob-b pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-teal-100/40 blur-3xl"
       />
 
-      <div className="relative mx-auto max-w-350 px-4 sm:px-6">
+      <div className="relative mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
         {/* Section header */}
         <h2 className="section-title text-center font-bangla" data-aos="fade-up">
           {title}
@@ -93,12 +93,6 @@ const WhyChooseUs = ({ settings }: WhyChooseUsProps) => {
             return (
               <li key={featTitle} data-aos="fade-up" data-aos-delay={(i % 3) * 80}>
                 <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1.5 hover:border-blue-100 hover:shadow-xl hover:shadow-blue-600/5 sm:p-7">
-                  {/* Brand-gradient hairline, sweeps in from the left on hover */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 top-0 h-0.75 origin-left scale-x-0 bg-linear-to-r from-blue-600 to-teal-400 transition-transform duration-500 ease-out group-hover:scale-x-100"
-                  />
-
                   {/* Icon chip: breathing halo (CSS), pop on hover (transform) */}
                   <div className="flex items-start justify-between gap-3">
                     <span

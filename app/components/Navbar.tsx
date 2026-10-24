@@ -86,7 +86,7 @@ const Navbar = ({
             : "border-slate-100/70 bg-white/85 backdrop-blur-sm"
         }`}
       >
-        <nav className="mx-auto flex h-16 max-w-350 items-center px-4 sm:px-6 lg:h-19">
+        <nav className="mx-auto flex h-16 max-w-350 items-center px-4 2xl:max-w-[1536px] sm:px-6 lg:h-19">
           {/* ---------- Brand ---------- */}
           <Link
             href="/"

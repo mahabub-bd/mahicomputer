@@ -60,7 +60,7 @@ const Footer = ({
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-1500 px-4 pt-9 pb-5 sm:px-6 sm:pt-10">
+      <div className="relative mx-auto max-w-1500 2xl:max-w-[1536px] px-4 pt-9 pb-5 sm:px-6 sm:pt-10">
         <div className="grid gap-8 lg:grid-cols-[1.1fr_2fr] lg:gap-12">
           {/* ---------- Brand + contact + social ---------- */}
           <div>

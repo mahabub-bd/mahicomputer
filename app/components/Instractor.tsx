@@ -45,7 +45,7 @@ const Instractor = ({ instructors = [] }: InstractorProps) => {
         className="pointer-events-none absolute -right-20 -bottom-20 h-64 w-64 rounded-full bg-pink-100/40 blur-3xl"
       />
 
-      <div className="relative mx-auto max-w-350 px-4 sm:px-6">
+      <div className="relative mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
         {/* ---------- Section header ---------- */}
         <p
           className="text-center font-bangla text-[13px] font-bold uppercase tracking-[0.2em] text-blue-600"
@@ -113,12 +113,6 @@ const Instractor = ({ instructors = [] }: InstractorProps) => {
                 data-aos-delay={(i % 3) * 90}
               >
                 <article className="group relative flex h-full flex-col items-center overflow-hidden rounded-3xl border border-slate-100 bg-white text-center shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-100 hover:shadow-2xl hover:shadow-blue-900/10">
-                  {/* Brand-gradient hairline, sweeps in from the left on hover */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 top-0 z-20 h-1 origin-left scale-x-0 bg-linear-to-r from-blue-600 via-teal-500 to-emerald-400 transition-transform duration-500 ease-out group-hover:scale-x-100"
-                  />
-
                   {/* Soft panel the avatar sits on */}
                   <div
                     aria-hidden

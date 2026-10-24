@@ -16,7 +16,7 @@ const Map = ({ settings }: MapProps) => {
       id="location"
       className="section-shell relative scroll-mt-24 overflow-hidden bg-white"
     >
-      <div className="mx-auto max-w-350 px-4 sm:px-6">
+      <div className="mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
         {/* Section header */}
         <p
           className="text-center font-bangla text-[13px] font-bold uppercase tracking-[0.2em] text-blue-600"

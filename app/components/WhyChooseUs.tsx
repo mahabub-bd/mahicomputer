@@ -64,7 +64,7 @@ const WhyChooseUs = ({ settings }: WhyChooseUsProps) => {
         className="why-blob-b pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-teal-100/40 blur-3xl"
       />
 
-      <div className="relative mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
+      <div className="relative mx-auto max-w-350 2xl:max-w-384 px-4 sm:px-6">
         {/* Section header */}
         <h2 className="section-title text-center font-bangla" data-aos="fade-up">
           {title}

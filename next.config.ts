@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Emit .next/standalone with only the runtime files needed for the
+  // Docker image (see Dockerfile).
+  output: "standalone",
   images: {
     // Serve resized WebP via sharp instead of originals (e.g. the 8.8 MB
     // max.png becomes a ~100 KB thumbnail per card).

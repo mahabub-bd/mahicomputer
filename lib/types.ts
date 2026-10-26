@@ -2,6 +2,7 @@ import type {
   Category,
   ContactMessage,
   Course,
+  CourseAdmission,
   Enrollment,
   Faq,
   FooterLink,
@@ -12,6 +13,7 @@ import type {
   Newsletter,
   Notice,
   Partner,
+  Payment,
   Post,
   Review,
   SocialLink,
@@ -21,6 +23,7 @@ export type {
   Category,
   ContactMessage,
   Course,
+  CourseAdmission,
   Enrollment,
   Faq,
   FooterLink,
@@ -31,6 +34,7 @@ export type {
   Newsletter,
   Notice,
   Partner,
+  Payment,
   Post,
   Review,
   SocialLink
@@ -79,6 +83,8 @@ export interface CourseView {
   /** Card rating row; falls back to the historical 4.9 / 31 when absent. */
   rating?: number;
   reviewCount?: number;
+  /** Lifecycle stage (upcoming / open / running / completed); defaults to open. */
+  admission?: CourseAdmission;
 }
 
 export interface CategoryView {
@@ -179,4 +185,13 @@ export interface SiteSettingsView {
   email: string;
   address: string;
   stats: StatItem[];
+  /** Business settings module (footer contact + WhatsApp chat widget). */
+  businessName: string;
+  /** International format without "+" (e.g. 8801712345678); empty = hide. */
+  whatsappNumber: string;
+  /** Preset first message for the WhatsApp chat. */
+  whatsappMessage: string;
+  /** Toggles the floating WhatsApp chat widget on the public site. */
+  whatsappEnabled: boolean;
+  openingHours: string;
 }

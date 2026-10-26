@@ -63,12 +63,20 @@ export const courseSchema = z.object({
   /** Selected Category row. */
   categoryId: z.string().max(50).nullish(),
   price: z.coerce.number().int().min(0).default(0),
+  /** Installment plan offered for the course fee (1 = single payment). */
+  installments: z.coerce.number().int().min(1).max(36).default(1),
+  /** Per-installment amounts, e.g. [2000, 2000, 2000] for a 6000 fee. */
+  installmentPlan: z
+    .array(z.coerce.number().int().min(0).max(10000000))
+    .max(36)
+    .default([]),
   rating: z.coerce.number().min(0).max(5).default(4.9),
   reviewCount: z.coerce.number().int().min(0).default(31),
   description: z.array(z.string().max(5000)).default([]),
   modules: z.array(z.string().max(1000)).default([]),
   prerequisite: z.string().max(300).default(""),
   seats: z.string().max(200).default(""),
+  admission: z.enum(["UPCOMING", "OPEN", "RUNNING", "COMPLETED"]).default("OPEN"),
   published: z.coerce.boolean().default(true),
   order: z.coerce.number().int().default(0),
 });
@@ -223,6 +231,78 @@ export const enrollmentSchema = z.object({
   message: z.string().max(5000).default(""),
 });
 
+/** Admin-side payment tracking for an admission (Enrollment row). */
+export const enrollmentPaymentSchema = z.object({
+  courseFee: z.coerce.number().int().min(0).max(10000000).default(0),
+  installments: z.coerce.number().int().min(1).max(36).default(1),
+  installmentPlan: z
+    .array(z.coerce.number().int().min(0).max(10000000))
+    .max(36)
+    .default([]),
+  discount: z.coerce.number().int().min(0).max(10000000).default(0),
+  paidAmount: z.coerce.number().int().min(0).max(10000000).default(0),
+  /** Next installment due date (ISO string or ""); "" clears it. */
+  dueDate: z.string().max(40).default(""),
+  paymentMethod: z.string().max(100).default(""),
+  transactionId: z.string().max(200).default(""),
+  adminNote: z.string().max(2000).default(""),
+});
+
+/**
+ * One received installment payment. Creates a Payment row and increments the
+ * admission's paidAmount — the admin never edits the running total by hand.
+ * nextDueDate ("ISO string" or "") optionally sets the admission's dueDate.
+ */
+export const paymentRecordSchema = z.object({
+  amount: z.coerce.number().int().min(1, "Amount must be at least ৳1").max(10000000),
+  method: z.string().max(100).default(""),
+  transactionId: z.string().max(200).default(""),
+  note: z.string().max(500).default(""),
+  nextDueDate: z.string().max(40).default(""),
+});
+
+/**
+ * Full admission form (admin-entered walk-in students): student profile,
+ * photo and payment-free basics. dateOfBirth is a date-input string; the
+ * API converts it to a nullable DateTime.
+ */
+export const admissionCreateSchema = z.object({
+  name: z.string().min(1, "Name is required").max(200),
+  phone: z
+    .string()
+    .min(6, "Phone must be at least 6 digits")
+    .max(50, "Phone is too long"),
+  email: z
+    .string()
+    .max(200)
+    .default("")
+    .refine((v) => v === "" || z.string().email().safeParse(v).success, {
+      message: "Enter a valid email",
+    }),
+  course: z.string().max(200).default(""),
+  message: z.string().max(5000).default(""),
+  status: z.enum(["PENDING", "APPROVED", "DECLINED"]).default("APPROVED"),
+  /** Per-installment amounts prefilled from the selected course's plan. */
+  installmentPlan: z
+    .array(z.coerce.number().int().min(0).max(10000000))
+    .max(36)
+    .default([]),
+  photoUrl: z.string().max(2000).default(""),
+  fatherName: z.string().max(200).default(""),
+  motherName: z.string().max(200).default(""),
+  dateOfBirth: z.string().max(40).default(""),
+  gender: z.enum(["", "MALE", "FEMALE", "OTHER"]).default(""),
+  address: z.string().max(1000).default(""),
+  education: z.string().max(300).default(""),
+  guardianName: z.string().max(200).default(""),
+  guardianPhone: z.string().max(50).default(""),
+});
+
+/** Editing an existing admission's student info — every field optional. */
+export const admissionUpdateSchema = admissionCreateSchema
+  .omit({ status: true })
+  .partial();
+
 export const statItemSchema = z.object({
   id: z.string().max(100).default(""),
   title: z.string().max(200).default(""),
@@ -259,11 +339,38 @@ export const siteSettingSchema = z.object({
   email: z.string().max(200).default(""),
   address: z.string().max(500).default(""),
   stats: z.array(statItemSchema).default([]),
+  businessName: z.string().max(200).default(""),
+  whatsappNumber: z
+    .string()
+    .trim()
+    .max(20)
+    .regex(/^\d*$/, "WhatsApp number must be digits only (international format, no +)")
+    .default(""),
+  whatsappMessage: z.string().max(500).default(""),
+  whatsappEnabled: z.boolean().default(true),
+  openingHours: z.string().max(500).default(""),
 });
 
 
+/**
+ * General site settings form (homepage sections + stats). Business fields
+ * (contact info, WhatsApp, opening hours, map embed) are owned by the
+ * dedicated Business settings module and omitted here so saving this form
+ * can never overwrite them.
+ */
 export const settingsFormSchema = siteSettingSchema
-  .omit({ marqueeItems: true })
+  .omit({
+    marqueeItems: true,
+    phone: true,
+    email: true,
+    address: true,
+    businessName: true,
+    whatsappNumber: true,
+    whatsappMessage: true,
+    whatsappEnabled: true,
+    openingHours: true,
+    mapEmbedUrl: true,
+  })
   .extend({
     marqueeText: z.string().max(20000).default(""),
   });
@@ -276,6 +383,10 @@ export type SettingsFormInput = z.infer<typeof settingsFormSchema>;
 export type ContactMessageInput = z.infer<typeof contactMessageSchema>;
 export type NewsletterInput = z.infer<typeof newsletterSchema>;
 export type EnrollmentInput = z.infer<typeof enrollmentSchema>;
+export type EnrollmentPaymentInput = z.infer<typeof enrollmentPaymentSchema>;
+export type PaymentRecordInput = z.infer<typeof paymentRecordSchema>;
+export type AdmissionCreateInput = z.infer<typeof admissionCreateSchema>;
+export type AdmissionUpdateInput = z.infer<typeof admissionUpdateSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type UserFormInput = z.infer<typeof userCreateSchema>;
 export type PostFormInput = z.infer<typeof postSchema>;

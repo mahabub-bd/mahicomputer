@@ -1,6 +1,7 @@
 "use client";
 
 import type { Course, CourseWithCategory } from "@/lib/types";
+import { ADMISSION_META } from "@/lib/admission";
 import { Info, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -37,6 +38,15 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
       </span>
     );
 
+  const admissionPill = (c: CourseWithCategory) => {
+    const meta = ADMISSION_META[c.admission];
+    return (
+      <span className={`rounded-full px-2 py-0.5 text-xs ${meta.adminPill}`}>
+        {meta.adminLabel}
+      </span>
+    );
+  };
+
   // Icon-only actions keep the row compact — labels live in tooltips.
   const actions = (c: CourseWithCategory) => (
     <div className="flex flex-wrap gap-1">
@@ -66,15 +76,9 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-semibold text-slate-900 sm:text-2xl">
-            Courses
-          </h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Courses shown on the home page and in the nav menu
-          </p>
-        </div>
+      {/* Page title lives in the page's PageHeader; this list keeps only
+          its primary action. */}
+      <div className="mb-6 flex justify-end">
         <button
           onClick={() => setModal({})}
           className={btn("primary")}
@@ -85,7 +89,7 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
       </div>
 
       {/* ---------- md and up: table ----------
-          min-w + the thin scrollbar keep the seven columns readable —
+          min-w + the thin scrollbar keep the eight columns readable —
           they scroll inside the card instead of squeezing on tablet. */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">
         {/* min-w tuned to fit a ~1024px content area (laptop minus sidebar)
@@ -96,9 +100,10 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
               <th className="px-3 py-3">Course</th>
               <th className="px-3 py-3">Category</th>
               <th className="px-3 py-3">Instructor</th>
-              <th className="px-3 py-3">Price</th>
+              <th className="px-3 py-3">Fee</th>
               <th className="px-3 py-3">Order</th>
-              <th className="px-3 py-3">Status</th>
+              <th className="px-3 py-3">Visibility</th>
+              <th className="px-3 py-3">Admission</th>
               <th className="px-3 py-3 text-right">Actions</th>
             </tr>
           </thead>
@@ -156,9 +161,12 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
                     <span className="text-xs text-slate-400">—</span>
                   )}
                 </td>
-                <td className="px-3 py-3">{c.price}</td>
+                <td className="px-3 py-3 font-medium text-slate-700">
+                  ৳{c.price.toLocaleString("en-BD")}
+                </td>
                 <td className="px-3 py-3">{c.order}</td>
                 <td className="px-3 py-3">{statusPill(c.published)}</td>
+                <td className="px-3 py-3">{admissionPill(c)}</td>
                 <td className="px-3 py-3">
                   <div className="flex justify-end">{actions(c)}</div>
                 </td>
@@ -166,7 +174,7 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
             ))}
             {courses.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-slate-500">
+                <td colSpan={8} className="px-4 py-8 text-center text-slate-500">
                   No courses yet.
                 </td>
               </tr>
@@ -176,9 +184,9 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
       </div>
 
       {/* ---------- below md: one card per course ----------}
-          A seven-column table is unusable at phone widths, so each row
+          An eight-column table is unusable at phone widths, so each row
           becomes a stacked card: thumbnail + title, then a compact
-          price / order / instructor grid and a wrapping action row. */}
+          fee / order / instructor grid and a wrapping action row. */}
       <ul className="space-y-3 md:hidden">
         {courses.map((c) => (
           <li key={c.id} className="rounded-xl bg-white p-4 shadow-sm">
@@ -200,7 +208,10 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
                   >
                     {c.title}
                   </Link>
-                  <span className="shrink-0">{statusPill(c.published)}</span>
+                  <span className="flex shrink-0 items-center gap-1.5">
+                    {statusPill(c.published)}
+                    {admissionPill(c)}
+                  </span>
                 </div>
                 <p className="truncate text-xs text-slate-400">{c.tag}</p>
                 {c.category && (
@@ -214,10 +225,10 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
             <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-slate-100 pt-3">
               <div>
                 <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Price
+                  Fee
                 </dt>
                 <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  {c.price}
+                  ৳{c.price.toLocaleString("en-BD")}
                 </dd>
               </div>
               <div>

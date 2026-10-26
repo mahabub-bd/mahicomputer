@@ -8,6 +8,7 @@ import {
   toNavLinkView,
 } from "@/lib/data";
 import type { ReactNode } from "react";
+import WhatsAppChat from "../_components/WhatsAppChat";
 import { Footer, Navbar } from "../components";
 
 
@@ -35,6 +36,11 @@ const SiteLayout = async ({ children }: { children: ReactNode }) => {
         social={social}
         footerLinks={footerGroups.map(toFooterGroupView)}
         settings={settings}
+      />
+      <WhatsAppChat
+        number={settings.whatsappEnabled ? settings.whatsappNumber : ""}
+        message={settings.whatsappMessage}
+        businessName={settings.businessName || "Mahi Computer"}
       />
     </>
   );

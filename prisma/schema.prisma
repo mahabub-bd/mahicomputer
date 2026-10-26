@@ -42,6 +42,14 @@ model Post {
   updatedAt     DateTime @updatedAt
 }
 
+/** Full course lifecycle: announcement → admission open → running → done. */
+enum CourseAdmission {
+  UPCOMING
+  OPEN
+  RUNNING
+  COMPLETED
+}
+
 model Course {
   id                 String   @id @default(cuid())
   slug               String   @unique
@@ -59,12 +67,16 @@ model Course {
   categoryId         String?
   category           Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   price              Int      @default(0)
+  installments       Int      @default(1)
+  /** Per-installment amounts, e.g. [2000, 2000, 2000] for a 6000 fee. */
+  installmentPlan    Json     @default("[]")
   rating             Float    @default(4.9)
   reviewCount        Int      @default(31)
   description        Json     @default("[]")
   modules            Json     @default("[]")
   prerequisite       String   @default("")
   seats              String   @default("")
+  admission          CourseAdmission @default(OPEN)
   published          Boolean  @default(true)
   order              Int      @default(0)
   createdAt          DateTime @default(now())
@@ -189,7 +201,48 @@ model Enrollment {
   message   String           @default("")
   status    EnrollmentStatus @default(PENDING)
   read      Boolean          @default(false)
-  createdAt DateTime         @default(now())
+  /** Human-readable student ID (e.g. MC-2026-0001), assigned on approval. */
+  studentId String           @default("")
+  // Payment tracking (admin-managed): agreed fee, installment plan and
+  // how much has been collected so far. Due amount = fee - paid.
+  courseFee    Int    @default(0)
+  installments Int    @default(1)
+  /** Per-installment amounts copied from the course plan; editable per student. */
+  installmentPlan Json @default("[]")
+  discount     Int    @default(0)
+  paidAmount   Int    @default(0)
+  dueDate      DateTime?
+  paymentMethod String @default("")
+  transactionId String @default("")
+  adminNote    String @default("")
+  // Full student profile (admin-entered admission form; photo via blob upload).
+  photoUrl      String   @default("")
+  fatherName    String   @default("")
+  motherName    String   @default("")
+  dateOfBirth   DateTime?
+  gender        String   @default("")
+  address       String   @default("")
+  education     String   @default("")
+  guardianName  String   @default("")
+  guardianPhone String   @default("")
+  createdAt    DateTime @default(now())
+  // Individual installment payments; paidAmount stays in sync via the payments API.
+  payments Payment[]
+}
+
+/** One received payment (e.g. an installment) against an admission. */
+model Payment {
+  id            String     @id @default(cuid())
+  enrollmentId  String
+  enrollment    Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  amount        Int
+  method        String     @default("")
+  transactionId String     @default("")
+  note          String     @default("")
+  paidAt        DateTime   @default(now())
+  createdAt     DateTime   @default(now())
+
+  @@index([enrollmentId])
 }
 
 model Notice {
@@ -253,5 +306,10 @@ model SiteSetting {
   email        String   @default("")
   address      String   @default("")
   stats        Json     @default("[]")
+  businessName String   @default("")
+  whatsappNumber String @default("")
+  whatsappMessage String @default("")
+  whatsappEnabled Boolean @default(true)
+  openingHours String   @default("")
   updatedAt    DateTime @updatedAt
 }

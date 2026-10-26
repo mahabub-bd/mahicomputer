@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   Bell,
   BookOpen,
+  Building2,
   ChevronDown,
   ChevronUp,
   CircleHelp,
@@ -23,8 +24,8 @@ import {
   Newspaper,
   PanelBottom,
   Settings,
-  Share2,
   Star,
+  UserCheck,
   UserCog,
   Users,
 } from "lucide-react";
@@ -53,8 +54,6 @@ const sections: SidebarSection[] = [
   {
     label: "Academic",
     links: [
-      { href: "/admin/courses", label: "Courses", Icon: BookOpen },
-      { href: "/admin/categories", label: "Categories", Icon: LayoutGrid },
       { href: "/admin/instructors", label: "Instructors", Icon: Users },
       { href: "/admin/notices", label: "Notices", Icon: Bell },
       { href: "/admin/newsletters", label: "Newsletters", Icon: Mail },
@@ -63,12 +62,20 @@ const sections: SidebarSection[] = [
     ],
   },
   {
+    label: "Course & Admission",
+    links: [
+      { href: "/admin/courses", label: "Courses", Icon: BookOpen },
+      { href: "/admin/categories", label: "Categories", Icon: LayoutGrid },
+      { href: "/admin/enrollments", label: "Admissions", Icon: GraduationCap },
+      { href: "/admin/students", label: "Students", Icon: UserCheck },
+    ],
+  },
+  {
     label: "Website",
     links: [
       { href: "/admin/gallery", label: "Gallery", Icon: Images },
       { href: "/admin/reviews", label: "Reviews", Icon: Star },
       { href: "/admin/partners", label: "Partners", Icon: Handshake },
-      { href: "/admin/social", label: "Social links", Icon: Share2 },
       { href: "/admin/nav-links", label: "Nav links", Icon: Menu },
       { href: "/admin/footer-links", label: "Footer links", Icon: PanelBottom },
     ],
@@ -78,13 +85,13 @@ const sections: SidebarSection[] = [
     links: [
       { href: "/admin/messages", label: "Messages", Icon: Mail },
       { href: "/admin/newsletter", label: "Subscriber list", Icon: Inbox },
-      { href: "/admin/enrollments", label: "Enrollments", Icon: GraduationCap },
     ],
   },
   {
     label: "System",
     links: [
-      { href: "/admin/settings", label: "Settings", Icon: Settings },
+      { href: "/admin/business-settings", label: "Business settings", Icon: Building2 },
+      { href: "/admin/settings", label: "Homepage settings", Icon: Settings },
       { href: "/admin/users", label: "Admin users", Icon: UserCog },
     ],
   },

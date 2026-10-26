@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ChevronRight } from "lucide-react";
+import { ADMISSION_META } from "@/lib/admission";
 import type { CourseView } from "@/lib/types";
 
 interface MegaMenuProps {
@@ -60,8 +61,18 @@ const MegaMenu = ({ menuLink, menu }: MegaMenuProps) => {
                   <span className="block truncate text-[15px] font-semibold text-slate-800 transition-colors group-hover/course:text-blue-700">
                     {item.title}
                   </span>
-                  <span className="mt-0.5 block truncate text-xs text-slate-400">
-                    {item.tag} · {item.duration} months
+                  <span className="mt-0.5 flex items-center gap-1.5 truncate text-xs text-slate-400">
+                    <span className="truncate">
+                      {item.tag} · {item.duration} months
+                    </span>
+                    {/* Lifecycle label — "ভর্তি চলছে" stands out when open. */}
+                    <span
+                      className={`inline-flex shrink-0 items-center rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                        ADMISSION_META[item.admission ?? "OPEN"].adminPill
+                      }`}
+                    >
+                      {ADMISSION_META[item.admission ?? "OPEN"].label}
+                    </span>
                   </span>
                 </span>
                 <ChevronRight

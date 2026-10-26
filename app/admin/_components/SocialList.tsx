@@ -10,9 +10,12 @@ import SocialForm from "./SocialForm";
 
 interface SocialListProps {
   links: SocialLink[];
+  /** Embed mode: hides the page header (title/description) since the host
+      page provides its own section heading; keeps the "Add link" button. */
+  embedded?: boolean;
 }
 
-const SocialList = ({ links }: SocialListProps) => {
+const SocialList = ({ links, embedded = false }: SocialListProps) => {
   const [modal, setModal] = useState<{ link?: SocialLink } | null>(null);
 
   // Shared by the md+ table and the phone card list so the two
@@ -48,21 +51,34 @@ const SocialList = ({ links }: SocialListProps) => {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Social links</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Icons shown in the site footer
-          </p>
+      {embedded ? (
+        <div className="mb-4 flex items-center justify-end">
+          <button
+            type="button"
+            onClick={() => setModal({})}
+            className={btn("secondary", "sm")}
+          >
+            <Plus size={14} />
+            Add link
+          </button>
         </div>
-        <button
-          onClick={() => setModal({})}
-          className={btn("primary")}
-        >
-          <Plus size={16} />
-          Add link
-        </button>
-      </div>
+      ) : (
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-semibold text-slate-900">Social links</h1>
+            <p className="mt-1 text-sm text-slate-500">
+              Icons shown in the site footer
+            </p>
+          </div>
+          <button
+            onClick={() => setModal({})}
+            className={btn("primary")}
+          >
+            <Plus size={16} />
+            Add link
+          </button>
+        </div>
+      )}
 
       {/* ---------- md and up: table ----------} */}
       <div className="admin-table-scroll hidden overflow-x-auto rounded-xl bg-white shadow-sm md:block">

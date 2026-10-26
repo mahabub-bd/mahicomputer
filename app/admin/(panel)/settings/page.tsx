@@ -10,8 +10,8 @@ const SettingsAdminPage = async () => {
   return (
     <div>
       <PageHeader
-        title="Site settings"
-        description="Hero, about, contact info, social links and stats"
+        title="Homepage settings"
+        description="Homepage sections — hero, marquee, why choose us, about, CEO and stats"
       />
       <SettingsForm settings={settings} />
     </div>

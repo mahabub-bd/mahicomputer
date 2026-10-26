@@ -16,6 +16,8 @@ interface EnrollButtonProps {
   className?: string;
   /** Trigger button content. Defaults to "Enroll Now" + arrow icon. */
   children?: React.ReactNode;
+  /** When true, the trigger renders disabled ("admission closed"). */
+  disabled?: boolean;
 }
 
 const defaultTriggerCls =
@@ -26,6 +28,7 @@ const EnrollButton = ({
   courses,
   className,
   children,
+  disabled = false,
 }: EnrollButtonProps) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -90,7 +93,20 @@ const EnrollButton = ({
 
   return (
     <>
-      <button type="button" className={className ?? defaultTriggerCls} onClick={() => setOpen(true)}>
+      {disabled ? (
+        <button
+          type="button"
+          disabled
+          aria-disabled
+          className={
+            className ??
+            "inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-500"
+          }
+        >
+          {children ?? "ভর্তি বন্ধ"}
+        </button>
+      ) : (
+        <button type="button" className={className ?? defaultTriggerCls} onClick={() => setOpen(true)}>
         {children ?? (
           <>
             ভর্তি হোন
@@ -98,6 +114,7 @@ const EnrollButton = ({
           </>
         )}
       </button>
+      )}
 
       {open &&
         createPortal(

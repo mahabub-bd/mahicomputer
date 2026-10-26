@@ -1,3 +1,4 @@
+import { ADMISSION_META } from "@/lib/admission";
 import type { CourseView } from "@/lib/types";
 import { ArrowUpRight, BookOpen, Clock, Signal, Star } from "lucide-react";
 import Image from "next/image";
@@ -18,6 +19,7 @@ const CourseCard = ({
   price,
   rating = 4.9,
   reviewCount = 31,
+  admission,
 }: CourseView) => {
   const meta = [
     { Icon: BookOpen, label: `${lesson} Lessons` },
@@ -47,6 +49,15 @@ const CourseCard = ({
           className={`${tagbg} absolute left-3 top-3 inline-flex max-w-[60%] truncate items-center rounded-full px-2.5 py-1 text-xs font-medium text-white shadow-sm ring-1 ring-black/10`}
         >
           {category || tag}
+        </span>
+
+        {/* Lifecycle stage pill (ভর্তি চলছে / শীঘ্রই / চলমান / সমাপ্ত) */}
+        <span
+          className={`absolute bottom-3 right-3 inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold shadow-sm ring-1 ring-black/10 backdrop-blur-sm ${
+            ADMISSION_META[admission ?? "OPEN"].pill
+          }`}
+        >
+          {ADMISSION_META[admission ?? "OPEN"].label}
         </span>
 
         {/* Rating badge */}

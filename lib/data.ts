@@ -185,6 +185,11 @@ export async function getSiteSettings(): Promise<SiteSettingsView> {
       email: "",
       address: "",
       stats: [],
+      businessName: "",
+      whatsappNumber: "",
+      whatsappMessage: "",
+      whatsappEnabled: true,
+      openingHours: "",
     };
   }
   return {
@@ -226,6 +231,7 @@ export function toCourseView(c: CourseWithCategory): CourseView {
     price: c.price,
     rating: c.rating,
     reviewCount: c.reviewCount,
+    admission: c.admission,
   };
 }
 

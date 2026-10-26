@@ -1,9 +1,9 @@
-import { Mail, MapPin, Phone } from "lucide-react";
+import type { FooterGroupView, SiteSettingsView, SocialView } from "@/lib/types";
+import { logodark } from "@/public";
+import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { logodark } from "@/public";
 import BackToTop from "../_components/BackToTop";
-import type { FooterGroupView, SiteSettingsView, SocialView } from "@/lib/types";
 
 interface FooterProps {
   social?: SocialView[];
@@ -38,9 +38,13 @@ const Footer = ({
   settings,
 }: FooterProps) => {
   const s = {
+    businessName: settings?.businessName?.trim() || "",
     phone: settings?.phone?.trim() || "",
     email: settings?.email?.trim() || "",
     address: settings?.address?.trim() || "",
+    whatsappNumber: settings?.whatsappNumber?.trim() || "",
+    whatsappMessage: settings?.whatsappMessage?.trim() || "",
+    openingHours: settings?.openingHours?.trim() || "",
   };
 
   return (
@@ -60,7 +64,7 @@ const Footer = ({
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-1500 2xl:max-w-[1536px] px-4 pt-9 pb-5 sm:px-6 sm:pt-10">
+      <div className="relative mx-auto max-w-1500 2xl:max-w-384 px-4 pt-9 pb-5 sm:px-6 sm:pt-10">
         <div className="grid gap-8 lg:grid-cols-[1.1fr_2fr] lg:gap-12">
           {/* ---------- Brand + contact + social ---------- */}
           <div>
@@ -98,6 +102,26 @@ const Footer = ({
                   <span>{s.email}</span>
                 </a>
               </li>
+              {s.whatsappNumber && (
+                <li>
+                  <a
+                    href={`https://wa.me/${s.whatsappNumber}${
+                      s.whatsappMessage ? `?text=${encodeURIComponent(s.whatsappMessage)}` : ""
+                    }`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={contactRowCls}
+                  >
+                    <span
+                      className={`${contactIconCls} group-hover:bg-[#25d366] group-hover:ring-[#25d366]`}
+                      aria-hidden
+                    >
+                      <MessageCircle size={15} />
+                    </span>
+                    <span>WhatsApp: {s.whatsappNumber}</span>
+                  </a>
+                </li>
+              )}
               <li>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.address)}`}
@@ -111,6 +135,14 @@ const Footer = ({
                   <span className="leading-6">{s.address}</span>
                 </a>
               </li>
+              {s.openingHours && (
+                <li className={contactRowCls}>
+                  <span className={contactIconCls} aria-hidden>
+                    <Clock size={15} />
+                  </span>
+                  <span className="leading-6">{s.openingHours}</span>
+                </li>
+              )}
             </ul>
 
           </div>
@@ -193,10 +225,10 @@ const Footer = ({
         {/* ---------- Bottom bar ---------- */}
         <div className="mt-7 flex flex-col items-center gap-3 border-t border-white/10 pt-4 sm:flex-row sm:justify-between">
           <p className="text-center text-[13.5px] text-slate-500 sm:text-left">
-            © {new Date().getFullYear()} Mahi Computer. সর্বস্বত্ব সংরক্ষিত।{" "}
+            © {new Date().getFullYear()} {s.businessName || "Mahi Computer"}. সর্বস্বত্ব সংরক্ষিত।{" "}
             <span className="hidden text-slate-600 sm:inline">
               · Gulshan, Dhaka
-            </span>
+              </span>
           </p>
 
           {/* Social icons — live in the copyright bar, right of the text */}

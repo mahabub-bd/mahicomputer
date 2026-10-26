@@ -1,5 +1,6 @@
 import EnrollButton from "@/app/_components/EnrollButton";
 import { Breadcrumb } from "@/app/_components/PageHead";
+import { isAdmissionOpen } from "@/lib/admission";
 import type { Course } from "@/lib/types";
 import {
   Award,
@@ -68,7 +69,7 @@ const CourseDetail = ({
           className="pointer-events-none absolute -bottom-32 -left-24 h-56 w-56 rounded-full bg-pink-200/40 blur-3xl sm:h-80 sm:w-80"
         />
 
-        <div className={`relative mx-auto max-w-350 2xl:max-w-[1536px] px-4 pb-16 pt-6 sm:px-6 sm:pt-8`}>
+        <div className={`relative mx-auto max-w-350 2xl:max-w-384 px-4 pb-16 pt-6 sm:px-6 sm:pt-8`}>
           <div className="mt-1">
             <Breadcrumb
               align="left"
@@ -143,6 +144,7 @@ const CourseDetail = ({
               <div className="mt-7 flex flex-col sm:flex-row sm:items-center sm:gap-x-5">
                 <EnrollButton
                   course={course.title}
+                  disabled={!isAdmissionOpen(course.admission)}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-7 py-3.5 text-[15px] font-semibold text-white shadow-md shadow-blue-700/25 transition hover:bg-blue-800 hover:shadow-lg sm:w-auto sm:py-3"
                 />
                 <div className="mt-3 flex items-center justify-center gap-2 sm:mt-0 sm:block">
@@ -186,7 +188,7 @@ const CourseDetail = ({
       </header>
 
       {/* ---------- Body ---------- */}
-      <div className={`mx-auto max-w-350 2xl:max-w-[1536px] px-4 pb-28 pt-10 sm:px-6 sm:pt-12 lg:pb-12`}>
+      <div className={`mx-auto max-w-350 2xl:max-w-384 px-4 pb-28 pt-10 sm:px-6 sm:pt-12 lg:pb-12`}>
         <div className="grid items-start gap-8 lg:grid-cols-[1.6fr_1fr] xl:gap-12">
           {/* Main column */}
           <div>
@@ -257,9 +259,11 @@ const CourseDetail = ({
               </p>
               <p className="mt-2 text-[13px] text-blue-100">
                 {course.duration} মাস · {course.lesson} ক্লাস
+                {course.installments > 1 && ` · ${course.installments} কিস্তিতে`}
               </p>
               <EnrollButton
                 course={course.title}
+                disabled={!isAdmissionOpen(course.admission)}
                 className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-[15px] font-bold text-blue-700 shadow-sm transition hover:bg-blue-50 hover:shadow-md"
               />
               <p className="mt-3 text-center text-[12px] leading-5 text-blue-100">{seats}</p>
@@ -327,7 +331,7 @@ const CourseDetail = ({
                 ভর্তির আগে আমাদের সাথে কথা বলুন।
               </p>
               <div className="mt-4 flex justify-center">
-                <EnrollButton course={course.title} />
+                <EnrollButton course={course.title} disabled={!isAdmissionOpen(course.admission)} />
               </div>
             </div>
           </aside>
@@ -347,6 +351,7 @@ const CourseDetail = ({
           </div>
           <EnrollButton
             course={course.title}
+            disabled={!isAdmissionOpen(course.admission)}
             className="inline-flex shrink-0 items-center gap-2 rounded-full bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-700/25 transition hover:bg-blue-800"
           />
         </div>

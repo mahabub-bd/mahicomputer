@@ -131,7 +131,7 @@ const AdminDashboard = async () => {
       label: "Social links",
       value: socialLinks.length,
       hint: "Footer icons",
-      href: "/admin/social",
+      href: "/admin/business-settings",
       Icon: Share2,
     },
     {
@@ -156,11 +156,11 @@ const AdminDashboard = async () => {
     { label: "Add review", href: "/admin/reviews", Icon: Star },
     { label: "Add partner", href: "/admin/partners", Icon: Handshake },
     { label: "Add image", href: "/admin/gallery", Icon: Images },
-    { label: "Add link", href: "/admin/social", Icon: Share2 },
-    { label: "Enrollments", href: "/admin/enrollments", Icon: GraduationCap },
+    { label: "Add link", href: "/admin/business-settings", Icon: Share2 },
+    { label: "Admissions", href: "/admin/enrollments", Icon: GraduationCap },
     { label: "Add notice", href: "/admin/notices", Icon: Bell },
     { label: "Add blog", href: "/admin/blogs", Icon: Newspaper },
-    { label: "Site settings", href: "/admin/settings", Icon: Settings },
+    { label: "Homepage settings", href: "/admin/settings", Icon: Settings },
   ];
 
   const contactInfo: ContactInfoItem[] = [

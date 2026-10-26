@@ -1,0 +1,10 @@
+-- AlterTable
+ALTER TABLE "Enrollment" ADD COLUMN     "address" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "education" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "fatherName" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "gender" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "guardianName" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "guardianPhone" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "motherName" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "photoUrl" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "dateOfBirth" TIMESTAMP(3);

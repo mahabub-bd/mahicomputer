@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Enrollment" ADD COLUMN     "adminNote" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "courseFee" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "installments" INTEGER NOT NULL DEFAULT 1,
+ADD COLUMN     "paidAmount" INTEGER NOT NULL DEFAULT 0;

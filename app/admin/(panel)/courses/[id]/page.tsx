@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { ADMISSION_META } from "@/lib/admission";
 import { toStringArray } from "@/lib/course-view";
 import { formatDateTime } from "@/lib/format";
 import DetailActions from "../../../_components/DetailActions";
@@ -26,15 +27,29 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
     orderBy: { createdAt: "desc" },
   });
 
+  const plan = Array.isArray(course.installmentPlan)
+    ? course.installmentPlan.filter((a): a is number => typeof a === "number")
+    : [];
+
   const summary = [
     { label: "Slug", value: `/${course.slug}` },
     { label: "Category", value: course.category?.title || "—" },
     { label: "Tag", value: course.tag || "—" },
     { label: "Fee", value: `৳${course.price.toLocaleString("en-BD")}` },
+    {
+      label: "Installments",
+      value:
+        plan.length > 0
+          ? plan.map((a) => `৳${Number(a).toLocaleString("en-BD")}`).join(" + ")
+          : course.installments > 1
+            ? `${course.installments} (equal split)`
+            : "—",
+    },
     { label: "Duration", value: `${course.duration} Month` },
     { label: "Classes", value: String(course.lesson) },
     { label: "Pre-requisite", value: course.prerequisite || "—" },
     { label: "Total seat", value: course.seats || "—" },
+    { label: "Admission", value: ADMISSION_META[course.admission].adminLabel },
     { label: "Display order", value: String(course.order) },
     { label: "Created", value: formatDateTime(course.createdAt) },
     { label: "Last updated", value: formatDateTime(course.updatedAt) },
@@ -96,7 +111,17 @@ const CourseDetailsAdminPage = async ({ params }: Props) => {
           </SectionCard>
 
           <SectionCard title="Enrollments" meta={`(${enrollments.length})`}>
-            <EnrollmentsList enrollments={enrollments} />
+            <EnrollmentsList
+              enrollments={enrollments}
+              courses={[
+                {
+                  title: course.title,
+                  admission: course.admission,
+                  price: course.price,
+                  installmentPlan: course.installmentPlan,
+                },
+              ]}
+            />
           </SectionCard>
         </div>
 

@@ -1,8 +1,27 @@
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { nextStudentId } from "@/lib/student-id";
+import { admissionUpdateSchema, enrollmentPaymentSchema } from "@/lib/validators";
 
 const ENROLLMENT_STATUSES = ["PENDING", "APPROVED", "DECLINED"] as const;
+
+const STUDENT_FIELDS = [
+  "name",
+  "phone",
+  "email",
+  "course",
+  "message",
+  "photoUrl",
+  "fatherName",
+  "motherName",
+  "dateOfBirth",
+  "gender",
+  "address",
+  "education",
+  "guardianName",
+  "guardianPhone",
+] as const;
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -19,12 +38,59 @@ export async function PATCH(req: Request, { params }: Params) {
       ? rawStatus
       : undefined;
 
-  if (read === undefined && status === undefined) {
+  // Payment fields are validated as a group (optional — absent means untouched).
+  const payment =
+    body &&
+    typeof body === "object" &&
+    [
+      "courseFee",
+      "installments",
+      "discount",
+      "paidAmount",
+      "dueDate",
+      "paymentMethod",
+      "transactionId",
+      "adminNote",
+    ].some((k) => k in body)
+      ? enrollmentPaymentSchema.safeParse(body)
+      : undefined;
+  if (payment && !payment.success) {
     return NextResponse.json(
-      { error: "`read` boolean or `status` (PENDING | APPROVED | DECLINED) is required" },
+      { error: "Invalid payment data", issues: payment.error.issues.map((i) => i.message) },
       { status: 400 },
     );
   }
+
+  // Student-info fields (optional — absent means untouched).
+  const student =
+    body &&
+    typeof body === "object" &&
+    STUDENT_FIELDS.some((k) => k in body)
+      ? admissionUpdateSchema.safeParse(body)
+      : undefined;
+  if (student && !student.success) {
+    return NextResponse.json(
+      { error: "Invalid student data", issues: student.error.issues.map((i) => i.message) },
+      { status: 400 },
+    );
+  }
+
+  if (read === undefined && status === undefined && !payment?.success && !student?.success) {
+    return NextResponse.json(
+      {
+        error:
+          "`read` boolean, `status` (PENDING | APPROVED | DECLINED), payment or student fields are required",
+      },
+      { status: 400 },
+    );
+  }
+
+  // Approval assigns a student ID the first time an application is approved.
+  const approving =
+    status === "APPROVED" && !(await prisma.enrollment.findFirst({
+      where: { id, studentId: { not: "" } },
+      select: { id: true },
+    }));
 
   try {
     const enrollment = await prisma.enrollment.update({
@@ -32,6 +98,27 @@ export async function PATCH(req: Request, { params }: Params) {
       data: {
         ...(read === undefined ? {} : { read }),
         ...(status === undefined ? {} : { status }),
+        ...(approving ? { studentId: await nextStudentId() } : {}),
+        ...(student?.success
+          ? {
+              ...student.data,
+              // The form sends "" / ISO string; the column is a nullable DateTime.
+              ...(student.data.dateOfBirth !== undefined
+                ? {
+                    dateOfBirth: student.data.dateOfBirth
+                      ? new Date(student.data.dateOfBirth)
+                      : null,
+                  }
+                : {}),
+            }
+          : {}),
+        ...(payment?.success
+          ? {
+              ...payment.data,
+              // The form sends "" / ISO string; the column is a nullable DateTime.
+              dueDate: payment.data.dueDate ? new Date(payment.data.dueDate) : null,
+            }
+          : {}),
       },
     });
     return NextResponse.json(enrollment);

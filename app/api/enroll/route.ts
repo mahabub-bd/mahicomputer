@@ -14,16 +14,26 @@ export async function POST(req: Request) {
 
   const { phone, course, ...rest } = parsed.data;
 
-  // If a course was chosen, make sure it exists and is published
-  // (free-text titles from the modal never create orphan requests).
+  // If a course was chosen, make sure it exists, is published and is
+  // currently accepting applications (free-text titles from the modal never
+  // create orphan requests).
   if (course) {
-    const exists = await prisma.course.findFirst({
+    const courseRow = await prisma.course.findFirst({
       where: { title: course, published: true },
-      select: { id: true },
+      select: { id: true, admission: true },
     });
-    if (!exists) {
+    if (!courseRow) {
       return NextResponse.json(
         { error: "Course not available", issues: ["Selected course is not available."] },
+        { status: 400 },
+      );
+    }
+    if (courseRow.admission !== "OPEN") {
+      return NextResponse.json(
+        {
+          error: "Admission closed",
+          issues: ["এই কোর্সের ভর্তি এখন বন্ধ আছে।"],
+        },
         { status: 400 },
       );
     }

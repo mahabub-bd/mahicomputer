@@ -1,14 +1,14 @@
 "use client";
 
+import { Button, Field, Input, SubmitButton, Textarea } from "@/components/form/FormControls";
+import { useZodForm } from "@/components/form/useZodForm";
+import type { SiteSettingsView } from "@/lib/types";
+import { settingsFormSchema, type SettingsFormInput } from "@/lib/validators";
 import { useRouter } from "next/navigation";
 import { Controller, useFieldArray } from "react-hook-form";
 import { toast } from "sonner";
-import type { SiteSettingsView } from "@/lib/types";
-import { settingsFormSchema, type SettingsFormInput } from "@/lib/validators";
 import { apiPut } from "./api";
-import { Button, Field, Input, SubmitButton, Textarea } from "@/components/form/FormControls";
 import ImageUpload from "./ImageUpload";
-import { useZodForm } from "@/components/form/useZodForm";
 
 interface SettingsFormProps {
   settings: SiteSettingsView;
@@ -22,6 +22,8 @@ type TextKey = {
 
 const SettingsForm = ({ settings }: SettingsFormProps) => {
   const router = useRouter();
+  // Business fields (contact, WhatsApp, hours) are managed in the Business
+  // settings module and omitted from this form's schema.
   const { marqueeItems, ...rest } = settings;
   const {
     register,
@@ -50,7 +52,7 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
     };
     try {
       await apiPut("/api/admin/settings", payload);
-      toast.success("Settings saved");
+      toast.success("Homepage settings saved");
       router.refresh();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Save failed";
@@ -125,14 +127,14 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
           <div key={feat.id} className="flex flex-wrap items-end gap-3">
             <Field
               label="Feature title"
-              className="min-w-[200px] flex-[1]"
+              className="min-w-50 flex-1"
               error={errors.whyFeatures?.[i]?.title?.message}
             >
               <Input {...register(`whyFeatures.${i}.title`)} />
             </Field>
             <Field
               label="Feature text"
-              className="min-w-[280px] flex-[2]"
+              className="min-w-70 flex-2"
               error={errors.whyFeatures?.[i]?.text?.message}
             >
               <Input {...register(`whyFeatures.${i}.text`)} />
@@ -159,14 +161,6 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
           Icons are assigned automatically (in order). Leave everything empty to keep the current
           section content.
         </p>
-      </fieldset>
-
-      <fieldset className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <legend className="sr-only">Map section</legend>
-        <p className="mb-4 w-full border-b border-slate-200 pb-3 text-[13px] font-bold uppercase tracking-wider text-slate-700">
-          Map section
-        </p>
-        {text("mapEmbedUrl", "Google Maps embed URL (src of the iframe)")}
       </fieldset>
 
       <fieldset className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -229,19 +223,8 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         </p>
       </fieldset>
 
-      <fieldset className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <legend className="sr-only">Contact info</legend>
-        <p className="mb-4 w-full border-b border-slate-200 pb-3 text-[13px] font-bold uppercase tracking-wider text-slate-700">
-          Contact info
-        </p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {text("email", "Email")}
-          {text("phone", "Phone")}
-          {text("address", "Address")}
-        </div>
-      </fieldset>
-
-      {/* Social links are managed on the dedicated Social page (/admin/social). */}
+      {/* Contact info (phone/email/address) and WhatsApp live in the
+          dedicated Business settings page (/admin/business-settings). */}
 
       <fieldset className="space-y-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <legend className="sr-only">Stats (one glance section)</legend>
@@ -252,21 +235,21 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
           <div key={stat._key} className="flex flex-wrap items-end gap-3">
             <Field
               label="Title"
-              className="min-w-[200px] flex-[2]"
+              className="min-w-50 flex-2"
               error={errors.stats?.[i]?.title?.message}
             >
               <Input {...register(`stats.${i}.title`)} />
             </Field>
             <Field
               label="Value"
-              className="min-w-[130px] flex-[1]"
+              className="min-w-32.5 flex-1"
               error={errors.stats?.[i]?.value?.message}
             >
               <Input {...register(`stats.${i}.value`)} />
             </Field>
             <Field
               label="BG class"
-              className="min-w-[170px] flex-[1]"
+              className="min-w-42.5 flex-1"
               error={errors.stats?.[i]?.class?.message}
             >
               <Input {...register(`stats.${i}.class`)} />
@@ -295,7 +278,7 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         <p className="text-sm text-rose-600">{errors.root.message}</p>
       )}
       <div className="flex items-center gap-3">
-        <SubmitButton busy={isSubmitting}>Save settings</SubmitButton>
+        <SubmitButton busy={isSubmitting}>Save homepage settings</SubmitButton>
       </div>
     </form>
   );

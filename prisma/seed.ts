@@ -113,7 +113,7 @@ async function main() {
     data: instractor.map((p, i) => ({
       name: p.name,
       description: p.des,
-      imageUrl: p.img,
+      imageUrl: instructorImages[i] ?? p.img,
       order: i,
     })),
   });

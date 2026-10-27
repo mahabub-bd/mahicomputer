@@ -21,6 +21,7 @@ const prisma = new PrismaClient({
 const POSTS = [
   {
     slug: "office-application-keno-shikhben",
+    imageUrl: "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792675439749-11c275e9f590.webp",
     authorName: "Muniruzzaman",
     title: "কম্পিউটার অফিস অ্যাপ্লিকেশন কেন শিখবেন?",
     excerpt:
@@ -41,6 +42,7 @@ const POSTS = [
   },
   {
     slug: "graphic-design-career-guide",
+    imageUrl: "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792498094125-59ec82a492cb.webp",
     authorName: "Maksuda Akter",
     title: "গ্রাফিক্স ডিজাইন শিখে ক্যারিয়ার গড়ুন: শুরু করার সম্পূর্ণ গাইড",
     excerpt:
@@ -59,6 +61,7 @@ const POSTS = [
   },
   {
     slug: "video-editing-hot-skill",
+    imageUrl: "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792498547114-8c59c859e96f.webp",
     authorName: "Sumon Chandra",
     title: "ভিডিও এডিটিং: ইউটিউব যুগের সবচেয়ে চাহিদাসম্পন্ন স্কিল",
     excerpt:
@@ -77,6 +80,7 @@ const POSTS = [
   },
   {
     slug: "web-design-development-roadmap",
+    imageUrl: "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792498077413-e5f7096cc2ce.webp",
     authorName: "Mokramin Hossain",
     title: "ওয়েব ডিজাইন ও ডেভেলপমেন্ট শেখার সহজ রোডম্যাপ",
     excerpt:
@@ -95,6 +99,7 @@ const POSTS = [
   },
   {
     slug: "devops-career-bangladesh",
+    imageUrl: "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792415186695-70e6d7c1e33e.webp",
     authorName: "Md Alamin Hossain",
     title: "ডেভঅপস কী এবং কেন এটি টেক ইন্ডাস্ট্রির সবচেয়ে দামি স্কিল?",
     excerpt:
@@ -113,6 +118,7 @@ const POSTS = [
   },
   {
     slug: "react-shikhun-sahaj-upay",
+    imageUrl: "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792415247889-1889802e190d.webp",
     authorName: "Eliash Hossain",
     title: "রিঅ্যাক্ট (React) কেন শিখবেন? ফ্রন্টএন্ড ক্যারিয়ারের সেরা বেছে",
     excerpt:
@@ -131,6 +137,7 @@ const POSTS = [
   },
   {
     slug: "postgresql-database-shikhun",
+    imageUrl: "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792421861767-48b89f6a4ec0.webp",
     authorName: "Jointi Barua",
     title: "পোস্টগ্রিএসকিউএল (PostgreSQL): শিখুন পৃথিবীর সবচেয়ে ভরসাযোগ্য ডেটাবেস",
     excerpt:
@@ -149,6 +156,7 @@ const POSTS = [
   },
   {
     slug: "freelancing-shuru-korar-guide",
+    imageUrl: "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792417562639-4de3e1105e71.png",
     authorName: "Mahabub Hossain",
     title: "ফ্রিল্যান্সিং শুরু করার সহজ গাইড: ঘরে বসে আয়ের প্রথম ধাপ",
     excerpt:
@@ -169,6 +177,7 @@ const POSTS = [
   },
   {
     slug: "digital-marketing-career-bangladesh",
+    imageUrl: "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792498426541-a401bb99ce2c.webp",
     authorName: "Md. Rasel Ahmed",
     title: "ডিজিটাল মার্কেটিং: বাংলাদেশে সবচেয়ে সম্ভাবনাময় ক্যারিয়ার",
     excerpt:
@@ -214,6 +223,42 @@ async function main() {
       data: { ...post, authorId: authorIdBySlug.get(post.slug)!, published: true },
     });
     console.log(`created: ${post.slug} (author: ${authorName})`);
+  }
+
+  // Posts that were added via the admin panel — their bodies were lost in the
+  // 2026-10-27 database wipe. Recreated as unpublished drafts with the
+  // recovered titles and covers; the content needs to be rewritten in admin.
+  const LOST = [
+    {
+      slug: "computer-shikher-shuruprothom-din",
+      title: "কম্পিউটার শেখা শুরু: প্রথম দিন যা যা জানা দরকার",
+      excerpt: "একদম শুরু থেকে কম্পিউটার শেখার গাইড।",
+      imageUrl:
+        "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792675216707-33286e1f226d.webp",
+    },
+    {
+      slug: "frontend-development-with-react-and-nextjs",
+      title: "Frontend Development with React & Next.js",
+      excerpt: "রিঅ্যাক্ট ও নেক্সটজেএস দিয়ে আধুনিক ফ্রন্টএন্ড ডেভেলপমেন্ট।",
+      imageUrl:
+        "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792861553795-eb4aec05cac2.webp",
+    },
+    {
+      slug: "backend-development-with-nestjs-and-typeorm",
+      title: "Backend Development with NestJS and TypeORM",
+      excerpt: "NestJS ও TypeORM দিয়ে স্কেলেবল ব্যাকএন্ড ডেভেলপমেন্ট।",
+      imageUrl:
+        "https://ljspkxuyyipd39xe.public.blob.vercel-storage.com/1792861563753-b36b33fd351d.webp",
+    },
+  ];
+  for (const draft of LOST) {
+    if (bySlug.has(draft.slug)) continue;
+    await prisma.post.create({
+      data: { ...draft, content: "", published: false },
+    });
+    console.log(
+      `created draft (body lost in wipe — rewrite in admin): ${draft.slug}`,
+    );
   }
 
   // Backfill authors for posts that were seeded before the author relation.

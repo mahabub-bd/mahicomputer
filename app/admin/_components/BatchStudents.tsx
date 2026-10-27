@@ -1,13 +1,13 @@
 "use client";
 
 import { btnIcon } from "@/components/form/buttonStyles";
+import { Select } from "@/components/form/FormControls";
+import { UserPlus, Users, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { UserPlus, Users, X } from "lucide-react";
 import { apiDelete, apiPost } from "./api";
 import EmptyState from "./EmptyState";
-import { Select } from "@/components/form/FormControls";
 
 interface BatchStudentsProps {
   batchId: string;
@@ -67,6 +67,8 @@ const BatchStudents = ({ batchId, capacity, students, candidates }: BatchStudent
   };
 
   const full = capacity > 0 && students.length >= capacity;
+  const pct =
+    capacity > 0 ? Math.min(Math.round((students.length / capacity) * 100), 100) : null;
 
   return (
     <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
@@ -76,6 +78,21 @@ const BatchStudents = ({ batchId, capacity, students, candidates }: BatchStudent
           {capacity > 0 ? `/${capacity}` : ""})
         </p>
       </div>
+
+      {/* Capacity bar */}
+      {pct !== null && (
+        <div className="mb-4 flex items-center gap-2">
+          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+            <div
+              className={`h-full rounded-full ${
+                pct >= 100 ? "bg-rose-500" : pct >= 80 ? "bg-amber-500" : "bg-emerald-500"
+              }`}
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+          <span className="text-xs font-medium text-slate-400">{pct}% full</span>
+        </div>
+      )}
 
       {/* Add picker */}
       <div className="mb-4 flex items-center gap-2">

@@ -249,6 +249,7 @@ const EnrollmentsList = ({ enrollments, courses }: EnrollmentsListProps) => {
         open={paymentFor !== null}
         onClose={() => setPaymentFor(null)}
         title={paymentFor ? `Payment — ${paymentFor.name}` : "Payment"}
+        wide
       >
         {paymentFor && (
           <EnrollmentPaymentModal

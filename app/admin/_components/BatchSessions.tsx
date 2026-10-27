@@ -4,23 +4,29 @@ import { btn } from "@/components/form/buttonStyles";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { CalendarPlus, Link2, Trash2, Users } from "lucide-react";
+import { CalendarPlus, Link2, Pencil, Trash2, Users, X } from "lucide-react";
 import Link from "next/link";
-import { apiDelete, apiPost } from "./api";
+import { apiDelete, apiPatch, apiPost } from "./api";
 import EmptyState from "./EmptyState";
 import { Field, Input } from "@/components/form/FormControls";
 
 interface BatchSessionsProps {
   batchId: string;
+  /** Current batch size — used for the per-session attendance progress bar. */
+  studentsCount: number;
   sessions: { id: string; date: string; topic: string; attendanceCount: number }[];
 }
 
-/** Session list + creation for one batch. */
-const BatchSessions = ({ batchId, sessions }: BatchSessionsProps) => {
+/** Session list + creation/editing for one batch. */
+const BatchSessions = ({ batchId, studentsCount, sessions }: BatchSessionsProps) => {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [date, setDate] = useState("");
   const [topic, setTopic] = useState("");
+  // Inline edit state (one row at a time).
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editDate, setEditDate] = useState("");
+  const [editTopic, setEditTopic] = useState("");
 
   const create = async () => {
     if (!date) {
@@ -36,6 +42,30 @@ const BatchSessions = ({ batchId, sessions }: BatchSessionsProps) => {
       router.refresh();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to add session");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const startEdit = (s: { id: string; date: string; topic: string }) => {
+    setEditingId(s.id);
+    setEditDate(s.date.slice(0, 10));
+    setEditTopic(s.topic);
+  };
+
+  const saveEdit = async () => {
+    if (!editingId || !editDate) return;
+    setBusy(true);
+    try {
+      await apiPatch(`/api/admin/batches/${batchId}/sessions/${editingId}`, {
+        date: editDate,
+        topic: editTopic,
+      });
+      toast.success("Session updated");
+      setEditingId(null);
+      router.refresh();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to update session");
     } finally {
       setBusy(false);
     }
@@ -89,50 +119,133 @@ const BatchSessions = ({ batchId, sessions }: BatchSessionsProps) => {
         />
       ) : (
         <ul className="divide-y divide-slate-100">
-          {sessions.map((s, i) => (
-            <li key={s.id} className="flex items-center justify-between gap-3 py-2 text-sm">
-              <div className="flex min-w-0 items-center gap-3">
-                <span className="w-9 shrink-0 text-center text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                  #{i + 1}
-                </span>
-                <div className="min-w-0">
-                  <p className="font-medium text-slate-900">
-                    {new Date(s.date).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                    {s.topic && (
-                      <span className="ml-2 text-xs font-normal text-slate-500">{s.topic}</span>
-                    )}
-                  </p>
-                  <p className="flex items-center gap-1 text-xs text-slate-400">
-                    <Users size={12} />
-                    {s.attendanceCount} marked
-                  </p>
+          {sessions.map((s, i) => {
+            const d = new Date(s.date);
+            const pct =
+              studentsCount > 0
+                ? Math.min(Math.round((s.attendanceCount / studentsCount) * 100), 100)
+                : 0;
+            const editing = editingId === s.id;
+
+            return (
+              <li key={s.id} className="flex items-start gap-3 py-2.5">
+                {/* Calendar tile */}
+                <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+                  <span className="text-[10px] font-bold uppercase leading-none">
+                    {d.toLocaleDateString("en-GB", { month: "short" })}
+                  </span>
+                  <span className="text-base font-bold leading-tight">{d.getDate()}</span>
                 </div>
-              </div>
-              <div className="flex shrink-0 items-center gap-1.5">
-                <Link
-                  href={`/admin/batches/${batchId}/sessions/${s.id}`}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <Link2 size={14} />
-                  Attendance
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => remove(s.id)}
-                  disabled={busy}
-                  title="Delete session"
-                  aria-label="Delete session"
-                  className="rounded-md p-1.5 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50"
-                >
-                  <Trash2 size={14} />
-                </button>
-              </div>
-            </li>
-          ))}
+
+                {editing ? (
+                  // Inline edit form
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-end gap-2">
+                      <Field label="Date">
+                        <Input
+                          type="date"
+                          value={editDate}
+                          onChange={(e) => setEditDate(e.target.value)}
+                          className="w-36"
+                        />
+                      </Field>
+                      <Field label="Topic">
+                        <Input
+                          value={editTopic}
+                          onChange={(e) => setEditTopic(e.target.value)}
+                          className="w-52"
+                        />
+                      </Field>
+                      <button
+                        type="button"
+                        onClick={saveEdit}
+                        disabled={busy || !editDate}
+                        className={btn("secondary", "sm")}
+                      >
+                        Save
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEditingId(null)}
+                        disabled={busy}
+                        title="Cancel"
+                        aria-label="Cancel editing"
+                        className="rounded-md p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 disabled:opacity-50"
+                      >
+                        <X size={15} />
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="min-w-0 flex-1">
+                    <p className="flex flex-wrap items-baseline gap-x-2 text-sm">
+                      <span className="font-semibold text-slate-900">
+                        #{i + 1} ·{" "}
+                        {d.toLocaleDateString("en-GB", {
+                          weekday: "short",
+                          day: "numeric",
+                          month: "short",
+                        })}
+                      </span>
+                      {s.topic && (
+                        <span className="truncate text-xs text-slate-500">{s.topic}</span>
+                      )}
+                    </p>
+                    <div className="mt-1 flex items-center gap-2">
+                      <div className="h-1.5 w-28 overflow-hidden rounded-full bg-slate-100">
+                        <div
+                          className={`h-full rounded-full ${
+                            pct === 100
+                              ? "bg-emerald-500"
+                              : pct > 0
+                                ? "bg-blue-500"
+                                : "bg-slate-200"
+                          }`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                      <span className="flex items-center gap-1 text-xs text-slate-400">
+                        <Users size={12} />
+                        {s.attendanceCount}/{studentsCount} marked
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {!editing && (
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    <Link
+                      href={`/admin/batches/${batchId}/sessions/${s.id}`}
+                      className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                    >
+                      <Link2 size={14} />
+                      Attendance
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => startEdit(s)}
+                      disabled={busy}
+                      title="Edit date/topic"
+                      aria-label="Edit session"
+                      className="rounded-md p-1.5 text-slate-400 transition hover:bg-blue-50 hover:text-blue-600 disabled:opacity-50"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => remove(s.id)}
+                      disabled={busy}
+                      title="Delete session"
+                      aria-label="Delete session"
+                      className="rounded-md p-1.5 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

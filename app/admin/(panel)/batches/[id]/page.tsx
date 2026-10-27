@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import PageHeader from "../../../_components/PageHeader";
@@ -44,6 +45,25 @@ const BatchDetailAdminPage = async ({ params }: Props) => {
   });
 
   const status = BATCH_META[batch.status];
+  const totalMarks = batch.sessions.reduce((n, s) => n + s._count.attendance, 0);
+  const expectedMarks = batch.sessions.length * batch.students.length;
+  const stats = [
+    {
+      label: "Students",
+      value: `${batch.students.length}${batch.capacity > 0 ? `/${batch.capacity}` : ""}`,
+    },
+    { label: "Sessions", value: String(batch.sessions.length) },
+    {
+      label: "Attendance marked",
+      value: `${totalMarks}${expectedMarks > 0 ? `/${expectedMarks}` : ""}`,
+    },
+    {
+      label: "Start date",
+      value: batch.startDate
+        ? new Date(batch.startDate).toLocaleDateString("en-GB", { dateStyle: "medium" })
+        : "—",
+    },
+  ];
 
   return (
     <div>
@@ -58,14 +78,29 @@ const BatchDetailAdminPage = async ({ params }: Props) => {
         }
         description={`${batch.course}${batch.schedule ? ` · ${batch.schedule}` : ""}`}
         actions={
-          <a
+          <Link
             href="/admin/batches"
             className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] font-semibold text-slate-600 shadow-sm transition hover:bg-slate-50"
           >
             Back to batches
-          </a>
+          </Link>
         }
       />
+
+      {/* Batch stats strip */}
+      <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {stats.map((s) => (
+          <div
+            key={s.label}
+            className="rounded-xl border border-slate-100 bg-white px-4 py-3 shadow-sm"
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+              {s.label}
+            </p>
+            <p className="mt-0.5 text-xl font-bold text-slate-900">{s.value}</p>
+          </div>
+        ))}
+      </div>
 
       <div className="grid items-start gap-6 xl:grid-cols-2">
         <BatchStudents
@@ -84,6 +119,7 @@ const BatchDetailAdminPage = async ({ params }: Props) => {
 
         <BatchSessions
           batchId={batch.id}
+          studentsCount={batch.students.length}
           sessions={batch.sessions.map((s) => ({
             id: s.id,
             date: s.date.toISOString(),

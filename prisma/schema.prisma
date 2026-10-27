@@ -228,6 +228,77 @@ model Enrollment {
   createdAt    DateTime @default(now())
   // Individual installment payments; paidAmount stays in sync via the payments API.
   payments Payment[]
+  // Batch membership and per-session attendance.
+  batchStudents BatchStudent[]
+  attendance    Attendance[]
+}
+
+/** A class batch (group of students running a course on a schedule). */
+model Batch {
+  id        String      @id @default(cuid())
+  /** Course title this batch runs (matches Enrollment.course). */
+  course    String
+  /** Display name, e.g. "Batch 3 — Evening". */
+  name      String
+  startDate DateTime?
+  /** Human-readable class schedule, e.g. "Sat, Mon, Wed — 6:00 PM". */
+  schedule  String      @default("")
+  /** Seat limit; 0 = unlimited. */
+  capacity  Int         @default(0)
+  status    BatchStatus @default(UPCOMING)
+  note      String      @default("")
+  createdAt DateTime    @default(now())
+  students  BatchStudent[]
+  sessions  ClassSession[]
+}
+
+/** Membership of one admission (student) in one batch. */
+model BatchStudent {
+  id           String     @id @default(cuid())
+  batchId      String
+  batch        Batch      @relation(fields: [batchId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  enrollmentId String
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  joinedAt     DateTime   @default(now())
+
+  @@unique([batchId, enrollmentId])
+  @@index([enrollmentId])
+}
+
+/** One class session of a batch (a day the class meets). */
+model ClassSession {
+  id        String   @id @default(cuid())
+  batchId   String
+  batch     Batch    @relation(fields: [batchId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  date      DateTime
+  topic     String   @default("")
+  createdAt DateTime @default(now())
+  attendance Attendance[]
+}
+
+/** One student's attendance for one class session. */
+model Attendance {
+  id           String           @id @default(cuid())
+  sessionId    String
+  session      ClassSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  enrollmentId String
+  enrollment   Enrollment       @relation(fields: [enrollmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  status       AttendanceStatus @default(PRESENT)
+  createdAt    DateTime         @default(now())
+
+  @@unique([sessionId, enrollmentId])
+}
+
+enum BatchStatus {
+  UPCOMING
+  RUNNING
+  COMPLETED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
 }
 
 /** One received payment (e.g. an installment) against an admission. */

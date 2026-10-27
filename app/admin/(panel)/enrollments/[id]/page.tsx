@@ -23,7 +23,10 @@ const AdmissionDetailsAdminPage = async ({ params }: Props) => {
   const [enrollment, courses] = await Promise.all([
     prisma.enrollment.findUnique({
       where: { id },
-      include: { payments: { orderBy: { paidAt: "desc" } } },
+      include: {
+        payments: { orderBy: { paidAt: "desc" } },
+        batchStudents: { include: { batch: { select: { id: true, name: true } } } },
+      },
     }),
     prisma.course.findMany({
       select: { title: true, admission: true, price: true, installmentPlan: true },
@@ -88,6 +91,29 @@ const AdmissionDetailsAdminPage = async ({ params }: Props) => {
         ]
       : []),
     { label: "Course", value: enrollment.course || "—" },
+    // Batch membership (usually one; a student can sit in multiple batches).
+    ...(enrollment.batchStudents.length > 0
+      ? [
+          {
+            label: "Batch",
+            value: (
+              <>
+                {enrollment.batchStudents.map((bs, i) => (
+                  <span key={bs.id}>
+                    {i > 0 && ", "}
+                    <a
+                      href={`/admin/batches/${bs.batch.id}`}
+                      className="text-blue-700 underline-offset-2 hover:underline"
+                    >
+                      {bs.batch.name}
+                    </a>
+                  </span>
+                ))}
+              </>
+            ),
+          },
+        ]
+      : []),
     { label: "Status", value: status.label },
     {
       label: "Applied",

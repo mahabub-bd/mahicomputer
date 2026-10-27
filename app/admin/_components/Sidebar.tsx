@@ -16,6 +16,7 @@ import {
   Handshake,
   Images,
   Inbox,
+  Layers,
   LayoutDashboard,
   LayoutGrid,
   LogOut,
@@ -66,6 +67,7 @@ const sections: SidebarSection[] = [
     links: [
       { href: "/admin/courses", label: "Courses", Icon: BookOpen },
       { href: "/admin/categories", label: "Categories", Icon: LayoutGrid },
+      { href: "/admin/batches", label: "Batches", Icon: Layers },
       { href: "/admin/enrollments", label: "Admissions", Icon: GraduationCap },
       { href: "/admin/students", label: "Students", Icon: UserCheck },
     ],

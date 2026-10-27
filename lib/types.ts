@@ -1,4 +1,7 @@
 import type {
+  Attendance,
+  Batch,
+  BatchStudent,
   Category,
   ContactMessage,
   Course,
@@ -20,6 +23,9 @@ import type {
 } from "@/app/generated/prisma/client";
 
 export type {
+  Attendance,
+  Batch,
+  BatchStudent,
   Category,
   ContactMessage,
   Course,

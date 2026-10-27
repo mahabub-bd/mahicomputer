@@ -12,9 +12,9 @@ import {
   Clock,
   Info,
   Mail,
-  Pencil,
   MailOpen,
   MessageSquare,
+  Pencil,
   Phone,
   Trash2,
   Undo2,
@@ -25,8 +25,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { apiDelete, apiPatch } from "./api";
 import AdmissionsForm from "./AdmissionsForm";
+import { apiDelete, apiPatch } from "./api";
 import EnrollmentPaymentModal from "./EnrollmentPaymentModal";
 import Modal from "./Modal";
 
@@ -134,7 +134,20 @@ const EnrollmentsList = ({ enrollments, courses }: EnrollmentsListProps) => {
   };
 
   if (enrollments.length === 0) {
-    return <p className="text-sm text-slate-500">No enrollments yet.</p>;
+    return (
+      <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50/60 p-8 text-center">
+        <p className="text-sm font-medium text-slate-600">No enrollments yet.</p>
+        <button onClick={() => setAddOpen(true)} className={`${btn("primary")} mt-4`}>
+          <UserPlus size={16} />
+          Add admission
+        </button>
+        <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Add admission" wide>
+          {addOpen && (
+            <AdmissionsForm courses={courses} onSuccess={() => setAddOpen(false)} />
+          )}
+        </Modal>
+      </div>
+    );
   }
 
   const counts: Record<StatusFilter, number> = {
@@ -273,7 +286,7 @@ const EnrollmentsList = ({ enrollments, courses }: EnrollmentsListProps) => {
                         className="h-12 w-12 shrink-0 rounded-2xl object-cover ring-1 ring-slate-200"
                       />
                     ) : (
-                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 text-sm font-bold text-blue-700 ring-1 ring-blue-200/70">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-blue-100 to-indigo-100 text-sm font-bold text-blue-700 ring-1 ring-blue-200/70">
                         {initials(en.name)}
                       </span>
                     )}
@@ -372,7 +385,7 @@ const EnrollmentsList = ({ enrollments, courses }: EnrollmentsListProps) => {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-wrap items-center gap-1.5 border-t border-slate-100 pt-3 xl:max-w-[360px] xl:justify-end xl:border-l xl:border-t-0 xl:pl-4 xl:pt-0">
+                  <div className="flex flex-wrap items-center gap-1.5 border-t border-slate-100 pt-3 xl:max-w-90 xl:justify-end xl:border-l xl:border-t-0 xl:pl-4 xl:pt-0">
                     <Link
                       href={`/admin/enrollments/${en.id}`}
                       title="Details"

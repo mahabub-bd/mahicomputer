@@ -261,6 +261,38 @@ export const paymentRecordSchema = z.object({
   nextDueDate: z.string().max(40).default(""),
 });
 
+/** A class batch: course, schedule and seat limit. startDate is a date string. */
+export const batchSchema = z.object({
+  course: z.string().min(1, "Select a course").max(200),
+  name: z.string().min(1, "Batch name is required").max(200),
+  startDate: z.string().max(40).default(""),
+  schedule: z.string().max(300).default(""),
+  capacity: z.coerce.number().int().min(0).max(500).default(0),
+  status: z.enum(["UPCOMING", "RUNNING", "COMPLETED"]).default("UPCOMING"),
+  note: z.string().max(2000).default(""),
+});
+
+/** Editing an existing batch — every field optional. */
+export const batchUpdateSchema = batchSchema.partial();
+
+/** One class session of a batch; date is a date string, topic optional. */
+export const classSessionSchema = z.object({
+  date: z.string().min(1, "Date is required").max(40),
+  topic: z.string().max(300).default(""),
+});
+
+/** Bulk attendance save for one session: one record per batch student. */
+export const attendanceSaveSchema = z.object({
+  records: z
+    .array(
+      z.object({
+        enrollmentId: z.string().min(1).max(50),
+        status: z.enum(["PRESENT", "ABSENT", "LATE"]),
+      }),
+    )
+    .max(500),
+});
+
 /**
  * Full admission form (admin-entered walk-in students): student profile,
  * photo and payment-free basics. dateOfBirth is a date-input string; the
@@ -385,6 +417,9 @@ export type NewsletterInput = z.infer<typeof newsletterSchema>;
 export type EnrollmentInput = z.infer<typeof enrollmentSchema>;
 export type EnrollmentPaymentInput = z.infer<typeof enrollmentPaymentSchema>;
 export type PaymentRecordInput = z.infer<typeof paymentRecordSchema>;
+export type BatchInput = z.infer<typeof batchSchema>;
+export type BatchUpdateInput = z.infer<typeof batchUpdateSchema>;
+export type ClassSessionInput = z.infer<typeof classSessionSchema>;
 export type AdmissionCreateInput = z.infer<typeof admissionCreateSchema>;
 export type AdmissionUpdateInput = z.infer<typeof admissionUpdateSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;

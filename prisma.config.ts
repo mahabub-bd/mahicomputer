@@ -1,11 +1,15 @@
 import { config } from "dotenv";
-import { defineConfig, env } from "prisma/config";
+import { defineConfig } from "prisma/config";
 
-// Prisma 7 no longer auto-loads env files; Next.js uses .env.local.
-// .env.local is gitignored — fall back to the (untracked) .env when it's absent.
-// dotenv never overrides keys it already saw, so .env.local keeps precedence.
+
 config({ path: ".env.local" });
 config({ path: ".env", quiet: true });
+
+
+const directUrl =
+  process.env.DIRECT_URL ??
+  process.env.DATABASE_URL ??
+  "postgresql://localhost:5432/placeholder";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -13,8 +17,8 @@ export default defineConfig({
     path: "prisma/migrations",
     seed: "tsx prisma/seed.ts",
   },
-  // CLI (migrate/introspect) uses the direct, non-pooled connection
+
   datasource: {
-    url: env("DIRECT_URL"),
+    url: directUrl,
   },
 });

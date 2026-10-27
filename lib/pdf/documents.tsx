@@ -1,3 +1,4 @@
+import type { Enrollment } from "@/lib/types";
 import {
   Document,
   Image,
@@ -6,13 +7,12 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import type { Enrollment } from "@/lib/types";
 import { registerPdfFonts } from "./fonts";
 
 /**
  * Printable documents for the admission module (server-side only — these
  * are rendered to PDF in API routes, never shipped to the browser).
- * All text uses Noto Sans Bengali so Bangla labels render correctly.
+ * All text uses Hind Siliguri so Bangla labels render correctly.
  */
 
 const taka = (n: number) => `৳${n.toLocaleString("en-BD")}`;
@@ -26,7 +26,7 @@ const bdDate = (d: Date | string) =>
 
 const s = StyleSheet.create({
   page: {
-    fontFamily: "NotoSansBengali",
+    fontFamily: "HindSiliguri",
     fontSize: 10,
     color: "#1e293b",
     padding: 36,

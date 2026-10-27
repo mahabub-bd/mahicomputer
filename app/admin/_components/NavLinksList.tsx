@@ -5,10 +5,12 @@ import { btn, btnIcon } from "@/components/form/buttonStyles";
 import { useZodForm } from "@/components/form/useZodForm";
 import type { NavLink } from "@/lib/types";
 import { navLinkSchema, type NavLinkInput } from "@/lib/validators";
-import { Pencil, Plus } from "lucide-react";
+import { Menu, Pencil, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
+import ListCard from "./ListCard";
 import Modal from "./Modal";
 import { apiPost, apiPut } from "./api";
 
@@ -142,8 +144,8 @@ const NavLinksList = ({ links }: NavLinksListProps) => {
             ))}
             {links.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-slate-500">
-                  No nav links yet.
+                <td colSpan={5} className="px-4 py-6">
+                  <EmptyState icon={Menu} title="No nav links yet." />
                 </td>
               </tr>
             )}
@@ -157,38 +159,21 @@ const NavLinksList = ({ links }: NavLinksListProps) => {
           and a wrapping action row. */}
       <ul className="space-y-3 md:hidden">
         {links.map((l) => (
-          <li key={l.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <p className="min-w-0 truncate font-medium text-slate-900">
-              {l.title}
-            </p>
-            <p className="truncate text-xs text-slate-400">{l.href}</p>
-
-            <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-              <div className="min-w-0">
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Class
-                </dt>
-                <dd className="mt-0.5 truncate text-sm font-medium text-slate-700">
-                  {l.cssClass}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Order
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  {l.order}
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-3">{actions(l)}</div>
-          </li>
+          <ListCard
+            key={l.id}
+            title={l.title}
+            subtitle={l.href}
+            fields={[
+              { label: "Class", value: l.cssClass },
+              { label: "Order", value: l.order },
+            ]}
+            actions={actions(l)}
+          />
         ))}
 
         {links.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No nav links yet.
+          <li>
+            <EmptyState icon={Menu} title="No nav links yet." />
           </li>
         )}
       </ul>

@@ -2,9 +2,11 @@
 
 import { btn, btnIcon } from "@/components/form/buttonStyles";
 import type { Newsletter } from "@/lib/types";
-import { Pencil, Plus } from "lucide-react";
+import { Pencil, Plus, Send } from "lucide-react";
 import { useState } from "react";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
+import ListCard from "./ListCard";
 import Modal from "./Modal";
 import NewsletterForm from "./NewsletterForm";
 
@@ -104,8 +106,8 @@ const NewslettersList = ({ newsletters }: NewslettersListProps) => {
             ))}
             {newsletters.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-slate-500">
-                  No newsletters yet.
+                <td colSpan={6} className="px-4 py-6">
+                  <EmptyState icon={Send} title="No newsletters yet." />
                 </td>
               </tr>
             )}
@@ -116,44 +118,29 @@ const NewslettersList = ({ newsletters }: NewslettersListProps) => {
       {/* ---------- below md: one card per newsletter ---------- */}
       <ul className="space-y-3 md:hidden">
         {newsletters.map((n) => (
-          <li key={n.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <div className="flex items-start justify-between gap-2">
-              <p className="min-w-0 flex-1 truncate font-medium text-slate-900">
-                {n.title}
-              </p>
-              <span className="shrink-0">{statusPill(n.published)}</span>
-            </div>
-            <p className="truncate text-xs text-slate-400">{fmtDate(n.date)}</p>
-            {n.body && (
-              <p className="mt-0.5 line-clamp-3 whitespace-pre-wrap text-xs text-slate-500">
-                {n.body}
-              </p>
-            )}
-
-            <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-              <div className="min-w-0">
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Published by
-                </dt>
-                <dd className="mt-0.5 truncate text-sm font-medium text-slate-700">
-                  {n.publishedBy?.name || "—"}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Order
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">{n.order}</dd>
-              </div>
-            </dl>
-
-            <div className="mt-3">{actions(n)}</div>
-          </li>
+          <ListCard
+            key={n.id}
+            title={n.title}
+            subtitle={fmtDate(n.date)}
+            badges={statusPill(n.published)}
+            body={
+              n.body ? (
+                <p className="line-clamp-3 whitespace-pre-wrap text-xs text-slate-500">
+                  {n.body}
+                </p>
+              ) : undefined
+            }
+            fields={[
+              { label: "Published by", value: n.publishedBy?.name || "—" },
+              { label: "Order", value: n.order },
+            ]}
+            actions={actions(n)}
+          />
         ))}
 
         {newsletters.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No newsletters yet.
+          <li>
+            <EmptyState icon={Send} title="No newsletters yet." />
           </li>
         )}
       </ul>

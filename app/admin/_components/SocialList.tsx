@@ -5,6 +5,8 @@ import type { SocialLink } from "@/lib/types";
 import { Link2, Pencil, Plus } from "lucide-react";
 import { useState } from "react";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
+import ListCard, { CardThumb } from "./ListCard";
 import Modal from "./Modal";
 import SocialForm from "./SocialForm";
 
@@ -110,8 +112,8 @@ const SocialList = ({ links, embedded = false }: SocialListProps) => {
             ))}
             {links.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-slate-500">
-                  No social links yet.
+                <td colSpan={4} className="px-4 py-6">
+                  <EmptyState icon={Link2} title="No social links yet." />
                 </td>
               </tr>
             )}
@@ -124,38 +126,18 @@ const SocialList = ({ links, embedded = false }: SocialListProps) => {
           order, and a wrapping action row. */}
       <ul className="space-y-3 md:hidden">
         {links.map((s) => (
-          <li key={s.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              {s.icon && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={s.icon}
-                  alt=""
-                  loading="lazy" decoding="async"
-                      className="h-8 w-8 shrink-0 object-contain"
-                />
-              )}
-              <div className="min-w-0 flex-1">{url(s)}</div>
-            </div>
-
-            <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Order
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  {s.order}
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-3">{actions(s)}</div>
-          </li>
+          <ListCard
+            key={s.id}
+            title={url(s)}
+            media={s.icon ? <CardThumb src={s.icon} fit="contain" /> : undefined}
+            fields={[{ label: "Order", value: s.order }]}
+            actions={actions(s)}
+          />
         ))}
 
         {links.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No social links yet.
+          <li>
+            <EmptyState icon={Link2} title="No social links yet." />
           </li>
         )}
       </ul>

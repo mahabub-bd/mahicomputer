@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { toast } from "sonner";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Link2, Pencil, Plus, Trash2 } from "lucide-react";
 import type { FooterLinkGroupWithLinks } from "@/lib/data";
 import { footerGroupSchema, type FooterGroupInput } from "@/lib/validators";
 import { apiPost, apiPut } from "./api";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
 import Modal from "./Modal";
 import { Button, Field, Input, SubmitButton } from "@/components/form/FormControls";
 import { btnIcon } from "@/components/form/buttonStyles";
@@ -185,9 +186,11 @@ const FooterLinksList = ({ groups }: FooterLinksListProps) => {
           </div>
         ))}
         {groups.length === 0 && (
-          <p className="py-8 text-center text-sm text-slate-500 md:col-span-2">
-            No footer groups yet.
-          </p>
+          <EmptyState
+            icon={Link2}
+            title="No footer groups yet."
+            className="md:col-span-2"
+          />
         )}
       </div>
 

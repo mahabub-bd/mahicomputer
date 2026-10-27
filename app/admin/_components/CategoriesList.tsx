@@ -2,10 +2,12 @@
 
 import { btnIcon } from "@/components/form/buttonStyles";
 import type { Category, CategoryWithCourseCount } from "@/lib/types";
-import { Info, Pencil, Plus } from "lucide-react";
+import { Info, Pencil, Plus, Tags } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import CategoryForm from "./CategoryForm";
+import EmptyState from "./EmptyState";
+import ListCard, { CardThumb } from "./ListCard";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import useEditDeepLink from "./useEditDeepLink";
@@ -125,8 +127,8 @@ const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
               ))}
               {categories.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-slate-500">
-                    No categories yet.
+                  <td colSpan={5} className="px-4 py-6">
+                    <EmptyState icon={Tags} title="No categories yet." />
                   </td>
                 </tr>
               )}
@@ -141,54 +143,23 @@ const CategoriesList = ({ categories, editId }: CategoriesListProps) => {
           courses / order grid and a wrapping action row. */}
       <ul className="space-y-3 md:hidden">
         {categories.map((c) => (
-          <li key={c.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              {c.imageUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={c.imageUrl}
-                  alt=""
-                  loading="lazy" decoding="async"
-                      className="h-10 w-10 shrink-0 rounded object-contain"
-                />
-              )}
-              <div className="min-w-0 flex-1">
-                <Link
-                  href={`/admin/categories/${c.id}`}
-                  className="block truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
-                >
-                  {c.title}
-                </Link>
-                {c.alt && (
-                  <p className="truncate text-xs text-slate-400">{c.alt}</p>
-                )}
-              </div>
-            </div>
-
-            <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Courses
-                </dt>
-                <dd className="mt-0.5">{countPill(c._count.courses)}</dd>
-              </div>
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Order
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  {c.order}
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-3">{actions(c)}</div>
-          </li>
+          <ListCard
+            key={c.id}
+            href={`/admin/categories/${c.id}`}
+            title={c.title}
+            subtitle={c.alt}
+            media={<CardThumb src={c.imageUrl} fit="contain" />}
+            fields={[
+              { label: "Courses", value: countPill(c._count.courses) },
+              { label: "Order", value: c.order },
+            ]}
+            actions={actions(c)}
+          />
         ))}
 
         {categories.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No categories yet.
+          <li>
+            <EmptyState icon={Tags} title="No categories yet." />
           </li>
         )}
       </ul>

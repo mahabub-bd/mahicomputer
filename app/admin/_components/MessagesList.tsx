@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { apiDelete, apiPatch } from "./api";
+import EmptyState from "./EmptyState";
 
 interface MessagesListProps {
   messages: ContactMessage[];
@@ -52,7 +53,7 @@ const MessagesList = ({ messages }: MessagesListProps) => {
   };
 
   if (messages.length === 0) {
-    return <p className="text-sm text-slate-500">No messages yet.</p>;
+    return <EmptyState icon={Mail} title="No messages yet." />;
   }
 
   return (

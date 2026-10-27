@@ -24,7 +24,7 @@ const toHref = (id: string) =>
   id.startsWith("#") ? `/${id}` : id.startsWith("/") ? id : `/${id}`;
 
 /** No-op subscriber for useSyncExternalStore's mounted check. */
-const subscribeNoop = () => () => {};
+const subscribeNoop = () => () => { };
 
 const TogglerMenu = ({
   courses = [],
@@ -91,9 +91,8 @@ const TogglerMenu = ({
             <div
               onClick={close}
               aria-hidden
-              className={`fixed inset-0 z-90 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 ${
-                open ? "opacity-100" : "pointer-events-none opacity-0"
-              }`}
+              className={`fixed inset-0 z-90 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 ${open ? "opacity-100" : "pointer-events-none opacity-0"
+                }`}
             />
 
             {/* Drawer */}
@@ -103,9 +102,8 @@ const TogglerMenu = ({
               aria-modal="true"
               aria-label="Site menu"
               inert={!open}
-              className={`fixed inset-y-0 right-0 z-100 flex w-[86%] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out ${
-                open ? "translate-x-0" : "translate-x-full"
-              }`}
+              className={`fixed inset-y-0 right-0 z-100 flex w-[86%] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out ${open ? "translate-x-0" : "translate-x-full"
+                }`}
             >
               {/* Header: logo + close */}
               <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
@@ -138,16 +136,14 @@ const TogglerMenu = ({
                       "feature-hoverable",
                     );
                     const href = toHref(nav.id);
-                    // Anchor links (#about) can't be read from the pathname,
-                    // but their route ("/about", "/courses") can — so opening
-                    // /courses still lights up the Courses row.
+
                     const isActive = href.startsWith("/#")
                       ? pathname === `/${nav.id.slice(1)}` ||
-                        pathname.startsWith(`/${nav.id.slice(1)}/`)
+                      pathname.startsWith(`/${nav.id.slice(1)}/`)
                       : href === "/"
                         ? pathname === "/"
                         : pathname === href ||
-                          pathname.startsWith(`${href}/`);
+                        pathname.startsWith(`${href}/`);
 
                     if (hasDropdown && courses.length > 0) {
                       return (
@@ -169,11 +165,10 @@ const TogglerMenu = ({
                         <Link
                           href={href}
                           onClick={close}
-                          className={`block rounded-xl px-3 py-2.5 text-[15px] font-semibold transition-colors ${
-                            isActive
+                          className={`block rounded-xl px-3 py-2.5 text-[15px] font-semibold transition-colors ${isActive
                               ? "bg-blue-50 text-blue-700"
                               : "text-slate-700 hover:bg-slate-50 hover:text-blue-700"
-                          }`}
+                            }`}
                         >
                           {nav.title}
                         </Link>

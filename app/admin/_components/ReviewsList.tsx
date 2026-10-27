@@ -6,6 +6,8 @@ import { Info, Pencil, Plus, Star } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
+import ListCard, { CardThumb } from "./ListCard";
 import Modal from "./Modal";
 import ReviewForm from "./ReviewForm";
 import useEditDeepLink from "./useEditDeepLink";
@@ -127,8 +129,8 @@ const ReviewsList = ({ reviews, courses, editId }: ReviewsListProps) => {
             ))}
             {reviews.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-slate-500">
-                  No reviews yet.
+                <td colSpan={5} className="px-4 py-6">
+                  <EmptyState icon={Star} title="No reviews yet." />
                 </td>
               </tr>
             )}
@@ -142,57 +144,24 @@ const ReviewsList = ({ reviews, courses, editId }: ReviewsListProps) => {
           the comment, a course / order grid and a wrapping action row. */}
       <ul className="space-y-3 md:hidden">
         {reviews.map((r) => (
-          <li key={r.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              {r.imageUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={r.imageUrl}
-                  alt=""
-                  loading="lazy" decoding="async"
-                      className="h-10 w-10 shrink-0 rounded-full object-cover"
-                />
-              )}
-              <div className="min-w-0 flex-1">
-                <div className="flex items-start justify-between gap-2">
-                  <Link
-                    href={`/admin/reviews/${r.id}`}
-                    className="min-w-0 flex-1 truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
-                  >
-                    {r.name}
-                  </Link>
-                  <span className="shrink-0">{rating(r.rating)}</span>
-                </div>
-                <p className="truncate text-xs text-slate-400">{r.content}</p>
-              </div>
-            </div>
-
-            <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-              <div className="min-w-0">
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Course
-                </dt>
-                <dd className="mt-0.5 truncate text-sm font-medium text-slate-700">
-                  {r.course}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Order
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  {r.order}
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-3">{actions(r)}</div>
-          </li>
+          <ListCard
+            key={r.id}
+            href={`/admin/reviews/${r.id}`}
+            title={r.name}
+            subtitle={r.content}
+            media={<CardThumb src={r.imageUrl} shape="avatar" />}
+            badges={rating(r.rating)}
+            fields={[
+              { label: "Course", value: r.course },
+              { label: "Order", value: r.order },
+            ]}
+            actions={actions(r)}
+          />
         ))}
 
         {reviews.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No reviews yet.
+          <li>
+            <EmptyState icon={Star} title="No reviews yet." />
           </li>
         )}
       </ul>

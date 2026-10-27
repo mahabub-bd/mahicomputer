@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Enrollment } from "@/lib/types";
-import { Phone } from "lucide-react";
+import { GraduationCap, Phone } from "lucide-react";
+import EmptyState from "./EmptyState";
 
 interface StudentsListProps {
   students: Enrollment[];
@@ -15,9 +16,11 @@ interface StudentsListProps {
 const StudentsList = ({ students, courses }: StudentsListProps) => {
   if (students.length === 0) {
     return (
-      <p className="text-sm text-slate-500">
-        No students yet — approve an admission to create one.
-      </p>
+      <EmptyState
+        icon={GraduationCap}
+        title="No students yet."
+        description="Approve an admission to create one."
+      />
     );
   }
 

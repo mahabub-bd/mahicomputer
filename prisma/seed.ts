@@ -18,6 +18,24 @@ import { partners } from "./seed-data/partners";
 import { review } from "./seed-data/review";
 import { socialMedia } from "./seed-data/socialMedia";
 import { stats } from "./seed-data/stats";
+import {
+  dummyBatches,
+  dummyEnrollments,
+  dummyMessages,
+  dummyNewsletters,
+  dummyNotices,
+  dummyPosts,
+  dummySubscribers,
+  paymentChunks,
+} from "./seed-data/dummy";
+import {
+  categoryImages,
+  courseImages,
+  galleryImages,
+  instructorImages,
+  partnerImages,
+  reviewImages,
+} from "./seed-data/blob-urls";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -27,7 +45,7 @@ async function main() {
   const email = (process.env.ADMIN_EMAIL || "admin@mahicomputerbd.com").toLowerCase();
   const password = process.env.ADMIN_PASSWORD || "changeme";
   const passwordHash = await bcrypt.hash(password, 10);
-  await prisma.user.upsert({
+  const admin = await prisma.user.upsert({
     where: { email },
     update: { passwordHash },
     create: { email, passwordHash, name: "Admin" },
@@ -65,7 +83,7 @@ async function main() {
       title: c.title,
       tag: c.tag,
       tagbg: c.tagbg,
-      imageUrl: c.courseImg,
+      imageUrl: courseImages[c.link] ?? c.courseImg,
       imageAlt: c.courseImgalt,
       lesson: c.lesson,
       duration: c.duration,
@@ -84,7 +102,7 @@ async function main() {
   await prisma.category.createMany({
     data: [...categories, ...extraCategories].map((c, i) => ({
       title: c.title,
-      imageUrl: c.img,
+      imageUrl: categoryImages[c.title] ?? c.img,
       alt: c.alt,
       order: i,
     })),
@@ -108,7 +126,7 @@ async function main() {
       content: r.content,
       course: r.course,
       rating: r.rating,
-      imageUrl: r.img,
+      imageUrl: reviewImages[i] ?? r.img,
       order: i,
     })),
   });
@@ -116,7 +134,7 @@ async function main() {
   await prisma.partner.deleteMany();
   await prisma.partner.createMany({
     data: partners.map((p, i) => ({
-      imageUrl: p.img,
+      imageUrl: partnerImages[p.alt] ?? p.img,
       alt: p.alt,
       order: i,
     })),
@@ -125,7 +143,7 @@ async function main() {
   await prisma.galleryItem.deleteMany();
   await prisma.galleryItem.createMany({
     data: gallery.map((g, i) => ({
-      imageUrl: g.img,
+      imageUrl: galleryImages[i] ?? g.img,
       alt: g.alt,
       order: i,
     })),
@@ -177,6 +195,148 @@ async function main() {
     });
   }
 
+  // ---- Dummy data: admissions, batches, sessions, attendance, payments ----
+  // All invented students; delete-and-recreate like the sections above.
+  await prisma.attendance.deleteMany();
+  await prisma.classSession.deleteMany();
+  await prisma.batchStudent.deleteMany();
+  await prisma.batch.deleteMany();
+  await prisma.payment.deleteMany();
+  await prisma.enrollment.deleteMany();
+  await prisma.notice.deleteMany();
+  await prisma.post.deleteMany();
+  await prisma.newsletter.deleteMany();
+  await prisma.newsletterSubscriber.deleteMany();
+  await prisma.contactMessage.deleteMany();
+
+  // Admissions (with student IDs + payment history for approved ones).
+  const enrollmentIds: string[] = [];
+  for (const e of dummyEnrollments) {
+    const paid = e.paidAmount ?? 0;
+    const created = await prisma.enrollment.create({
+      data: {
+        name: e.name,
+        phone: e.phone,
+        email: e.email,
+        course: e.course,
+        message: e.message,
+        status: e.status,
+        read: e.status !== "PENDING",
+        studentId: e.studentId ?? "",
+        courseFee: e.courseFee ?? 0,
+        installmentPlan: e.installmentPlan ?? [],
+        discount: e.discount ?? 0,
+        paidAmount: paid,
+        paymentMethod: e.paymentMethod ?? "",
+        gender: e.gender ?? "",
+        fatherName: e.fatherName ?? "",
+        motherName: e.motherName ?? "",
+        education: e.education ?? "",
+        address: e.address ?? "",
+        guardianName: e.guardianName ?? "",
+        guardianPhone: e.guardianPhone ?? "",
+        createdAt: new Date(e.appliedAt ?? "2026-10-05"),
+        // One Payment row per installment chunk actually collected.
+        payments: {
+          create: paymentChunks(e).map((amount, i) => ({
+            amount,
+            method: e.paymentMethod ?? "Cash",
+            paidAt: new Date(`2026-10-${String(3 + i * 7).padStart(2, "0")}`),
+          })),
+        },
+      },
+    });
+    enrollmentIds.push(created.id);
+  }
+
+  // Batches with students, class sessions and attendance.
+  for (const b of dummyBatches) {
+    const batch = await prisma.batch.create({
+      data: {
+        course: b.course,
+        name: b.name,
+        startDate: new Date(b.startDate),
+        schedule: b.schedule,
+        capacity: b.capacity,
+        status: b.status,
+        note: b.note,
+        students: {
+          create: b.students.map((i) => ({ enrollmentId: enrollmentIds[i] })),
+        },
+        sessions: {
+          create: b.sessions.map((s) => ({
+            date: new Date(s.date),
+            topic: s.topic,
+          })),
+        },
+      },
+      include: { sessions: { orderBy: { date: "asc" } } },
+    });
+
+    for (const [si, marks] of b.attendance.entries()) {
+      const session = batch.sessions[si];
+      if (!session) continue;
+      await prisma.attendance.createMany({
+        data: b.students.map((ei, mi) => ({
+          sessionId: session.id,
+          enrollmentId: enrollmentIds[ei],
+          status:
+            marks[mi] === "A" ? "ABSENT" : marks[mi] === "L" ? "LATE" : "PRESENT",
+        })),
+      });
+    }
+  }
+
+  // Notices / newsletters / blog posts / subscribers / contact messages.
+  await prisma.notice.createMany({
+    data: dummyNotices.map((n, i) => ({
+      title: n.title,
+      body: n.body,
+      published: n.published,
+      date: new Date(`2026-10-${String(25 - i * 5).padStart(2, "0")}`),
+      order: i,
+      publishedById: admin.id,
+    })),
+  });
+
+  await prisma.newsletter.createMany({
+    data: dummyNewsletters.map((n, i) => ({
+      title: n.title,
+      body: n.body,
+      published: n.published,
+      order: i,
+      publishedById: admin.id,
+    })),
+  });
+
+  const firstInstructor = await prisma.instructor.findFirst({ orderBy: { order: "asc" } });
+  await prisma.post.createMany({
+    data: dummyPosts.map((p, i) => ({
+      slug: p.slug,
+      title: p.title,
+      excerpt: p.excerpt,
+      content: p.content,
+      published: p.published,
+      authorId: firstInstructor?.id,
+      publishedById: admin.id,
+      createdAt: new Date(`2026-10-${String(26 - i * 8).padStart(2, "0")}`),
+    })),
+  });
+
+  await prisma.newsletterSubscriber.createMany({
+    data: dummySubscribers.map((email, i) => ({
+      email,
+      createdAt: new Date(`2026-10-${String(26 - i * 4).padStart(2, "0")}`),
+    })),
+  });
+
+  await prisma.contactMessage.createMany({
+    data: dummyMessages.map((m, i) => ({
+      ...m,
+      createdAt: new Date(`2026-10-${String(27 - i * 3).padStart(2, "0")}`),
+    })),
+  });
+
   console.log("Seeded:", {
     courses: courses.length,
     categories: categories.length,
@@ -188,6 +348,11 @@ async function main() {
     navLinks: navLinks.length,
     faqs: faqs.length,
     footerGroups: footerLinks.length,
+    enrollments: dummyEnrollments.length,
+    batches: dummyBatches.length,
+    notices: dummyNotices.length,
+    posts: dummyPosts.length,
+    messages: dummyMessages.length,
     admin: email,
   });
 }

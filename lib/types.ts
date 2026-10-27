@@ -46,32 +46,28 @@ export type {
   SocialLink
 };
 
-/** Course row with its linked category + instructor (getAllCourses include payload). */
+
 export type CourseWithCategory = Course & {
   category: Category | null;
   instructor: Instructor | null;
 };
 
-/** Blog post row with its linked author (instructor) include payload. */
+
 export type PostWithAuthor = Post & {
   author: { name: string; imageUrl: string; description?: string } | null;
 };
 
-/** Instructor row with its linked-course count (_count include payload). */
+
 export type InstructorWithCourseCount = Instructor & {
   _count: { courses: number };
 };
 
-/** Category row with its linked-course count (_count include payload). */
+
 export type CategoryWithCourseCount = Category & {
   _count: { courses: number };
 };
 
-/**
- * View models — same shapes the components always used, except images are
- * plain URL strings ("/images/..." or "/uploads/...") instead of
- * StaticImageData, since they now come from the database.
- */
+
 export interface CourseView {
   courseImg: string;
   courseImgalt: string;

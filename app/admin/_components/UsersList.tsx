@@ -5,6 +5,8 @@ import type { UserView } from "@/lib/types";
 import { Pencil, Plus, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
+import ListCard from "./ListCard";
 import Modal from "./Modal";
 import UserForm from "./UserForm";
 
@@ -110,8 +112,8 @@ const UsersList = ({ users }: UsersListProps) => {
             ))}
             {users.length === 0 && (
               <tr>
-                <td colSpan={3} className="px-4 py-8 text-center text-slate-500">
-                  No admin accounts found.
+                <td colSpan={3} className="px-4 py-6">
+                  <EmptyState icon={ShieldCheck} title="No admin accounts found." />
                 </td>
               </tr>
             )}
@@ -125,35 +127,19 @@ const UsersList = ({ users }: UsersListProps) => {
           date and a wrapping action row. */}
       <ul className="space-y-3 md:hidden">
         {users.map((u) => (
-          <li key={u.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <div className="flex items-center gap-3">
-              {avatar(u)}
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-medium text-slate-900">
-                  {u.name || "Admin"}
-                </p>
-                <p className="truncate text-xs text-slate-400">{u.email}</p>
-              </div>
-            </div>
-
-            <dl className="mt-3 grid grid-cols-1 gap-2 border-t border-slate-100 pt-3">
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Created
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  {fmtDate(u)}
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-3">{actions(u)}</div>
-          </li>
+          <ListCard
+            key={u.id}
+            title={u.name || "Admin"}
+            subtitle={u.email}
+            media={avatar(u)}
+            fields={[{ label: "Created", value: fmtDate(u) }]}
+            actions={actions(u)}
+          />
         ))}
 
         {users.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No admin accounts found.
+          <li>
+            <EmptyState icon={ShieldCheck} title="No admin accounts found." />
           </li>
         )}
       </ul>

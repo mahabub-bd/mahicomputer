@@ -1,6 +1,9 @@
 "use client";
 
+import { Mail } from "lucide-react";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
+import ListCard from "./ListCard";
 
 interface NewsletterListProps {
   subscribers: { id: string; email: string; createdAt: Date | string }[];
@@ -53,8 +56,8 @@ const NewsletterList = ({ subscribers }: NewsletterListProps) => {
             ))}
             {subscribers.length === 0 && (
               <tr>
-                <td colSpan={3} className="px-4 py-8 text-center text-slate-500">
-                  No subscribers yet.
+                <td colSpan={3} className="px-4 py-6">
+                  <EmptyState icon={Mail} title="No subscribers yet." />
                 </td>
               </tr>
             )}
@@ -65,18 +68,17 @@ const NewsletterList = ({ subscribers }: NewsletterListProps) => {
       {/* ---------- below md: one card per subscriber ---------- */}
       <ul className="space-y-3 md:hidden">
         {subscribers.map((s) => (
-          <li key={s.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <p className="min-w-0 truncate font-medium text-slate-900">{s.email}</p>
-            <p className="mt-0.5 truncate text-xs text-slate-400">
-              Subscribed {fmtDate(s.createdAt)}
-            </p>
-            <div className="mt-3">{actions(s)}</div>
-          </li>
+          <ListCard
+            key={s.id}
+            title={s.email}
+            subtitle={`Subscribed ${fmtDate(s.createdAt)}`}
+            actions={actions(s)}
+          />
         ))}
 
         {subscribers.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No subscribers yet.
+          <li>
+            <EmptyState icon={Mail} title="No subscribers yet." />
           </li>
         )}
       </ul>

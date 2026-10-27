@@ -2,9 +2,11 @@
 
 import { btn, btnIcon } from "@/components/form/buttonStyles";
 import type { Partner } from "@/lib/types";
-import { Pencil, Plus } from "lucide-react";
+import { Handshake, Pencil, Plus } from "lucide-react";
 import { useState } from "react";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
+import ListCard, { CardThumb } from "./ListCard";
 import Modal from "./Modal";
 import PartnerForm from "./PartnerForm";
 
@@ -87,8 +89,8 @@ const PartnersList = ({ partners }: PartnersListProps) => {
             ))}
             {partners.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-slate-500">
-                  No partners yet.
+                <td colSpan={4} className="px-4 py-6">
+                  <EmptyState icon={Handshake} title="No partners yet." />
                 </td>
               </tr>
             )}
@@ -101,42 +103,18 @@ const PartnersList = ({ partners }: PartnersListProps) => {
           order, and a wrapping action row. */}
       <ul className="space-y-3 md:hidden">
         {partners.map((p) => (
-          <li key={p.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              <div className="flex h-12 w-24 shrink-0 items-center justify-center overflow-hidden rounded-md border border-slate-100 bg-slate-50 p-1">
-                {p.imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={p.imageUrl}
-                    alt={p.alt}
-                    loading="lazy" decoding="async"
-                      className="max-h-full max-w-full object-contain"
-                  />
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-medium text-slate-900">{p.alt}</p>
-              </div>
-            </div>
-
-            <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Order
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  {p.order}
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-3">{actions(p)}</div>
-          </li>
+          <ListCard
+            key={p.id}
+            title={p.alt}
+            media={<CardThumb src={p.imageUrl} shape="wide" fit="contain" alt={p.alt} />}
+            fields={[{ label: "Order", value: p.order }]}
+            actions={actions(p)}
+          />
         ))}
 
         {partners.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No partners yet.
+          <li>
+            <EmptyState icon={Handshake} title="No partners yet." />
           </li>
         )}
       </ul>

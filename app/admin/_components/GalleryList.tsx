@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Plus } from "lucide-react";
+import { Image as ImageIcon, Pencil, Plus } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
 import GalleryForm from "./GalleryForm";
 import Modal from "./Modal";
 import { btn, btnIcon } from "@/components/form/buttonStyles";
@@ -67,9 +68,11 @@ const GalleryList = ({ items }: GalleryListProps) => {
           </div>
         ))}
         {items.length === 0 && (
-          <p className="col-span-full py-8 text-center text-sm text-slate-500">
-            No gallery images yet.
-          </p>
+          <EmptyState
+            icon={ImageIcon}
+            title="No gallery images yet."
+            className="col-span-full"
+          />
         )}
       </div>
 

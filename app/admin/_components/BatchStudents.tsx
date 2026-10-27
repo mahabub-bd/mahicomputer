@@ -4,8 +4,9 @@ import { btnIcon } from "@/components/form/buttonStyles";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { UserPlus, X } from "lucide-react";
+import { UserPlus, Users, X } from "lucide-react";
 import { apiDelete, apiPost } from "./api";
+import EmptyState from "./EmptyState";
 import { Select } from "@/components/form/FormControls";
 
 interface BatchStudentsProps {
@@ -105,9 +106,11 @@ const BatchStudents = ({ batchId, capacity, students, candidates }: BatchStudent
       </div>
 
       {students.length === 0 ? (
-        <p className="text-sm text-slate-400">
-          No students in this batch yet — add approved admissions above.
-        </p>
+        <EmptyState
+          icon={Users}
+          title="No students in this batch yet."
+          description="Add approved admissions above."
+        />
       ) : (
         <ul className="divide-y divide-slate-100">
           {students.map((s) => (

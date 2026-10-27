@@ -2,10 +2,12 @@
 
 import { btnIcon } from "@/components/form/buttonStyles";
 import type { Instructor, InstructorWithCourseCount } from "@/lib/types";
-import { Info, Pencil, Plus } from "lucide-react";
+import { Info, Pencil, Plus, Users } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
+import ListCard, { CardThumb } from "./ListCard";
 import InstructorForm from "./InstructorForm";
 import Modal from "./Modal";
 import useEditDeepLink from "./useEditDeepLink";
@@ -122,8 +124,8 @@ const InstructorsList = ({ instructors, editId }: InstructorsListProps) => {
             ))}
             {instructors.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-slate-500">
-                  No instructors yet.
+                <td colSpan={5} className="px-4 py-6">
+                  <EmptyState icon={Users} title="No instructors yet." />
                 </td>
               </tr>
             )}
@@ -137,56 +139,23 @@ const InstructorsList = ({ instructors, editId }: InstructorsListProps) => {
           compact courses / order grid and a wrapping action row. */}
       <ul className="space-y-3 md:hidden">
         {instructors.map((i) => (
-          <li key={i.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              {i.imageUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={i.imageUrl}
-                  alt=""
-                  loading="lazy" decoding="async"
-                      className="h-10 w-10 shrink-0 rounded-full object-cover"
-                />
-              )}
-              <div className="min-w-0 flex-1">
-                <Link
-                  href={`/admin/instructors/${i.id}`}
-                  className="block truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
-                >
-                  {i.name}
-                </Link>
-                {i.description && (
-                  <p className="truncate text-xs text-slate-400">
-                    {i.description}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Courses
-                </dt>
-                <dd className="mt-0.5">{countPill(i._count.courses)}</dd>
-              </div>
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Order
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  {i.order}
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-3">{actions(i)}</div>
-          </li>
+          <ListCard
+            key={i.id}
+            href={`/admin/instructors/${i.id}`}
+            title={i.name}
+            subtitle={i.description}
+            media={<CardThumb src={i.imageUrl} shape="avatar" />}
+            fields={[
+              { label: "Courses", value: countPill(i._count.courses) },
+              { label: "Order", value: i.order },
+            ]}
+            actions={actions(i)}
+          />
         ))}
 
         {instructors.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No instructors yet.
+          <li>
+            <EmptyState icon={Users} title="No instructors yet." />
           </li>
         )}
       </ul>

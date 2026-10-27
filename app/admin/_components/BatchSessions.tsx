@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { CalendarPlus, Link2, Trash2, Users } from "lucide-react";
 import Link from "next/link";
 import { apiDelete, apiPost } from "./api";
+import EmptyState from "./EmptyState";
 import { Field, Input } from "@/components/form/FormControls";
 
 interface BatchSessionsProps {
@@ -81,9 +82,11 @@ const BatchSessions = ({ batchId, sessions }: BatchSessionsProps) => {
       </div>
 
       {sessions.length === 0 ? (
-        <p className="text-sm text-slate-400">
-          No sessions yet — add each class day to take attendance.
-        </p>
+        <EmptyState
+          icon={CalendarPlus}
+          title="No sessions yet."
+          description="Add each class day to take attendance."
+        />
       ) : (
         <ul className="divide-y divide-slate-100">
           {sessions.map((s, i) => (

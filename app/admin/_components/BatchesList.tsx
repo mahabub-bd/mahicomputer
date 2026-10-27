@@ -18,6 +18,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { apiDelete } from "./api";
 import BatchForm from "./BatchForm";
+import EmptyState from "./EmptyState";
 import Modal from "./Modal";
 
 interface BatchesListProps {
@@ -66,7 +67,11 @@ const BatchesList = ({ batches, courses }: BatchesListProps) => {
       </div>
 
       {batches.length === 0 ? (
-        <p className="text-sm text-slate-500">No batches yet — create the first one.</p>
+        <EmptyState
+          icon={Layers}
+          title="No batches yet."
+          description="Create the first one to start enrolling students."
+        />
       ) : (
         <div className="space-y-4">
           {batches.map((batch) => {

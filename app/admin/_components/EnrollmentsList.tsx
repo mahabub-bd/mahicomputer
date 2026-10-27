@@ -9,6 +9,7 @@ import {
   CalendarClock,
   CheckCheck,
   CheckCircle2,
+  ClipboardList,
   Clock,
   Info,
   Mail,
@@ -26,6 +27,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import AdmissionsForm from "./AdmissionsForm";
+import EmptyState from "./EmptyState";
 import { apiDelete, apiPatch } from "./api";
 import EnrollmentPaymentModal from "./EnrollmentPaymentModal";
 import Modal from "./Modal";
@@ -135,18 +137,23 @@ const EnrollmentsList = ({ enrollments, courses }: EnrollmentsListProps) => {
 
   if (enrollments.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50/60 p-8 text-center">
-        <p className="text-sm font-medium text-slate-600">No enrollments yet.</p>
-        <button onClick={() => setAddOpen(true)} className={`${btn("primary")} mt-4`}>
-          <UserPlus size={16} />
-          Add admission
-        </button>
+      <>
+        <EmptyState
+          icon={ClipboardList}
+          title="No enrollments yet."
+          action={
+            <button onClick={() => setAddOpen(true)} className={btn("primary")}>
+              <UserPlus size={16} />
+              Add admission
+            </button>
+          }
+        />
         <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Add admission" wide>
           {addOpen && (
             <AdmissionsForm courses={courses} onSuccess={() => setAddOpen(false)} />
           )}
         </Modal>
-      </div>
+      </>
     );
   }
 
@@ -253,7 +260,7 @@ const EnrollmentsList = ({ enrollments, courses }: EnrollmentsListProps) => {
       </Modal>
 
       {visible.length === 0 ? (
-        <p className="text-sm text-slate-500">No enrollments for this filter.</p>
+        <EmptyState icon={ClipboardList} title="No enrollments for this filter." />
       ) : (
         <div className="space-y-4">
           {visible.map((en) => {

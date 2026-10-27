@@ -1,10 +1,12 @@
 "use client";
 
 import type { Post } from "@/lib/types";
-import { Eye, Pencil, Plus } from "lucide-react";
+import { Eye, FileText, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import BlogForm from "./BlogForm";
+import EmptyState from "./EmptyState";
+import ListCard, { CardThumb } from "./ListCard";
 import { btn, btnIcon } from "@/components/form/buttonStyles";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
@@ -138,8 +140,8 @@ const BlogsList = ({ posts, editId }: BlogsListProps) => {
             ))}
             {posts.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-slate-500">
-                  No blogs yet.
+                <td colSpan={6} className="px-4 py-6">
+                  <EmptyState icon={FileText} title="No blogs yet." />
                 </td>
               </tr>
             )}
@@ -150,63 +152,24 @@ const BlogsList = ({ posts, editId }: BlogsListProps) => {
       {/* ---------- below md: one card per post ---------- */}
       <ul className="space-y-3 md:hidden">
         {posts.map((n) => (
-          <li key={n.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              {n.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={n.imageUrl}
-                  alt=""
-                  loading="lazy" decoding="async"
-                      className="h-14 w-24 shrink-0 rounded object-cover"
-                />
-              ) : (
-                <span className="flex h-14 w-24 shrink-0 items-center justify-center rounded bg-slate-100 text-xs text-slate-400">
-                  —
-                </span>
-              )}
-              <div className="min-w-0 flex-1">
-                <div className="flex items-start justify-between gap-2">
-                  <Link
-                    href={`/admin/blogs/${n.id}`}
-                    className="min-w-0 flex-1 truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
-                  >
-                    {n.title}
-                  </Link>
-                  <span className="shrink-0">{statusPill(n.published)}</span>
-                </div>
-                {n.excerpt && (
-                  <p className="mt-0.5 truncate text-xs text-slate-400">{n.excerpt}</p>
-                )}
-              </div>
-            </div>
-
-            <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-              <div className="min-w-0">
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Published by
-                </dt>
-                <dd className="mt-0.5 truncate text-sm font-medium text-slate-700">
-                  {n.publishedBy?.name || "—"}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Date
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  {fmtDate(n.createdAt)}
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-3">{actions(n)}</div>
-          </li>
+          <ListCard
+            key={n.id}
+            href={`/admin/blogs/${n.id}`}
+            title={n.title}
+            subtitle={n.excerpt}
+            media={<CardThumb src={n.imageUrl} shape="wide" />}
+            badges={statusPill(n.published)}
+            fields={[
+              { label: "Published by", value: n.publishedBy?.name || "—" },
+              { label: "Date", value: fmtDate(n.createdAt) },
+            ]}
+            actions={actions(n)}
+          />
         ))}
 
         {posts.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No blogs yet.
+          <li>
+            <EmptyState icon={FileText} title="No blogs yet." />
           </li>
         )}
       </ul>

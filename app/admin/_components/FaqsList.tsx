@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Plus } from "lucide-react";
+import { HelpCircle, Pencil, Plus } from "lucide-react";
 import type { Faq } from "@/lib/types";
 import DeleteButton from "./DeleteButton";
+import EmptyState from "./EmptyState";
 import Modal from "./Modal";
 import FaqForm from "./FaqForm";
 import { btn, btnIcon } from "@/components/form/buttonStyles";
@@ -71,11 +72,7 @@ const FaqsList = ({ faqs }: FaqsListProps) => {
             </div>
           </div>
         ))}
-        {faqs.length === 0 && (
-          <p className="rounded-xl bg-white p-8 text-center text-sm text-slate-500 shadow-sm">
-            No FAQs yet.
-          </p>
-        )}
+        {faqs.length === 0 && <EmptyState icon={HelpCircle} title="No FAQs yet." />}
       </div>
 
       <Modal

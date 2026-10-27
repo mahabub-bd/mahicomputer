@@ -2,11 +2,13 @@
 
 import type { Course, CourseWithCategory } from "@/lib/types";
 import { ADMISSION_META } from "@/lib/admission";
-import { Info, Pencil, Plus } from "lucide-react";
+import { BookOpen, Info, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { btn, btnIcon } from "@/components/form/buttonStyles";
 import CourseForm from "./CourseForm";
+import EmptyState from "./EmptyState";
+import ListCard, { CardThumb } from "./ListCard";
 import DeleteButton from "./DeleteButton";
 import Modal from "./Modal";
 import useEditDeepLink from "./useEditDeepLink";
@@ -174,8 +176,8 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
             ))}
             {courses.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-slate-500">
-                  No courses yet.
+                <td colSpan={8} className="px-4 py-6">
+                  <EmptyState icon={BookOpen} title="No courses yet." />
                 </td>
               </tr>
             )}
@@ -189,73 +191,37 @@ const CoursesList = ({ courses, editId }: CoursesListProps) => {
           fee / order / instructor grid and a wrapping action row. */}
       <ul className="space-y-3 md:hidden">
         {courses.map((c) => (
-          <li key={c.id} className="rounded-xl bg-white p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              {c.imageUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={c.imageUrl}
-                  alt=""
-                  loading="lazy" decoding="async"
-                      className="h-14 w-24 shrink-0 rounded object-cover"
-                />
-              )}
-              <div className="min-w-0 flex-1">
-                <div className="flex items-start justify-between gap-2">
-                  <Link
-                    href={`/admin/courses/${c.id}`}
-                    className="min-w-0 flex-1 truncate font-medium text-slate-900 hover:text-blue-700 hover:underline"
-                  >
-                    {c.title}
-                  </Link>
-                  <span className="flex shrink-0 items-center gap-1.5">
-                    {statusPill(c.published)}
-                    {admissionPill(c)}
-                  </span>
-                </div>
-                <p className="truncate text-xs text-slate-400">{c.tag}</p>
-                {c.category && (
-                  <span className="mt-1.5 inline-block max-w-full truncate rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-                    {c.category.title}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-slate-100 pt-3">
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Fee
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  ৳{c.price.toLocaleString("en-BD")}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Order
-                </dt>
-                <dd className="mt-0.5 text-sm font-medium text-slate-700">
-                  {c.order}
-                </dd>
-              </div>
-              <div className="min-w-0">
-                <dt className="text-[11px] uppercase tracking-wide text-slate-400">
-                  Instructor
-                </dt>
-                <dd className="mt-0.5 truncate text-sm font-medium text-slate-700">
-                  {c.instructor?.name || "—"}
-                </dd>
-              </div>
-            </dl>
-
-            <div className="mt-3">{actions(c)}</div>
-          </li>
+          <ListCard
+            key={c.id}
+            href={`/admin/courses/${c.id}`}
+            title={c.title}
+            subtitle={c.tag}
+            media={<CardThumb src={c.imageUrl} shape="wide" />}
+            badges={
+              <>
+                {statusPill(c.published)}
+                {admissionPill(c)}
+              </>
+            }
+            body={
+              c.category ? (
+                <span className="inline-block max-w-full truncate rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                  {c.category.title}
+                </span>
+              ) : undefined
+            }
+            fields={[
+              { label: "Fee", value: `৳${c.price.toLocaleString("en-BD")}` },
+              { label: "Order", value: c.order },
+              { label: "Instructor", value: c.instructor?.name || "—", wide: true },
+            ]}
+            actions={actions(c)}
+          />
         ))}
 
         {courses.length === 0 && (
-          <li className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-            No courses yet.
+          <li>
+            <EmptyState icon={BookOpen} title="No courses yet." />
           </li>
         )}
       </ul>

@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { batchSchema } from "@/lib/validators";
@@ -36,6 +37,12 @@ export async function POST(req: Request) {
       ...rest,
       ...(startDate ? { startDate: new Date(startDate) } : {}),
     },
+  });
+  await logAudit({
+    action: "CREATE",
+    entity: "Batch",
+    entityId: batch.id,
+    summary: `Created batch — ${batch.name} (${batch.course})`,
   });
   return NextResponse.json(batch, { status: 201 });
 }

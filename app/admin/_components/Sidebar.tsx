@@ -24,8 +24,8 @@ import {
   Menu,
   Newspaper,
   PanelBottom,
-  Settings,
-  Star,
+  ScrollText,
+  Settings,  Star,
   UserCheck,
   UserCog,
   Users,
@@ -95,6 +95,7 @@ const sections: SidebarSection[] = [
       { href: "/admin/business-settings", label: "Business settings", Icon: Building2 },
       { href: "/admin/settings", label: "Homepage settings", Icon: Settings },
       { href: "/admin/users", label: "Admin users", Icon: UserCog },
+      { href: "/admin/audit-log", label: "Audit log", Icon: ScrollText },
     ],
   },
 ];

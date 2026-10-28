@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { nextStudentId } from "@/lib/student-id";
@@ -121,6 +122,35 @@ export async function PATCH(req: Request, { params }: Params) {
           : {}),
       },
     });
+    // Audit the meaningful admin actions (read/unread is too noisy to log).
+    if (status !== undefined) {
+      await logAudit({
+        action: "UPDATE",
+        entity: "Enrollment",
+        entityId: id,
+        summary:
+          status === "APPROVED"
+            ? `Approved admission — ${enrollment.name}`
+            : status === "DECLINED"
+              ? `Declined admission — ${enrollment.name}`
+              : `Moved admission back to pending — ${enrollment.name}`,
+      });
+    } else if (payment?.success) {
+      await logAudit({
+        action: "UPDATE",
+        entity: "Enrollment",
+        entityId: id,
+        summary: `Updated payment info — ${enrollment.name}`,
+        detail: { paidAmount: enrollment.paidAmount },
+      });
+    } else if (student?.success) {
+      await logAudit({
+        action: "UPDATE",
+        entity: "Enrollment",
+        entityId: id,
+        summary: `Updated student info — ${enrollment.name}`,
+      });
+    }
     return NextResponse.json(enrollment);
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -133,7 +163,13 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id } = await params;
   try {
-    await prisma.enrollment.delete({ where: { id } });
+    const enrollment = await prisma.enrollment.delete({ where: { id } });
+    await logAudit({
+      action: "DELETE",
+      entity: "Enrollment",
+      entityId: id,
+      summary: `Deleted admission — ${enrollment.name}`,
+    });
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

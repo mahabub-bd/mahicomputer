@@ -17,6 +17,23 @@ model User {
   notices      Notice[]
   newsletters  Newsletter[]
   posts        Post[]
+  auditLogs    AuditLog[]
+}
+
+/** One admin action, recorded for traceability (who changed what, when). */
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  action    String
+  entity    String
+  entityId  String   @default("")
+  summary   String   @default("")
+  detail    Json?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([entity, entityId])
 }
 
 model NewsletterSubscriber {

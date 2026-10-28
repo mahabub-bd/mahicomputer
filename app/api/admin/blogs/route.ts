@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { auditLabel, logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { postSchema } from "@/lib/validators";
 import { revalidateTag } from "next/cache";
@@ -29,6 +30,12 @@ export async function POST(req: Request) {
     const post = await prisma.post.create({
       data: { ...parsed.data, publishedById: session!.sub },
     });
+  await logAudit({
+    action: "CREATE",
+    entity: "Blog post",
+    entityId: post.id,
+    summary: `Created Blog post — ${auditLabel(post)}`,
+  });
     revalidateTag("public-data", "max");
     return NextResponse.json(post, { status: 201 });
   } catch (e: unknown) {

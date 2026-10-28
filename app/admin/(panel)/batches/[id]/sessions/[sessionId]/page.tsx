@@ -22,9 +22,14 @@ const SessionAttendancePage = async ({ params }: Props) => {
     orderBy: { joinedAt: "asc" },
     include: {
       enrollment: {
-        select: { id: true, name: true, studentId: true, photoUrl: true },
         // Existing marks for this session, keyed by student below.
-        include: { attendance: { where: { sessionId } } },
+        select: {
+          id: true,
+          name: true,
+          studentId: true,
+          photoUrl: true,
+          attendance: { where: { sessionId } },
+        },
       },
     },
   });

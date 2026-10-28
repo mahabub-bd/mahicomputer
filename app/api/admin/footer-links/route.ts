@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { footerGroupSchema } from "@/lib/validators";
 
 export async function GET() {
@@ -36,6 +37,12 @@ export async function POST(req: Request) {
       },
       include: { links: { orderBy: { order: "asc" } } },
     });
+  });
+  await logAudit({
+    action: "CREATE",
+    entity: "FooterLinkGroup",
+    entityId: created.id,
+    summary: `Created footer link group — ${created.title}`,
   });
   return NextResponse.json(created, { status: 201 });
 }

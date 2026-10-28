@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { classSessionSchema } from "@/lib/validators";
@@ -35,6 +36,17 @@ export async function POST(req: Request, { params }: Params) {
   const { date, topic } = read.data;
   const session = await prisma.classSession.create({
     data: { batchId: id, date: new Date(date), topic },
+  });
+  await logAudit({
+    action: "CREATE",
+    entity: "ClassSession",
+    entityId: session.id,
+    summary: `Added class session — ${new Date(date).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    })}${topic ? ` (${topic})` : ""}`,
+    detail: { batchId: id },
   });
   return NextResponse.json(session, { status: 201 });
 }

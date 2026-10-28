@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { userCreateSchema } from "@/lib/validators";
 
 export async function GET() {
@@ -41,6 +42,12 @@ export async function POST(req: Request) {
   const user = await prisma.user.create({
     data: { email, name: parsed.data.name, imageUrl: parsed.data.imageUrl, passwordHash },
     select: { id: true, email: true, name: true, imageUrl: true, createdAt: true },
+  });
+  await logAudit({
+    action: "CREATE",
+    entity: "User",
+    entityId: user.id,
+    summary: `Created admin account — ${user.email}`,
   });
   return NextResponse.json(user, { status: 201 });
 }

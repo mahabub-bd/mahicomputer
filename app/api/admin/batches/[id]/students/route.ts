@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -23,7 +24,7 @@ export async function POST(req: Request, { params }: Params) {
     // Only approved admissions with a student ID can join a batch.
     const student = await prisma.enrollment.findFirst({
       where: { id: enrollmentId, status: "APPROVED" },
-      select: { id: true },
+      select: { id: true, name: true },
     });
     if (!student) {
       return NextResponse.json(
@@ -33,6 +34,13 @@ export async function POST(req: Request, { params }: Params) {
     }
     const row = await prisma.batchStudent.create({
       data: { batchId: id, enrollmentId },
+    });
+    await logAudit({
+      action: "CREATE",
+      entity: "BatchStudent",
+      entityId: row.id,
+      summary: `Added student to batch — ${student.name}`,
+      detail: { enrollmentId, batchId: id },
     });
     return NextResponse.json(row, { status: 201 });
   } catch {
@@ -53,5 +61,12 @@ export async function DELETE(req: Request, { params }: Params) {
     return NextResponse.json({ error: "enrollmentId is required" }, { status: 400 });
   }
   await prisma.batchStudent.deleteMany({ where: { batchId: id, enrollmentId } });
+  await logAudit({
+    action: "DELETE",
+    entity: "BatchStudent",
+    entityId: enrollmentId,
+    summary: `Removed student from batch`,
+    detail: { enrollmentId, batchId: id },
+  });
   return NextResponse.json({ ok: true });
 }

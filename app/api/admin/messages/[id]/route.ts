@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -29,7 +30,13 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id } = await params;
   try {
-    await prisma.contactMessage.delete({ where: { id } });
+    const deleted = await prisma.contactMessage.delete({ where: { id } });
+    await logAudit({
+      action: "DELETE",
+      entity: "ContactMessage",
+      entityId: id,
+      summary: `Deleted message — ${deleted.name}`,
+    });
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

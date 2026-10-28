@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { auditLabel, logAudit } from "@/lib/audit";
 import { noticeSchema } from "@/lib/validators";
 
 type Params = { params: Promise<{ id: string }> };
@@ -25,6 +26,12 @@ export async function PUT(req: Request, { params }: Params) {
       where: { id },
       data: { ...parsed.data, publishedById: session!.sub },
     });
+  await logAudit({
+    action: "UPDATE",
+    entity: "Notice",
+    entityId: notice.id,
+    summary: `Updated Notice — ${auditLabel(notice)}`,
+  });
     revalidateTag("public-data", "max");
     return NextResponse.json(notice);
   } catch {
@@ -38,7 +45,13 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id } = await params;
   try {
-    await prisma.notice.delete({ where: { id } });
+    const deleted = await prisma.notice.delete({ where: { id } });
+    await logAudit({
+      action: "DELETE",
+      entity: "Notice",
+      entityId: id,
+      summary: `Deleted Notice — ${auditLabel(deleted)}`,
+    });
     revalidateTag("public-data", "max");
     return NextResponse.json({ ok: true });
   } catch {

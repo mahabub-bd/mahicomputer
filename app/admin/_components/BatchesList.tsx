@@ -79,7 +79,7 @@ const BatchesList = ({ batches, courses }: BatchesListProps) => {
             return (
               <div
                 key={batch.id}
-                className="group relative overflow-hidden rounded-2xl border border-slate-100 border-l-2 border-l-blue-500 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-5"
+                className="group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-5"
               >
                 <div className="flex flex-col gap-4 xl:flex-row xl:items-start">
                   <div className="flex min-w-0 flex-1 items-start gap-4">
@@ -124,7 +124,7 @@ const BatchesList = ({ batches, courses }: BatchesListProps) => {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-wrap items-center gap-1.5 border-t border-slate-100 pt-3 xl:max-w-[240px] xl:justify-end xl:border-l xl:border-t-0 xl:pl-4 xl:pt-0">
+                  <div className="flex flex-wrap items-center gap-1.5 border-t border-slate-100 pt-3 xl:max-w-60 xl:justify-end xl:border-l xl:border-t-0 xl:pl-4 xl:pt-0">
                     <Link
                       href={`/admin/batches/${batch.id}`}
                       title="Manage batch"

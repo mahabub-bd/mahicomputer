@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { resolveCourseRelations } from "@/lib/data";
 import { courseSchema } from "@/lib/validators";
 
@@ -37,6 +38,12 @@ export async function POST(req: Request) {
   try {
     const course = await prisma.course.create({ data });
     revalidateTag("public-data", "max");
+    await logAudit({
+      action: "CREATE",
+      entity: "Course",
+      entityId: course.id,
+      summary: `Created course — ${course.title}`,
+    });
     return NextResponse.json(course, { status: 201 });
   } catch (e: unknown) {
     if (typeof e === "object" && e !== null && "code" in e && e.code === "P2002") {

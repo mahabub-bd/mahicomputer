@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { auditLabel, logAudit } from "@/lib/audit";
 import { navLinkSchema } from "@/lib/validators";
 
 type Params = { params: Promise<{ id: string }> };
@@ -21,6 +22,12 @@ export async function PUT(req: Request, { params }: Params) {
 
   try {
     const link = await prisma.navLink.update({ where: { id }, data: parsed.data });
+  await logAudit({
+    action: "UPDATE",
+    entity: "Nav link",
+    entityId: link.id,
+    summary: `Updated Nav link — ${auditLabel(link)}`,
+  });
     return NextResponse.json(link);
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -33,7 +40,13 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id } = await params;
   try {
-    await prisma.navLink.delete({ where: { id } });
+    const deleted = await prisma.navLink.delete({ where: { id } });
+    await logAudit({
+      action: "DELETE",
+      entity: "Nav link",
+      entityId: id,
+      summary: `Deleted Nav link — ${auditLabel(deleted)}`,
+    });
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

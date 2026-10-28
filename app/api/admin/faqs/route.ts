@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { auditLabel, logAudit } from "@/lib/audit";
 import { faqSchema } from "@/lib/validators";
 
 export async function GET() {
@@ -27,5 +28,11 @@ export async function POST(req: Request) {
   }
 
   const faq = await prisma.faq.create({ data: parsed.data });
+  await logAudit({
+    action: "CREATE",
+    entity: "FAQ",
+    entityId: faq.id,
+    summary: `Created FAQ — ${auditLabel(faq)}`,
+  });
   return NextResponse.json(faq, { status: 201 });
 }

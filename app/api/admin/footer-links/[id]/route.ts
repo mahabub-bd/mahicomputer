@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { footerGroupSchema } from "@/lib/validators";
 
 type Params = { params: Promise<{ id: string }> };
@@ -31,6 +32,12 @@ export async function PUT(req: Request, { params }: Params) {
       include: { links: { orderBy: { order: "asc" } } },
     });
   });
+  await logAudit({
+    action: "UPDATE",
+    entity: "FooterLinkGroup",
+    entityId: id,
+    summary: `Updated footer link group — ${updated.title}`,
+  });
   return NextResponse.json(updated);
 }
 
@@ -40,7 +47,13 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id } = await params;
   try {
-    await prisma.footerLinkGroup.delete({ where: { id } }); // links cascade
+    const group = await prisma.footerLinkGroup.delete({ where: { id } }); // links cascade
+    await logAudit({
+      action: "DELETE",
+      entity: "FooterLinkGroup",
+      entityId: id,
+      summary: `Deleted footer link group — ${group.title}`,
+    });
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

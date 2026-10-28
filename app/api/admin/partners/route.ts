@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { auditLabel, logAudit } from "@/lib/audit";
 import { partnerSchema } from "@/lib/validators";
 
 export async function GET() {
@@ -25,5 +26,11 @@ export async function POST(req: Request) {
   }
 
   const partner = await prisma.partner.create({ data: parsed.data });
+  await logAudit({
+    action: "CREATE",
+    entity: "Partner",
+    entityId: partner.id,
+    summary: `Created Partner — ${auditLabel(partner)}`,
+  });
   return NextResponse.json(partner, { status: 201 });
 }

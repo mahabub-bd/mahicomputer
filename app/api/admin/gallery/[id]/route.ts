@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { auditLabel, logAudit } from "@/lib/audit";
 import { galleryItemSchema } from "@/lib/validators";
 
 type Params = { params: Promise<{ id: string }> };
@@ -21,6 +22,12 @@ export async function PUT(req: Request, { params }: Params) {
 
   try {
     const item = await prisma.galleryItem.update({ where: { id }, data: parsed.data });
+  await logAudit({
+    action: "UPDATE",
+    entity: "Gallery item",
+    entityId: item.id,
+    summary: `Updated Gallery item — ${auditLabel(item)}`,
+  });
     return NextResponse.json(item);
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -33,7 +40,13 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id } = await params;
   try {
-    await prisma.galleryItem.delete({ where: { id } });
+    const deleted = await prisma.galleryItem.delete({ where: { id } });
+    await logAudit({
+      action: "DELETE",
+      entity: "Gallery item",
+      entityId: id,
+      summary: `Deleted Gallery item — ${auditLabel(deleted)}`,
+    });
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

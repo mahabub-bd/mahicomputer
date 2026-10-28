@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { auditLabel, logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { postSchema } from "@/lib/validators";
 import { revalidateTag } from "next/cache";
@@ -25,6 +26,12 @@ export async function PUT(req: Request, { params }: Params) {
       where: { id },
       data: { ...parsed.data, publishedById: session!.sub },
     });
+  await logAudit({
+    action: "UPDATE",
+    entity: "Blog post",
+    entityId: post.id,
+    summary: `Updated Blog post — ${auditLabel(post)}`,
+  });
     revalidateTag("public-data", "max");
     return NextResponse.json(post);
   } catch (e: unknown) {
@@ -44,7 +51,13 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id } = await params;
   try {
-    await prisma.post.delete({ where: { id } });
+    const deleted = await prisma.post.delete({ where: { id } });
+    await logAudit({
+      action: "DELETE",
+      entity: "Blog post",
+      entityId: id,
+      summary: `Deleted Blog post — ${auditLabel(deleted)}`,
+    });
     revalidateTag("public-data", "max");
     return NextResponse.json({ ok: true });
   } catch {

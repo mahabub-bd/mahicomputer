@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { auditLabel, logAudit } from "@/lib/audit";
 import { newsletterIssueSchema } from "@/lib/validators";
 
 export async function GET() {
@@ -29,6 +30,12 @@ export async function POST(req: Request) {
 
   const newsletter = await prisma.newsletter.create({
     data: { ...parsed.data, publishedById: session!.sub },
+  });
+  await logAudit({
+    action: "CREATE",
+    entity: "Newsletter issue",
+    entityId: newsletter.id,
+    summary: `Created Newsletter issue — ${auditLabel(newsletter)}`,
   });
   revalidateTag("public-data", "max");
   return NextResponse.json(newsletter, { status: 201 });

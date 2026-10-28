@@ -272,13 +272,9 @@ const EnrollmentsList = ({ enrollments, courses }: EnrollmentsListProps) => {
             return (
               <div
                 key={en.id}
-                className={`group relative overflow-hidden rounded-2xl border bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-5 ${
-                  en.status === "PENDING"
-                    ? "border-amber-100 border-l-2 border-l-amber-400"
-                    : en.status === "APPROVED"
-                      ? "border-emerald-100 border-l-2 border-l-emerald-500"
-                      : "border-slate-100 border-l-2 border-l-slate-300"
-                } ${!en.read ? "ring-2 ring-blue-100" : ""}`}
+                className={`group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-5 ${
+                  !en.read ? "ring-2 ring-blue-100" : ""
+                }`}
               >
                 <div className="flex flex-col gap-4 xl:flex-row xl:items-start">
                   {/* Student details */}
@@ -392,79 +388,73 @@ const EnrollmentsList = ({ enrollments, courses }: EnrollmentsListProps) => {
                     </div>
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex flex-wrap items-center gap-1.5 border-t border-slate-100 pt-3 xl:max-w-90 xl:justify-end xl:border-l xl:border-t-0 xl:pl-4 xl:pt-0">
+                  {/* Actions — compact icon row with tooltips */}
+                  <div className="flex flex-wrap items-center gap-1 border-t border-slate-100 pt-3 xl:justify-end xl:border-l xl:border-t-0 xl:pl-4 xl:pt-0">
                     <Link
                       href={`/admin/enrollments/${en.id}`}
-                      title="Details"
-                      aria-label="Details"
-                      className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                      title="View details"
+                      aria-label="View details"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                     >
                       <Info size={15} />
-                      <span>View</span>
                     </Link>
                     <button
                       onClick={() => setEditFor(en)}
                       disabled={busy}
                       title="Edit student info"
                       aria-label="Edit student info"
-                      className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 disabled:opacity-50"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 disabled:opacity-50"
                     >
                       <Pencil size={15} />
-                      <span>Edit</span>
                     </button>
-                    {en.status === "PENDING" ? (
-                      <>
-                        <button
-                          onClick={() => setStatus(en, "APPROVED")}
-                          disabled={busy}
-                          title="Approve"
-                          aria-label="Approve"
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-emerald-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-700 active:translate-y-px disabled:pointer-events-none disabled:opacity-50"
-                        >
-                          <CheckCircle2 size={15} />
-                          <span>Approve</span>
-                        </button>
-                        <button
-                          onClick={() => setStatus(en, "DECLINED")}
-                          disabled={busy}
-                          title="Decline"
-                          aria-label="Decline"
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-rose-200 bg-white px-2.5 text-xs font-semibold text-rose-600 shadow-sm transition hover:bg-rose-50 disabled:opacity-50"
-                        >
-                          <XCircle size={15} />
-                          <span>Decline</span>
-                        </button>
-                      </>
-                    ) : (
+                    {en.status === "PENDING" && (
+                      <button
+                        onClick={() => setStatus(en, "APPROVED")}
+                        disabled={busy}
+                        title="Approve"
+                        aria-label="Approve"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm transition hover:bg-emerald-700 active:translate-y-px disabled:pointer-events-none disabled:opacity-50"
+                      >
+                        <CheckCircle2 size={15} />
+                      </button>
+                    )}
+                    {en.status !== "DECLINED" && (
+                      <button
+                        onClick={() => setStatus(en, "DECLINED")}
+                        disabled={busy}
+                        title="Decline"
+                        aria-label="Decline"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50"
+                      >
+                        <XCircle size={15} />
+                      </button>
+                    )}
+                    {en.status !== "PENDING" && (
                       <button
                         onClick={() => setStatus(en, "PENDING")}
                         disabled={busy}
                         title="Move to pending"
                         aria-label="Move to pending"
-                        className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:bg-slate-100 disabled:opacity-50"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:bg-slate-100 disabled:opacity-50"
                       >
                         <Undo2 size={15} />
-                        <span>Pending</span>
                       </button>
                     )}
-
                     <button
                       onClick={() => setPaymentFor(en)}
                       disabled={busy}
                       title="Payment info"
                       aria-label="Payment info"
-                      className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700 disabled:opacity-50"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700 disabled:opacity-50"
                     >
                       <Banknote size={15} />
-                      <span>Payment</span>
                     </button>
-
                     <button
                       onClick={() => markRead(en)}
                       disabled={busy}
                       title={en.read ? "Mark as unread" : "Mark as read"}
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:bg-blue-50 hover:text-blue-700 disabled:opacity-50"
+                      aria-label={en.read ? "Mark as unread" : "Mark as read"}
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:bg-blue-50 hover:text-blue-700 disabled:opacity-50"
                     >
                       {en.read ? <MailOpen size={15} /> : <CheckCheck size={15} />}
                     </button>
@@ -473,7 +463,7 @@ const EnrollmentsList = ({ enrollments, courses }: EnrollmentsListProps) => {
                       disabled={busy}
                       title="Delete"
                       aria-label="Delete"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-rose-200 bg-white text-rose-500 shadow-sm transition hover:bg-rose-50 hover:text-rose-700 disabled:opacity-50"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50"
                     >
                       <Trash2 size={15} />
                     </button>

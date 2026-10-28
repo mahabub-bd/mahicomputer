@@ -4,6 +4,7 @@ import path from "path";
 import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 
 const ALLOWED_TYPES: Record<string, string> = {
   "image/png": ".png",
@@ -51,6 +52,13 @@ export async function POST(req: Request) {
   const filename = `${Date.now()}-${randomBytes(6).toString("hex")}${ext}`;
   try {
     const url = await saveFile(Buffer.from(await file.arrayBuffer()), filename);
+    await logAudit({
+      action: "CREATE",
+      entity: "Upload",
+      entityId: filename,
+      summary: `Uploaded file — ${file.name}`,
+      detail: { url, size: file.size, type: file.type },
+    });
     return NextResponse.json({ url });
   } catch (e) {
     console.error("Upload failed:", e);

@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { paymentRecordSchema } from "@/lib/validators";
 import { NextResponse } from "next/server";
@@ -39,12 +40,14 @@ export async function POST(req: Request, { params }: Params) {
   const { amount, method, transactionId, note, nextDueDate } = read.data;
 
   try {
+    let studentName = "";
     const payment = await prisma.$transaction(async (tx) => {
       const enrollment = await tx.enrollment.findUnique({
         where: { id },
-        select: { id: true },
+        select: { id: true, name: true },
       });
       if (!enrollment) return null;
+      studentName = enrollment.name;
       return tx.payment.create({
         data: {
           enrollmentId: id,
@@ -69,6 +72,14 @@ export async function POST(req: Request, { params }: Params) {
         ...(transactionId ? { transactionId } : {}),
         ...(nextDueDate ? { dueDate: new Date(nextDueDate) } : {}),
       },
+    });
+
+    await logAudit({
+      action: "CREATE",
+      entity: "Payment",
+      entityId: payment.id,
+      summary: `Recorded ৳${amount.toLocaleString("en-BD")} payment — ${studentName || id}`,
+      detail: { amount, method, transactionId },
     });
 
     return NextResponse.json(payment, { status: 201 });

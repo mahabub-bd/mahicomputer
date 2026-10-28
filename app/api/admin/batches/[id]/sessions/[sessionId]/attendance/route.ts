@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { attendanceSaveSchema } from "@/lib/validators";
@@ -44,5 +45,12 @@ export async function PUT(req: Request, { params }: Params) {
       }),
     ),
   );
+  await logAudit({
+    action: "UPDATE",
+    entity: "Attendance",
+    entityId: sessionId,
+    summary: `Saved attendance — ${records.length} student${records.length === 1 ? "" : "s"}`,
+    detail: { batchId: id, sessionId },
+  });
   return NextResponse.json({ ok: true });
 }

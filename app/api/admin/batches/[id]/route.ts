@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { batchUpdateSchema } from "@/lib/validators";
@@ -29,6 +30,12 @@ export async function PATCH(req: Request, { params }: Params) {
         ...(startDate !== undefined ? { startDate: startDate ? new Date(startDate) : null } : {}),
       },
     });
+    await logAudit({
+      action: "UPDATE",
+      entity: "Batch",
+      entityId: id,
+      summary: `Updated batch — ${batch.name}`,
+    });
     return NextResponse.json(batch);
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -41,7 +48,13 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id } = await params;
   try {
-    await prisma.batch.delete({ where: { id } });
+    const batch = await prisma.batch.delete({ where: { id } });
+    await logAudit({
+      action: "DELETE",
+      entity: "Batch",
+      entityId: id,
+      summary: `Deleted batch — ${batch.name}`,
+    });
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

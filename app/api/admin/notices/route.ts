@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { auditLabel, logAudit } from "@/lib/audit";
 import { noticeSchema } from "@/lib/validators";
 
 export async function GET() {
@@ -29,6 +30,12 @@ export async function POST(req: Request) {
 
   const notice = await prisma.notice.create({
     data: { ...parsed.data, publishedById: session!.sub },
+  });
+  await logAudit({
+    action: "CREATE",
+    entity: "Notice",
+    entityId: notice.id,
+    summary: `Created Notice — ${auditLabel(notice)}`,
   });
   revalidateTag("public-data", "max");
   return NextResponse.json(notice, { status: 201 });

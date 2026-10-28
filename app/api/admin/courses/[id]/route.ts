@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { resolveCourseRelations } from "@/lib/data";
 import { courseSchema } from "@/lib/validators";
 
@@ -32,6 +33,12 @@ export async function PUT(req: Request, { params }: Params) {
   try {
     const course = await prisma.course.update({ where: { id }, data });
     revalidateTag("public-data", "max");
+    await logAudit({
+      action: "UPDATE",
+      entity: "Course",
+      entityId: id,
+      summary: `Updated course — ${course.title}`,
+    });
     return NextResponse.json(course);
   } catch (e: unknown) {
     if (typeof e === "object" && e !== null && "code" in e && e.code === "P2002") {
@@ -50,8 +57,14 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id } = await params;
   try {
-    await prisma.course.delete({ where: { id } });
+    const course = await prisma.course.delete({ where: { id } });
     revalidateTag("public-data", "max");
+    await logAudit({
+      action: "DELETE",
+      entity: "Course",
+      entityId: id,
+      summary: `Deleted course — ${course.title}`,
+    });
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

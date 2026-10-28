@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { userUpdateSchema } from "@/lib/validators";
 
 type Params = { params: Promise<{ id: string }> };
@@ -54,6 +55,13 @@ export async function PUT(req: Request, { params }: Params) {
       data,
       select: { id: true, email: true, name: true, imageUrl: true, createdAt: true },
     });
+    await logAudit({
+      action: "UPDATE",
+      entity: "User",
+      entityId: id,
+      summary: `Updated admin account — ${user.email}`,
+      detail: { passwordChanged: parsed.data.password !== "" },
+    });
     return NextResponse.json(user);
   } catch {
     return NextResponse.json({ error: "Update failed" }, { status: 400 });
@@ -92,6 +100,12 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   try {
     await prisma.user.delete({ where: { id } });
+    await logAudit({
+      action: "DELETE",
+      entity: "User",
+      entityId: id,
+      summary: `Deleted admin account — ${target.email}`,
+    });
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

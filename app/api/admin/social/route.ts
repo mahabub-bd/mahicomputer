@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { auditLabel, logAudit } from "@/lib/audit";
 import { socialLinkSchema } from "@/lib/validators";
 
 export async function GET() {
@@ -25,5 +26,11 @@ export async function POST(req: Request) {
   }
 
   const link = await prisma.socialLink.create({ data: parsed.data });
+  await logAudit({
+    action: "CREATE",
+    entity: "Social link",
+    entityId: link.id,
+    summary: `Created Social link — ${auditLabel(link)}`,
+  });
   return NextResponse.json(link, { status: 201 });
 }

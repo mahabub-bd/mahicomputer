@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { categorySchema } from "@/lib/validators";
 import { revalidateTag } from "next/cache";
@@ -23,6 +24,12 @@ export async function PUT(req: Request, { params }: Params) {
   try {
     const category = await prisma.category.update({ where: { id }, data: parsed.data });
     revalidateTag("public-data", "max");
+    await logAudit({
+      action: "UPDATE",
+      entity: "Category",
+      entityId: id,
+      summary: `Updated category — ${category.title}`,
+    });
     return NextResponse.json(category);
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -35,8 +42,14 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id } = await params;
   try {
-    await prisma.category.delete({ where: { id } });
+    const category = await prisma.category.delete({ where: { id } });
     revalidateTag("public-data", "max");
+    await logAudit({
+      action: "DELETE",
+      entity: "Category",
+      entityId: id,
+      summary: `Deleted category — ${category.title}`,
+    });
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

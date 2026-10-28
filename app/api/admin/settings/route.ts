@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { siteSettingSchema } from "@/lib/validators";
 
 export async function GET() {
@@ -31,5 +32,11 @@ export async function PUT(req: Request) {
     create: { id: 1, ...parsed.data },
   });
   revalidateTag("public-data", "max");
+  await logAudit({
+    action: "UPDATE",
+    entity: "SiteSetting",
+    entityId: "1",
+    summary: "Updated site settings",
+  });
   return NextResponse.json(settings);
 }

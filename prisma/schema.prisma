@@ -23,6 +23,8 @@ model User {
 /** One admin action, recorded for traceability (who changed what, when). */
 model AuditLog {
   id        String   @id @default(cuid())
+  /** Human-facing identifier: business day + daily sequence, e.g. "20261029001". */
+  serial    String   @unique
   userId    String?
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   action    String

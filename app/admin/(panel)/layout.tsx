@@ -20,9 +20,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       </Suspense>
       {/* min-w-0 lets the grid/flex children below shrink to the content
           column instead of forcing a sideways page scroll.
-          The left padding tracks the sidebar width: narrower on laptops
-          (lg, 224px), full width again on large desktops (xl, 288px). */}
-      <div className="min-w-0 lg:pl-56 xl:pl-72">
+          The left padding tracks the fixed sidebar width (256px from lg up). */}
+      <div className="min-w-0 lg:pl-64">
         {/* Padding is set per side on purpose: the `p-*` shorthand at sm/lg
             would reset padding-top and slide the content under the fixed
             mobile top bar (visible between the sm and lg breakpoints). */}

@@ -9,18 +9,6 @@ export interface StatCard {
   Icon: LucideIcon;
 }
 
-export interface SecondaryStat {
-  label: string;
-  value: number;
-  Icon: LucideIcon;
-  tone: string;
-}
-
-interface StatCardsProps {
-  cards: StatCard[];
-  stats: SecondaryStat[];
-}
-
 /* Icon tile colors, cycled across the cards so the row doesn't read as
    eight identical blue squares. */
 const tones = [
@@ -34,70 +22,49 @@ const tones = [
   "bg-teal-50 text-teal-600",
 ];
 
-/** Primary count cards (link to their admin page) + the secondary stats strip. */
-const StatCards = ({ cards, stats }: StatCardsProps) => (
-  <>
-    {/* Primary stats — 2 per row on phones, 3 on tablets, 4 from lg up.
-        4 columns already at sm squeezed the label into an ellipsis once
-        the sidebar took its width. */}
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
-      {cards.map(({ label, value, hint, href, Icon }, i) => (
-        <Link
-          key={label}
-          href={href}
-          className="group block rounded-2xl border border-slate-200/80 bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md sm:p-5"
-        >
-          {/* Icon + value share the top row so the label and the hint get
-              the full card width — otherwise they were clipped to an
-              ellipsis on narrow screens. */}
-          <span className="flex items-center gap-3 sm:gap-4">
-            <span
-              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition sm:h-12 sm:w-12 ${
-                tones[i % tones.length]
-              }`}
+/**
+ * Inventory counters as KPI tiles: label and value lead, the icon sits in the
+ * top-right corner and the hint closes the card. 2 per row on phones, 3 on
+ * tablets, 4 from lg up (4 columns at sm squeezed the label into an ellipsis
+ * once the sidebar took its width).
+ */
+const StatCards = ({ cards }: { cards: StatCard[] }) => (
+  <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+    {cards.map(({ label, value, hint, href, Icon }, i) => (
+      <Link
+        key={label}
+        href={href}
+        className="group rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
+      >
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p
+              title={label}
+              className="truncate text-[11px] font-semibold uppercase tracking-wider text-slate-400"
             >
-              <Icon size={21} />
-            </span>
-            <span className="min-w-0 text-xl font-bold leading-6 text-slate-900 sm:text-2xl">
+              {label}
+            </p>
+            <p className="mt-1.5 text-2xl font-bold leading-none tabular-nums text-slate-900">
               {value}
-            </span>
-          </span>
+            </p>
+          </div>
           <span
-            title={label}
-            className="mt-2 block truncate text-[13px] font-medium text-slate-500"
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition duration-200 group-hover:scale-105 ${
+              tones[i % tones.length]
+            }`}
           >
-            {label}
-          </span>
-          <span
-            title={hint}
-            className="mt-0.5 block truncate text-xs text-slate-400 transition group-hover:text-blue-600"
-          >
-            {hint}
-          </span>
-        </Link>
-      ))}
-    </div>
-
-    {/* Secondary stats — 2 per row on phones, 3 from sm up.
-        The label wraps instead of truncating, so "Pending enrollments"
-        stays readable in the narrow phone columns. */}
-    <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-      {stats.map(({ label, value, Icon, tone }) => (
-        <div
-          key={label}
-          className="flex items-center gap-2.5 rounded-2xl border border-slate-200/80 bg-white px-4 py-3"
-        >
-          <Icon size={17} className={`shrink-0 ${tone}`} />
-          <span title={label} className="text-[13px] leading-tight text-slate-500">
-            {label}
-          </span>
-          <span className="ml-auto shrink-0 text-sm font-bold text-slate-900">
-            {value}
+            <Icon size={17} aria-hidden />
           </span>
         </div>
-      ))}
-    </div>
-  </>
+        <p
+          title={hint}
+          className="mt-3 truncate text-xs text-slate-400 transition group-hover:text-blue-600"
+        >
+          {hint}
+        </p>
+      </Link>
+    ))}
+  </div>
 );
 
 export default StatCards;

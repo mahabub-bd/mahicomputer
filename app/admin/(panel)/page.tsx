@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 import {
   Bell,
   BookOpen,
-  Eye,
   EyeOff,
   GraduationCap,
   Handshake,
@@ -19,13 +18,13 @@ import {
   Star,
   Users,
 } from "lucide-react";
+import AttentionStrip, { AttentionItem } from "../_components/dashboard/AttentionStrip";
 import GalleryPreview from "../_components/dashboard/GalleryPreview";
 import QuickActions from "../_components/dashboard/QuickActions";
 import RecentCourses from "../_components/dashboard/RecentCourses";
 import RecentMessages from "../_components/dashboard/RecentMessages";
-import SiteInfo, { ContactInfoItem } from "../_components/dashboard/SiteInfo";
-import SocialLinksPanel from "../_components/dashboard/SocialLinksPanel";
-import StatCards, { SecondaryStat, StatCard } from "../_components/dashboard/StatCards";
+import SiteOverview, { ContactInfoItem } from "../_components/dashboard/SiteOverview";
+import StatCards, { StatCard } from "../_components/dashboard/StatCards";
 import WelcomeCard from "../_components/dashboard/WelcomeCard";
 
 export const dynamic = "force-dynamic";
@@ -42,7 +41,8 @@ const AdminDashboard = async () => {
     partnerCount,
     messageCount,
     unreadCount,
-    newEnrollmentCount,
+    enrollmentCount,
+    pendingEnrollmentCount,
     recentCourses,
     recentMessages,
     galleryItems,
@@ -59,10 +59,15 @@ const AdminDashboard = async () => {
     prisma.partner.count(),
     prisma.contactMessage.count(),
     prisma.contactMessage.count({ where: { read: false } }),
+    prisma.enrollment.count(),
     prisma.enrollment.count({ where: { status: "PENDING" } }),
     prisma.course.findMany({
       orderBy: { updatedAt: "desc" },
-      take: 10,
+      take: 6,
+      include: {
+        category: { select: { title: true } },
+        instructor: { select: { name: true } },
+      },
     }),
     prisma.contactMessage.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
     getGalleryItems(),
@@ -86,6 +91,34 @@ const AdminDashboard = async () => {
     year: "numeric",
   });
 
+  /* What needs a decision today — rendered above the inventory counters. */
+  const attention: AttentionItem[] = [
+    {
+      label: "Pending admissions",
+      count: pendingEnrollmentCount,
+      href: "/admin/enrollments",
+      Icon: GraduationCap,
+      wrap: "border-violet-200/70 bg-violet-50/60 text-violet-900",
+      chip: "bg-violet-100 text-violet-700",
+    },
+    {
+      label: "Unread messages",
+      count: unreadCount,
+      href: "/admin/messages",
+      Icon: Mail,
+      wrap: "border-blue-200/70 bg-blue-50/60 text-blue-900",
+      chip: "bg-blue-100 text-blue-700",
+    },
+    {
+      label: "Courses hidden",
+      count: hiddenCount,
+      href: "/admin/courses",
+      Icon: EyeOff,
+      wrap: "border-amber-200/70 bg-amber-50/60 text-amber-900",
+      chip: "bg-amber-100 text-amber-700",
+    },
+  ];
+
   const cards: StatCard[] = [
     {
       label: "Courses",
@@ -93,6 +126,13 @@ const AdminDashboard = async () => {
       hint: `${publishedCount} published · ${hiddenCount} hidden`,
       href: "/admin/courses",
       Icon: BookOpen,
+    },
+    {
+      label: "Admissions",
+      value: enrollmentCount,
+      hint: pendingEnrollmentCount > 0 ? `${pendingEnrollmentCount} awaiting review` : "All reviewed",
+      href: "/admin/enrollments",
+      Icon: GraduationCap,
     },
     {
       label: "Categories",
@@ -136,19 +176,6 @@ const AdminDashboard = async () => {
       href: "/admin/business-settings",
       Icon: Share2,
     },
-    {
-      label: "Unread messages",
-      value: unreadCount,
-      hint: `${messageCount} total received`,
-      href: "/admin/messages",
-      Icon: Mail,
-    },
-  ];
-
-  const stats: SecondaryStat[] = [
-    { label: "Published courses", value: publishedCount, Icon: Eye, tone: "text-emerald-600" },
-    { label: "Hidden courses", value: hiddenCount, Icon: EyeOff, tone: "text-slate-500" },
-    { label: "Pending enrollments", value: newEnrollmentCount, Icon: GraduationCap, tone: "text-violet-600" },
   ];
 
   const quickActions = [
@@ -175,47 +202,37 @@ const AdminDashboard = async () => {
     <div>
       <WelcomeCard adminName={adminName} today={today} heroTitle={settings.heroTitle} />
 
-      <StatCards cards={cards} stats={stats} />
+      <AttentionStrip items={attention} />
 
-      {/* Main grid — activity (left) · actions & info (right).
-          Every cell is placed explicitly so the two columns stay balanced
-          at every breakpoint: the left column holds the two activity
-          sections, the right one the quick actions and the site info.
-          `order-*` re-orders the panels on phones (single column) without
-          changing the desktop placement. `min-w-0` lets the cells shrink
-          so a wide table scrolls inside its card instead of pushing the
-          whole page sideways. */}
+      <StatCards cards={cards} />
+
+      {/* Main grid — activity (left, 2 cols) · shortcuts & site info (right rail).
+          `min-w-0` lets each cell shrink so a wide table scrolls inside its
+          card instead of pushing the page sideways. */}
       <div className="mt-8 grid items-start gap-6 lg:grid-cols-3">
-        {/* Recent courses — scrolls inside its own card */}
-        <div className="order-1 min-w-0 lg:col-start-1 lg:col-end-3 lg:row-start-1">
+        <div className="min-w-0 lg:col-span-2">
           <RecentCourses courses={recentCourses} />
         </div>
-
-        {/* Recent messages */}
-        <div className="order-2 min-w-0 lg:col-start-1 lg:col-end-3 lg:row-start-2">
-          <RecentMessages messages={recentMessages} unreadCount={unreadCount} />
-        </div>
-
-        {/* Quick actions */}
-        <div className="order-3 min-w-0 lg:col-start-3 lg:row-start-1">
+        <div className="min-w-0">
           <QuickActions actions={quickActions} />
         </div>
 
-        {/* Site info */}
-        <div className="order-4 min-w-0 lg:col-start-3 lg:row-start-2">
-          <SiteInfo contactInfo={contactInfo} />
+        <div className="min-w-0 lg:col-span-2">
+          <RecentMessages messages={recentMessages} unreadCount={unreadCount} />
+        </div>
+        <div className="min-w-0">
+          <SiteOverview contactInfo={contactInfo} links={socialLinks} />
         </div>
       </div>
 
-      {/* Gallery + social */}
-      <div className="mt-8 grid items-start gap-6 lg:grid-cols-3">
-        <div className="min-w-0 lg:col-start-1 lg:col-end-3 lg:row-start-1">
-          <GalleryPreview items={galleryItems} />
-        </div>
-        <div className="min-w-0 lg:col-start-3 lg:row-start-1">
-          <SocialLinksPanel links={socialLinks} />
-        </div>
+      <div className="mt-8">
+        <GalleryPreview items={galleryItems} />
       </div>
+
+      <p className="mt-6 text-center text-xs text-slate-400">
+        {messageCount} messages received · {enrollmentCount} admissions ·{" "}
+        {courseCount} courses in the catalogue
+      </p>
     </div>
   );
 };

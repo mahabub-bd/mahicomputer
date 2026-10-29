@@ -9,7 +9,6 @@ import {
   BookOpen,
   Building2,
   ChevronDown,
-  ChevronUp,
   CircleHelp,
   ExternalLink,
   GraduationCap,
@@ -25,10 +24,12 @@ import {
   Newspaper,
   PanelBottom,
   ScrollText,
-  Settings,  Star,
+  Settings,
+  Star,
   UserCheck,
   UserCog,
   Users,
+  X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { logodark } from "../../../public";
@@ -59,7 +60,7 @@ const sections: SidebarSection[] = [
       { href: "/admin/notices", label: "Notices", Icon: Bell },
       { href: "/admin/newsletters", label: "Newsletters", Icon: Mail },
       { href: "/admin/blogs", label: "Blogs", Icon: Newspaper },
-  { href: "/admin/faqs", label: "FAQ", Icon: CircleHelp },
+      { href: "/admin/faqs", label: "FAQ", Icon: CircleHelp },
     ],
   },
   {
@@ -100,6 +101,9 @@ const sections: SidebarSection[] = [
   },
 ];
 
+/** Section key — the label doubles as the group's state key. */
+const sectionKey = (section: SidebarSection) => section.label ?? "main";
+
 interface SidebarProps {
   user?: { name: string; email: string; imageUrl?: string | null } | null;
 }
@@ -110,8 +114,30 @@ const Sidebar = ({ user }: SidebarProps) => {
   const [loggingOut, setLoggingOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [groups, setGroups] = useState<Record<string, boolean>>({});
   const menuRef = useRef<HTMLDivElement>(null);
 
+  // Segment-aware: a link is active only when the path equals it or
+  // continues with "/", so /admin/newsletters does not also highlight
+  // /admin/newsletter (Subscriber list).
+  const isActive = (href: string, exact?: boolean) =>
+    exact
+      ? pathname === href
+      : pathname === href || pathname.startsWith(`${href}/`);
+
+  /* 24 links do not fit a laptop viewport, so only the group you are in
+     (plus the dashboard) starts open. Collapsing the current group still
+     keeps the current page's link visible. */
+  const activeSection =
+    sections.find((section) => section.links.some((l) => isActive(l.href, l.exact)))?.label ??
+    "main";
+
+  const isOpen = (key: string) => groups[key] ?? (key === activeSection || key === "main");
+
+  const toggleGroup = (key: string) =>
+    setGroups((prev) => ({ ...prev, [key]: !isOpen(key) }));
+
+  // Close the user menu on outside click.
   useEffect(() => {
     if (!menuOpen) return;
     const onClick = (e: MouseEvent) => {
@@ -123,20 +149,23 @@ const Sidebar = ({ user }: SidebarProps) => {
     return () => document.removeEventListener("mousedown", onClick);
   }, [menuOpen]);
 
+  // Escape closes the popover and the mobile drawer.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setMenuOpen(false);
+      setDrawerOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
   const logout = async () => {
     setLoggingOut(true);
     await fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
     router.push("/admin/login");
     router.refresh();
   };
-
-  // Segment-aware: a link is active only when the path equals it or
-  // continues with "/", so /admin/newsletters does not also highlight
-  // /admin/newsletter (Subscriber list).
-  const isActive = (href: string, exact?: boolean) =>
-    exact
-      ? pathname === href
-      : pathname === href || pathname.startsWith(`${href}/`);
 
   const displayName = user?.name || "Admin";
   const initials = displayName.slice(0, 1).toUpperCase();
@@ -148,7 +177,8 @@ const Sidebar = ({ user }: SidebarProps) => {
         <button
           onClick={() => setDrawerOpen(true)}
           aria-label="Open menu"
-          className="rounded-lg p-1.5 hover:bg-slate-800"
+          aria-expanded={drawerOpen}
+          className="rounded-lg p-1.5 transition hover:bg-white/10"
         >
           <Menu size={22} />
         </button>
@@ -157,7 +187,7 @@ const Sidebar = ({ user }: SidebarProps) => {
           alt="Mahi Computer logo"
           width={32}
           height={32}
-          className="h-10 w-10 rounded-md object-contain"
+          className="h-9 w-9 rounded-md object-contain"
         />
         <p className="text-base font-semibold">Admin Panel</p>
       </div>
@@ -165,117 +195,180 @@ const Sidebar = ({ user }: SidebarProps) => {
       {/* Backdrop behind the mobile drawer */}
       {drawerOpen && (
         <div
-          className="fixed inset-0 z-40 bg-slate-900/60 lg:hidden"
+          className="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-[1px] lg:hidden"
           onClick={() => setDrawerOpen(false)}
         />
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col bg-slate-900 text-slate-100 transition-transform duration-200 lg:w-56 lg:translate-x-0 xl:w-72 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col bg-slate-900 text-slate-100 transition-transform duration-200 lg:w-64 lg:translate-x-0 ${
           drawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="border-b border-slate-700 px-6 py-4 lg:px-4 xl:px-6">
-          <Image
-            src={logodark}
-            alt="Mahi Computer logo"
-            width={134}
-            height={67}
-            className="mx-auto h-14 w-auto max-w-44 shrink-0 object-contain object-left lg:h-12 xl:h-14"
-            priority
+        {/* Brand — doubles as the way back to the dashboard */}
+        <div className="flex items-center justify-between gap-2 border-b border-slate-800 px-4 py-3.5">
+          <Link
+            href="/admin"
+            onClick={() => setDrawerOpen(false)}
+            className="min-w-0 rounded-lg transition hover:opacity-90"
+          >
+            <Image
+              src={logodark}
+              alt="Mahi Computer logo"
+              width={134}
+              height={67}
+              className="h-12 w-auto max-w-40 object-contain object-left"
+              priority
+            />
+          </Link>
+          <button
+            onClick={() => setDrawerOpen(false)}
+            aria-label="Close menu"
+            className="rounded-lg p-1.5 text-slate-400 transition hover:bg-white/10 hover:text-white lg:hidden"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* The nav scrolls when the viewport is too short. min-h-0 lets the
+            flex child shrink, and the fade below hints that there is more
+            below the fold instead of cutting a link in half. */}
+        <div className="relative min-h-0 flex-1">
+          <nav className="admin-sidebar-scroll h-full overflow-y-auto px-2.5 py-3">
+            {sections.map((section) => {
+              const key = sectionKey(section);
+              const open = isOpen(key);
+              // A collapsed group still shows the current page's own link.
+              const links = open
+                ? section.links
+                : section.links.filter((link) => isActive(link.href, link.exact));
+              return (
+                <div key={key} className="mb-0.5">
+                  {section.label && (
+                    <button
+                      type="button"
+                      onClick={() => toggleGroup(key)}
+                      aria-expanded={open}
+                      className="group flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 transition duration-150 hover:bg-white/5 hover:text-slate-300"
+                    >
+                      <span className="truncate">{section.label}</span>
+                      <ChevronDown
+                        size={13}
+                        aria-hidden
+                        className={`shrink-0 transition-transform duration-200 ${
+                          open ? "" : "-rotate-90"
+                        }`}
+                      />
+                    </button>
+                  )}
+
+                  {links.length > 0 && (
+                    <ul className="mt-0.5 space-y-0.5 pb-1">
+                      {links.map(({ href, label, exact, Icon }) => {
+                        const active = isActive(href, exact);
+                        return (
+                          <li key={href}>
+                            <Link
+                              href={href}
+                              onClick={() => setDrawerOpen(false)}
+                              aria-current={active ? "page" : undefined}
+                              className={`group relative flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13.5px] transition duration-150 ${
+                                active
+                                  ? "bg-blue-600/15 font-medium text-white"
+                                  : "text-slate-400 hover:bg-white/5 hover:text-slate-100"
+                              }`}
+                            >
+                              {active && (
+                                <span
+                                  aria-hidden
+                                  className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-r bg-blue-400"
+                                />
+                              )}
+                              <Icon
+                                size={16}
+                                aria-hidden
+                                className={`shrink-0 ${
+                                  active
+                                    ? "text-blue-300"
+                                    : "text-slate-500 transition group-hover:text-slate-300"
+                                }`}
+                              />
+                              <span className="truncate">{label}</span>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-linear-to-t from-slate-900 via-slate-900/85 to-transparent"
           />
         </div>
-      {/* The nav scrolls when the viewport is too short. min-h-0 lets the
-          flex child shrink, and the fade below hints that there is more
-          below the fold instead of cutting a link in half. */}
-      <div className="relative min-h-0 flex-1">
-        <nav className="admin-sidebar-scroll h-full overflow-y-auto p-3">
-          {sections.map(({ label, links }) => (
-            <div key={label ?? "main"} className="mb-1">
-              {label && (
-                <p className="px-3 pb-0.5 pt-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                  {label}
-                </p>
-              )}
-              <div className="space-y-1">
-                {links.map(({ href, label, exact, Icon }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={() => setDrawerOpen(false)}
-                    className={`flex items-center gap-3 rounded-md px-3 py-1.5 text-sm transition ${
-                      isActive(href, exact)
-                        ? "bg-blue-600 text-white"
-                        : "text-slate-300 hover:bg-slate-800"
-                    }`}
-                  >
-                    <Icon size={17} className="shrink-0" />
-                    {label}
-                  </Link>
-                ))}
+
+        <div className="relative border-t border-slate-800 p-2.5" ref={menuRef}>
+          {menuOpen && (
+            <div className="absolute bottom-16 left-2.5 right-2.5 overflow-hidden rounded-xl border border-slate-700 bg-slate-800 py-1.5 shadow-2xl shadow-black/40">
+              <div className="border-b border-slate-700 px-3.5 py-2.5">
+                <p className="truncate text-sm font-medium text-white">{displayName}</p>
+                <p className="truncate text-xs text-slate-400">{user?.email}</p>
               </div>
+              <Link
+                href="/"
+                className="flex w-full items-center gap-2.5 px-3.5 py-2 text-left text-sm text-slate-300 transition hover:bg-slate-700/70 hover:text-white"
+                onClick={() => setMenuOpen(false)}
+              >
+                <ExternalLink size={15} aria-hidden />
+                View site
+              </Link>
+              <button
+                onClick={logout}
+                disabled={loggingOut}
+                className="flex w-full items-center gap-2.5 px-3.5 py-2 text-left text-sm text-rose-300 transition hover:bg-slate-700/70 disabled:pointer-events-none disabled:opacity-50"
+              >
+                <LogOut size={15} aria-hidden />
+                {loggingOut ? "Logging out…" : "Logout"}
+              </button>
             </div>
-          ))}
-        </nav>
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-linear-to-t from-slate-900 via-slate-900/85 to-transparent"
-        />
-      </div>
-
-      <div className="relative border-t border-slate-700 p-3" ref={menuRef}>
-        {menuOpen && (
-          <div className="absolute bottom-16 left-3 right-3 rounded-lg border border-slate-700 bg-slate-800 py-2 shadow-xl">
-            <div className="border-b border-slate-700 px-4 py-2">
-              <p className="truncate text-sm font-medium text-white">{displayName}</p>
-              <p className="truncate text-xs text-slate-400">{user?.email}</p>
-            </div>
-            <Link
-              href="/"
-              className="flex w-full items-center gap-2.5 rounded-lg px-4 py-2 text-left text-sm text-slate-300 hover:bg-slate-700"
-              onClick={() => setMenuOpen(false)}
-            >
-              <ExternalLink size={15} />
-              View site
-            </Link>
-            <button
-              onClick={logout}
-              disabled={loggingOut}
-              className="flex w-full items-center gap-2.5 rounded-lg px-4 py-2 text-left text-sm text-rose-300 hover:bg-slate-700 disabled:opacity-50"
-            >
-              <LogOut size={15} />
-              {loggingOut ? "Logging out…" : "Logout"}
-            </button>
-          </div>
-        )}
-
-        <button
-          onClick={() => setMenuOpen((o) => !o)}
-          className="flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left hover:bg-slate-800"
-        >
-          {user?.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={user.imageUrl}
-              alt=""
-              className="h-9 w-9 shrink-0 rounded-full bg-white object-contain p-0.5"
-            />
-          ) : (
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
-              {initials}
-            </span>
           )}
-          <span className="min-w-0 flex-1">
-            <span className="block truncate text-sm font-medium text-white">
-              {displayName}
+
+          <button
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-expanded={menuOpen}
+            aria-haspopup="menu"
+            className="flex w-full items-center gap-2.5 rounded-lg px-1.5 py-1.5 text-left transition hover:bg-white/5"
+          >
+            {user?.imageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={user.imageUrl}
+                alt=""
+                className="h-9 w-9 shrink-0 rounded-full bg-white object-contain p-0.5"
+              />
+            ) : (
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+                {initials}
+              </span>
+            )}
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-[13px] font-medium text-white">
+                {displayName}
+              </span>
+              <span className="block truncate text-[11px] text-slate-400">{user?.email}</span>
             </span>
-            <span className="block truncate text-xs text-slate-400">{user?.email}</span>
-          </span>
-          <span className="text-slate-400">
-            {menuOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </span>
-        </button>
-      </div>
+            <ChevronDown
+              size={15}
+              aria-hidden
+              className={`shrink-0 text-slate-400 transition-transform duration-200 ${
+                menuOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+        </div>
       </aside>
     </>
   );

@@ -7,7 +7,7 @@ export type GalleryPreviewItem = {
   alt: string;
 };
 
-/** First eight home-page gallery images as a visual preview. */
+/** First eight home-page gallery images as a full-width visual strip. */
 const GalleryPreview = ({ items }: { items: GalleryPreviewItem[] }) => (
   <div className="min-w-0">
     <SectionHeading title="Gallery" href="/admin/gallery" />
@@ -22,19 +22,20 @@ const GalleryPreview = ({ items }: { items: GalleryPreviewItem[] }) => (
         </p>
       ) : (
         <>
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 lg:grid-cols-8">
             {items.slice(0, 8).map((g) => (
               <div
                 key={g.id}
-                className="relative aspect-video overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-200"
+                className="relative aspect-video overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-200 transition duration-200 hover:ring-blue-300"
               >
                 {g.imageUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={g.imageUrl}
                     alt={g.alt}
-                    loading="lazy" decoding="async"
-                      className="h-full w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover"
                   />
                 )}
               </div>

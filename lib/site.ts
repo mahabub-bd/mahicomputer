@@ -3,6 +3,13 @@
 export const SITE_NAME = "Mahi Computer Training Center";
 export const SITE_SHORT_NAME = "Mahi Computer";
 
+/**
+ * Business timezone. Pinned rather than inherited from the host so dates that
+ * are stored (audit serial numbers) and dates that are rendered agree on every
+ * deployment, whatever TZ the server container runs in.
+ */
+export const SITE_TIME_ZONE = "Asia/Dhaka";
+
 /** Production origin. Set NEXT_PUBLIC_SITE_URL in the environment. */
 export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://mahicomputer.vercel.app"

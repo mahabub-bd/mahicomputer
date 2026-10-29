@@ -1,5 +1,6 @@
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { SITE_TIME_ZONE } from "@/lib/site";
 
 export type AuditAction = "CREATE" | "UPDATE" | "DELETE";
 
@@ -107,6 +108,44 @@ export function formatAuditJson(value: unknown): string {
   return JSON.stringify(value, null, 2);
 }
 
+/** Digits appended after the date: 20261029 + 001. */
+const SERIAL_SEQ_DIGITS = 3;
+
+/** `YYYYMMDD` for the business day the entry belongs to (host-timezone independent). */
+export function auditDayKey(date: Date): string {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: SITE_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+  return parts.replace(/\D/g, "");
+}
+
+/**
+ * Next free serial: `YYYYMMDD` + the entry's place in that business day
+ * (e.g. 20261029001). Probes forward past numbers already taken, so removing a
+ * row can never wedge the sequence on a duplicate.
+ */
+export async function nextAuditSerial(now: Date = new Date()): Promise<string> {
+  const day = auditDayKey(now);
+  const used = await prisma.auditLog.count({ where: { serial: { startsWith: day } } });
+  let seq = used + 1;
+  for (;;) {
+    const candidate = `${day}${String(seq).padStart(SERIAL_SEQ_DIGITS, "0")}`;
+    const taken = await prisma.auditLog.findUnique({
+      where: { serial: candidate },
+      select: { id: true },
+    });
+    if (!taken) return candidate;
+    seq += 1;
+  }
+}
+
+/** Prisma's unique-constraint violation (auditLog.serial raced another write). */
+const isUniqueViolation = (error: unknown): boolean =>
+  typeof error === "object" && error !== null && "code" in error && error.code === "P2002";
+
 interface AuditInput {
   action: AuditAction;
   /** Entity name, e.g. "Enrollment" | "Payment" | "Batch" | "BusinessSetting". */
@@ -140,18 +179,28 @@ export async function logAudit({
     const before = auditSnapshot(oldValue);
     const after = auditSnapshot(newValue);
     const extra = auditSnapshot(detail);
-    await prisma.auditLog.create({
-      data: {
-        userId: session?.sub ?? null,
-        action,
-        entity,
-        entityId,
-        summary,
-        ...(before ? { oldValue: before } : {}),
-        ...(after ? { newValue: after } : {}),
-        ...(extra ? { detail: extra } : {}),
-      },
-    });
+    // Two admins acting in the same instant can pick the same serial; the unique
+    // index rejects the loser and the retry simply takes the next free number.
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      try {
+        await prisma.auditLog.create({
+          data: {
+            serial: await nextAuditSerial(),
+            userId: session?.sub ?? null,
+            action,
+            entity,
+            entityId,
+            summary,
+            ...(before ? { oldValue: before } : {}),
+            ...(after ? { newValue: after } : {}),
+            ...(extra ? { detail: extra } : {}),
+          },
+        });
+        return;
+      } catch (error) {
+        if (attempt === 2 || !isUniqueViolation(error)) throw error;
+      }
+    }
   } catch {
     // Swallow: audit logging is best-effort.
   }

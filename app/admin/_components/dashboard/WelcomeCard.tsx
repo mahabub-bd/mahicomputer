@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Calendar, ExternalLink } from "lucide-react";
+import { Calendar, ExternalLink, Quote, Settings } from "lucide-react";
 
 interface WelcomeCardProps {
   adminName: string;
@@ -7,10 +7,15 @@ interface WelcomeCardProps {
   heroTitle?: string;
 }
 
-/** Dark gradient greeting banner: admin name, today's date and a link to the live site. */
+const chip =
+  "inline-flex max-w-full items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs text-slate-200";
+const ghostBtn =
+  "inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-3.5 py-2 text-sm font-medium text-slate-100 transition duration-200 hover:border-white/30 hover:bg-white/15";
+
+/** Dark greeting banner: admin name, date, homepage headline and a link to the live site. */
 const WelcomeCard = ({ adminName, today, heroTitle }: WelcomeCardProps) => (
-  <div className="relative mb-6 overflow-hidden rounded-2xl bg-linear-to-r from-slate-900 via-slate-800 to-blue-900 p-6 text-slate-100 shadow-sm">
-    {/* Decorative glow */}
+  <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-slate-900 via-slate-800 to-blue-900 p-5 text-slate-100 shadow-sm sm:p-6">
+    {/* Decorative glows */}
     <div
       aria-hidden
       className="pointer-events-none absolute -right-16 -top-24 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl"
@@ -21,30 +26,46 @@ const WelcomeCard = ({ adminName, today, heroTitle }: WelcomeCardProps) => (
     />
 
     <div className="relative flex flex-wrap items-start justify-between gap-4">
-      <div>
-        <p className="text-[13px] font-medium uppercase tracking-wider text-blue-200/80">
+      <div className="min-w-0">
+        <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-blue-200/80">
           Welcome back
         </p>
-        <h1 className="mt-1 text-2xl font-bold text-white sm:text-[28px]">{adminName}</h1>
-        <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs text-slate-200">
-          <Calendar size={13} className="text-blue-200" />
-          {today}
-        </p>
+        <h1 className="mt-1.5 truncate text-2xl font-bold text-white sm:text-[28px]">
+          {adminName}
+        </h1>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className={chip}>
+            <Calendar size={13} className="shrink-0 text-blue-200" aria-hidden />
+            {today}
+          </span>
+          {heroTitle && (
+            <Link
+              href="/admin/settings"
+              title="Edit the homepage headline"
+              className={`${chip} transition hover:bg-white/20`}
+            >
+              <Quote size={12} className="shrink-0 text-blue-200" aria-hidden />
+              <span className="truncate">{heroTitle}</span>
+            </Link>
+          )}
+        </div>
       </div>
-      <Link
-        href="/"
-        target="_blank"
-        className="flex items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:border-white/40 hover:bg-white/20"
-      >
-        <ExternalLink size={15} />
-        View site
-      </Link>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Link href="/admin/settings" className={ghostBtn}>
+          <Settings size={15} aria-hidden />
+          Homepage
+        </Link>
+        <Link
+          href="/"
+          target="_blank"
+          className="inline-flex items-center gap-2 rounded-lg bg-white px-3.5 py-2 text-sm font-semibold text-slate-900 transition duration-200 hover:bg-slate-100"
+        >
+          <ExternalLink size={15} aria-hidden />
+          View site
+        </Link>
+      </div>
     </div>
-    {heroTitle && (
-      <p className="relative mt-4 border-t border-white/10 pt-4 text-sm text-slate-300">
-        {heroTitle}
-      </p>
-    )}
   </div>
 );
 

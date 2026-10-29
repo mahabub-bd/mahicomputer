@@ -5,6 +5,7 @@ import {
   isComparableSnapshot,
 } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
+import { SITE_TIME_ZONE } from "@/lib/site";
 import { notFound } from "next/navigation";
 import PageHeader from "../../../_components/PageHeader";
 import SectionCard from "../../../_components/SectionCard";
@@ -21,6 +22,7 @@ const ACTION_BADGE: Record<string, string> = {
 
 const formatWhen = (date: Date) =>
   new Date(date).toLocaleString("en-GB", {
+    timeZone: SITE_TIME_ZONE,
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -52,6 +54,7 @@ const AuditLogDetailPage = async ({ params }: Props) => {
   const changedCount = changes.filter((c) => c.changed).length;
 
   const meta: { label: string; value: string }[] = [
+    { label: "Serial", value: log.serial },
     { label: "When", value: formatWhen(log.createdAt) },
     { label: "Admin", value: log.user?.name ?? "Unknown" },
     { label: "Admin email", value: log.user?.email ?? "—" },

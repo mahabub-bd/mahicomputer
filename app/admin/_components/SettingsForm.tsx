@@ -12,15 +12,19 @@ import ImageUpload from "./ImageUpload";
 
 interface SettingsFormProps {
   settings: SiteSettingsView;
+  /** Called after a successful save — used to close the edit modal. */
+  onSuccess?: () => void;
 }
 
-const emptyStat = { id: "", title: "", value: "", class: "bg-stat-1" };
+/** New stats cycle through the four gradient tokens defined in globals.css. */
+const STAT_CLASSES = ["bg-stat-1", "bg-stat-2", "bg-stat-3", "bg-stat-4"];
+const emptyStat = { id: "", title: "", value: "", class: STAT_CLASSES[0] };
 
 type TextKey = {
   [K in keyof SettingsFormInput]: SettingsFormInput[K] extends string ? K : never;
 }[keyof SettingsFormInput];
 
-const SettingsForm = ({ settings }: SettingsFormProps) => {
+const SettingsForm = ({ settings, onSuccess }: SettingsFormProps) => {
   const router = useRouter();
   // Business details (contact info, hours, map, WhatsApp) live in their own
   // BusinessSetting table and are edited from /admin/business-settings.
@@ -54,6 +58,7 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
       await apiPut("/api/admin/settings", payload);
       toast.success("Homepage settings saved");
       router.refresh();
+      onSuccess?.();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Save failed";
       setError("root", { message: msg });
@@ -231,6 +236,8 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
         <p className="mb-4 w-full border-b border-slate-200 pb-3 text-[13px] font-bold uppercase tracking-wider text-slate-700">
           Stats (one glance section)
         </p>
+        {/* The tile background is not editable: existing stats keep the class
+            they were saved with, new ones take the next gradient in rotation. */}
         {stats.fields.map((stat, i) => (
           <div key={stat._key} className="flex flex-wrap items-end gap-3">
             <Field
@@ -247,13 +254,6 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
             >
               <Input {...register(`stats.${i}.value`)} />
             </Field>
-            <Field
-              label="BG class"
-              className="min-w-42.5 flex-1"
-              error={errors.stats?.[i]?.class?.message}
-            >
-              <Input {...register(`stats.${i}.class`)} />
-            </Field>
             <Button
               type="button"
               variant="danger"
@@ -268,7 +268,12 @@ const SettingsForm = ({ settings }: SettingsFormProps) => {
           type="button"
           variant="secondary"
           size="sm"
-          onClick={() => stats.append({ ...emptyStat })}
+          onClick={() =>
+            stats.append({
+              ...emptyStat,
+              class: STAT_CLASSES[stats.fields.length % STAT_CLASSES.length],
+            })
+          }
         >
           + Add stat
         </Button>

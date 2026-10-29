@@ -3,16 +3,16 @@
 import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
 import { toast } from "sonner";
-import type { BusinessSettingsView, SocialLink } from "@/lib/types";
+import type { BusinessSettingsView } from "@/lib/types";
 import { businessSettingSchema, type BusinessSettingInput } from "@/lib/validators";
 import { apiPut } from "./api";
-import SocialList from "./SocialList";
 import { Checkbox, Field, Input, SubmitButton, Textarea } from "@/components/form/FormControls";
 import { useZodForm } from "@/components/form/useZodForm";
 
 interface BusinessSettingsFormProps {
   settings: BusinessSettingsView;
-  socialLinks: SocialLink[];
+  /** Called after a successful save — used to close the edit modal. */
+  onSuccess?: () => void;
 }
 
 /**
@@ -20,7 +20,7 @@ interface BusinessSettingsFormProps {
  * and the WhatsApp chat widget. Backed by its own `BusinessSetting` table —
  * fully independent of the homepage settings page.
  */
-const BusinessSettingsForm = ({ settings, socialLinks }: BusinessSettingsFormProps) => {
+const BusinessSettingsForm = ({ settings, onSuccess }: BusinessSettingsFormProps) => {
   const router = useRouter();
   const {
     register,
@@ -37,6 +37,7 @@ const BusinessSettingsForm = ({ settings, socialLinks }: BusinessSettingsFormPro
       await apiPut("/api/admin/business-settings", data);
       toast.success("Business settings saved");
       router.refresh();
+      onSuccess?.();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Save failed";
       setError("root", { message: msg });
@@ -44,7 +45,7 @@ const BusinessSettingsForm = ({ settings, socialLinks }: BusinessSettingsFormPro
     }
   });
 
-  const form = (
+  return (
     <form onSubmit={onSubmit} className="space-y-8" noValidate>
       <fieldset className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <legend className="sr-only">Business identity</legend>
@@ -58,17 +59,18 @@ const BusinessSettingsForm = ({ settings, socialLinks }: BusinessSettingsFormPro
         >
           <Input {...register("businessName")} placeholder="Mahi Computer" />
         </Field>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Phone" error={errors.phone?.message}>
             <Input {...register("phone")} />
           </Field>
           <Field label="Email" error={errors.email?.message}>
             <Input {...register("email")} />
           </Field>
-          <Field label="Address" error={errors.address?.message}>
-            <Input {...register("address")} />
-          </Field>
         </div>
+        {/* Full width — the address is the longest value in this section. */}
+        <Field label="Address" error={errors.address?.message}>
+          <Input {...register("address")} />
+        </Field>
         <Field
           label="Opening hours"
           hint="One short line, shown with a clock icon in the footer contact list."
@@ -133,21 +135,6 @@ const BusinessSettingsForm = ({ settings, socialLinks }: BusinessSettingsFormPro
         <SubmitButton busy={isSubmitting}>Save business settings</SubmitButton>
       </div>
     </form>
-  );
-
-  return (
-    <div className="space-y-8">
-      {form}
-      {/* Social links manage their own CRUD (modal + API), so they sit outside
-          the settings <form> — their buttons must not submit business settings. */}
-      <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <legend className="sr-only">Social links</legend>
-        <p className="mb-4 w-full border-b border-slate-200 pb-3 text-[13px] font-bold uppercase tracking-wider text-slate-700">
-          Social links
-        </p>
-        <SocialList links={socialLinks} embedded />
-      </fieldset>
-    </div>
   );
 };
 

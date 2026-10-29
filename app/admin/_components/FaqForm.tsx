@@ -45,14 +45,24 @@ const FaqForm = ({ faq, onSuccess }: FaqFormProps) => {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4" noValidate>
-      <Field label="Question" required error={errors.question?.message}>
+      <Field
+        label="Question"
+        required
+        hint="Used as the accordion heading on the homepage."
+        error={errors.question?.message}
+      >
         <Input
           {...register("question")}
           aria-invalid={!!errors.question}
           placeholder="ভর্তির জন্য কী কী লাগবে?"
         />
       </Field>
-      <Field label="Answer" required error={errors.answer?.message}>
+      <Field
+        label="Answer"
+        required
+        hint="Line breaks are kept, just like on the site."
+        error={errors.answer?.message}
+      >
         <Textarea
           rows={5}
           {...register("answer")}
@@ -74,7 +84,11 @@ const FaqForm = ({ faq, onSuccess }: FaqFormProps) => {
             )}
           />
         </div>
-        <Field label="Display order" error={errors.order?.message}>
+        <Field
+          label="Display order"
+          hint="Lower numbers appear first."
+          error={errors.order?.message}
+        >
           <Input type="number" {...register("order")} />
         </Field>
       </div>

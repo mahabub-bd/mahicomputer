@@ -1,6 +1,7 @@
 import { getBusinessSettings, getSocialLinks } from "@/lib/data";
 import PageHeader from "../../_components/PageHeader";
-import BusinessSettingsForm from "../../_components/BusinessSettingsForm";
+import BusinessSettingsEditButton from "../../_components/BusinessSettingsEditButton";
+import BusinessSettingsView from "../../_components/BusinessSettingsView";
 
 export const dynamic = "force-dynamic";
 
@@ -15,8 +16,9 @@ const BusinessSettingsAdminPage = async () => {
       <PageHeader
         title="Business settings"
         description="Business name, opening hours, contact info, map, social links and the WhatsApp chat widget"
+        actions={<BusinessSettingsEditButton settings={settings} />}
       />
-      <BusinessSettingsForm settings={settings} socialLinks={socialLinks} />
+      <BusinessSettingsView settings={settings} socialLinks={socialLinks} />
     </div>
   );
 };

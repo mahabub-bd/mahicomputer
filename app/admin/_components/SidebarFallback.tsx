@@ -15,9 +15,9 @@ export default function SidebarFallback() {
 
       {/* Desktop sidebar skeleton — width matches the real sidebar so the
           page content doesn't shift when the user query resolves. */}
-      <aside className="fixed inset-y-0 left-0 z-50 hidden w-72 flex-col bg-slate-900 p-3 lg:block lg:w-56 xl:w-72">
-        <div className="mb-4 flex items-center gap-3 border-b border-slate-700 px-3 py-4">
-          <span className="h-11 w-11 shrink-0 animate-pulse rounded-lg bg-slate-700 lg:h-10 lg:w-10 xl:h-11 xl:w-11" />
+      <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col bg-slate-900 p-3 lg:block">
+        <div className="mb-4 flex items-center gap-3 border-b border-slate-800 px-1 py-4">
+          <span className="h-10 w-10 shrink-0 animate-pulse rounded-lg bg-slate-700" />
           <span className="flex-1 space-y-2">
             <span className="block h-4 w-32 animate-pulse rounded bg-slate-700" />
             <span className="block h-3 w-20 animate-pulse rounded bg-slate-800" />
@@ -25,7 +25,7 @@ export default function SidebarFallback() {
         </div>
         <div className="space-y-3">
           {Array.from({ length: 8 }).map((_, i) => (
-            <span key={i} className="block h-7 animate-pulse rounded-md bg-slate-800" />
+            <span key={i} className="block h-7 animate-pulse rounded-lg bg-slate-800" />
           ))}
         </div>
       </aside>

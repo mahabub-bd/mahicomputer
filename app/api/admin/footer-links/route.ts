@@ -43,6 +43,7 @@ export async function POST(req: Request) {
     entity: "FooterLinkGroup",
     entityId: created.id,
     summary: `Created footer link group — ${created.title}`,
+    newValue: created,
   });
   return NextResponse.json(created, { status: 201 });
 }

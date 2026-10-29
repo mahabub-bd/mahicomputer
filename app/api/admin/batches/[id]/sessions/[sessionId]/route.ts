@@ -20,6 +20,13 @@ export async function PATCH(req: Request, { params }: Params) {
       { status: 400 },
     );
   }
+  // Scoped to the batch so a wrong URL cannot touch another batch's session.
+  const before = await prisma.classSession.findFirst({
+    where: { id: sessionId, batchId: id },
+  });
+  if (!before) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
   try {
     const session = await prisma.classSession.update({
       where: { id: sessionId },
@@ -33,7 +40,8 @@ export async function PATCH(req: Request, { params }: Params) {
       entity: "ClassSession",
       entityId: sessionId,
       summary: `Updated class session`,
-      detail: { batchId: id },
+      oldValue: before,
+      newValue: session,
     });
     return NextResponse.json(session);
   } catch {
@@ -49,6 +57,9 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   const { id, sessionId } = await params;
   // Scoped to the batch so a wrong URL cannot touch another batch's session.
+  const before = await prisma.classSession.findFirst({
+    where: { id: sessionId, batchId: id },
+  });
   const { count } = await prisma.classSession.deleteMany({
     where: { id: sessionId, batchId: id },
   });
@@ -58,7 +69,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "ClassSession",
       entityId: sessionId,
       summary: `Deleted class session`,
-      detail: { batchId: id },
+      oldValue: before,
     });
   }
   return NextResponse.json({ ok: true });

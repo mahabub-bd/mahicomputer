@@ -48,6 +48,7 @@ export async function POST(req: Request) {
     entity: "User",
     entityId: user.id,
     summary: `Created admin account — ${user.email}`,
+    newValue: user,
   });
   return NextResponse.json(user, { status: 201 });
 }

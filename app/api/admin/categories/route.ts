@@ -33,6 +33,7 @@ export async function POST(req: Request) {
     entity: "Category",
     entityId: category.id,
     summary: `Created category — ${category.title}`,
+    newValue: category,
   });
   return NextResponse.json(category, { status: 201 });
 }

@@ -43,6 +43,7 @@ export async function POST(req: Request) {
     entity: "Batch",
     entityId: batch.id,
     summary: `Created batch — ${batch.name} (${batch.course})`,
+    newValue: batch,
   });
   return NextResponse.json(batch, { status: 201 });
 }

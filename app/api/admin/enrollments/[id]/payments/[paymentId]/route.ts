@@ -15,26 +15,28 @@ export async function DELETE(
 
   const { id, paymentId } = await params;
   try {
-    let removedAmount = 0;
+    // Holder object: an assignment inside the transaction callback is invisible
+    // to TS's control-flow narrowing, which would otherwise collapse the type.
+    const capture: { row: Awaited<ReturnType<typeof prisma.payment.findUnique>> } = {
+      row: null,
+    };
     await prisma.$transaction(async (tx) => {
-      const payment = await tx.payment.findUnique({
-        where: { id: paymentId },
-        select: { amount: true, enrollmentId: true },
-      });
+      const payment = await tx.payment.findUnique({ where: { id: paymentId } });
       if (!payment || payment.enrollmentId !== id) return;
-      removedAmount = payment.amount;
+      capture.row = payment;
       await tx.payment.delete({ where: { id: paymentId } });
       await tx.enrollment.update({
         where: { id },
         data: { paidAmount: { decrement: payment.amount } },
       });
     });
-    if (removedAmount > 0) {
+    if (capture.row) {
       await logAudit({
         action: "DELETE",
         entity: "Payment",
         entityId: paymentId,
-        summary: `Removed ৳${removedAmount.toLocaleString("en-BD")} payment record`,
+        summary: `Removed ৳${capture.row.amount.toLocaleString("en-BD")} payment record`,
+        oldValue: capture.row,
       });
     }
     return NextResponse.json({ ok: true });

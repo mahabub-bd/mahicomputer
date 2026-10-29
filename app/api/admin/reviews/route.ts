@@ -31,6 +31,7 @@ export async function POST(req: Request) {
     entity: "Review",
     entityId: review.id,
     summary: `Created Review — ${auditLabel(review)}`,
+    newValue: review,
   });
   return NextResponse.json(review, { status: 201 });
 }

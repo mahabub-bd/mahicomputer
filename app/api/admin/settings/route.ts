@@ -28,6 +28,7 @@ export async function PUT(req: Request) {
 
   // Homepage content only — business details live in the BusinessSetting table
   // and are written by /api/admin/business-settings.
+  const before = await prisma.siteSetting.findUnique({ where: { id: 1 } });
   const settings = await prisma.siteSetting.upsert({
     where: { id: 1 },
     update: parsed.data,
@@ -39,6 +40,8 @@ export async function PUT(req: Request) {
     entity: "SiteSetting",
     entityId: "1",
     summary: "Updated site settings",
+    oldValue: before,
+    newValue: settings,
   });
   return NextResponse.json(settings);
 }

@@ -43,6 +43,7 @@ export async function POST(req: Request) {
       entity: "Course",
       entityId: course.id,
       summary: `Created course — ${course.title}`,
+      newValue: course,
     });
     return NextResponse.json(course, { status: 201 });
   } catch (e: unknown) {

@@ -38,6 +38,7 @@ const AuditLogPage = async ({ searchParams }: Props) => {
     "Payment",
     "User",
     "SiteSetting",
+    "BusinessSetting",
     "Course",
     "Category",
     "Batch",
@@ -91,13 +92,14 @@ const AuditLogPage = async ({ searchParams }: Props) => {
                 <th className="px-4 py-2.5 font-semibold">Admin</th>
                 <th className="px-4 py-2.5 font-semibold">Action</th>
                 <th className="px-4 py-2.5 font-semibold">What changed</th>
+                <th className="px-4 py-2.5 font-semibold" />
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {logs.map((log) => {
                 const badge = ACTION_BADGE[log.action] ?? "bg-slate-50 text-slate-600 ring-1 ring-slate-200";
                 return (
-                  <tr key={log.id} className="align-top">
+                  <tr key={log.id} className="align-top transition-colors hover:bg-slate-50/60">
                     <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
                       {new Date(log.createdAt).toLocaleString("en-GB", {
                         day: "numeric",
@@ -119,7 +121,17 @@ const AuditLogPage = async ({ searchParams }: Props) => {
                       <span className="ml-2 text-xs text-slate-400">{log.entity}</span>
                     </td>
                     <td className="min-w-0 px-4 py-2.5 font-medium text-slate-800">
-                      {log.summary || "—"}
+                      <Link href={`/admin/audit-log/${log.id}`} className="hover:text-blue-600">
+                        {log.summary || "—"}
+                      </Link>
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2.5 text-right">
+                      <Link
+                        href={`/admin/audit-log/${log.id}`}
+                        className="text-xs font-semibold text-blue-600 hover:text-blue-700"
+                      >
+                        Details
+                      </Link>
                     </td>
                   </tr>
                 );

@@ -22,6 +22,7 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   try {
+    const before = await prisma.category.findUnique({ where: { id } });
     const category = await prisma.category.update({ where: { id }, data: parsed.data });
     revalidateTag("public-data", "max");
     await logAudit({
@@ -29,6 +30,8 @@ export async function PUT(req: Request, { params }: Params) {
       entity: "Category",
       entityId: id,
       summary: `Updated category — ${category.title}`,
+      oldValue: before,
+      newValue: category,
     });
     return NextResponse.json(category);
   } catch {
@@ -49,6 +52,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Category",
       entityId: id,
       summary: `Deleted category — ${category.title}`,
+      oldValue: category,
     });
     return NextResponse.json({ ok: true });
   } catch {

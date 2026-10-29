@@ -17,6 +17,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Subscriber",
       entityId: id,
       summary: `Removed subscriber — ${deleted.email}`,
+      oldValue: deleted,
     });
     return NextResponse.json({ ok: true });
   } catch {

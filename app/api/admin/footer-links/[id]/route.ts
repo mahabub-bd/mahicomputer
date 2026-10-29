@@ -21,6 +21,10 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   const { links, ...group } = parsed.data;
+  const before = await prisma.footerLinkGroup.findUnique({
+    where: { id },
+    include: { links: { orderBy: { order: "asc" } } },
+  });
   const updated = await prisma.$transaction(async (tx) => {
     await tx.footerLink.deleteMany({ where: { groupId: id } });
     return tx.footerLinkGroup.update({
@@ -37,6 +41,8 @@ export async function PUT(req: Request, { params }: Params) {
     entity: "FooterLinkGroup",
     entityId: id,
     summary: `Updated footer link group — ${updated.title}`,
+    oldValue: before,
+    newValue: updated,
   });
   return NextResponse.json(updated);
 }
@@ -53,6 +59,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "FooterLinkGroup",
       entityId: id,
       summary: `Deleted footer link group — ${group.title}`,
+      oldValue: group,
     });
     return NextResponse.json({ ok: true });
   } catch {

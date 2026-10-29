@@ -22,6 +22,7 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   try {
+    const before = await prisma.notice.findUnique({ where: { id } });
     const notice = await prisma.notice.update({
       where: { id },
       data: { ...parsed.data, publishedById: session!.sub },
@@ -31,6 +32,8 @@ export async function PUT(req: Request, { params }: Params) {
     entity: "Notice",
     entityId: notice.id,
     summary: `Updated Notice — ${auditLabel(notice)}`,
+    oldValue: before,
+    newValue: notice,
   });
     revalidateTag("public-data", "max");
     return NextResponse.json(notice);
@@ -51,6 +54,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Notice",
       entityId: id,
       summary: `Deleted Notice — ${auditLabel(deleted)}`,
+      oldValue: deleted,
     });
     revalidateTag("public-data", "max");
     return NextResponse.json({ ok: true });

@@ -31,6 +31,7 @@ export async function POST(req: Request) {
     entity: "Gallery item",
     entityId: item.id,
     summary: `Created Gallery item — ${auditLabel(item)}`,
+    newValue: item,
   });
   return NextResponse.json(item, { status: 201 });
 }

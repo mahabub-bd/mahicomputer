@@ -79,7 +79,7 @@ export async function POST(req: Request, { params }: Params) {
       entity: "Payment",
       entityId: payment.id,
       summary: `Recorded ৳${amount.toLocaleString("en-BD")} payment — ${studentName || id}`,
-      detail: { amount, method, transactionId },
+      newValue: payment,
     });
 
     return NextResponse.json(payment, { status: 201 });

@@ -32,6 +32,7 @@ export async function POST(req: Request) {
     entity: "Instructor",
     entityId: instructor.id,
     summary: `Created Instructor — ${auditLabel(instructor)}`,
+    newValue: instructor,
   });
   revalidateTag("public-data", "max");
   return NextResponse.json(instructor, { status: 201 });

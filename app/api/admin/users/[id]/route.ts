@@ -60,6 +60,8 @@ export async function PUT(req: Request, { params }: Params) {
       entity: "User",
       entityId: id,
       summary: `Updated admin account — ${user.email}`,
+      oldValue: target,
+      newValue: user,
       detail: { passwordChanged: parsed.data.password !== "" },
     });
     return NextResponse.json(user);
@@ -105,6 +107,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "User",
       entityId: id,
       summary: `Deleted admin account — ${target.email}`,
+      oldValue: target,
     });
     return NextResponse.json({ ok: true });
   } catch {

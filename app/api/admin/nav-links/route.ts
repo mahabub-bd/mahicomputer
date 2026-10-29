@@ -31,6 +31,7 @@ export async function POST(req: Request) {
     entity: "Nav link",
     entityId: link.id,
     summary: `Created Nav link — ${auditLabel(link)}`,
+    newValue: link,
   });
   return NextResponse.json(link, { status: 201 });
 }

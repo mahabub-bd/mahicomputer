@@ -26,6 +26,7 @@ export async function PUT(req: Request) {
     );
   }
 
+  const before = await prisma.businessSetting.findUnique({ where: { id: 1 } });
   const settings = await prisma.businessSetting.upsert({
     where: { id: 1 },
     update: parsed.data,
@@ -37,6 +38,8 @@ export async function PUT(req: Request) {
     entity: "BusinessSetting",
     entityId: "1",
     summary: "Updated business settings",
+    oldValue: before,
+    newValue: settings,
   });
   return NextResponse.json(settings);
 }

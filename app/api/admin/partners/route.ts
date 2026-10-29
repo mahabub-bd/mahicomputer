@@ -31,6 +31,7 @@ export async function POST(req: Request) {
     entity: "Partner",
     entityId: partner.id,
     summary: `Created Partner — ${auditLabel(partner)}`,
+    newValue: partner,
   });
   return NextResponse.json(partner, { status: 201 });
 }

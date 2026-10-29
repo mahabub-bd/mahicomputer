@@ -21,6 +21,7 @@ export async function PATCH(req: Request, { params }: Params) {
   }
   const { startDate, ...rest } = read.data;
 
+  const before = await prisma.batch.findUnique({ where: { id } });
   try {
     const batch = await prisma.batch.update({
       where: { id },
@@ -35,6 +36,8 @@ export async function PATCH(req: Request, { params }: Params) {
       entity: "Batch",
       entityId: id,
       summary: `Updated batch — ${batch.name}`,
+      oldValue: before,
+      newValue: batch,
     });
     return NextResponse.json(batch);
   } catch {
@@ -54,6 +57,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Batch",
       entityId: id,
       summary: `Deleted batch — ${batch.name}`,
+      oldValue: batch,
     });
     return NextResponse.json({ ok: true });
   } catch {

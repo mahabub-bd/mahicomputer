@@ -33,6 +33,7 @@ export async function POST(req: Request) {
     entity: "FAQ",
     entityId: faq.id,
     summary: `Created FAQ — ${auditLabel(faq)}`,
+    newValue: faq,
   });
   return NextResponse.json(faq, { status: 201 });
 }

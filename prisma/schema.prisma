@@ -29,6 +29,11 @@ model AuditLog {
   entity    String
   entityId  String   @default("")
   summary   String   @default("")
+  /** Row state before the change — compares against newValue on the detail page. */
+  oldValue  Json?
+  /** Row state after the change. */
+  newValue  Json?
+  /** Small structured payload for entries written before old/new snapshots existed. */
   detail    Json?
   createdAt DateTime @default(now())
 

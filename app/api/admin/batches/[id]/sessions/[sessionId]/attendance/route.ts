@@ -34,6 +34,7 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   const { records } = read.data;
+  const before = await prisma.attendance.findMany({ where: { sessionId } });
   await prisma.$transaction(
     records.map((r) =>
       prisma.attendance.upsert({
@@ -45,12 +46,14 @@ export async function PUT(req: Request, { params }: Params) {
       }),
     ),
   );
+  const after = await prisma.attendance.findMany({ where: { sessionId } });
   await logAudit({
     action: "UPDATE",
     entity: "Attendance",
     entityId: sessionId,
     summary: `Saved attendance — ${records.length} student${records.length === 1 ? "" : "s"}`,
-    detail: { batchId: id, sessionId },
+    oldValue: before,
+    newValue: after,
   });
   return NextResponse.json({ ok: true });
 }

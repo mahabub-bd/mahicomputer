@@ -22,12 +22,15 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   try {
+    const before = await prisma.instructor.findUnique({ where: { id } });
     const instructor = await prisma.instructor.update({ where: { id }, data: parsed.data });
   await logAudit({
     action: "UPDATE",
     entity: "Instructor",
     entityId: instructor.id,
     summary: `Updated Instructor — ${auditLabel(instructor)}`,
+    oldValue: before,
+    newValue: instructor,
   });
     revalidateTag("public-data", "max");
     return NextResponse.json(instructor);
@@ -48,6 +51,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Instructor",
       entityId: id,
       summary: `Deleted Instructor — ${auditLabel(deleted)}`,
+      oldValue: deleted,
     });
     revalidateTag("public-data", "max");
     return NextResponse.json({ ok: true });

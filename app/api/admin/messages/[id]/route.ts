@@ -36,6 +36,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "ContactMessage",
       entityId: id,
       summary: `Deleted message — ${deleted.name}`,
+      oldValue: deleted,
     });
     return NextResponse.json({ ok: true });
   } catch {

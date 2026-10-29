@@ -46,7 +46,7 @@ export async function POST(req: Request, { params }: Params) {
       month: "short",
       year: "numeric",
     })}${topic ? ` (${topic})` : ""}`,
-    detail: { batchId: id },
+    newValue: session,
   });
   return NextResponse.json(session, { status: 201 });
 }

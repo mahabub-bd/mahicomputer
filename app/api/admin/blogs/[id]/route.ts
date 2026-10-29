@@ -22,6 +22,7 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   try {
+    const before = await prisma.post.findUnique({ where: { id } });
     const post = await prisma.post.update({
       where: { id },
       data: { ...parsed.data, publishedById: session!.sub },
@@ -31,6 +32,8 @@ export async function PUT(req: Request, { params }: Params) {
     entity: "Blog post",
     entityId: post.id,
     summary: `Updated Blog post — ${auditLabel(post)}`,
+    oldValue: before,
+    newValue: post,
   });
     revalidateTag("public-data", "max");
     return NextResponse.json(post);
@@ -57,6 +60,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Blog post",
       entityId: id,
       summary: `Deleted Blog post — ${auditLabel(deleted)}`,
+      oldValue: deleted,
     });
     revalidateTag("public-data", "max");
     return NextResponse.json({ ok: true });

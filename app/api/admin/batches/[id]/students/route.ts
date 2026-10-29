@@ -40,7 +40,7 @@ export async function POST(req: Request, { params }: Params) {
       entity: "BatchStudent",
       entityId: row.id,
       summary: `Added student to batch — ${student.name}`,
-      detail: { enrollmentId, batchId: id },
+      newValue: row,
     });
     return NextResponse.json(row, { status: 201 });
   } catch {
@@ -60,13 +60,16 @@ export async function DELETE(req: Request, { params }: Params) {
   if (!enrollmentId) {
     return NextResponse.json({ error: "enrollmentId is required" }, { status: 400 });
   }
+  const existing = await prisma.batchStudent.findFirst({
+    where: { batchId: id, enrollmentId },
+  });
   await prisma.batchStudent.deleteMany({ where: { batchId: id, enrollmentId } });
   await logAudit({
     action: "DELETE",
     entity: "BatchStudent",
     entityId: enrollmentId,
     summary: `Removed student from batch`,
-    detail: { enrollmentId, batchId: id },
+    oldValue: existing ?? { batchId: id, enrollmentId },
   });
   return NextResponse.json({ ok: true });
 }

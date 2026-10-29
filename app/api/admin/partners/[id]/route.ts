@@ -21,12 +21,15 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   try {
+    const before = await prisma.partner.findUnique({ where: { id } });
     const partner = await prisma.partner.update({ where: { id }, data: parsed.data });
   await logAudit({
     action: "UPDATE",
     entity: "Partner",
     entityId: partner.id,
     summary: `Updated Partner — ${auditLabel(partner)}`,
+    oldValue: before,
+    newValue: partner,
   });
     return NextResponse.json(partner);
   } catch {
@@ -46,6 +49,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Partner",
       entityId: id,
       summary: `Deleted Partner — ${auditLabel(deleted)}`,
+      oldValue: deleted,
     });
     return NextResponse.json({ ok: true });
   } catch {

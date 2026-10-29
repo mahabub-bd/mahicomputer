@@ -21,12 +21,15 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   try {
+    const before = await prisma.galleryItem.findUnique({ where: { id } });
     const item = await prisma.galleryItem.update({ where: { id }, data: parsed.data });
   await logAudit({
     action: "UPDATE",
     entity: "Gallery item",
     entityId: item.id,
     summary: `Updated Gallery item — ${auditLabel(item)}`,
+    oldValue: before,
+    newValue: item,
   });
     return NextResponse.json(item);
   } catch {
@@ -46,6 +49,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Gallery item",
       entityId: id,
       summary: `Deleted Gallery item — ${auditLabel(deleted)}`,
+      oldValue: deleted,
     });
     return NextResponse.json({ ok: true });
   } catch {

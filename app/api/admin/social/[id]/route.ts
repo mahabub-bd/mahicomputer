@@ -21,12 +21,15 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   try {
+    const before = await prisma.socialLink.findUnique({ where: { id } });
     const link = await prisma.socialLink.update({ where: { id }, data: parsed.data });
   await logAudit({
     action: "UPDATE",
     entity: "Social link",
     entityId: link.id,
     summary: `Updated Social link — ${auditLabel(link)}`,
+    oldValue: before,
+    newValue: link,
   });
     return NextResponse.json(link);
   } catch {
@@ -46,6 +49,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Social link",
       entityId: id,
       summary: `Deleted Social link — ${auditLabel(deleted)}`,
+      oldValue: deleted,
     });
     return NextResponse.json({ ok: true });
   } catch {

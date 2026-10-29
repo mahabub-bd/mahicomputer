@@ -31,6 +31,7 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   try {
+    const before = await prisma.course.findUnique({ where: { id } });
     const course = await prisma.course.update({ where: { id }, data });
     revalidateTag("public-data", "max");
     await logAudit({
@@ -38,6 +39,8 @@ export async function PUT(req: Request, { params }: Params) {
       entity: "Course",
       entityId: id,
       summary: `Updated course — ${course.title}`,
+      oldValue: before,
+      newValue: course,
     });
     return NextResponse.json(course);
   } catch (e: unknown) {
@@ -64,6 +67,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Course",
       entityId: id,
       summary: `Deleted course — ${course.title}`,
+      oldValue: course,
     });
     return NextResponse.json({ ok: true });
   } catch {

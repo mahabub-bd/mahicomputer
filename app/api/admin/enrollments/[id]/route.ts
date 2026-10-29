@@ -93,6 +93,8 @@ export async function PATCH(req: Request, { params }: Params) {
       select: { id: true },
     }));
 
+  const before = await prisma.enrollment.findUnique({ where: { id } });
+
   try {
     const enrollment = await prisma.enrollment.update({
       where: { id },
@@ -134,6 +136,8 @@ export async function PATCH(req: Request, { params }: Params) {
             : status === "DECLINED"
               ? `Declined admission — ${enrollment.name}`
               : `Moved admission back to pending — ${enrollment.name}`,
+        oldValue: before,
+        newValue: enrollment,
       });
     } else if (payment?.success) {
       await logAudit({
@@ -141,7 +145,8 @@ export async function PATCH(req: Request, { params }: Params) {
         entity: "Enrollment",
         entityId: id,
         summary: `Updated payment info — ${enrollment.name}`,
-        detail: { paidAmount: enrollment.paidAmount },
+        oldValue: before,
+        newValue: enrollment,
       });
     } else if (student?.success) {
       await logAudit({
@@ -149,6 +154,8 @@ export async function PATCH(req: Request, { params }: Params) {
         entity: "Enrollment",
         entityId: id,
         summary: `Updated student info — ${enrollment.name}`,
+        oldValue: before,
+        newValue: enrollment,
       });
     }
     return NextResponse.json(enrollment);
@@ -169,6 +176,7 @@ export async function DELETE(_req: Request, { params }: Params) {
       entity: "Enrollment",
       entityId: id,
       summary: `Deleted admission — ${enrollment.name}`,
+      oldValue: enrollment,
     });
     return NextResponse.json({ ok: true });
   } catch {

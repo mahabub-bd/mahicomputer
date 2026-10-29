@@ -36,6 +36,7 @@ export async function POST(req: Request) {
     entity: "Newsletter issue",
     entityId: newsletter.id,
     summary: `Created Newsletter issue — ${auditLabel(newsletter)}`,
+    newValue: newsletter,
   });
   revalidateTag("public-data", "max");
   return NextResponse.json(newsletter, { status: 201 });

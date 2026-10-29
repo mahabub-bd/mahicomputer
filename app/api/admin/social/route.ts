@@ -31,6 +31,7 @@ export async function POST(req: Request) {
     entity: "Social link",
     entityId: link.id,
     summary: `Created Social link — ${auditLabel(link)}`,
+    newValue: link,
   });
   return NextResponse.json(link, { status: 201 });
 }

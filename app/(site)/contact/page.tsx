@@ -1,5 +1,5 @@
 import { PageHead } from "@/app/_components/PageHead";
-import { getPublicSiteSettings, getPublicSocialLinks } from "@/lib/data";
+import { getPublicBusinessSettings, getPublicSocialLinks } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
 import AosProvider from "@/app/_components/AosProvider";
 import { Contact, Map } from "@/app/components";
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 const ContactPage = async () => {
   const [settings, socials] = await Promise.all([
-    getPublicSiteSettings(),
+    getPublicBusinessSettings(),
     getPublicSocialLinks(),
   ]);
 

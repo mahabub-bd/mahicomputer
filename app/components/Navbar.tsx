@@ -1,7 +1,7 @@
 "use client";
 
 import EnrollButton from "@/app/_components/EnrollButton";
-import type { CourseView, NavLinkView, SiteSettingsView, SocialView } from "@/lib/types";
+import type { BusinessSettingsView, CourseView, NavLinkView, SocialView } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,7 +15,7 @@ interface NavbarProps {
   courses?: CourseView[];
   social?: SocialView[];
   navLinks?: NavLinkView[];
-  settings?: SiteSettingsView;
+  settings?: BusinessSettingsView;
 }
 
 /** "#about" -> "/#about", "notice" -> "/notice", "/" stays "/". */

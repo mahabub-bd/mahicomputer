@@ -384,20 +384,30 @@ model SiteSetting {
   whyTitle      String  @default("")
   whySubtitle   String  @default("")
   whyFeatures   Json    @default("[]")
-  mapEmbedUrl   String  @default("")
   courseAboutTitle  String @default("")
   courseInsideTitle String @default("")
   ceoTitle      String  @default("")
   ceoText       String  @default("")
   ceoImageUrl   String  @default("")
-  phone        String   @default("")
-  email        String   @default("")
-  address      String   @default("")
   stats        Json     @default("[]")
-  businessName String   @default("")
-  whatsappNumber String @default("")
-  whatsappMessage String @default("")
-  whatsappEnabled Boolean @default(true)
-  openingHours String   @default("")
   updatedAt    DateTime @updatedAt
+}
+
+/**
+ * Business identity + contact details, edited from /admin/business-settings.
+ * A singleton row kept in its own table (rather than in SiteSetting) so each
+ * admin form owns exactly one table and cannot write another module's fields.
+ */
+model BusinessSetting {
+  id              Int      @id @default(1)
+  businessName    String   @default("")
+  phone           String   @default("")
+  email           String   @default("")
+  address         String   @default("")
+  openingHours    String   @default("")
+  mapEmbedUrl     String   @default("")
+  whatsappNumber  String   @default("")
+  whatsappMessage String   @default("")
+  whatsappEnabled Boolean  @default(true)
+  updatedAt       DateTime @updatedAt
 }

@@ -1,4 +1,4 @@
-import type { SiteSettingsView, SocialView } from "@/lib/types";
+import type { BusinessSettingsView, SocialView } from "@/lib/types";
 import { Clock, Globe, Mail, MapPin, MessageSquareQuote, Phone } from "lucide-react";
 import { ContactForm } from ".";
 
@@ -9,7 +9,7 @@ const OFFICE_HOURS = {
 };
 
 interface ContactProps {
-  settings?: SiteSettingsView;
+  settings?: BusinessSettingsView;
   social?: SocialView[];
 }
 

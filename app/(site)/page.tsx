@@ -1,4 +1,5 @@
 import {
+  getPublicBusinessSettings,
   getPublicCategories,
   getPublicCourses,
   getPublicFaqs,
@@ -69,7 +70,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 };
 
 const HomePage = async () => {
-  const [rawCourses, categories, instructors, reviews, partners, gallery, settings, notices, faqs, socials] =
+  const [rawCourses, categories, instructors, reviews, partners, gallery, settings, business, notices, faqs, socials] =
     await Promise.all([
       getPublicCourses(),
       getPublicCategories(),
@@ -78,6 +79,7 @@ const HomePage = async () => {
       getPublicPartnerViews(),
       getPublicGalleryViews(),
       getPublicSiteSettings(),
+      getPublicBusinessSettings(),
       getPublicNotices(),
       getPublicFaqs(),
       getPublicSocialLinks(),
@@ -89,6 +91,7 @@ const HomePage = async () => {
   // Structured data for search engines (Organization, WebSite, Courses, FAQ).
   const jsonLd = buildHomeJsonLd({
     settings,
+    business,
     socials,
     courses: rawCourses,
     faqs,
@@ -105,7 +108,7 @@ const HomePage = async () => {
         <CEO settings={settings} />
         <Categories categories={categories.map(toCategoryView)} />
         <Courses courses={courses} />
-        <AdmissionBanner courses={courseTitles} settings={settings} />
+        <AdmissionBanner courses={courseTitles} settings={business} />
         <Instractor instructors={instructors} />
         <WhyChooseUs settings={settings} />
         <Review reviews={reviews} />
@@ -115,8 +118,8 @@ const HomePage = async () => {
         <Faq faqs={faqs} />
         <Partners partners={partners} />
         <Newsletter />
-        <Contact settings={settings} social={socials} />
-        <Map settings={settings} />
+        <Contact settings={business} social={socials} />
+        <Map settings={business} />
       </div>
     </AosProvider>
   );

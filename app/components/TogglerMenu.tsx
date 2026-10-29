@@ -8,7 +8,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 
 import EnrollButton from "@/app/_components/EnrollButton";
-import type { CourseView, NavLinkView, SiteSettingsView, SocialView } from "@/lib/types";
+import type { BusinessSettingsView, CourseView, NavLinkView, SocialView } from "@/lib/types";
 import { logo } from "@/public";
 import { MobileSubMenu } from "../components";
 
@@ -16,7 +16,7 @@ interface TogglerMenuProps {
   courses?: CourseView[];
   navLinks?: NavLinkView[];
   social?: SocialView[];
-  settings?: SiteSettingsView;
+  settings?: BusinessSettingsView;
 }
 
 /** "#about" -> "/#about", "notice" -> "/notice", "/" stays "/". */

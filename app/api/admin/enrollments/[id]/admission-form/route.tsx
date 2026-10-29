@@ -16,7 +16,7 @@ export async function GET(_req: Request, { params }: Params) {
   const { id } = await params;
   const [enrollment, settings] = await Promise.all([
     prisma.enrollment.findUnique({ where: { id } }),
-    prisma.siteSetting.findUnique({
+    prisma.businessSetting.findUnique({
       where: { id: 1 },
       select: { businessName: true, address: true },
     }),

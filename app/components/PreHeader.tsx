@@ -1,10 +1,10 @@
-import type { SiteSettingsView, SocialView } from "@/lib/types";
+import type { BusinessSettingsView, SocialView } from "@/lib/types";
 import { Globe, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 
 interface PreHeaderProps {
   social?: SocialView[];
-  settings?: SiteSettingsView;
+  settings?: BusinessSettingsView;
 }
 
 const CONTACT = {

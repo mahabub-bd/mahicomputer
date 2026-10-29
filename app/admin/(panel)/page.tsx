@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/auth";
-import { getGalleryItems, getSiteSettings, getSocialLinks } from "@/lib/data";
+import { getBusinessSettings, getGalleryItems, getSiteSettings, getSocialLinks } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 import {
   Bell,
@@ -48,6 +48,7 @@ const AdminDashboard = async () => {
     galleryItems,
     socialLinks,
     settings,
+    business,
     adminUser,
   ] = await Promise.all([
     prisma.course.count(),
@@ -67,6 +68,7 @@ const AdminDashboard = async () => {
     getGalleryItems(),
     getSocialLinks(),
     getSiteSettings(),
+    getBusinessSettings(),
     session
       ? prisma.user.findUnique({
         where: { id: session.sub },
@@ -164,9 +166,9 @@ const AdminDashboard = async () => {
   ];
 
   const contactInfo: ContactInfoItem[] = [
-    { label: "Phone", value: settings.phone, Icon: Phone, href: settings.phone ? `tel:${settings.phone}` : undefined },
-    { label: "Email", value: settings.email, Icon: Mail, href: settings.email ? `mailto:${settings.email}` : undefined },
-    { label: "Address", value: settings.address, Icon: MapPin, href: undefined },
+    { label: "Phone", value: business.phone, Icon: Phone, href: business.phone ? `tel:${business.phone}` : undefined },
+    { label: "Email", value: business.email, Icon: Mail, href: business.email ? `mailto:${business.email}` : undefined },
+    { label: "Address", value: business.address, Icon: MapPin, href: undefined },
   ].filter((c) => c.value);
 
   return (

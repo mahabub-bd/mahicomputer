@@ -26,6 +26,8 @@ export async function PUT(req: Request) {
     );
   }
 
+  // Homepage content only — business details live in the BusinessSetting table
+  // and are written by /api/admin/business-settings.
   const settings = await prisma.siteSetting.upsert({
     where: { id: 1 },
     update: parsed.data,

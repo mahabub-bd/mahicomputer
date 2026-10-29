@@ -22,8 +22,8 @@ type TextKey = {
 
 const SettingsForm = ({ settings }: SettingsFormProps) => {
   const router = useRouter();
-  // Business fields (contact, WhatsApp, hours) are managed in the Business
-  // settings module and omitted from this form's schema.
+  // Business details (contact info, hours, map, WhatsApp) live in their own
+  // BusinessSetting table and are edited from /admin/business-settings.
   const { marqueeItems, ...rest } = settings;
   const {
     register,

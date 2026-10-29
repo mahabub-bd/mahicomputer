@@ -1,4 +1,4 @@
-import type { SiteSettingsView } from "@/lib/types";
+import type { BusinessSettingsView } from "@/lib/types";
 import { MapPin, Navigation } from "lucide-react";
 
 /** Opens Google Maps directions straight to the training centre. */
@@ -6,7 +6,7 @@ const DIRECTIONS_URL =
   "https://www.google.com/maps/dir/?api=1&destination=Mahi+Computers+and+Training+Center";
 
 interface MapProps {
-  settings?: SiteSettingsView;
+  settings?: BusinessSettingsView;
 }
 
 const Map = ({ settings }: MapProps) => {

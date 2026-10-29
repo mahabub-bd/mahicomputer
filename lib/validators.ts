@@ -358,7 +358,6 @@ export const siteSettingSchema = z.object({
       }),
     )
     .default([]),
-  mapEmbedUrl: z.string().max(3000).default(""),
   courseAboutTitle: z.string().max(200).default(""),
   courseInsideTitle: z.string().max(200).default(""),
   aboutTitle: z.string().max(500).default(""),
@@ -367,11 +366,20 @@ export const siteSettingSchema = z.object({
   ceoTitle: z.string().max(500).default(""),
   ceoText: z.string().max(10000).default(""),
   ceoImageUrl: z.string().max(2000).default(""),
+  stats: z.array(statItemSchema).default([]),
+});
+
+/**
+ * Business settings singleton (`BusinessSetting` table): footer contact block,
+ * opening hours, map embed and the WhatsApp chat widget.
+ */
+export const businessSettingSchema = z.object({
+  businessName: z.string().max(200).default(""),
   phone: z.string().max(100).default(""),
   email: z.string().max(200).default(""),
   address: z.string().max(500).default(""),
-  stats: z.array(statItemSchema).default([]),
-  businessName: z.string().max(200).default(""),
+  openingHours: z.string().max(500).default(""),
+  mapEmbedUrl: z.string().max(3000).default(""),
   whatsappNumber: z
     .string()
     .trim()
@@ -380,29 +388,11 @@ export const siteSettingSchema = z.object({
     .default(""),
   whatsappMessage: z.string().max(500).default(""),
   whatsappEnabled: z.boolean().default(true),
-  openingHours: z.string().max(500).default(""),
 });
 
-
-/**
- * General site settings form (homepage sections + stats). Business fields
- * (contact info, WhatsApp, opening hours, map embed) are owned by the
- * dedicated Business settings module and omitted here so saving this form
- * can never overwrite them.
- */
+/** Homepage settings form — marquee items are edited as one line-per-item block. */
 export const settingsFormSchema = siteSettingSchema
-  .omit({
-    marqueeItems: true,
-    phone: true,
-    email: true,
-    address: true,
-    businessName: true,
-    whatsappNumber: true,
-    whatsappMessage: true,
-    whatsappEnabled: true,
-    openingHours: true,
-    mapEmbedUrl: true,
-  })
+  .omit({ marqueeItems: true })
   .extend({
     marqueeText: z.string().max(20000).default(""),
   });
@@ -437,3 +427,4 @@ export type FaqInput = z.infer<typeof faqSchema>;
 export type NavLinkInput = z.infer<typeof navLinkSchema>;
 export type FooterGroupInput = z.infer<typeof footerGroupSchema>;
 export type SiteSettingInput = z.infer<typeof siteSettingSchema>;
+export type BusinessSettingInput = z.infer<typeof businessSettingSchema>;

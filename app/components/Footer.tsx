@@ -1,4 +1,4 @@
-import type { FooterGroupView, SiteSettingsView, SocialView } from "@/lib/types";
+import type { BusinessSettingsView, FooterGroupView, SocialView } from "@/lib/types";
 import { logodark } from "@/public";
 import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import Image from "next/image";
@@ -8,7 +8,7 @@ import BackToTop from "../_components/BackToTop";
 interface FooterProps {
   social?: SocialView[];
   footerLinks?: FooterGroupView[];
-  settings?: SiteSettingsView;
+  settings?: BusinessSettingsView;
 }
 
 /**

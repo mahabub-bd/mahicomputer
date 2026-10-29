@@ -174,7 +174,6 @@ export interface SiteSettingsView {
   whyTitle: string;
   whySubtitle: string;
   whyFeatures: WhyFeature[];
-  mapEmbedUrl: string;
   courseAboutTitle: string;
   courseInsideTitle: string;
   aboutTitle: string;
@@ -183,17 +182,24 @@ export interface SiteSettingsView {
   ceoTitle: string;
   ceoText: string;
   ceoImageUrl: string;
+  stats: StatItem[];
+}
+
+/**
+ * Business settings singleton (`BusinessSetting` table): footer contact block,
+ * opening hours, map embed and the floating WhatsApp chat widget.
+ */
+export interface BusinessSettingsView {
+  businessName: string;
   phone: string;
   email: string;
   address: string;
-  stats: StatItem[];
-  /** Business settings module (footer contact + WhatsApp chat widget). */
-  businessName: string;
+  openingHours: string;
+  mapEmbedUrl: string;
   /** International format without "+" (e.g. 8801712345678); empty = hide. */
   whatsappNumber: string;
   /** Preset first message for the WhatsApp chat. */
   whatsappMessage: string;
   /** Toggles the floating WhatsApp chat widget on the public site. */
   whatsappEnabled: boolean;
-  openingHours: string;
 }

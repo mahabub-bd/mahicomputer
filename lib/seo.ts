@@ -1,4 +1,4 @@
-import type { Course, Faq, SiteSettingsView, SocialLink } from "@/lib/types";
+import type { BusinessSettingsView, Course, Faq, SiteSettingsView, SocialLink } from "@/lib/types";
 import { toStringArray } from "./course-view";
 import { absoluteUrl, assetUrl, SITE_NAME, SITE_SHORT_NAME, truncate } from "./site";
 
@@ -8,7 +8,11 @@ type JsonLdNode = Record<string, unknown>;
 const stripHtml = (value: string) => value.replace(/<[^>]*>/g, " ").trim();
 
 /** EducationTrainingCenter local business — local SEO + knowledge panel. */
-function buildOrganization(settings: SiteSettingsView, socials: SocialLink[]): JsonLdNode {
+function buildOrganization(
+  settings: SiteSettingsView,
+  business: BusinessSettingsView,
+  socials: SocialLink[],
+): JsonLdNode {
   const sameAs = socials
     .map((s) => s.link)
     .filter((link) => /^https?:\/\//i.test(link));
@@ -30,10 +34,10 @@ function buildOrganization(settings: SiteSettingsView, socials: SocialLink[]): J
       settings.aboutText ||
         "Practical computer and IT training courses with expert instructors, hands-on labs and certification.",
     ),
-    ...(settings.phone ? { telephone: settings.phone } : {}),
-    ...(settings.email ? { email: settings.email } : {}),
-    ...(settings.address
-      ? { address: { "@type": "PostalAddress", streetAddress: stripHtml(settings.address) } }
+    ...(business.phone ? { telephone: business.phone } : {}),
+    ...(business.email ? { email: business.email } : {}),
+    ...(business.address
+      ? { address: { "@type": "PostalAddress", streetAddress: stripHtml(business.address) } }
       : {}),
     ...(sameAs.length ? { sameAs } : {}),
     areaServed: "BD",
@@ -105,11 +109,12 @@ function buildFaqPage(faqs: Faq[]): JsonLdNode | null {
 /** Homepage structured-data graph (Organization + WebSite + courses + FAQ). */
 export function buildHomeJsonLd(input: {
   settings: SiteSettingsView;
+  business: BusinessSettingsView;
   socials: SocialLink[];
   courses: Course[];
   faqs: Faq[];
 }): JsonLdNode {
-  const organization = buildOrganization(input.settings, input.socials);
+  const organization = buildOrganization(input.settings, input.business, input.socials);
   const nodes: JsonLdNode[] = [
     organization,
     buildWebSite(),

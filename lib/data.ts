@@ -3,6 +3,7 @@ import { cache } from "react";
 import { toStringArray } from "./course-view";
 import { prisma } from "./prisma";
 import type {
+  BusinessSettingsView,
   Category,
   CategoryView,
   Course,
@@ -172,7 +173,6 @@ export async function getSiteSettings(): Promise<SiteSettingsView> {
       whyTitle: "",
       whySubtitle: "",
       whyFeatures: [],
-      mapEmbedUrl: "",
       courseAboutTitle: "",
       courseInsideTitle: "",
       aboutTitle: "",
@@ -181,15 +181,7 @@ export async function getSiteSettings(): Promise<SiteSettingsView> {
       ceoTitle: "",
       ceoText: "",
       ceoImageUrl: "",
-      phone: "",
-      email: "",
-      address: "",
       stats: [],
-      businessName: "",
-      whatsappNumber: "",
-      whatsappMessage: "",
-      whatsappEnabled: true,
-      openingHours: "",
     };
   }
   return {
@@ -197,6 +189,35 @@ export async function getSiteSettings(): Promise<SiteSettingsView> {
     marqueeItems: parseStringArray(row.marqueeItems),
     whyFeatures: parseWhyFeatures(row.whyFeatures),
     stats: parseStats(row.stats),
+  };
+}
+
+/** Business settings singleton (`BusinessSetting` table). */
+export async function getBusinessSettings(): Promise<BusinessSettingsView> {
+  const row = await prisma.businessSetting.findUnique({ where: { id: 1 } });
+  if (!row) {
+    return {
+      businessName: "",
+      phone: "",
+      email: "",
+      address: "",
+      openingHours: "",
+      mapEmbedUrl: "",
+      whatsappNumber: "",
+      whatsappMessage: "",
+      whatsappEnabled: true,
+    };
+  }
+  return {
+    businessName: row.businessName,
+    phone: row.phone,
+    email: row.email,
+    address: row.address,
+    openingHours: row.openingHours,
+    mapEmbedUrl: row.mapEmbedUrl,
+    whatsappNumber: row.whatsappNumber,
+    whatsappMessage: row.whatsappMessage,
+    whatsappEnabled: row.whatsappEnabled,
   };
 }
 
@@ -420,6 +441,10 @@ export const getPublicReviewViews = cachedPublic("public:reviewViews", getReview
 export const getPublicPartnerViews = cachedPublic("public:partnerViews", getPartnerViews);
 export const getPublicGalleryViews = cachedPublic("public:galleryViews", getGalleryViews);
 export const getPublicSiteSettings = cachedPublic("public:siteSettings", getSiteSettings);
+export const getPublicBusinessSettings = cachedPublic(
+  "public:businessSettings",
+  getBusinessSettings,
+);
 export const getPublicNotices = cachedPublic("public:notices", getNotices);
 export const getPublicNewsletters = cachedPublic(
   "public:newsletters",

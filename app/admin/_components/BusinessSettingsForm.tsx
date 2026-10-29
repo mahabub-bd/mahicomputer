@@ -3,23 +3,22 @@
 import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
 import { toast } from "sonner";
-import type { SiteSettingsView, SocialLink } from "@/lib/types";
-import { siteSettingSchema, type SiteSettingInput } from "@/lib/validators";
+import type { BusinessSettingsView, SocialLink } from "@/lib/types";
+import { businessSettingSchema, type BusinessSettingInput } from "@/lib/validators";
 import { apiPut } from "./api";
 import SocialList from "./SocialList";
 import { Checkbox, Field, Input, SubmitButton, Textarea } from "@/components/form/FormControls";
 import { useZodForm } from "@/components/form/useZodForm";
 
 interface BusinessSettingsFormProps {
-  settings: SiteSettingsView;
+  settings: BusinessSettingsView;
   socialLinks: SocialLink[];
 }
 
 /**
  * Focused admin module for business details: business name, opening hours
- * and the WhatsApp chat widget. Submits the full SiteSetting payload to the
- * same endpoint as the general settings page, so untouched homepage fields
- * are preserved.
+ * and the WhatsApp chat widget. Backed by its own `BusinessSetting` table —
+ * fully independent of the homepage settings page.
  */
 const BusinessSettingsForm = ({ settings, socialLinks }: BusinessSettingsFormProps) => {
   const router = useRouter();
@@ -29,13 +28,13 @@ const BusinessSettingsForm = ({ settings, socialLinks }: BusinessSettingsFormPro
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useZodForm<SiteSettingInput>(siteSettingSchema, {
+  } = useZodForm<BusinessSettingInput>(businessSettingSchema, {
     defaultValues: settings,
   });
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await apiPut("/api/admin/settings", data);
+      await apiPut("/api/admin/business-settings", data);
       toast.success("Business settings saved");
       router.refresh();
     } catch (err) {

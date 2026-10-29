@@ -1,10 +1,10 @@
 import EnrollButton from "@/app/_components/EnrollButton";
-import type { SiteSettingsView } from "@/lib/types";
+import type { BusinessSettingsView } from "@/lib/types";
 import { Phone } from "lucide-react";
 
 interface AdmissionBannerProps {
   courses?: string[];
-  settings?: SiteSettingsView;
+  settings?: BusinessSettingsView;
 }
 
 /** Bold mid-page banner: admission is open — enroll or call. */

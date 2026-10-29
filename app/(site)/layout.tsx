@@ -1,8 +1,8 @@
 import {
+  getPublicBusinessSettings,
   getPublicCourseViews,
   getPublicFooterLinkGroups,
   getPublicNavLinks,
-  getPublicSiteSettings,
   getPublicSocialLinks,
   toFooterGroupView,
   toNavLinkView,
@@ -15,12 +15,12 @@ import { Footer, Navbar } from "../components";
 export const revalidate = 60;
 
 const SiteLayout = async ({ children }: { children: ReactNode }) => {
-  const [courses, social, navLinks, footerGroups, settings] = await Promise.all([
+  const [courses, social, navLinks, footerGroups, business] = await Promise.all([
     getPublicCourseViews(),
     getPublicSocialLinks(),
     getPublicNavLinks(),
     getPublicFooterLinkGroups(),
-    getPublicSiteSettings(),
+    getPublicBusinessSettings(),
   ]);
 
   return (
@@ -29,18 +29,18 @@ const SiteLayout = async ({ children }: { children: ReactNode }) => {
         courses={courses}
         social={social}
         navLinks={navLinks.map(toNavLinkView)}
-        settings={settings}
+        settings={business}
       />
       <main>{children}</main>
       <Footer
         social={social}
         footerLinks={footerGroups.map(toFooterGroupView)}
-        settings={settings}
+        settings={business}
       />
       <WhatsAppChat
-        number={settings.whatsappEnabled ? settings.whatsappNumber : ""}
-        message={settings.whatsappMessage}
-        businessName={settings.businessName || "Mahi Computer"}
+        number={business.whatsappEnabled ? business.whatsappNumber : ""}
+        message={business.whatsappMessage}
+        businessName={business.businessName || "Mahi Computer"}
       />
     </>
   );

@@ -114,7 +114,6 @@ const Sidebar = ({ user }: SidebarProps) => {
   const [loggingOut, setLoggingOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [groups, setGroups] = useState<Record<string, boolean>>({});
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Segment-aware: a link is active only when the path equals it or
@@ -124,18 +123,6 @@ const Sidebar = ({ user }: SidebarProps) => {
     exact
       ? pathname === href
       : pathname === href || pathname.startsWith(`${href}/`);
-
-  /* 24 links do not fit a laptop viewport, so only the group you are in
-     (plus the dashboard) starts open. Collapsing the current group still
-     keeps the current page's link visible. */
-  const activeSection =
-    sections.find((section) => section.links.some((l) => isActive(l.href, l.exact)))?.label ??
-    "main";
-
-  const isOpen = (key: string) => groups[key] ?? (key === activeSection || key === "main");
-
-  const toggleGroup = (key: string) =>
-    setGroups((prev) => ({ ...prev, [key]: !isOpen(key) }));
 
   // Close the user menu on outside click.
   useEffect(() => {
@@ -234,72 +221,52 @@ const Sidebar = ({ user }: SidebarProps) => {
             flex child shrink, and the fade below hints that there is more
             below the fold instead of cutting a link in half. */}
         <div className="relative min-h-0 flex-1">
-          <nav className="admin-sidebar-scroll h-full overflow-y-auto px-2.5 py-3">
+          <nav className="admin-sidebar-scroll h-full overflow-y-auto px-2.5 py-2">
             {sections.map((section) => {
               const key = sectionKey(section);
-              const open = isOpen(key);
-              // A collapsed group still shows the current page's own link.
-              const links = open
-                ? section.links
-                : section.links.filter((link) => isActive(link.href, link.exact));
               return (
-                <div key={key} className="mb-0.5">
+                <div key={key} className="mb-1.5">
                   {section.label && (
-                    <button
-                      type="button"
-                      onClick={() => toggleGroup(key)}
-                      aria-expanded={open}
-                      className="group flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 transition duration-150 hover:bg-white/5 hover:text-slate-300"
-                    >
-                      <span className="truncate">{section.label}</span>
-                      <ChevronDown
-                        size={13}
-                        aria-hidden
-                        className={`shrink-0 transition-transform duration-200 ${
-                          open ? "" : "-rotate-90"
-                        }`}
-                      />
-                    </button>
+                    <p className="px-3 py-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                      {section.label}
+                    </p>
                   )}
-
-                  {links.length > 0 && (
-                    <ul className="mt-0.5 space-y-0.5 pb-1">
-                      {links.map(({ href, label, exact, Icon }) => {
-                        const active = isActive(href, exact);
-                        return (
-                          <li key={href}>
-                            <Link
-                              href={href}
-                              onClick={() => setDrawerOpen(false)}
-                              aria-current={active ? "page" : undefined}
-                              className={`group relative flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13.5px] transition duration-150 ${
-                                active
-                                  ? "bg-blue-600/15 font-medium text-white"
-                                  : "text-slate-400 hover:bg-white/5 hover:text-slate-100"
-                              }`}
-                            >
-                              {active && (
-                                <span
-                                  aria-hidden
-                                  className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-r bg-blue-400"
-                                />
-                              )}
-                              <Icon
-                                size={16}
+                  <ul className="space-y-0.5">
+                    {section.links.map(({ href, label, exact, Icon }) => {
+                      const active = isActive(href, exact);
+                      return (
+                        <li key={href}>
+                          <Link
+                            href={href}
+                            onClick={() => setDrawerOpen(false)}
+                            aria-current={active ? "page" : undefined}
+                            className={`group relative flex items-center gap-3 rounded-lg px-3 py-1 text-[15px] transition duration-150 ${
+                              active
+                                ? "bg-blue-600/15 font-medium text-white"
+                                : "text-slate-300 hover:bg-white/5 hover:text-slate-100"
+                            }`}
+                          >
+                            {active && (
+                              <span
                                 aria-hidden
-                                className={`shrink-0 ${
-                                  active
-                                    ? "text-blue-300"
-                                    : "text-slate-500 transition group-hover:text-slate-300"
-                                }`}
+                                className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r bg-blue-400"
                               />
-                              <span className="truncate">{label}</span>
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
+                            )}
+                            <Icon
+                              size={18}
+                              aria-hidden
+                              className={`shrink-0 ${
+                                active
+                                  ? "text-blue-300"
+                                  : "text-slate-400 transition group-hover:text-slate-300"
+                              }`}
+                            />
+                            <span className="truncate">{label}</span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
               );
             })}
@@ -355,13 +322,13 @@ const Sidebar = ({ user }: SidebarProps) => {
               </span>
             )}
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-[13px] font-medium text-white">
+              <span className="block truncate text-sm font-medium text-white">
                 {displayName}
               </span>
-              <span className="block truncate text-[11px] text-slate-400">{user?.email}</span>
+              <span className="block truncate text-xs text-slate-400">{user?.email}</span>
             </span>
             <ChevronDown
-              size={15}
+              size={16}
               aria-hidden
               className={`shrink-0 text-slate-400 transition-transform duration-200 ${
                 menuOpen ? "rotate-180" : ""

@@ -1,5 +1,8 @@
+"use client";
+
 import type { BusinessSettingsView } from "@/lib/types";
 import { MapPin, Navigation } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 /** Opens Google Maps directions straight to the training centre. */
 const DIRECTIONS_URL =
@@ -11,12 +14,33 @@ interface MapProps {
 
 const Map = ({ settings }: MapProps) => {
   const embedUrl = settings?.mapEmbedUrl?.trim() || "";
+
+  // Lazy-load: mount the Google Maps iframe only once the section nears the viewport.
+  const frameRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = frameRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px" }, // start loading slightly before it's visible
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [embedUrl]);
+
   return (
     <section
       id="location"
       className="section-shell relative scroll-mt-24 overflow-hidden bg-white"
     >
-      <div className="mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
+      <div className="mx-auto max-w-350 2xl:max-w-384 px-4 sm:px-6">
         {/* Section header */}
         <p
           className="text-center font-bangla text-[13px] font-bold uppercase tracking-[0.2em] text-blue-600"
@@ -39,19 +63,29 @@ const Map = ({ settings }: MapProps) => {
         {/* Framed map card — rendered only when the admin has set an embed URL */}
         {embedUrl && (
         <div className="relative mt-10" data-aos="fade-up" data-aos-delay="120">
+          <div ref={frameRef}>
           <div
             className="absolute -inset-3 rounded-4xl border border-blue-100 bg-blue-50/40"
             aria-hidden
           />
           <div className="relative overflow-hidden rounded-[1.75rem] border border-white bg-white shadow-xl shadow-slate-200/60 ring-1 ring-slate-200/60">
-            <iframe
-              title="মাহি কম্পিউটার ট্রেনিং সেন্টার — Google Map"
-              src={embedUrl}
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              className="h-90 w-full border-0 sm:h-105"
-            />
+            {inView ? (
+              <iframe
+                title="মাহি কম্পিউটার ট্রেনিং সেন্টার — Google Map"
+                src={embedUrl}
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-90 w-full border-0 sm:h-105"
+              />
+            ) : (
+              <div
+                aria-hidden
+                className="flex h-90 w-full items-center justify-center bg-slate-100 sm:h-105"
+              >
+                <MapPin size={28} className="animate-pulse text-slate-400" />
+              </div>
+            )}
 
             {/* Directions CTA */}
             <a
@@ -78,6 +112,7 @@ const Map = ({ settings }: MapProps) => {
                 {settings?.address?.trim() || "মাহি কম্পিউটার ট্রেনিং সেন্টার, গুলশান, ঢাকা"}
               </span>
             </span>
+          </div>
           </div>
         </div>
         )}

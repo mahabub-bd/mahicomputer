@@ -123,11 +123,13 @@ const EnrollmentPaymentModal = ({
     const nextIdx = covered.findIndex((c) => !c);
     return nextIdx >= 0 ? (planRows[nextIdx] ?? 0) : due;
   })();
-  useEffect(() => {
+  // Prefill whenever the suggested next installment changes — adjusted during
+  // render (the React-recommended alternative to a setState-in-effect sync).
+  const [lastSuggest, setLastSuggest] = useState(suggestAmount);
+  if (lastSuggest !== suggestAmount) {
+    setLastSuggest(suggestAmount);
     setPayAmount(suggestAmount > 0 ? String(suggestAmount) : "");
-    // Prefill whenever the suggested next installment changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [suggestAmount]);
+  }
 
   const recordPayment = async () => {
     const amount = Number(payAmount);

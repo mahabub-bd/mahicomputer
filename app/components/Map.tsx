@@ -2,6 +2,7 @@
 
 import type { BusinessSettingsView } from "@/lib/types";
 import { MapPin, Navigation } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 /** Opens Google Maps directions straight to the training centre. */
@@ -88,7 +89,7 @@ const Map = ({ settings }: MapProps) => {
             )}
 
             {/* Directions CTA */}
-            <a
+            <Link
               href={DIRECTIONS_URL}
               target="_blank"
               rel="noopener noreferrer"
@@ -96,7 +97,7 @@ const Map = ({ settings }: MapProps) => {
             >
               <Navigation size={16} aria-hidden />
               দিকনির্দেশ নিন
-            </a>
+            </Link>
           </div>
 
           {/* Floating address badge (overhangs below the frame) */}

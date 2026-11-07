@@ -1,5 +1,4 @@
 import { PageHead } from "@/app/_components/PageHead";
-import styles from "@/app/styles/style";
 import { getPublicNewsletters } from "@/lib/data";
 import { SITE_NAME } from "@/lib/site";
 import type { Metadata } from "next";

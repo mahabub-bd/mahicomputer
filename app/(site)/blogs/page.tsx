@@ -1,6 +1,5 @@
 import { PageHead } from "@/app/_components/PageHead";
 import BlogCard from "@/app/components/BlogCard";
-import styles from "@/app/styles/style";
 import { getPublicPosts } from "@/lib/data";
 import { SITE_NAME, truncate } from "@/lib/site";
 import type { Metadata } from "next";

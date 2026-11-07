@@ -2,7 +2,7 @@
 
 import type { StatItem } from "@/lib/types";
 import { Award, GraduationCap, Trophy, Users } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../styles/style";
 
 interface StatsProps {
@@ -55,7 +55,7 @@ const toDisplay = (n: string, info: ReturnType<typeof parseStat>) => {
  * the full content for SEO and there is no "0" flash.
  */
 const StatValue = ({ raw }: { raw: string }) => {
-  const info = useRef(parseStat(raw)).current;
+  const info = useMemo(() => parseStat(raw), [raw]);
   const [display, setDisplay] = useState(raw);
   const ref = useRef<HTMLSpanElement>(null);
 
@@ -116,7 +116,7 @@ const Stats = ({ stats = [] }: StatsProps) => (
       className="pointer-events-none absolute -bottom-32 right-1/5 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl"
     />
 
-    <div className="relative mx-auto max-w-350 2xl:max-w-[1536px] px-4 sm:px-6">
+    <div className="relative mx-auto max-w-350 2xl:max-w-384 px-4 sm:px-6">
       {/* Section header */}
       <p
         className="text-center font-bangla text-[13px] font-bold uppercase tracking-[0.2em] text-cyan-300"
@@ -151,7 +151,7 @@ const Stats = ({ stats = [] }: StatsProps) => (
               data-aos="fade-up"
               data-aos-delay={i * 80}
             >
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.06] p-5 text-center shadow-lg shadow-black/20 backdrop-blur-sm transition duration-300 hover:-translate-y-1.5 hover:border-cyan-400/40 hover:bg-white/[0.1] hover:shadow-xl sm:p-7">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/6 p-5 text-center shadow-lg shadow-black/20 backdrop-blur-sm transition duration-300 hover:-translate-y-1.5 hover:border-cyan-400/40 hover:bg-white/10 hover:shadow-xl sm:p-7">
                 {/* Corner glow that brightens on hover */}
                 <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-cyan-400/20 blur-2xl transition-opacity duration-300 group-hover:bg-cyan-400/35" />
 

@@ -13,7 +13,7 @@ for (const m of models) {
         }
       }
     }
-  } catch(e) { }
+  } catch { }
 }
 await p.$disconnect();
 console.log("done");
